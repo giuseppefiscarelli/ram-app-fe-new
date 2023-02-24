@@ -1,0 +1,37 @@
+.main-panel {
+  min-height: 90vh;
+  background-size: cover;
+}
+.main-container{
+  height: calc(100vh);
+}
+.sidebar-content{
+  width:270px;
+  background-color: #086f38 ;
+
+}
+/*
+@media only screen and (max-width: 760px) {
+ // .sidebar-content{
+  //    display:none;
+  }
+}*/
+.nav-content{
+  position: fixed !important;
+  width: -webkit-fill-available !important;
+  z-index: 200;
+}
+.main-panel{
+  margin-top:64px;
+}
+@media (max-width: 599px){
+.mat-toolbar-row, .mat-toolbar-single-row {
+  height: 56px;
+}
+.main-panel{
+  margin-top:56px;
+}
+}
+
+
+

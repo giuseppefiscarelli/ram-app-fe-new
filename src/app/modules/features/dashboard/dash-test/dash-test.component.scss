@@ -1,0 +1,23 @@
+
+.container-tablet{
+
+  min-height: 90vh;
+  margin-left: 2%;
+  margin-right: 2%;
+  top: 1vh;
+}
+
+.container-toolbar{
+  background: #00968817;
+  height: 80px;
+  .container-toolbar-title{
+      margin-top: -2%;
+  }
+}
+.container-card{
+  min-height: calc(79vh);
+  margin-left: 2%;
+  margin-right: 2%;
+  top: -22px;
+}
+

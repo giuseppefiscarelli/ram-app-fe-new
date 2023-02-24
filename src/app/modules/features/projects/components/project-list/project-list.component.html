@@ -1,0 +1,111 @@
+
+<mat-toolbar class="container-toolbar">
+  <span class="container-toolbar-title" [innerText]="'project.list.title' | translate"></span>
+</mat-toolbar>
+<mat-card class="container-card">
+  <mat-card-content>
+    <h3><mat-icon>search</mat-icon> Ricerca</h3>
+
+    <div [formGroup]="filters" fxLayout="row"  fxLayout.xs="column">
+      <div fxFlex="40" fxFlex.xs="100" >
+          <mat-form-field appearance="standard" style="width:90%;">
+              <mat-label>Cerca</mat-label>
+              <input matInput  formControlName="term" placeholder="Ricerca per nome">
+          </mat-form-field>
+      </div>
+    </div>
+
+    <div fxLayout="row">
+      <div fxFlex="40">
+        <input
+        type="file" class="file-input" (change)="uploadFile($event)"
+        #fileUpload
+        accept=".csv"
+        style="display:none;">
+    <div class="file-upload" >
+        <button mat-raised-button color="primary" (click)="fileUpload.click()">
+            <mat-icon>file_download</mat-icon>Importa CSV
+        </button>
+    </div>
+      </div>
+    </div>
+
+    <div class="table-container" (scroll)="timeoutScroll($event)">
+      <table mat-table #table [dataSource]="dataSource" >
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          <ng-container *ngIf="dataSource.length === 0">
+            <tr mat-footer-row *matFooterRowDef="['disclaimer']" ></tr>
+            <ng-container  matColumnDef="disclaimer">
+              <td mat-footer-cell *matFooterCellDef colspan="9">
+                  Nessun record disponibile
+              </td>
+            </ng-container>
+          </ng-container>
+
+
+
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef> # </th>
+            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef> Stato </th>
+            <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="internalCode">
+            <th mat-header-cell *matHeaderCellDef> Fitok </th>
+            <td mat-cell *matCellDef="let element"> {{element.internalCode}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef> Note </th>
+            <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="idCustomer">
+            <th mat-header-cell *matHeaderCellDef> Cliente </th>
+            <td mat-cell *matCellDef="let element"> {{element.idCustomer}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="datePlan">
+            <th mat-header-cell *matHeaderCellDef> Pianificazione </th>
+            <td mat-cell *matCellDef="let element"> </td>
+          </ng-container>
+          <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef> Inizio / Fine </th>
+            <td mat-cell *matCellDef="let element"> </td>
+          </ng-container>
+          <ng-container matColumnDef="time">
+            <th mat-header-cell *matHeaderCellDef> Tempi </th>
+            <td mat-cell *matCellDef="let element"> </td>
+          </ng-container>
+
+
+
+
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef> Action </th>
+            <td mat-cell *matCellDef="let element;let i = index;">
+                <button
+                    mat-icon-button
+                    color="primary"
+                    aria-label="Example icon button with a home icon"
+                    (click)="onClickEditBtn('edit', element,i)">
+                    <mat-icon>description</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" aria-label="Example icon button with a heart icon">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+      </table>
+      <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
+    </div>
+
+  </mat-card-content>
+
+</mat-card>

@@ -1,0 +1,108 @@
+
+<div><mat-toolbar style="background-color:transparent">
+  <img src="/assets/images/logoB.png" class="center-logo">
+</mat-toolbar>
+<!-- <mat-card > -->
+<!--   <mat-card-header>
+    <div mat-card-avatar
+
+     style="background-image: url('/assets/images/user.png');
+     background-size: cover;"
+     ></div>
+    <mat-card-title>{{this.userMe.fullname}}</mat-card-title>
+    <mat-card-subtitle>{{user | async | UserRolePipe}}</mat-card-subtitle>
+
+</mat-card-header>
+<div fxLayout="row" fxLayoutAlign="space-around center" >
+  <button
+
+  mat-mini-fab
+  class="button24"
+  color="primary"
+  matTooltip="Info Profilo"
+  aria-label="Example icon button with a menu icon">
+    <mat-icon class="icon24">account_box</mat-icon>
+  </button>
+  <button
+
+  mat-mini-fab
+  class="button24"
+  style="background-color: #148574;"
+  color="accent"
+  matTooltip="Aggiorna Profilo"
+  aria-label="Example icon button with a menu icon">
+    <mat-icon class="icon24">settings</mat-icon>
+  </button>
+
+
+  <button
+
+  mat-mini-fab
+  class="button24"
+  color="warn"
+  matTooltip="Logout"
+  (click)="onLogoutClick()"
+  aria-label="Example icon button with a menu icon">
+    <mat-icon class="icon24">logout</mat-icon>
+  </button>
+</div>
+<mat-divider style=" margin-top:5%;"></mat-divider> -->
+<section     style="width: 97%;" >
+  <mat-accordion >
+
+      <mat-nav-list class="side-navbar" >
+          <ng-container *ngFor="let menu of items ; index as i;">
+              <ng-container
+                  [ngTemplateOutlet]="menu.children ?  childMenu : parentMenu"
+                  [ngTemplateOutletContext]="{menu:menu}"
+                  >
+              </ng-container>
+          </ng-container>
+      </mat-nav-list>
+
+      <ng-template #parentMenu let-menu="menu">
+          <mat-list-item
+              #rlaSingle="routerLinkActive"
+              [routerLink]="menu.target"
+              routerLinkActive="is-active item-menu-active"
+              [routerLinkActiveOptions]="{exact:true}"
+              style="color:white;"
+
+          >
+          <mat-icon>{{menu.icon}}</mat-icon> {{menu.label}}
+          </mat-list-item>
+      </ng-template>
+
+      <ng-template #childMenu let-menu="menu">
+          <mat-expansion-panel
+              style="background-color:#086f38;color:white;width:103%;box-shadow: none;
+              border-radius: 0;"
+              #rla="routerLinkActive"
+              [routerLink]="menu.target"
+              routerLinkActive
+          >
+              <mat-expansion-panel-header style="color:white;" [class.is-active-header]="rla.isActive" [expanded]="true">
+                  <mat-icon mat-list-icon>{{menu.icon}}</mat-icon>{{menu.label}}
+              </mat-expansion-panel-header>
+              <mat-nav-list>
+                  <mat-list-item
+                  class="item-submenu"
+                  #rlaSub="routerLinkActive"
+                  [routerLink]="submenu.target"
+                  *ngFor="let submenu of menu.children"
+                  routerLinkActive
+                  [class.item-submenu-active]="rlaSub.isActive"
+                  [routerLink]="submenu.target"
+
+                  [routerLinkActiveOptions]="{exact:true}">
+                  {{submenu.label}}
+
+                  </mat-list-item>
+              </mat-nav-list>
+          </mat-expansion-panel>
+      </ng-template>
+
+  </mat-accordion>
+</section>
+<!-- </mat-card> -->
+</div>

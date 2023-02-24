@@ -1,0 +1,15 @@
+::ng-deep .success-snack-style{
+  background-color:green;
+  color:white;
+  .mat-simple-snackbar-action {
+      color: white !important;
+  }
+}
+
+::ng-deep .error-snack-style{
+  background-color:red;
+  color:white;
+  .mat-simple-snackbar-action {
+      color: white !important;
+  }
+}

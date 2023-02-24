@@ -1,0 +1,299 @@
+<h1 mat-dialog-title>Gestione Attività</h1>
+<mat-dialog-content>
+  <div fxLayout="row">
+    <div fxFlex="30">
+       <h2> Fitok: {{this.project.internalCode}}</h2>
+    </div>
+    <div fxFlex="30">
+      <h2>  Postazione: {{this.deskData.name}}</h2>
+    </div>
+    <div fxFlex="30">
+      <h2>  Fase: {{this.deskData.phase | phase}}</h2>
+    </div>
+  </div>
+  <mat-divider></mat-divider>
+  <div fxLayout="row">
+    <div fxFlex="40">
+      <h3>Dati Pianificazione</h3>
+      <div fxLayout="row">
+        <div fxFlex="50">
+          <mat-list>
+            <mat-list-item >
+               <div matLine>Data Inizio Programmata</div>
+               <div matLine>{{this.project.datePlanStart | date:'dd/MM/YYYY'}}</div>
+            </mat-list-item>
+            <mat-list-item >
+              <div matLine>Data Fine Programmata</div>
+              <div matLine>{{this.project.datePlanEnd | date:'dd/MM/YYYY'}}</div>
+           </mat-list-item>
+
+        </mat-list>
+        </div>
+        <div fxFlex="50">
+          <mat-list>
+
+
+            <mat-list-item >
+             <div matLine>Data Consegna</div>
+             <div matLine>{{this.project.dateDelivery | date:'dd/MM/YYYY'}}</div>
+          </mat-list-item>
+          <mat-list-item >
+           <div matLine>Priorità</div>
+           <div matLine>{{this.project.type | priority }}</div>
+        </mat-list-item>
+         </mat-list>
+        </div>
+      </div>
+
+    </div>
+    <div fxFlex="25">
+      <h3>Tipo Lavorazioni</h3>
+      <mat-list >
+          <mat-list-item *ngFor="let item of this.task.typeOperations">
+              {{getTypeOperation(item)?.value}}
+          </mat-list-item>
+      </mat-list>
+    </div>
+    <div fxFlex="30">
+      <h3>Operatori</h3>
+      <mat-list >
+          <mat-list-item *ngFor="let item of this.task.operators">
+              {{getOperatorData(item)}}
+          </mat-list-item>
+      </mat-list>
+    </div>
+
+  </div>
+  <mat-divider></mat-divider>
+  <ng-container *ngIf="this.mode === 'view'">
+
+  </ng-container>
+  <ng-container *ngIf="this.mode === 'edit'">
+    <h3>Inserimento Manuale report</h3>
+    <form [formGroup]="form">
+      <div fxLayout="row">
+        <div fxFlex="30">
+          <h4>Inizio / Fine</h4>
+          <div fxLayout="row" fxLayoutAlign="start"  fxLayoutGap="30px" >
+                <mat-form-field  fxFlex="50" appearance="standard" >
+                  <mat-label>Data Inizio Attività </mat-label>
+                  <input matInput
+                   [matDatepicker]="picker1"
+                    formControlName="dateStart"
+                    [min]="minDate"
+                    [max]="maxDate"
+                    >
+                  <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                  <mat-datepicker #picker1></mat-datepicker>
+
+                </mat-form-field>
+                <mat-form-field  fxFlex="25" appearance="standard" style="width: 90px;">
+                  <input matInput
+                          formControlName="timeStart"
+                          format="24"
+
+                          [ngxMatTimepicker]="pickerA"
+                          placeholder="Ora"
+                          readonly />
+                  <mat-icon matSuffix (click)="pickerA.open()">
+                      schedule
+                  </mat-icon>
+
+              </mat-form-field>
+              <ngx-mat-timepicker #pickerA></ngx-mat-timepicker>
+          </div>
+          <div fxLayout="row" fxLayoutAlign="start"  fxLayoutGap="30px" >
+            <mat-form-field  fxFlex="50" appearance="standard" >
+              <mat-label>Data Fine Attività </mat-label>
+              <input matInput
+              [matDatepicker]="picker2"
+              [min]="this.form.controls.dateStart.value"
+              [max]="maxDate"
+              formControlName="dateEnd">
+              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+              <mat-datepicker #picker2></mat-datepicker>
+
+            </mat-form-field>
+            <mat-form-field  fxFlex="25" appearance="standard" style="width: 90px;">
+              <input matInput
+                      formControlName="timeEnd"
+                      format="24"
+                      [min]="this.form.controls.timeStart.value"
+                      [ngxMatTimepicker]="pickerB"
+                      placeholder="Ora"
+                      readonly />
+              <mat-icon matSuffix (click)="pickerB.open()">
+                  schedule
+              </mat-icon>
+
+          </mat-form-field>
+          <ngx-mat-timepicker #pickerB></ngx-mat-timepicker>
+          </div>
+        </div>
+
+        <div fxFlex="40">
+          <h4>Pause / Intervalli / Imprevisti</h4>
+            <form [formGroup]="formInterval">
+              <div fxLayout="row" fxLayoutAlign="start"  fxLayoutGap="30px" >
+                <mat-form-field  fxFlex="50" appearance="standard" >
+                  <mat-label>Data Inizio Pausa</mat-label>
+                  <input
+                   matInput
+                   [matDatepicker]="picker3"
+                   [min]="this.form.controls.dateStart.value"
+                   [max]="this.form.controls.dateEnd.value"
+
+
+                   formControlName="dateStart">
+                  <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                  <mat-datepicker #picker3></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field   appearance="standard" style="width: 90px;">
+                  <input matInput
+                          formControlName="timeStart"
+                          format="24"
+                          [ngxMatTimepicker]="pickerC"
+                          placeholder="Ora"
+                          readonly />
+                  <mat-icon matSuffix (click)="pickerC.open()">
+                      schedule
+                  </mat-icon>
+                </mat-form-field>
+                <ngx-mat-timepicker #pickerC></ngx-mat-timepicker>
+              </div>
+
+              <div fxLayout="row" fxLayoutAlign="start"  fxLayoutGap="30px" >
+                <mat-form-field  fxFlex="50" appearance="standard" >
+                  <mat-label>Data Fine Pausa/Ripresa attività</mat-label>
+                  <input
+                  matInput
+                  [matDatepicker]="picker4"
+                  [min]="this.form.controls.dateStart.value"
+                  [max]="this.form.controls.dateEnd.value"
+
+
+                  formControlName="dateEnd">
+                  <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                  <mat-datepicker #picker4></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field   appearance="standard" style="width: 90px;">
+                  <input matInput
+                          formControlName="timeEnd"
+                          format="24"
+                          [ngxMatTimepicker]="pickerD"
+                          placeholder="Ora"
+                          readonly />
+                  <mat-icon matSuffix (click)="pickerD.open()">
+                      schedule
+                  </mat-icon>
+                </mat-form-field>
+                <ngx-mat-timepicker #pickerD></ngx-mat-timepicker>
+              </div>
+              <div fxLayout="row" fxLayoutAlign="start"  fxLayoutGap="30px" >
+                <mat-form-field  fxFlex="40" appearance="standard" >
+                  <mat-label>Tipo pausa / interruzione</mat-label>
+                  <mat-select formControlName="problemcheck">
+
+                    <mat-option *ngFor="let item of problemsCheck" [value]="item.value">
+                      {{item.viewValue}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+              </div>
+
+              <div fxLayout="row" fxLayoutAlign="start"  fxLayoutGap="30px" >
+                <mat-form-field  fxFlex="100" appearance="standard" >
+                  <mat-label>Note pausa / interruzione</mat-label>
+                  <input matInput formControlName="note">
+                </mat-form-field>
+
+              </div>
+
+
+
+            </form>
+          <div fxLayout="row">
+            <div fxFlex="30">
+              <button mat-raised-button color="primary" (click)="onClickInsertInterval()">Inserisci pausa / intervallo</button>
+            </div>
+          </div>
+        </div>
+
+        <div fxFlex="20">
+          <h4>Checklist</h4>
+          <form [formGroup]="formCheckList">
+          <mat-list >
+              <mat-list-item *ngFor="let item of this.task.checkList">
+                <div matLine>
+                  {{getTypeOperation(item.type)?.value}}
+                  <span  style="float:right;">
+                    <mat-radio-group aria-label="Select an option" [formControlName]="item.type">
+                      <mat-radio-button class="completed" [value]="true">Completato</mat-radio-button>
+
+                    </mat-radio-group>
+
+
+                  </span>
+                </div>
+              </mat-list-item>
+          </mat-list>
+        </form>
+        </div>
+      </div>
+
+    </form>
+    <div fxLayout="row">
+      <div fxFlex="50">
+        <h4>Intervalli</h4>
+        <table mat-table [dataSource]="this.interval" style="width:100%;" >
+
+
+          <ng-container matColumnDef="time">
+            <th mat-header-cell *matHeaderCellDef> Inizio / Fine </th>
+            <td mat-cell *matCellDef="let element">
+              Inizio: {{element.start | date:"dd/MM/YYYY HH:mm"}}<br>
+              Fine:  {{element.end | date:"dd/MM/YYYY HH:mm"}}
+               </td>
+          </ng-container>
+
+          <!-- Name Column -->
+          <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef> Tipologia </th>
+            <td mat-cell *matCellDef="let element"> {{element.problemcheck}} </td>
+          </ng-container>
+
+          <!-- Weight Column -->
+          <ng-container matColumnDef="duration">
+            <th mat-header-cell *matHeaderCellDef> Durata </th>
+            <td mat-cell *matCellDef="let element"> {{element.totalMin | MillisecondsToHours}} </td>
+          </ng-container>
+
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef> Action </th>
+            <td mat-cell *matCellDef="let element"> </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="['time', 'type', 'duration','action']"></tr>
+          <tr mat-row *matRowDef="let row; columns: ['time', 'type', 'duration','action'];"></tr>
+        </table>
+      </div>
+
+      <div fxFlex="50">
+        <h4>Riepilogo</h4>
+        <mat-list dense>
+            <mat-list-item *ngFor="let item of items">
+                {{item}}
+            </mat-list-item>
+        </mat-list>
+      </div>
+    </div>
+  </ng-container>
+</mat-dialog-content>
+<mat-dialog-actions >
+  <button  (click)="onClickSubmit()" class="dialog-button"mat-raised-button style="background-color:green;color:white;">Salva Attività</button>
+
+  <button class="dialog-button" mat-raised-button color="warn" (click)=" onClickClose()">Chiudi</button>
+
+</mat-dialog-actions>

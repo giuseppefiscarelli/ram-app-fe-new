@@ -1,0 +1,54 @@
+.dialog-button{
+  height: 6vw;
+  font-size:x-large;
+}
+.mat-radio-button ~ .mat-radio-button {
+  margin-left: 16px;
+}
+.inprogress{
+  background-color: #ffa50014;
+  color: orange;
+  padding: 5px 10px;
+  border-radius: 10px;
+}
+.paused{
+  background-color: #efdae4;
+  color: #6f082a;
+  padding: 5px 10px;
+  border-radius: 10px;
+}
+.completed{
+  background-color: #dbffdb;
+  color: #086f38;
+  padding: 5px 10px;
+  border-radius: 10px;
+}
+::ng-deep .success-snack-style{
+  background-color:green;
+  color:white;
+  font-size:xx-large;
+
+  .mat-simple-snackbar-action {
+      color: white !important;
+  }
+}
+
+::ng-deep .error-snack-style{
+  background-color:red;
+  color:white;
+  font-size:xx-large !important;
+
+  .mat-simple-snackbar-action {
+      color: white !important;
+  }
+}
+::ng-deep {
+  .mat-checkbox-inner-container {
+
+    height: 23px !important;
+
+    width: 23px !important;
+
+  }
+
+}

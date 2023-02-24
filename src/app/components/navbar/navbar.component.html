@@ -1,0 +1,35 @@
+<mat-toolbar class="enwrap-navbar">
+  <button mat-icon-button (click)="sidenavToggle(status)" aria-label="Example icon-button with menu icon">
+   <mat-icon>menu</mat-icon>
+ </button>
+<!--  <span>Production Monitoring</span> -->
+ <span class="example-spacer"></span>
+ <!-- <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+   <mat-icon>tablet_mac</mat-icon>
+ </button>
+ <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+  <mat-icon>computer</mat-icon>
+</button> -->
+
+<mat-chip-list>
+  <mat-chip [matMenuTriggerFor]="menub">
+    <img matChipAvatar src="/assets/flag/it.png"> ITA
+  </mat-chip>
+</mat-chip-list>
+<span style="width:50px;"> </span>
+<mat-menu #menub="matMenu">
+  <button mat-menu-item (click)="setLang('it-IT')"><img src="/assets/flag/it.png" style=" height: 46%;vertical-align: middle;"   > ITA</button>
+  <button mat-menu-item (click)="setLang('en-EN')"><img src="/assets/flag/en.png" style=" height: 46%;vertical-align: middle;" > ENG</button>
+
+
+</mat-menu>
+<mat-chip-list>
+  <mat-chip [matMenuTriggerFor]="menu">
+    <img matChipAvatar src="/assets/images/ind.png">{{userMe.fullname}}
+  </mat-chip>
+</mat-chip-list>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item (click)="onLogoutClick()"> Logout</button>
+
+</mat-menu>
+</mat-toolbar>

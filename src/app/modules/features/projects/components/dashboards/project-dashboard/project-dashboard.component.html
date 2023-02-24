@@ -1,0 +1,47 @@
+<mat-toolbar class="container-toolbar">
+  <span class="container-toolbar-title" [innerText]="'project.dashboard.title' | translate"></span>
+</mat-toolbar>
+<mat-card class="container-card">
+  <mat-card-content>
+    <div fxLayout="row" fxLayoutAlign="space-between start"  fxLayoutGap="30px" >
+      <div fxFlex="25" >
+        <h3  [innerText]="'project.dashboard.taskScheduled' | translate"></h3>
+        <div fxLayout="column" fxLayoutGap="20px">
+          <div fxFlex="100" *ngFor="let project of filterProjectByStatus('scheduled')">
+            <app-project-card [project]="project" [desks]="this.desks"></app-project-card>
+          </div>
+        </div>
+      </div>
+
+      <div fxFlex="25" >
+        <h3  [innerText]="'project.dashboard.taskInprogress' | translate"></h3>
+        <div fxLayout="column" fxLayoutGap="20px">
+          <div fxFlex="100" *ngFor="let project of filterProjectByStatus('inprogress')">
+            <app-project-card [project]="project" [desks]="this.desks"></app-project-card>
+          </div>
+        </div>
+      </div>
+
+      <div fxFlex="25" >
+        <h3  [innerText]="'project.dashboard.taskPaused' | translate"></h3>
+        <div fxLayout="column" fxLayoutGap="20px">
+          <div fxFlex="100" *ngFor="let project of filterProjectByStatus('paused')">
+            <app-project-card [project]="project" [desks]="this.desks"></app-project-card>
+          </div>
+        </div>
+      </div>
+
+      <div fxFlex="25" >
+        <h3  [innerText]="'project.dashboard.taskCompleted' | translate"></h3>
+        <div fxLayout="column" fxLayoutGap="20px">
+          <div fxFlex="100" *ngFor="let project of filterProjectByStatus('completed')">
+            <app-project-card [project]="project" [desks]="this.desks"></app-project-card>
+          </div>
+        </div>
+      </div>
+    </div>
+  <!--   <div fxLayout="row" fxLayoutAlign="space-between start"  fxLayoutGap="30px" >
+      <app-project-multiline-chart fxFlex="100" [projects]="this.projectData"></app-project-multiline-chart>
+    </div> -->
+  </mat-card-content>
+</mat-card>

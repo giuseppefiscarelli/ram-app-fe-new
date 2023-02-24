@@ -1,0 +1,101 @@
+<div fxLayout="row" fxLayout.xs="column"fxLayoutAlign="start"  fxLayoutGap="30px">
+  <div  fxFlex="50" fxFlex.xs="100">
+
+  </div>
+</div>
+<ng-container *ngIf="!isLoading" >
+
+
+<mat-list  fxLayout="row" fxLayoutAlign="space-around center" >
+
+  <mat-list-item fxFlex="33" style="font-size:large ;">
+    <div mat-line>Data Inizio Lavorazione Programmata</div>
+    <div mat-line style="font-size:x-large ;">{{this.project.datePlanStart | date:"dd/MM/YYYY"}}</div>
+  </mat-list-item>
+
+  <mat-list-item fxFlex="33" style="font-size:large ;">
+    <div mat-line>Data Fine Lavorazione Programmata</div>
+    <div mat-line style="font-size:x-large ;">{{this.project.datePlanEnd| date:"dd/MM/YYYY"}}</div>
+  </mat-list-item>
+
+  <mat-list-item fxFlex="33" style="font-size:large ;">
+    <div mat-line>Data Consegna</div>
+    <div mat-line style="font-size:x-large ;">{{this.project.dateDelivery | date:"dd/MM/YYYY"}}</div>
+  </mat-list-item>
+</mat-list>
+
+<div fxLayout="row" fxLayout.xs="column"fxLayoutAlign="start">
+
+  <div  fxFlex="35" fxFlex.xs="100">
+    <h2>Tipo Lavorazioni</h2>
+    <mat-list >
+        <mat-list-item style="font-size:large ;" *ngFor="let item of this.task.checkList">
+          <mat-icon class="type-icon"  [class]="item.status" [innerText]="(item.status | statusTask).icon"></mat-icon>
+            {{(item.type | typeOperation).text}}
+        </mat-list-item>
+    </mat-list>
+  </div>
+  <div  fxFlex="30" fxFlex.xs="100">
+    <h2>Operatori</h2>
+    <mat-list >
+        <mat-list-item style="font-size:large ;" *ngFor="let item of this.task.operators">
+
+            {{getEmpData(item)?.surname}} {{getEmpData(item)?.name}}
+        </mat-list-item>
+    </mat-list>
+  </div>
+
+
+  <div  fxFlex="45" fxFlex.xs="100">
+    <h2>Documenti / Dati tecnici</h2>
+
+    <div  fxLayout="row" fxLayoutAlign="start center"  fxLayout.xs="column">
+      <div fxFlex="30" fxFlex.xs="100" >
+        <button mat-fab (click)="viewFile('/assets/test.pdf')" color="warn" aria-label="Example icon button with a delete icon">
+          <mat-icon>picture_as_pdf</mat-icon>
+        </button>
+      </div>
+      <div fxFlex="30" fxFlex.xs="100" >
+        <button mat-fab color="accent" aria-label="Example icon button with a delete icon">
+          <mat-icon>3d_rotation</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div  fxLayout="row" fxLayoutAlign="start center"  fxLayout.xs="column">
+
+      <mat-list >
+          <mat-list-item >
+             <div matLine>Quantità</div>
+             <div matLine>1 test</div>
+
+          </mat-list-item>
+          <mat-list-item >
+            <div matLine>Lungheza</div>
+            <div matLine>123 test</div>
+
+         </mat-list-item>
+         <mat-list-item >
+          <div matLine>Larghezza</div>
+          <div matLine> 22 test</div>
+
+       </mat-list-item>
+       <mat-list-item >
+        <div matLine>Altezza</div>
+        <div matLine>10 test</div>
+
+     </mat-list-item>
+      </mat-list>
+    </div>
+
+  </div>
+</div>
+
+<div  fxLayout="row" fxLayoutAlign="center stretch" *ngIf="this.task.status !== 'completed'">
+<div fxFlex="40">
+  <button mat-raised-button color="primary" class="sel-btn" (click)="onClickFitok(this.task)">{{this.task.status !== 'scheduled'?'Gestisci lavorazione':'Prendi in Carico'}}</button>
+</div>
+
+</div>
+<mat-divider style="margin-top: 3%;"></mat-divider>
+</ng-container>

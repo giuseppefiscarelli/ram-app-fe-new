@@ -1,0 +1,54 @@
+
+.span-title{
+  background-color: #dbffdb;
+  color: #086f38;
+  padding: 5px 10px;
+  border-radius: 10px;
+}
+
+.standard{
+  background-color: #daefe0;
+  color: green;
+  min-height: 46px;
+  //font-size: xx-large;
+}
+.urgent{
+  background-color: #efdae4;
+  color: red;
+  min-height: 46px;
+ // font-size: xx-large;
+}
+.blink {
+  animation: blinker 2s linear infinite;
+}
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
+.type-icon{
+  width: 40px;
+  height: 40px;
+  font-size: 40px;
+  margin-right: 3%;
+  padding: 4px;
+  border-radius: 10px;
+  &.scheduled{
+    color: #08276f;
+    background-color: #dae1ef;
+  }
+  &.inprogress{
+    background-color: #ffa50014;
+    color: orange;
+  }
+  &.paused{
+    background-color: #efdae4;
+    color: #6f082a;
+  }
+  &.completed{
+    background-color: #daefe0;
+    color: green;
+  }
+}
+

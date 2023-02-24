@@ -1,0 +1,48 @@
+
+<mat-toolbar class="container-toolbar">
+  <span class="container-toolbar-title" [innerText]="'project.dashboard.title' | translate"></span>
+</mat-toolbar>
+<mat-card class="container-card">
+  <mat-card-content>
+    <div fxLayout="row" fxLayoutAlign="space-between start"  fxLayoutGap="30px" >
+
+      <div fxFlex="25" >
+          <h3  [innerText]="'project.dashboard.taskScheduled' | translate"></h3>
+          <div fxLayout="column" fxLayoutGap="20px">
+            <div fxFlex="100" *ngFor="let task of tasksScheduled">
+              <app-task-card [task]="task" [desks]="desks"></app-task-card>
+            </div>
+
+          </div>
+
+
+      </div>
+      <div fxFlex="25">
+        <h3 [innerText]="'project.dashboard.taskInprogress' | translate"></h3>
+        <div fxLayout="column" fxLayoutGap="20px">
+          <div fxFlex="100" *ngFor="let task of tasksInprogress">
+            <app-task-card [task]="task" [desks]="desks"></app-task-card>
+          </div>
+        </div>
+      </div>
+      <div fxFlex="25">
+        <h3 [innerText]="'project.dashboard.taskPaused' | translate"></h3>
+        <div fxLayout="column" fxLayoutGap="20px">
+          <app fxFlex="100" *ngFor="let task of tasksPaused">
+            <app-task-card [task]="task" [desks]="desks"></app-task-card>
+          </app>
+        </div>
+      </div>
+      <div fxFlex="25">
+        <h3 [innerText]="'project.dashboard.taskCompleted' | translate"></h3>
+        <div fxLayout="column" fxLayoutGap="20px">
+          <app fxFlex="100" *ngFor="let task of tasksCompleted">
+            <app-task-card [task]="task" [desks]="desks"></app-task-card>
+          </app>
+        </div>
+      </div>
+
+    </div>
+  </mat-card-content>
+
+</mat-card>

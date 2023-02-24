@@ -1,0 +1,40 @@
+.login-container{
+  height: calc(100vh - 66px);
+}
+#logo {
+
+}
+.vertical-center {
+  height: calc(100vh - 66px);
+}
+.mat-form-field{
+  font-size:large;
+}
+.login-btn{
+  background-color: #12703d;
+  color:white
+}
+::ng-deep .mat-form-field-appearance-legacy .mat-form-field-infix {
+  padding: 0.9em 0 !important;
+}
+
+
+::ng-deep .success-snack-style{
+  background-color:green;
+  color:white;
+  .mat-simple-snackbar-action {
+      color: white !important;
+  }
+}
+
+::ng-deep .error-snack-style{
+  background-color:red;
+  color:white;
+  .mat-simple-snackbar-action {
+      color: white !important;
+  }
+}
+.login-card{
+  box-shadow: grey 0px 0px 14px 0px inset, 1px 1px 5px 1px grey;
+
+}

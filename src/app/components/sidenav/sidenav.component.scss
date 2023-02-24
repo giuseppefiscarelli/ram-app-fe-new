@@ -1,0 +1,116 @@
+.center-logo {
+  margin: auto;
+  height: 100%;
+  text-align: center;
+
+}
+
+/* ::ng-deep .mat-nav-list{
+  border-radius: 7px;
+  box-shadow: inset 0px 0px 6px 1px #dafffda1;
+  margin-bottom: 2%;
+
+} */
+::ng-deep .mat-nav-list{
+//  border-radius: 7px;
+//  box-shadow: inset 0px 0px 6px 1px #dafffda1;
+//  margin-bottom: 2%;
+
+}
+::ng-deep .mat-expansion-panel-header {
+  padding: 0 16px !important;
+}
+
+::ng-deep .mat-nav-list .mat-icon {
+  margin-right: 10px;
+}
+::ng-deep .mat-nav-list .mat-list-item {
+  font-size: 15px;
+}
+::ng-deep .mat-expansion-panel-body {
+  padding: 0 !important
+}
+
+::ng-deep .mat-expansion-panel-header {
+  height: 48px !important;
+}
+
+::ng-deep .mat-expansion-panel .mat-list-item {
+  padding-left: 0px !important;
+}
+/*
+::ng-deep .mat-nav-list .is-active {
+  background-color: #086f38 !important;
+  color: white !important;
+} */
+
+::ng-deep .mat-nav-list .is-active {
+  background-color: white !important;
+  color: #086f38 !important;
+}
+/* ::ng-deep .mat-nav-list .item-menu-active {
+  background-color: #086f38 !important;
+  color: white !important;
+  border-radius: 7px;
+  box-shadow: inset 0px 0px 6px 1px #dafffda1;
+  margin-bottom: 2%;
+  padding-left: 8px !important;
+} */
+::ng-deep .mat-nav-list .item-menu-active {
+  background-color: white !important;
+  color: #086f38 !important;
+
+  margin-bottom: 2%;
+  padding-left: 8px !important;
+}
+/* ::ng-deep .mat-nav-list .item-submenu-active {
+  background-color: #086f38 !important;
+  color: white !important;
+  border-radius: 7px;
+  box-shadow: inset 0px 0px 6px 1px #dafffda1;
+  width: 80% !important;
+  font-size: inherit;
+} */
+::ng-deep .mat-nav-list .item-submenu-active {
+  background-color: white !important;
+  color: #086f38 !important;
+ // border-radius: 7px;
+ // box-shadow: inset 0px 0px 6px 1px #dafffda1;
+  width: 80% !important;
+  font-size: inherit;
+}
+::ng-deep .mat-nav-list .item-submenu {
+color:white;
+  margin-left: 20%;
+  font-size: inherit;
+}
+
+
+::ng-deep .mat-list-base {
+  padding-top: 0 !important;
+ // margin-top:10%;
+}
+
+::ng-deep .mat-nav-list .mat-list-item.is-active .mat-list-item-content {
+  padding: 0 8px;
+}
+/* .is-active-header{
+
+      color: #086f38 !important;
+
+} */
+.is-active-header{
+
+  color: white !important;
+
+}
+.button24 {
+
+  width: 30px;
+  height: 30px;
+
+}
+.icon24 {
+  font-size: 18px;
+  margin-top: -4px;
+}

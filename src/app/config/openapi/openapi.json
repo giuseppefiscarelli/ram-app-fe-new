@@ -1,0 +1,4198 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "version": "0.2",
+        "title": "SetecERP",
+        "description": "SetecERP"
+    },
+    "security": [
+        {
+            "bearerAuth": []
+        }
+    ],
+    "paths": {
+
+        "/auth/signin": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Autenticates a user",
+                "operationId": "Authentication.signin",
+                "description": "By passing a valid e-mail and password the system return access token",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserSignInBody"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {
+                            "Location": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "uri"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TokenInfo"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "405": {
+                        "$ref": "#/components/responses/MethodNotAllowed"
+                    },
+                    "406": {
+                        "$ref": "#/components/responses/NotAcceptable"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/Conflict"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/UnprocessableEntity"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    },
+                    "503": {
+                        "$ref": "#/components/responses/ServiceUnavailable"
+                    },
+                    "5XX": {
+                        "$ref": "#/components/responses/UnexpectedError"
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/UnexpectedError"
+                    }
+                }
+            }
+        },
+        "/auth/gauth": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Autenticates a user",
+                "operationId": "Authentication.tokenin",
+                "description": "By passing a valid e-mail and password the system return access token",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserSignInBody"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {
+                            "Location": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "uri"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TokenInfo"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "405": {
+                        "$ref": "#/components/responses/MethodNotAllowed"
+                    },
+                    "406": {
+                        "$ref": "#/components/responses/NotAcceptable"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/Conflict"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/UnprocessableEntity"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    },
+                    "503": {
+                        "$ref": "#/components/responses/ServiceUnavailable"
+                    },
+                    "5XX": {
+                        "$ref": "#/components/responses/UnexpectedError"
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/UnexpectedError"
+                    }
+                }
+            }
+        },
+        "/auth/signout": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Logout a user",
+                "operationId": "Authentication.signout",
+                "description": "Logout a user, return void on success",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "405": {
+                        "$ref": "#/components/responses/MethodNotAllowed"
+                    },
+                    "406": {
+                        "$ref": "#/components/responses/NotAcceptable"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/Conflict"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/UnprocessableEntity"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    },
+                    "503": {
+                        "$ref": "#/components/responses/ServiceUnavailable"
+                    },
+                    "5XX": {
+                        "$ref": "#/components/responses/UnexpectedError"
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/UnexpectedError"
+                    }
+                }
+            }
+        },
+        "/users": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get a list of Users",
+                "operationId": "Users.fetch",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/UserSearchQueryParameters"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns a list of Users",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/UserRedacted"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Create a User",
+                "operationId": "Users.create",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "description": "User create request body.",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "name",
+                                    "surname",
+                                    "username",
+                                    "password",
+                                    "role"
+                                ],
+                                "additionalProperties": false,
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "minLength": 3
+                                    },
+                                    "surname": {
+                                        "type": "string",
+                                        "minLength": 3
+                                    },
+                                    "username": {
+                                        "type": "string",
+                                        "minLength": 3
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "minLength": 4
+                                    },
+                                    "role": {
+                                        "type": "string",
+                                        "enum": [
+                                            "admin",
+                                            "administrativeEmployee",
+                                            "wharehouseWorker",
+                                            "dpo",
+                                            "worker"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Returns the new User",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "405": {
+                        "$ref": "#/components/responses/MethodNotAllowed"
+                    },
+                    "406": {
+                        "$ref": "#/components/responses/NotAcceptable"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/Conflict"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/UnprocessableEntity"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    },
+                    "503": {
+                        "$ref": "#/components/responses/ServiceUnavailable"
+                    },
+                    "5XX": {
+                        "$ref": "#/components/responses/UnexpectedError"
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/UnexpectedError"
+                    }
+                }
+            }
+        },
+        "/users/me": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Fetch current User info",
+                "operationId": "Users.me",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User è stato trovato",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserRedacted"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "405": {
+                        "$ref": "#/components/responses/MethodNotAllowed"
+                    },
+                    "406": {
+                        "$ref": "#/components/responses/NotAcceptable"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/Conflict"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/UnprocessableEntity"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    },
+                    "503": {
+                        "$ref": "#/components/responses/ServiceUnavailable"
+                    },
+                    "5XX": {
+                        "$ref": "#/components/responses/UnexpectedError"
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/UnexpectedError"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "User self update",
+                "operationId": "Users.updateMe",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "description": "Subject create request body.",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "additionalProperties": false,
+                                "minProperties": 1,
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "minLength": 3
+                                    },
+                                    "surname": {
+                                        "type": "string",
+                                        "minLength": 3
+                                    },
+                                    "username": {
+                                        "type": "string",
+                                        "minLength": 3
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "minLength": 4
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "405": {
+                        "$ref": "#/components/responses/MethodNotAllowed"
+                    },
+                    "406": {
+                        "$ref": "#/components/responses/NotAcceptable"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/Conflict"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/UnprocessableEntity"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    },
+                    "503": {
+                        "$ref": "#/components/responses/ServiceUnavailable"
+                    },
+                    "5XX": {
+                        "$ref": "#/components/responses/UnexpectedError"
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/UnexpectedError"
+                    }
+                }
+            }
+        },
+        "/users/{id}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Reperisce un User a partire dal suo id",
+                "operationId": "Users.get",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ResourceIdPathParameter"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User è stato trovato",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserRedacted"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "405": {
+                        "$ref": "#/components/responses/MethodNotAllowed"
+                    },
+                    "406": {
+                        "$ref": "#/components/responses/NotAcceptable"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/Conflict"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/UnprocessableEntity"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    },
+                    "503": {
+                        "$ref": "#/components/responses/ServiceUnavailable"
+                    },
+                    "5XX": {
+                        "$ref": "#/components/responses/UnexpectedError"
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/UnexpectedError"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Update a User",
+                "operationId": "Users.update",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ResourceIdPathParameter"
+                    }
+                ],
+                "requestBody": {
+                    "description": "User update request body.",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "additionalProperties": false,
+                                "minProperties": 1,
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "minLength": 3
+                                    },
+                                    "surname": {
+                                        "type": "string",
+                                        "minLength": 3
+                                    },
+                                    "username": {
+                                        "type": "string",
+                                        "minLength": 3
+                                    },
+                                    "role": {
+                                        "type": "string",
+                                        "enum": [
+                                            "admin",
+                                            "administrativeEmployee",
+                                            "wharehouseWorker",
+                                            "dpo",
+                                            "worker"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "405": {
+                        "$ref": "#/components/responses/MethodNotAllowed"
+                    },
+                    "406": {
+                        "$ref": "#/components/responses/NotAcceptable"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/Conflict"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/UnprocessableEntity"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    },
+                    "503": {
+                        "$ref": "#/components/responses/ServiceUnavailable"
+                    },
+                    "5XX": {
+                        "$ref": "#/components/responses/UnexpectedError"
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/UnexpectedError"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Cancella User a partire dal suo id",
+                "operationId": "Users.delete",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ResourceIdPathParameter"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "User è stato eliminato"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "405": {
+                        "$ref": "#/components/responses/MethodNotAllowed"
+                    },
+                    "406": {
+                        "$ref": "#/components/responses/NotAcceptable"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/Conflict"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/UnprocessableEntity"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    },
+                    "503": {
+                        "$ref": "#/components/responses/ServiceUnavailable"
+                    },
+                    "5XX": {
+                        "$ref": "#/components/responses/UnexpectedError"
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/UnexpectedError"
+                    }
+                }
+            }
+        },
+        "/attachments": {
+            "get": {
+                "tags": [
+                    "Attachments"
+                ],
+                "summary": "Get a list of Attachments",
+                "operationId": "Attachments.fetch",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Attachments"
+                ],
+                "summary": "Create a Attachment",
+                "operationId": "Attachments.create",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/attachments/{id}": {
+            "get": {
+                "tags": [
+                    "Attachments"
+                ],
+                "summary": "Reperisce un Attachments a partire dal suo id",
+                "operationId": "Attachments.get",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Attachments"
+                ],
+                "summary": "Update a Attachments",
+                "operationId": "Attachments.update",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Attachments"
+                ],
+                "summary": "Cancella Attachments a partire dal suo id",
+                "operationId": "Attachments.delete",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/download": {
+            "get": {
+                "tags": [
+                    "Download"
+                ],
+                "summary": "Get a File",
+                "operationId": "Download.get",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/upload": {
+
+            "post": {
+                "tags": [
+                    "Upload"
+                ],
+                "summary": "Upload a Document",
+                "operationId": "Upload.create",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/desk": {
+          "get": {
+            "tags": [
+              "Desks"
+          ],
+          "summary": "Get a list of Desks",
+          "operationId": "Desks.fetch",
+          "security": [
+              {
+                  "bearerAuth": []
+              }
+          ],
+            "parameters": [],
+            "responses": {
+              "200": {
+                "description": "OK"
+              }
+            }
+          },
+          "put": {
+            "tags": [
+              "Desks"
+            ],
+            "summary": "Update a Desks",
+            "operationId": "Desks.update",
+            "security": [
+                {
+                    "bearerAuth": []
+                }
+            ],
+            "parameters": [],
+            "responses": {
+              "200": {
+                "description": "OK"
+              }
+            }
+          },
+          "post": {
+            "tags": [
+              "Desks"
+          ],
+          "summary": "Create a Desks",
+          "operationId": "Desks.create",
+          "security": [
+              {
+                  "bearerAuth": []
+              }
+          ],
+            "parameters": [],
+            "responses": {
+              "200": {
+                "description": "OK"
+              }
+            }
+          }
+
+        },
+        "/desk/{id}": {
+          "get": {
+            "tags": [
+                "Desks"
+            ],
+            "summary": "Get a Desks",
+            "operationId": "Desks.get",
+            "security": [
+                {
+                    "bearerAuth": []
+                }
+            ],
+            "parameters": [],
+            "responses": {
+              "200": {
+                "description": "OK"
+              }
+            }
+          },
+          "delete": {
+            "tags": [
+              "Desks"
+            ],
+            "summary": "Delete a Desks",
+            "operationId": "Desks.delete",
+            "security": [
+                {
+                    "bearerAuth": []
+                }
+            ],
+            "parameters": [],
+            "responses": {
+              "200": {
+                "description": "OK"
+              }
+            }
+          }
+
+        },
+        "/employee": {
+          "get": {
+              "tags": [
+                  "Employee"
+              ],
+              "summary": "Get a list of Employees",
+              "operationId": "Employee.fetch",
+              "security": [
+                  {
+                      "bearerAuth": []
+                  }
+              ],
+              "parameters": [],
+              "responses": {
+                  "200": {
+                      "description": "OK"
+                  }
+              }
+          },
+          "post": {
+              "tags": [
+                  "Employee"
+              ],
+              "summary": "Create a Employee",
+              "operationId": "Employee.create",
+              "security": [
+                  {
+                      "bearerAuth": []
+                  }
+              ],
+              "parameters": [],
+              "responses": {
+                  "200": {
+                      "description": "OK"
+                  }
+              }
+          }
+        },
+        "/employee/{id}": {
+            "get": {
+                "tags": [
+                    "Employees"
+                ],
+                "summary": "Reperisce un Employees a partire dal suo id",
+                "operationId": "Employees.get",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "description": "",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Employee"
+                ],
+                "summary": "Update a Employee",
+                "operationId": "Employee.update",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/company": {
+          "get": {
+              "tags": [
+                  "Company"
+              ],
+              "summary": "Get a list of Company",
+              "operationId": "Company.fetch",
+              "security": [
+                  {
+                      "bearerAuth": []
+                  }
+              ],
+              "parameters": [],
+              "responses": {
+                  "200": {
+                      "description": "OK"
+                  }
+              }
+          },
+          "post": {
+              "tags": [
+                  "Company"
+              ],
+              "summary": "Create a Company",
+              "operationId": "Company.create",
+              "security": [
+                  {
+                      "bearerAuth": []
+                  }
+              ],
+              "parameters": [],
+              "responses": {
+                  "200": {
+                      "description": "OK"
+                  }
+              }
+          }
+        },
+        "/company/{id}": {
+            "get": {
+                "tags": [
+                    "Company"
+                ],
+                "summary": "Reperisce un Company a partire dal suo id",
+                "operationId": "Company.get",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Company"
+                ],
+                "summary": "Update a Company",
+                "operationId": "Company.update",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Company"
+                ],
+                "summary": "Cancella Company a partire dal suo id",
+                "operationId": "Company.delete",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/task": {
+            "get": {
+                "tags": [
+                    "Task"
+                ],
+                "summary": "Get a list of Task",
+                "operationId": "Task.fetch",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Task"
+                ],
+                "summary": "Create a Task",
+                "operationId": "Task.create",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/task/{id}": {
+            "get": {
+                "tags": [
+                    "Task"
+                ],
+                "summary": "Get a Task",
+                "operationId": "Task.get",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Task"
+                ],
+                "summary": "Update a Task",
+                "operationId": "Task.update",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Task"
+                ],
+                "summary": "Cancella Task a partire dal suo id",
+                "operationId": "Task.delete",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/projects": {
+          "get": {
+              "tags": [
+                  "Projects"
+              ],
+              "summary": "Get a list of Projects",
+              "operationId": "Projects.fetch",
+              "security": [
+                  {
+                      "bearerAuth": []
+                  }
+              ],
+              "parameters": [
+                  {
+                      "$ref": "#/components/parameters/ProjectsSearchQueryParameters"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Returns a list of Projects",
+                      "content": {
+                          "application/json": {
+                              "schema": {
+                                  "type": "array",
+                                  "items": {
+                                      "$ref": "#/components/schemas/Projects"
+                                  }
+                              }
+                          }
+                      }
+                  },
+                  "400": {
+                      "$ref": "#/components/responses/BadRequest"
+                  },
+                  "401": {
+                      "$ref": "#/components/responses/Unauthorized"
+                  },
+                  "403": {
+                      "$ref": "#/components/responses/Forbidden"
+                  },
+                  "404": {
+                      "$ref": "#/components/responses/NotFound"
+                  },
+                  "405": {
+                      "$ref": "#/components/responses/MethodNotAllowed"
+                  },
+                  "406": {
+                      "$ref": "#/components/responses/NotAcceptable"
+                  },
+                  "409": {
+                      "$ref": "#/components/responses/Conflict"
+                  },
+                  "422": {
+                      "$ref": "#/components/responses/UnprocessableEntity"
+                  },
+                  "500": {
+                      "$ref": "#/components/responses/InternalServerError"
+                  },
+                  "503": {
+                      "$ref": "#/components/responses/ServiceUnavailable"
+                  },
+                  "5XX": {
+                      "$ref": "#/components/responses/UnexpectedError"
+                  },
+                  "default": {
+                      "$ref": "#/components/responses/UnexpectedError"
+                  }
+              }
+          },
+          "post": {
+              "tags": [
+                  "Projects"
+              ],
+              "summary": "Create a Projects",
+              "operationId": "Projects.create",
+              "security": [
+                  {
+                      "bearerAuth": []
+                  }
+              ],
+              "requestBody": {
+                  "description": "Projects create request body.",
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "type": "object",
+
+                              "additionalProperties": false
+
+                          }
+                      }
+                  }
+              },
+              "responses": {
+                  "201": {
+                      "description": "Returns the new Projects",
+                      "content": {
+                          "application/json": {
+                              "schema": {
+                                  "$ref": "#/components/schemas/Projects"
+                              }
+                          }
+                      }
+                  },
+                  "400": {
+                      "$ref": "#/components/responses/BadRequest"
+                  },
+                  "401": {
+                      "$ref": "#/components/responses/Unauthorized"
+                  },
+                  "403": {
+                      "$ref": "#/components/responses/Forbidden"
+                  },
+                  "404": {
+                      "$ref": "#/components/responses/NotFound"
+                  },
+                  "405": {
+                      "$ref": "#/components/responses/MethodNotAllowed"
+                  },
+                  "406": {
+                      "$ref": "#/components/responses/NotAcceptable"
+                  },
+                  "409": {
+                      "$ref": "#/components/responses/Conflict"
+                  },
+                  "422": {
+                      "$ref": "#/components/responses/UnprocessableEntity"
+                  },
+                  "500": {
+                      "$ref": "#/components/responses/InternalServerError"
+                  },
+                  "503": {
+                      "$ref": "#/components/responses/ServiceUnavailable"
+                  },
+                  "5XX": {
+                      "$ref": "#/components/responses/UnexpectedError"
+                  },
+                  "default": {
+                      "$ref": "#/components/responses/UnexpectedError"
+                  }
+              }
+          },
+          "put": {
+              "tags": [
+                  "Projects"
+              ],
+              "summary": "Update a Projects",
+              "operationId": "Projects.update",
+              "security": [
+                  {
+                      "bearerAuth": []
+                  }
+              ],
+              "requestBody": {
+                  "description": "Projects create request body.",
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "type": "object",
+                              "additionalProperties": false
+
+                          }
+                      }
+                  }
+              },
+              "responses": {
+                  "201": {
+                      "description": "Returns the new PrenVei",
+                      "content": {
+                          "application/json": {
+                              "schema": {
+                                  "$ref": "#/components/schemas/PrenVei"
+                              }
+                          }
+                      }
+                  },
+                  "400": {
+                      "$ref": "#/components/responses/BadRequest"
+                  },
+                  "401": {
+                      "$ref": "#/components/responses/Unauthorized"
+                  },
+                  "403": {
+                      "$ref": "#/components/responses/Forbidden"
+                  },
+                  "404": {
+                      "$ref": "#/components/responses/NotFound"
+                  },
+                  "405": {
+                      "$ref": "#/components/responses/MethodNotAllowed"
+                  },
+                  "406": {
+                      "$ref": "#/components/responses/NotAcceptable"
+                  },
+                  "409": {
+                      "$ref": "#/components/responses/Conflict"
+                  },
+                  "422": {
+                      "$ref": "#/components/responses/UnprocessableEntity"
+                  },
+                  "500": {
+                      "$ref": "#/components/responses/InternalServerError"
+                  },
+                  "503": {
+                      "$ref": "#/components/responses/ServiceUnavailable"
+                  },
+                  "5XX": {
+                      "$ref": "#/components/responses/UnexpectedError"
+                  },
+                  "default": {
+                      "$ref": "#/components/responses/UnexpectedError"
+                  }
+              }
+          }
+        },
+        "/projects/{id}": {
+            "get": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Reperisce un Projects a partire dal suo cod",
+                "operationId": "Projects.get",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ResourceIdPathParameter"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Projects è stato trovato",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Projects"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "405": {
+                        "$ref": "#/components/responses/MethodNotAllowed"
+                    },
+                    "406": {
+                        "$ref": "#/components/responses/NotAcceptable"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/Conflict"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/UnprocessableEntity"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    },
+                    "503": {
+                        "$ref": "#/components/responses/ServiceUnavailable"
+                    },
+                    "5XX": {
+                        "$ref": "#/components/responses/UnexpectedError"
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/UnexpectedError"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Projects"
+                ],
+                "summary": "Cancella Projects a partire dal suo id",
+                "operationId": "Projects.delete",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ResourceIdPathParameter"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Projects è stato eliminato"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "405": {
+                        "$ref": "#/components/responses/MethodNotAllowed"
+                    },
+                    "406": {
+                        "$ref": "#/components/responses/NotAcceptable"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/Conflict"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/UnprocessableEntity"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    },
+                    "503": {
+                        "$ref": "#/components/responses/ServiceUnavailable"
+                    },
+                    "5XX": {
+                        "$ref": "#/components/responses/UnexpectedError"
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/UnexpectedError"
+                    }
+                }
+            }
+        },
+        "/stampingevent": {
+          "get": {
+              "tags": [
+                  "StampingEvent"
+              ],
+              "summary": "Get a list of StampingEvent",
+              "operationId": "StampingEvent.fetch",
+              "security": [
+                  {
+                      "bearerAuth": []
+                  }
+              ],
+              "parameters": [],
+              "responses": {
+                  "200": {
+                      "description": "OK"
+                  }
+              }
+          },
+          "post": {
+              "tags": [
+                  "StampingEvent"
+              ],
+              "summary": "Create a StampingEvent",
+              "operationId": "StampingEvent.create",
+              "security": [
+                  {
+                      "bearerAuth": []
+                  }
+              ],
+              "parameters": [],
+              "responses": {
+                  "200": {
+                      "description": "OK"
+                  }
+              }
+          }
+
+
+        },
+        "/stampingevent/{id}": {
+            "get": {
+                "tags": [
+                    "StampingEvent"
+                ],
+                "summary": "Reperisce un Stamping a partire dal suo id",
+                "operationId": "StampingEvent.getDate",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "StampingEvent"
+                ],
+                "summary": "Update a Stamping",
+                "operationId": "StampingEvent.update",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/fitokdata": {
+          "get": {
+            "tags": [
+              "FitokData"
+          ],
+          "summary": "Get a list of FitokData",
+          "operationId": "FitokData.fetch",
+            "parameters": [],
+            "responses": {
+              "200": {
+                "description": "OK"
+              }
+            }
+          }
+        },
+        "/fitokdata/{cod}": {
+          "get": {
+            "tags": [
+              "FitokData"
+          ],
+          "summary": "Reperisce un FitokData a partire dal suo codice",
+          "operationId": "StampingEvent.get",
+            "parameters": [],
+            "responses": {
+              "200": {
+                "description": "OK"
+              }
+            }
+          }
+
+        }
+
+    },
+    "components": {
+        "schemas": {
+            "ProblemDetails": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "string"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "target": {
+                        "type": "string"
+                    }
+                },
+                "additionalProperties": true,
+                "required": [
+                    "code",
+                    "message"
+                ]
+            },
+            "UserSignInBody": {
+                "type": "object",
+                "properties": {
+                    "username": {
+                        "type": "string",
+                        "example": "admin@email.org"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "secret1234"
+                    }
+                }
+            },
+            "TokenInfo": {
+                "type": "object",
+                "properties": {
+                    "auth": {
+                        "type": "object",
+                        "properties": {
+                            "tokenType": {
+                                "type": "string"
+                            },
+                            "expiresIn": {
+                                "type": "number",
+                                "format": "float"
+                            },
+                            "accessToken": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/UserRedacted"
+                    }
+                }
+            },
+            "User": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "surname": {
+                        "type": "string"
+                    },
+                    "username": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    },
+                    "role": {
+                        "$ref": "#/components/schemas/Roles"
+                    }
+                }
+            },
+            "UserRedacted": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "surname": {
+                        "type": "string"
+                    },
+                    "username": {
+                        "type": "string"
+                    },
+                    "role": {
+                        "$ref": "#/components/schemas/Roles"
+                    }
+                }
+            },
+            "ArrayOfUser": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/User"
+                }
+            },
+            "Roles": {
+                "type": "string",
+                "enum": [
+                    "admin",
+                    "administrativeEmployee",
+                    "wharehouseWorker",
+                    "dpo",
+                    "worker"
+                ]
+            },
+            "Country": {
+                "type": "object",
+                "description": "Tale entità può rappresentare un Country",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "nameIT": {
+                        "type": "string"
+                    },
+                    "nameEN": {
+                        "type": "string"
+                    },
+                    "codeISO3166alpha2": {
+                        "type": "string",
+                        "example": "ITA"
+                    }
+                }
+            },
+            "Brand": {
+                "type": "object",
+                "description": "Tale entità può rappresentare un Brand",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "note": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Testride": {
+                "type": "object",
+                "description": "Tale entità può rappresentare un Testride",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "note": {
+                        "type": "string"
+                    }
+                }
+            },
+            "DriveLicense": {
+                "type": "object",
+                "description": "Tale entità può rappresentare una DriveLicense",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "note": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ProductCategory": {
+                "type": "object",
+                "description": "Tale entità può rappresentare un ProductCategory",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "parent": {
+                        "type": "number"
+                    },
+                    "note": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Subject": {
+                "type": "object",
+                "description": "Tale entità può rappresentare un Cliente oppure un Fornitore.",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "type": {
+                        "type": "array",
+                        "description": "Subject puo essere uno piu tipi",
+                        "items": {
+                            "$ref": "#/components/schemas/SubjectType"
+                        }
+                    },
+                    "category": {
+                        "type": "string",
+                        "enum": [
+                            "legalperson",
+                            "naturalperson"
+                        ]
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "surname": {
+                        "type": "string"
+                    },
+                    "dateOfBirth": {
+                        "type": "number"
+                    },
+                    "countryOfBirth": {
+                        "type": "string"
+                    },
+                    "provinceOfBirth": {
+                        "type": "string"
+                    },
+                    "birthplace": {
+                        "type": "string"
+                    },
+                    "citizenship": {
+                        "type": "string"
+                    },
+                    "gender": {
+                        "type": "string",
+                        "enum": [
+                            "male",
+                            "female"
+                        ]
+                    },
+                    "fiscalCode": {
+                        "description": "codice fiscale",
+                        "type": "string"
+                    },
+                    "businessName": {
+                        "description": "ragione sociale",
+                        "type": "string"
+                    },
+                    "vatNumber": {
+                        "description": "partita iva",
+                        "type": "string"
+                    },
+                    "purchaseDiscountClass": {
+                        "type": "number"
+                    },
+                    "saleDiscountClass": {
+                        "type": "number"
+                    },
+                    "address": {
+                        "type": "string"
+                    },
+                    "zipCode": {
+                        "description": "cap",
+                        "type": "string"
+                    },
+                    "district": {
+                        "description": "provincia",
+                        "type": "string"
+                    },
+                    "country": {
+                        "description": "paese",
+                        "type": "string"
+                    },
+                    "city": {
+                        "description": "citta'",
+                        "type": "string"
+                    },
+                    "primaryPhone": {
+                        "type": "string"
+                    },
+                    "secondaryPhone": {
+                        "type": "string"
+                    },
+                    "primaryMobile": {
+                        "type": "string"
+                    },
+                    "secondaryMobile": {
+                        "type": "string"
+                    },
+                    "fax": {
+                        "type": "string"
+                    },
+                    "pec": {
+                        "type": "string"
+                    },
+                    "primaryEmail": {
+                        "type": "string"
+                    },
+                    "secondaryEmail": {
+                        "type": "string"
+                    },
+                    "enabled": {
+                        "type": "boolean"
+                    },
+                    "note": {
+                        "type": "string"
+                    },
+                    "createdBy": {
+                        "type": "number"
+                    },
+                    "updatedBy": {
+                        "type": "number"
+                    },
+                    "createdAt": {
+                        "type": "integer"
+                    },
+                    "updatedAt": {
+                        "type": "integer"
+                    }
+                }
+            },
+
+            "SubjectType": {
+                "type": "object",
+                "description": "Tale entità può rappresentare un Cliente oppure un Fornitore.",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Cliente oppure un Fornitore.",
+                        "enum": [
+                            "customer",
+                            "supplier"
+                        ]
+                    }
+                }
+            },
+            "Order": {
+                "type": "object",
+                "description": "Tale entità rappresenta un Ordine emesso verso un fornitore o ricevuto da un Cliente.",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "code": {
+                        "type": "integer"
+                    },
+                    "number": {
+                        "type": "integer"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "draft",
+                            "waiting",
+                            "suspended",
+                            "processed",
+                            "canceled"
+                        ]
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "customer",
+                            "supplier"
+                        ]
+                    },
+                    "category": {
+                        "type": "string",
+                        "enum": [
+                            "stock",
+                            "standard",
+                            "urgent"
+                        ]
+                    },
+                    "subject": {
+                        "type": "number",
+                        "description": "subject identifier"
+                    },
+                    "deliveryPlace": {
+                        "type": "string",
+                        "description": "free text"
+                    },
+                    "note": {
+                        "type": "string"
+                    },
+                    "orderItems": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/OrderItem"
+                        }
+                    },
+                    "discount": {
+                        "type": "number",
+                        "description": "è la somma del campo discount di tutti gli OrderItem associati;"
+                    },
+                    "totalPrice": {
+                        "type": "number"
+                    },
+                    "finalPrice": {
+                        "type": "number"
+                    }
+                }
+            },
+            "OrderItem": {
+                "type": "object",
+                "description": "OrderItem.",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "spare": {
+                        "type": "number"
+                    },
+                    "order": {
+                        "type": "number"
+                    },
+                    "amount": {
+                        "type": "number"
+                    },
+                    "price": {
+                        "type": "number"
+                    },
+                    "amountLoaded": {
+                        "type": "number"
+                    },
+                    "amountDownloaded": {
+                        "type": "number"
+                    },
+                    "loadCompletedAt": {
+                        "type": "integer"
+                    },
+                    "downloadCompletedAt": {
+                        "type": "integer"
+                    },
+                    "initialDiscount": {
+                        "type": "number"
+                    },
+                    "urgentDiscount": {
+                        "type": "number"
+                    },
+                    "discount": {
+                        "type": "number"
+                    },
+                    "discountAdd1": {
+                        "type": "number"
+                    },
+                    "discountAdd2": {
+                        "type": "number"
+                    },
+                    "discountAVG": {
+                        "type": "number"
+                    },
+                    "discountAmount": {
+                        "type": "number"
+                    },
+                    "totalPrice": {
+                        "type": "number"
+                    },
+                    "finalPrice": {
+                        "type": "number"
+                    }
+                }
+            },
+            "WhMovementItem": {
+                "type": "object",
+                "description": "OrderItem.",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "spare": {
+                        "type": "number"
+                    },
+                    "amount": {
+                        "type": "number"
+                    },
+                    "price": {
+                        "type": "number"
+                    },
+                    "orderCategory": {
+                        "type": "string"
+                    },
+                    "initialDiscount": {
+                        "type": "number"
+                    },
+                    "urgentDiscount": {
+                        "type": "number"
+                    },
+                    "discount": {
+                        "type": "number"
+                    },
+                    "discountAdd1": {
+                        "type": "number"
+                    },
+                    "discountAVG": {
+                        "type": "number"
+                    },
+                    "discountAmount": {
+                        "type": "number"
+                    },
+                    "totalPrice": {
+                        "type": "number"
+                    },
+                    "finalPrice": {
+                        "type": "number"
+                    }
+                }
+            },
+            "SpareFamily": {
+                "type": "object",
+                "description": "Tale entità può rappresentare un Cliente oppure un Fornitore.",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "code": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Spare": {
+                "type": "object",
+                "description": "Tale entità può rappresentare un Pezzo di ricambio",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "code": {
+                        "type": "string"
+                    },
+                    "descriptionITA": {
+                        "type": "string"
+                    },
+                    "descriptionEN": {
+                        "type": "string"
+                    },
+                    "price": {
+                        "type": "number"
+                    },
+                    "used": {
+                        "type": "boolean"
+                    },
+                    "packOf": {
+                        "type": "number"
+                    },
+                    "unitOfMeasure": {
+                        "type": "string",
+                        "enum": [
+                            "pz",
+                            "kg"
+                        ]
+                    },
+                    "multipleOfSale": {
+                        "type": "number"
+                    },
+                    "brand": {
+                        "type": "number"
+                    },
+                    "dateTariffa": {
+                        "type": "number",
+                        "description": "data in cui il Ricambio è stato creato a seguito di un import da Tariffa e/o è stato aggiornato"
+                    },
+                    "family": {
+                        "type": "string",
+                        "description": "family name"
+                    },
+                    "substitutionCode": {
+                        "type": "string",
+                        "description": "riferimento a un altro Ricambio"
+                    },
+                    "vehicle": {
+                        "type": "string",
+                        "enum": [
+                            "A",
+                            "V",
+                            "M",
+                            "S",
+                            "N"
+                        ]
+                    },
+                    "vehicleClass": {
+                        "type": "number"
+                    },
+                    "currency": {
+                        "type": "string",
+                        "pattern": "^[A-Z]{3}$",
+                        "example": "EUR"
+                    },
+                    "supplier": {
+                        "type": "number",
+                        "description": "supplier id"
+                    },
+                    "productCategory": {
+                        "type": "number",
+                        "description": "productCategory id"
+                    },
+                    "saleDiscountCategory": {
+                        "type": "number"
+                    },
+                    "purchaseDiscountCategory": {
+                        "type": "number"
+                    },
+                    "amount": {
+                        "type": "number"
+                    }
+                }
+            },
+            "Area": {
+                "type": "object",
+                "description": "Tale entità può rappresentare un settore Aziendale",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "cod": {
+                        "type": "number"
+                    },
+                    "des": {
+                        "type": "string"
+                    }
+
+                }
+            },
+            "SpareHistory": {
+                "type": "object",
+                "description": "Tale rappresenta lo stato un Pezzo di ricambio modificato",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "originId": {
+                        "type": "integer",
+                        "description": "Identificativo dello Spare a cui fa riferimento"
+                    },
+                    "code": {
+                        "type": "string"
+                    },
+                    "dateTariffa": {
+                        "type": "number",
+                        "description": "data in cui il Ricambio è stato creato a seguito di un import da Tariffa e/o è stato aggiornato"
+                    },
+                    "family": {
+                        "type": "string",
+                        "description": "family name"
+                    },
+                    "substitutionCode": {
+                        "type": "string",
+                        "description": "riferimento a un altro Ricambio"
+                    },
+                    "descriptionITA": {
+                        "type": "string"
+                    },
+                    "descriptionEN": {
+                        "type": "string"
+                    },
+                    "vehicle": {
+                        "type": "string",
+                        "enum": [
+                            "A",
+                            "V",
+                            "M",
+                            "S",
+                            "N"
+                        ]
+                    },
+                    "saleDiscountCategory": {
+                        "type": "number"
+                    },
+                    "purchaseDiscountCategory": {
+                        "type": "number"
+                    },
+                    "price": {
+                        "type": "number"
+                    },
+                    "currency": {
+                        "type": "string",
+                        "pattern": "^[A-Z]{3}$",
+                        "example": "EUR"
+                    },
+                    "supplier": {
+                        "type": "number",
+                        "description": "supplier id"
+                    },
+                    "amount": {
+                        "type": "number"
+                    },
+                    "originCreatedAt": {
+                        "type": "integer"
+                    },
+                    "originUpdatedAt": {
+                        "type": "integer"
+                    },
+                    "createdAt": {
+                        "type": "integer"
+                    },
+                    "updatedAt": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "Tariffa": {
+                "type": "object",
+                "description": "Tariffa",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "fileName": {
+                        "type": "string"
+                    },
+                    "entries": {
+                        "type": "number"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "queued",
+                            "completed",
+                            "failed"
+                        ]
+                    },
+                    "createdAt": {
+                        "type": "integer"
+                    },
+                    "updatedAt": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "Movement": {
+                "type": "object",
+                "description": "Tariffa",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "user": {
+                        "type": "object",
+                        "$ref": "#/components/schemas/UserRedacted"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "load",
+                            "unload"
+                        ]
+                    },
+                    "anomaly": {
+                        "type": "string",
+                        "enum": [
+                            "overflow"
+                        ]
+                    },
+                    "operation": {
+                        "type": "string",
+                        "enum": [
+                            "ddt-purchase",
+                            "inventory-loading",
+                            "instant-invoice",
+                            "ddt-invoice",
+                            "receipt",
+                            "ddt-vision",
+                            "ddt-sale",
+                            "gift",
+                            "unload-order-job",
+                            "debit-note",
+                            "ddt-repair",
+                            "return-supplier",
+                            "ddt-warranty",
+                            "ddt-processing",
+                            "credit-note-supplier",
+                            "transfer-goods",
+                            "inventory-adjustment"
+                        ]
+                    },
+                    "document": {
+                        "type": "integer"
+                    },
+                    "order": {
+                        "type": "object",
+                        "$ref": "#/components/schemas/Order"
+                    },
+                    "movementItems": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MovementItem"
+                        }
+                    }
+                }
+            },
+            "MovementSpare": {
+                "type": "object",
+                "description": "Tariffa",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "user": {
+                        "type": "object",
+                        "$ref": "#/components/schemas/UserRedacted"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "load",
+                            "unload"
+                        ]
+                    },
+                    "operation": {
+                        "type": "string",
+                        "enum": [
+                            "ddt-purchase",
+                            "inventory-loading",
+                            "instant-invoice",
+                            "ddt-invoice",
+                            "receipt",
+                            "ddt-vision",
+                            "ddt-sale",
+                            "gift",
+                            "unload-order-job",
+                            "debit-note",
+                            "ddt-repair",
+                            "return-supplier",
+                            "ddt-warranty",
+                            "ddt-processing",
+                            "credit-note-supplier",
+                            "transfer-goods",
+                            "inventory-adjustment"
+                        ]
+                    },
+                    "amount": {
+                        "type": "number"
+                    },
+                    "createdAd": {
+                        "type": "number"
+                    }
+                }
+            },
+            "MovementItem": {
+                "type": "object",
+                "description": "MovementItem.",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "load",
+                            "unload"
+                        ]
+                    },
+                    "movement": {
+                        "type": "number",
+                        "description": "movement identifier"
+                    },
+                    "spare": {
+                        "type": "number"
+                    },
+                    "amount": {
+                        "type": "number"
+                    }
+                }
+            },
+            "WhMovementGeneralItem": {
+                "type": "object",
+                "description": "WhMovementGeneralItem.",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "movement": {
+                        "type": "number",
+                        "description": "movement identifier"
+                    },
+                    "generalItem": {
+                        "type": "number"
+                    },
+                    "amount": {
+                        "type": "number"
+                    }
+                }
+            },
+            "Discount": {
+                "type": "object",
+                "description": "Discount",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "discount": {
+                        "type": "number"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "sale",
+                            "purchase"
+                        ]
+                    },
+                    "orderType": {
+                        "type": "string",
+                        "enum": [
+                            "customer",
+                            "supplier"
+                        ]
+                    },
+                    "category": {
+                        "type": "object",
+                        "$ref": "#/components/schemas/DiscountCategory"
+                    },
+                    "class": {
+                        "type": "object",
+                        "$ref": "#/components/schemas/DiscountClass"
+                    }
+                }
+            },
+            "DiscountCategory": {
+                "type": "object",
+                "description": "Discount",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                }
+            },
+            "DiscountClass": {
+                "type": "object",
+                "description": "Discount",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                }
+            },
+            "VehicleClass": {
+                "type": "object",
+                "description": "VehicleClass",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "code": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Vehicle": {
+                "type": "object",
+                "description": "Vehicle",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "codeVei": {
+                        "type": "string"
+                    },
+                    "licensePlate": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Inconvenience": {
+                "type": "object",
+                "description": "Vehicle",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "code": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "manufacturerCode": {
+                        "type": "string"
+                    },
+                    "manufacturerDefect": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Timechart": {
+                "type": "object",
+                "description": "Timechart",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "code": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "vehicleClass": {
+                        "type": "number"
+                    },
+                    "time": {
+                        "type": "number",
+                        "minimum": 0.01,
+                        "maximum": 1
+                    }
+                }
+            },
+            "MovementTimeChart": {
+                "type": "object",
+                "description": "timechart movement",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "timechart": {
+                        "type": "number"
+                    },
+                    "workedHours": {
+                        "type": "number"
+                    },
+                    "chargedHours": {
+                        "type": "number"
+                    },
+                    "price": {
+                        "type": "number"
+                    },
+                    "finalPrice": {
+                        "type": "number"
+                    }
+                }
+            },
+            "MovementTimeChartWorker": {
+                "type": "object",
+                "description": "timechart movement worker",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "movementTimechart": {
+                        "type": "number"
+                    },
+                    "worker": {
+                        "type": "number"
+                    },
+                    "perentage": {
+                        "type": "number"
+                    }
+                }
+            },
+            "Movementinconvenience": {
+                "type": "object",
+                "description": "inconvenience",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "inconvenience": {
+                        "type": "number"
+                    }
+                }
+            },
+            "GeneralItem": {
+                "type": "object",
+                "description": "Vehicle",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "code": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "priceSale": {
+                        "type": "number"
+                    },
+                    "pricePurchase": {
+                        "type": "number"
+                    }
+                }
+            },
+            "WharehouseMovement": {
+                "type": "object",
+                "description": "WharehouseMovement",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "date": {
+                        "type": "number"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "waiting",
+                            "processed",
+                            "closed"
+                        ]
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "invoiceWorkshop",
+                            "receiptWorkshop",
+                            "guarantee",
+                            "internalMovementWharehouse"
+                        ]
+                    },
+                    "user": {
+                        "type": "number",
+                        "description": "reference to creator"
+                    },
+                    "customer": {
+                        "type": "number"
+                    },
+                    "vehicle": {
+                        "type": "number"
+                    },
+                    "workOrder": {
+                        "type": "number"
+                    },
+                    "order": {
+                        "type": "number",
+                        "description": "order reference"
+                    },
+                    "internalCode": {
+                        "type": "string"
+                    },
+                    "movementInconveniences": {
+                        "type": "array",
+                        "items": {
+                            "type": "number"
+                        }
+                    },
+                    "movementItems": {
+                        "type": "array",
+                        "items": {
+                            "type": "number"
+                        }
+                    },
+                    "movementTimeCharts": {
+                        "type": "array",
+                        "items": {
+                            "type": "number"
+                        }
+                    },
+                    "movementGeneralItems": {
+                        "type": "array",
+                        "items": {
+                            "type": "number"
+                        }
+                    },
+                    "totalCost": {
+                        "type": "number",
+                        "description": "Somma di tutte le componenti di costo"
+                    },
+                    "netPrice": {
+                        "type": "number"
+                    },
+                    "vatAmount": {
+                        "type": "number"
+                    },
+                    "totalPrice": {
+                        "type": "number"
+                    },
+                    "totalPriceToPay": {
+                        "type": "number"
+                    },
+                    "netPricewithDiscount": {
+                        "type": "number"
+                    },
+                    "finalPrice": {
+                        "type": "number"
+                    },
+                    "operatorPrice": {
+                        "type": "number"
+                    }
+                }
+            },
+            "WharehouseParameter": {
+                "type": "object",
+                "description": "WharehouseMovement",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "value": {
+                        "type": "string"
+                    },
+                    "valueType": {
+                        "type": "string"
+                    }
+                }
+            },
+            "PaginationQueryParameters": {
+                "description": "The parameters are used to create pagination",
+                "type": "object",
+                "properties": {
+                    "offset": {
+                        "type": "integer",
+                        "description": "FROM pagination"
+                    },
+                    "limit": {
+                        "type": "integer",
+                        "description": "COUNT pagination"
+                    }
+                }
+            },
+            "WorkOrder": {
+                "type": "object",
+                "description": "Workorder",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "cod": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "parameters": {
+            "ResourceIdPathParameter": {
+                "name": "id",
+                "in": "path",
+                "description": "Resource id identifier",
+                "required": true,
+                "schema": {
+                    "type": "integer"
+                }
+            },
+            "ResourcecodeVeiPathParameter": {
+                "name": "codeVei",
+                "in": "path",
+                "description": "Resource id identifier",
+                "required": true,
+                "schema": {
+                    "type": "integer"
+                }
+            },
+            "WhMovementItemSearchQueryParameters": {
+                "in": "query",
+                "name": "WhMovementItemSearchQueryParameters",
+                "required": false,
+                "description": "The parameters are used to search WharehouseParameters",
+                "schema": {
+                    "allOf": [
+                        {
+                            "$ref": "#/components/schemas/PaginationQueryParameters"
+                        }
+                    ]
+                }
+            },
+            "MovementTimeChartSearchQueryParameters": {
+                "in": "query",
+                "name": "MovementTimeChartSearchQueryParameters",
+                "required": false,
+                "description": "The parameters are used to search WharehouseParameters",
+                "schema": {
+                    "allOf": [
+                        {
+                            "$ref": "#/components/schemas/PaginationQueryParameters"
+                        }
+                    ]
+                }
+            },
+            "WharehouseParameterSearchQueryParameters": {
+                "in": "query",
+                "name": "WharehouseParameterSearchQueryParameters",
+                "required": false,
+                "description": "The parameters are used to search WharehouseParameters",
+                "schema": {
+                    "allOf": [
+                        {
+                            "$ref": "#/components/schemas/PaginationQueryParameters"
+                        },
+                        {
+                            "type": "object",
+                            "properties": {
+                                "term": {
+                                    "type": "string",
+                                    "description": "Search string"
+                                }
+                            }
+                        }
+                    ]
+                }
+            },
+            "GeneralItemSearchQueryParameters": {
+                "in": "query",
+                "name": "GeneralItemSearchQueryParameters",
+                "required": false,
+                "description": "The parameters are used to search GeneralItems",
+                "schema": {
+                    "allOf": [
+                        {
+                            "$ref": "#/components/schemas/PaginationQueryParameters"
+                        },
+                        {
+                            "type": "object",
+                            "properties": {
+                                "term": {
+                                    "type": "string",
+                                    "description": "Search string"
+                                }
+                            }
+                        }
+                    ]
+                }
+            },
+            "VehiclesSearchQueryParameters": {
+                "in": "query",
+                "name": "VehiclesSearchQueryParameters",
+                "required": false,
+                "description": "The parameters are used to search Vehicles",
+                "schema": {
+                    "allOf": [
+                        {
+                            "$ref": "#/components/schemas/PaginationQueryParameters"
+                        },
+                        {
+                            "type": "object",
+                            "properties": {
+                                "term": {
+                                    "type": "string",
+                                    "description": "Search string"
+                                }
+                            }
+                        }
+                    ]
+                }
+            },
+            "VehicleClassesSearchQueryParameters": {
+                "in": "query",
+                "name": "VehicleClassesSearchQueryParameters",
+                "required": false,
+                "description": "The parameters are used to search VehicleClasses",
+                "schema": {
+                    "allOf": [
+                        {
+                            "$ref": "#/components/schemas/PaginationQueryParameters"
+                        },
+                        {
+                            "type": "object",
+                            "properties": {
+                                "term": {
+                                    "type": "string",
+                                    "description": "Search string"
+                                }
+                            }
+                        }
+                    ]
+                }
+            },
+            "BrandSearchQueryParameters": {
+                "in": "query",
+                "name": "BrandSearchQueryParameters",
+                "required": false,
+                "description": "The parameters are used to search Brands",
+                "schema": {
+                    "allOf": [
+                        {
+                            "$ref": "#/components/schemas/PaginationQueryParameters"
+                        },
+                        {
+                            "type": "object",
+                            "properties": {
+                                "term": {
+                                    "type": "string",
+                                    "description": "Search string"
+                                }
+                            }
+                        }
+                    ]
+                }
+            },
+            "TestrideSearchQueryParameters": {
+                "in": "query",
+                "name": "TestrideSearchQueryParameters",
+                "required": false,
+                "description": "The parameters are used to search Testride",
+                "schema": {
+                    "allOf": [
+                        {
+                            "$ref": "#/components/schemas/PaginationQueryParameters"
+                        },
+                        {
+                            "type": "object",
+                            "properties": {
+                                "term": {
+                                    "type": "string",
+                                    "description": "Search string"
+                                }
+                            }
+                        }
+                    ]
+                }
+            },
+            "DriveLicenseSearchQueryParameters": {
+                "in": "query",
+                "name": "DriveLicenseSearchQueryParameters",
+                "required": false,
+                "description": "The parameters are used to search DriveLicense",
+                "schema": {
+                    "allOf": [
+                        {
+                            "$ref": "#/components/schemas/PaginationQueryParameters"
+                        },
+                        {
+                            "type": "object",
+                            "properties": {
+                                "term": {
+                                    "type": "string",
+                                    "description": "Search string"
+                                }
+                            }
+                        }
+                    ]
+                }
+            },
+            "ProductCategorySearchQueryParameters": {
+                "in": "query",
+                "name": "ProductCategorySearchQueryParameters",
+                "required": false,
+                "description": "The parameters are used to search ProductCategory",
+                "schema": {
+                    "allOf": [
+                        {
+                            "$ref": "#/components/schemas/PaginationQueryParameters"
+                        },
+                        {
+                            "type": "object",
+                            "properties": {
+                                "term": {
+                                    "type": "string",
+                                    "description": "Search string"
+                                }
+                            }
+                        }
+                    ]
+                }
+            },
+            "SubjectSearchQueryParameters": {
+                "in": "query",
+                "name": "SubjectSearchQueryParameters",
+                "required": false,
+                "description": "The parameters are used to search Subjects",
+                "schema": {
+                    "allOf": [
+                        {
+                            "$ref": "#/components/schemas/PaginationQueryParameters"
+                        },
+                        {
+                            "type": "object",
+                            "properties": {
+                                "type": {
+                                    "type": "string",
+                                    "description": "Subject type id"
+                                },
+                                "term": {
+                                    "type": "string",
+                                    "description": "Search string"
+                                }
+                            }
+                        }
+                    ]
+                }
+            },
+            "SpareSearchQueryParameters": {
+                "in": "query",
+                "name": "SpareSearchQueryParameters",
+                "required": false,
+                "description": "The parameters are used to search Spares",
+                "schema": {
+                    "allOf": [
+                        {
+                            "$ref": "#/components/schemas/PaginationQueryParameters"
+                        },
+                        {
+                            "type": "object",
+                            "properties": {
+                                "term": {
+                                    "type": "string",
+                                    "description": "Search string"
+                                },
+                                "used": {
+                                    "type": "string"
+                                },
+                                "prodCategory": {
+                                    "type": "number",
+                                    "description": "Search with product category id"
+                                }
+                            }
+                        }
+                    ]
+                }
+            },
+            "TariffaSearchQueryParameters": {
+                "in": "query",
+                "name": "TariffaSearchQueryParameters",
+                "required": false,
+                "description": "The parameters are used to search Tariffe",
+                "schema": {
+                    "allOf": [
+                        {
+                            "$ref": "#/components/schemas/PaginationQueryParameters"
+                        }
+                    ]
+                }
+            },
+            "OrderSearchQueryParameters": {
+                "in": "query",
+                "name": "OrderSearchQueryParameters",
+                "required": false,
+                "description": "The parameters are used to search Orders",
+                "schema": {
+                    "allOf": [
+                        {
+                            "$ref": "#/components/schemas/PaginationQueryParameters"
+                        },
+                        {
+                            "type": "object",
+                            "properties": {
+                                "term": {
+                                    "type": "string",
+                                    "description": "Search on code an"
+                                },
+                                "status": {
+                                    "type": "string",
+                                    "enum": [
+                                        "draft",
+                                        "waiting",
+                                        "suspended",
+                                        "processed",
+                                        "canceled"
+                                    ]
+                                },
+                                "type": {
+                                    "type": "string",
+                                    "enum": [
+                                        "customer",
+                                        "supplier"
+                                    ]
+                                },
+                                "category": {
+                                    "type": "string",
+                                    "enum": [
+                                        "stock",
+                                        "standard",
+                                        "urgent"
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            },
+            "CountriesSearchQueryParameters": {
+                "in": "query",
+                "name": "CountriesSearchQueryParameters",
+                "required": false,
+                "description": "The parameters are used to search Countries",
+                "schema": {
+                    "allOf": [
+                        {
+                            "$ref": "#/components/schemas/PaginationQueryParameters"
+                        },
+                        {
+                            "type": "object",
+                            "properties": {
+                                "term": {
+                                    "type": "string",
+                                    "description": "Search string for name"
+                                }
+                            }
+                        }
+                    ]
+                }
+            },
+            "UserSearchQueryParameters": {
+                "in": "query",
+                "name": "UserSearchQueryParameters",
+                "required": false,
+                "description": "The parameters are used to search Users",
+                "schema": {
+                    "allOf": [
+                        {
+                            "$ref": "#/components/schemas/PaginationQueryParameters"
+                        },
+                        {
+                            "type": "object",
+                            "properties": {
+                                "term": {
+                                    "type": "string",
+                                    "description": "Search string for name OR surname OR email"
+                                }
+                            }
+                        }
+                    ]
+                }
+            },
+            "MovementSearchQueryParameters": {
+                "in": "query",
+                "name": "MovementSearchQueryParameters",
+                "required": false,
+                "description": "The parameters are used to search Movements",
+                "schema": {
+                    "allOf": [
+                        {
+                            "$ref": "#/components/schemas/PaginationQueryParameters"
+                        },
+                        {
+                            "type": "object",
+                            "properties": {
+                                "type": {
+                                    "type": "string"
+                                },
+                                "withanomaly": {
+                                    "type": "boolean"
+                                },
+                                "operation": {
+                                    "type": "string"
+                                },
+                                "fromDate": {
+                                    "type": "number"
+                                },
+                                "toDate": {
+                                    "type": "number"
+                                }
+                            }
+                        }
+                    ]
+                }
+            },
+            "DiscountSearchQueryParameters": {
+                "in": "query",
+                "name": "DiscountSearchQueryParameters",
+                "required": false,
+                "description": "The parameters are used to search Discounts",
+                "schema": {
+                    "allOf": [
+                        {
+                            "$ref": "#/components/schemas/PaginationQueryParameters"
+                        },
+                        {
+                            "type": "object",
+                            "properties": {
+                                "category": {
+                                    "type": "number"
+                                },
+                                "class": {
+                                    "type": "number"
+                                },
+                                "type": {
+                                    "type": "string"
+                                },
+                                "orderType": {
+                                    "type": "string",
+                                    "enum": [
+                                        "stock",
+                                        "standard",
+                                        "urgent"
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            },
+            "DiscountCategorySearchQueryParameters": {
+                "in": "query",
+                "name": "DiscountSearchQueryParameters",
+                "required": false,
+                "description": "The parameters are used to search Discount Categories",
+                "schema": {
+                    "allOf": [
+                        {
+                            "$ref": "#/components/schemas/PaginationQueryParameters"
+                        },
+                        {
+                            "type": "object",
+                            "properties": {
+                                "term": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    ]
+                }
+            },
+            "DiscountClassSearchQueryParameters": {
+                "in": "query",
+                "name": "DiscountClassSearchQueryParameters",
+                "required": false,
+                "description": "The parameters are used to search Discount Classes",
+                "schema": {
+                    "allOf": [
+                        {
+                            "$ref": "#/components/schemas/PaginationQueryParameters"
+                        },
+                        {
+                            "type": "object",
+                            "properties": {
+                                "term": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    ]
+                }
+            },
+            "InconvenienceSearchQueryParameters": {
+                "in": "query",
+                "name": "InconvenienceSearchQueryParameters",
+                "required": false,
+                "description": "The parameters are used to search Inconvenience",
+                "schema": {
+                    "allOf": [
+                        {
+                            "$ref": "#/components/schemas/PaginationQueryParameters"
+                        },
+                        {
+                            "type": "object",
+                            "properties": {
+                                "term": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    ]
+                }
+            },
+            "TimechartSearchQueryParameters": {
+                "in": "query",
+                "name": "TimechartSearchQueryParameters",
+                "required": false,
+                "description": "The parameters are used to search Timechart",
+                "schema": {
+                    "allOf": [
+                        {
+                            "$ref": "#/components/schemas/PaginationQueryParameters"
+                        },
+                        {
+                            "type": "object",
+                            "properties": {
+                                "term": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    ]
+                }
+            },
+            "WharehouseMovementSearchQueryParameters": {
+                "in": "query",
+                "name": "WharehouseMovementSearchQueryParameters",
+                "required": false,
+                "description": "The parameters are used to search WharehouseMovement",
+                "schema": {
+                    "allOf": [
+                        {
+                            "$ref": "#/components/schemas/PaginationQueryParameters"
+                        },
+                        {
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "type": "string",
+                                    "enum": [
+                                        "waiting",
+                                        "processed",
+                                        "closed"
+                                    ]
+                                },
+                                "type": {
+                                    "type": "string",
+                                    "enum": [
+                                        "invoiceWorkshop",
+                                        "receiptWorkshop",
+                                        "guarantee",
+                                        "internalMovementWharehouse"
+                                    ]
+                                },
+                                "customer": {
+                                    "type": "number"
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        "requestBodies": {
+            "BooleanValueRequestBody": {
+                "description": "boolean value to set.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "required": [
+                                "value"
+                            ],
+                            "additionalProperties": false,
+                            "properties": {
+                                "value": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "VehicleCreateRequestBody": {
+                "description": "Vehicle create request body.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "required": [
+                                "code",
+                                "description",
+                                "licensePlate",
+                                "warrantyStartDate"
+                            ],
+                            "additionalProperties": false,
+                            "properties": {
+                                "code": {
+                                    "type": "string"
+                                },
+                                "licensePlate": {
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "type": "string"
+                                },
+                                "warrantyStartDate": {
+                                    "type": "number"
+                                },
+                                "class": {
+                                    "type": "number"
+                                },
+                                "chassisNumber": {
+                                    "type": "string"
+                                },
+                                "engineNumber": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "VehicleUpdateRequestBody": {
+                "description": "Vehicle create request body.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "minProperties": 1,
+                            "additionalProperties": false,
+                            "properties": {
+                                "code": {
+                                    "type": "string"
+                                },
+                                "licensePlate": {
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "type": "string"
+                                },
+                                "warrantyStartDate": {
+                                    "type": "number"
+                                },
+                                "class": {
+                                    "type": "number"
+                                },
+                                "chassisNumber": {
+                                    "type": "string"
+                                },
+                                "engineNumber": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "VehicleClassCreateRequestBody": {
+                "description": "Vehicle create request body.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "required": [
+                                "code",
+                                "description"
+                            ],
+                            "additionalProperties": false,
+                            "properties": {
+                                "code": {
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "VehicleClassUpdateRequestBody": {
+                "description": "Vehicle create request body.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "minProperties": 1,
+                            "additionalProperties": false,
+                            "properties": {
+                                "code": {
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "BrandCreateRequestBody": {
+                "description": "Brand create request body.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "required": [
+                                "name"
+                            ],
+                            "additionalProperties": false,
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "minLength": 3
+                                },
+                                "note": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "UserCreateRequestBody": {
+                "description": "User create request body.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "required": [
+                                "name",
+                                "surname",
+                                "username",
+                                "password",
+                                "role"
+                            ],
+                            "additionalProperties": false,
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "minLength": 3
+                                },
+                                "surname": {
+                                    "type": "string",
+                                    "minLength": 3
+                                },
+                                "username": {
+                                    "type": "string",
+                                    "minLength": 3
+                                },
+                                "password": {
+                                    "type": "string",
+                                    "minLength": 4
+                                },
+                                "role": {
+                                    "type": "string",
+                                    "enum": [
+                                        "admin",
+                                        "administrativeEmployee",
+                                        "wharehouseWorker",
+                                        "dpo",
+                                        "worker"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "ProductCategoryCreateRequestBody": {
+                "description": "ProductCategory update request body.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "required": [
+                                "name"
+                            ],
+                            "additionalProperties": false,
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "minLength": 3
+                                },
+                                "parent": {
+                                    "type": "number"
+                                },
+                                "note": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "ProductCategoryUpdateRequestBody": {
+                "description": "ProductCategory update request body.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "minProperties": 1,
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "minLength": 3
+                                },
+                                "parent": {
+                                    "type": "number"
+                                },
+                                "note": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "BrandUpdateRequestBody": {
+                "description": "Brand request body.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "minProperties": 1,
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "minLength": 3
+                                },
+                                "note": {
+                                    "type": "string",
+                                    "nullable": true
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "UserUpdateRequestBody": {
+                "description": "User update request body.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "minProperties": 1,
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "minLength": 3
+                                },
+                                "surname": {
+                                    "type": "string",
+                                    "minLength": 3
+                                },
+                                "username": {
+                                    "type": "string",
+                                    "minLength": 3
+                                },
+                                "role": {
+                                    "type": "string",
+                                    "enum": [
+                                        "admin",
+                                        "administrativeEmployee",
+                                        "wharehouseWorker",
+                                        "dpo",
+                                        "worker"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "UserUpdateMeRequestBody": {
+                "description": "Subject create request body.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "minProperties": 1,
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "minLength": 3
+                                },
+                                "surname": {
+                                    "type": "string",
+                                    "minLength": 3
+                                },
+                                "username": {
+                                    "type": "string",
+                                    "minLength": 3
+                                },
+                                "password": {
+                                    "type": "string",
+                                    "minLength": 4
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "SpareImportRequestBody": {
+                "description": "Spare create request body.",
+                "content": {
+                    "multipart/form-data": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "tariffa": {
+                                    "type": "string",
+                                    "format": "binary",
+                                    "description": "attached file"
+                                },
+                                "supplier": {
+                                    "type": "number",
+                                    "description": "Subject Supplier identifier"
+                                },
+                                "brand": {
+                                    "type": "number",
+                                    "description": "Brand identifier"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "SpareCreateRequestBody": {
+                "description": "Spare create request body.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "required": [
+                                "code",
+                                "descriptionITA",
+                                "descriptionEN",
+                                "price",
+                                "unitOfMeasure",
+                                "brand",
+                                "supplier"
+                            ],
+                            "additionalProperties": false,
+                            "properties": {
+                                "code": {
+                                    "type": "string"
+                                },
+                                "descriptionITA": {
+                                    "type": "string"
+                                },
+                                "descriptionEN": {
+                                    "type": "string"
+                                },
+                                "price": {
+                                    "type": "number"
+                                },
+                                "packOf": {
+                                    "type": "number"
+                                },
+                                "unitOfMeasure": {
+                                    "type": "string",
+                                    "enum": [
+                                        "pz",
+                                        "kg"
+                                    ]
+                                },
+                                "multipleOfSale": {
+                                    "type": "number"
+                                },
+                                "brand": {
+                                    "type": "number"
+                                },
+                                "dateTariffa": {
+                                    "type": "number",
+                                    "description": "data in cui il Ricambio è stato creato a seguito di un import da Tariffa e/o è stato aggiornato"
+                                },
+                                "family": {
+                                    "type": "string",
+                                    "description": "family name"
+                                },
+                                "vehicle": {
+                                    "type": "string",
+                                    "enum": [
+                                        "A",
+                                        "V",
+                                        "M",
+                                        "S",
+                                        "N"
+                                    ]
+                                },
+                                "vehicleClass": {
+                                    "type": "number"
+                                },
+                                "substitutionCode": {
+                                    "type": "string",
+                                    "description": "riferimento a un altro Ricambio"
+                                },
+                                "currency": {
+                                    "type": "string",
+                                    "pattern": "^[A-Z]{3}$",
+                                    "example": "EUR"
+                                },
+                                "supplier": {
+                                    "type": "number",
+                                    "description": "supplier id"
+                                },
+                                "productCategory": {
+                                    "type": "number",
+                                    "description": "productCategory id"
+                                },
+                                "saleDiscountCategory": {
+                                    "type": "number"
+                                },
+                                "purchaseDiscountCategory": {
+                                    "type": "number"
+                                },
+                                "amount": {
+                                    "type": "number"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "SpareUpdateRequestBody": {
+                "description": "Spare update request body.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "minProperties": 1,
+                            "properties": {
+                                "code": {
+                                    "type": "string"
+                                },
+                                "descriptionITA": {
+                                    "type": "string"
+                                },
+                                "descriptionEN": {
+                                    "type": "string"
+                                },
+                                "price": {
+                                    "type": "number"
+                                },
+                                "packOf": {
+                                    "type": "number"
+                                },
+                                "unitOfMeasure": {
+                                    "type": "string",
+                                    "enum": [
+                                        "pz",
+                                        "kg"
+                                    ]
+                                },
+                                "multipleOfSale": {
+                                    "type": "number"
+                                },
+                                "brand": {
+                                    "type": "number"
+                                },
+                                "dateTariffa": {
+                                    "type": "number",
+                                    "description": "data in cui il Ricambio è stato creato a seguito di un import da Tariffa e/o è stato aggiornato"
+                                },
+                                "family": {
+                                    "type": "string",
+                                    "description": "family name"
+                                },
+                                "substitutionCode": {
+                                    "type": "string",
+                                    "description": "riferimento a un altro Ricambio",
+                                    "nullable": true
+                                },
+                                "vehicle": {
+                                    "type": "string",
+                                    "enum": [
+                                        "A",
+                                        "V",
+                                        "M",
+                                        "S",
+                                        "N"
+                                    ],
+                                    "nullable": true
+                                },
+                                "vehicleClass": {
+                                    "type": "number",
+                                    "nullable": true
+                                },
+                                "currency": {
+                                    "type": "string",
+                                    "pattern": "^[A-Z]{3}$",
+                                    "example": "EUR"
+                                },
+                                "supplier": {
+                                    "type": "number",
+                                    "description": "supplier id"
+                                },
+                                "productCategory": {
+                                    "type": "number",
+                                    "description": "productCategory id",
+                                    "nullable": true
+                                },
+                                "saleDiscountCategory": {
+                                    "type": "number",
+                                    "nullable": true
+                                },
+                                "purchaseDiscountCategory": {
+                                    "type": "number",
+                                    "nullable": true
+                                },
+                                "amount": {
+                                    "type": "number",
+                                    "nullable": true
+                                },
+                                "toDelete": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "enum": [
+                                            "substitutionCode",
+                                            "vehicle",
+                                            "purchaseDiscountCategory",
+                                            "saleDiscountCategory",
+                                            "currency",
+                                            "productCategory",
+                                            "amount"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+
+
+
+
+
+        },
+        "responses": {
+            "BadRequest": {
+                "description": "Bad request. The server cannot process the request due to a client error.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/ProblemDetails"
+                        }
+                    }
+                }
+            },
+            "Unauthorized": {
+                "description": "Authorization information is missing or invalid.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/ProblemDetails"
+                        }
+                    }
+                }
+            },
+            "Forbidden": {
+                "description": "Not enough permissions to do this operation.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/ProblemDetails"
+                        }
+                    }
+                }
+            },
+            "NotFound": {
+                "description": "The specified resource was not found.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/ProblemDetails"
+                        }
+                    }
+                }
+            },
+            "MethodNotAllowed": {
+                "description": "This method is not supported for the requested resource.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/ProblemDetails"
+                        }
+                    }
+                }
+            },
+            "NotAcceptable": {
+                "description": "The requested resource content cannot match the Accept headers sent in the request.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/ProblemDetails"
+                        }
+                    }
+                }
+            },
+            "Conflict": {
+                "description": "The operation cannot be executed currently, due to a conflict with the state of the resource.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/ProblemDetails"
+                        }
+                    }
+                }
+            },
+            "UnprocessableEntity": {
+                "description": "The request was well-formed but was unable to be followed due to semantic errors.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/ProblemDetails"
+                        }
+                    }
+                }
+            },
+            "InternalServerError": {
+                "description": "Internal server error.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/ProblemDetails"
+                        }
+                    }
+                }
+            },
+            "ServiceUnavailable": {
+                "description": "Service temporarily unavailable.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/ProblemDetails"
+                        }
+                    }
+                }
+            },
+            "UnexpectedError": {
+                "description": "Unexpected error.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/ProblemDetails"
+                        }
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    },
+    "servers": [
+        {
+            "description": "SwaggerHub API Auto Mocking",
+            "url": "https://virtserver.swaggerhub.com/setec/AutomotiveMAC/0.0.1"
+        }
+    ]
+}

@@ -1,0 +1,47 @@
+<mat-drawer-container
+class="login-container"
+style=" background-image: url('/assets/images/truck-resize-scaled.png'); background-size: cover;"
+>
+<mat-drawer-content class="vertical-center" fxLayout="row"fxLayoutAlign="center">
+
+
+      <mat-card fxFlex="30" fxFlex.lt-md="100" fxFlexAlign="center" class="login-card">
+        <div fxLayout="row" fxLayoutAlign="center">
+            <img id="logo"fxFlex="60"  fxFlexAlign="center" src="/assets/images/logo.png">
+        </div>
+
+        <mat-card-content fxLayout="column" fxLayoutAlign="space-around center">
+           <div  fxLayoutAlign="center">
+            <h1 fxFlex="100"  fxFlexAlign="center">Login</h1>
+           </div>
+           <div  fxLayoutAlign="center">
+            <form [formGroup]="form">
+              <div fxLayout="column" fxLayoutAlign="space-around center">
+                <mat-form-field style="min-width:300px">
+                    <mat-icon matPrefix >email</mat-icon>
+                    <mat-label>Indirizzo email</mat-label>
+                    <input matInput placeholder="Inserire Email" type="email" formControlName="email">
+                    <mat-error *ngIf="form.get('email').invalid">Campo Non Valido</mat-error>
+                </mat-form-field>
+                <mat-form-field  style="min-width:300px" >
+                    <mat-icon matPrefix >lock_outline</mat-icon>
+                    <mat-label>Password</mat-label>
+                    <input matInput placeholder="Inserire Password" minlength="8" type="password" formControlName="password">
+                </mat-form-field>
+            </div>
+          </form>
+           </div>
+
+        </mat-card-content>
+        <mat-divider ></mat-divider>
+            <mat-card-actions fxLayout="row" fxLayoutAlign="space-around center">
+              <button fxFlex="40" (click)="onSubmitClick()"  fxFlexAlign="center" mat-raised-button color="primary"  class="login-btn" >Accedi</button>
+                <button fxFlex="40"  fxFlexAlign="center"mat-raised-button color="warn"   [routerLink]="['resetpsw']">Reset Password</button>
+            </mat-card-actions>
+       </mat-card>
+
+
+</mat-drawer-content>
+
+
+</mat-drawer-container>

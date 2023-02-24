@@ -1,0 +1,17 @@
+.dialog-button{
+  height: 6vw;
+  font-size:x-large;
+}
+.dialog-button[disabled] {
+  background-color: rgba(0, 0, 0, 0.12) !important;
+}
+::ng-deep {
+  .mat-checkbox-inner-container {
+
+    height: 23px !important;
+
+    width: 23px !important;
+
+  }
+
+}

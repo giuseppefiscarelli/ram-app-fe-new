@@ -1,0 +1,55 @@
+<h1 mat-dialog-title>{{dialogTitle}}</h1>
+<!-- <ng-container *ngIf="this.mode === 'edit-operation'; else create;">
+{{this.checkList | json}}
+</ng-container> -->
+
+  <mat-dialog-content *ngIf="!isLoading">
+    <form [formGroup]="form">
+      <div fxLayout="row" fxLayout.xs="column"fxLayoutAlign="space-around start" fxLayoutGap="30px">
+        <div fxFlex="50">
+          <div class="mat-form-field"  style="font-size: xx-large; padding:15px;"*ngFor="let item of this.checkList">
+            <mat-checkbox [formControlName]="item.type" >  {{(item.type | typeOperation).text }}</mat-checkbox>
+          </div>
+        </div>
+        <div fxFlex="50" *ngIf="this.mode ==='edit'">
+          <h2>Operatori</h2>
+          <mat-list >
+            <mat-list-item *ngFor="let op of this.task.operators" style="font-size: xx-large; margin-bottom:40px;">
+              {{ getOperatorsData(op)}}
+            </mat-list-item>
+          </mat-list>
+        </div>
+      </div>
+    <!--   <h2>Operazioni</h2>
+      <mat-list >
+          <mat-list-item *ngFor="let item of checkList" style="font-size: xx-large; margin-bottom:40px;">
+            <div matLine>
+              {{item.type}}
+              <span  style="float:right;">
+                <mat-radio-group aria-label="Select an option" [formControlName]="item.type">
+                  <mat-radio-button class="completed" [value]="true">Completato</mat-radio-button>
+                  <mat-radio-button class="inprogress" [value]="false">In Lavorazione</mat-radio-button>
+                </mat-radio-group>
+
+
+              </span>
+
+
+            </div>
+
+
+          </mat-list-item>
+      </mat-list> -->
+
+    </form>
+
+
+  </mat-dialog-content>
+
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+
+
+<mat-dialog-actions *ngIf="!isLoading" fxLayout="row" fxLayout.xs="column"fxLayoutAlign="space-around center" >
+  <button fxFlex (click)="onClickSubmit()" class="dialog-button"mat-raised-button style="background-color:green;color:white;">{{ this.btnSumbitText}}</button>
+  <button  fxFlex class="dialog-button" mat-raised-button mat-dialog-close color="warn">Chiudi</button>
+</mat-dialog-actions>

@@ -1,0 +1,156 @@
+.container-tablet{
+
+  min-height: 85vh;
+  margin-left: 2%;
+  margin-right: 2%;
+  top: 1vh;
+  max-height: 85vh;
+}
+.table-container{
+  overflow: auto;
+  max-height: 75vh;
+
+}
+.mat-table{
+  width:100%;
+}
+.mat-column-action {
+  font-size:x-large;
+  text-align: right;
+  justify-content: flex-end;
+}
+.mat-column-internalCode{
+  font-size:xx-large;
+}
+ .mat-column-status, .mat-column-projectType{
+  font-size:x-large;
+}
+.mat-row{
+
+  height: 100px;
+}
+.span-title{
+  background-color: #dbffdb;
+  color: #086f38;
+  padding: 5px 10px;
+  border-radius: 10px;
+}
+
+
+.paused{
+  background-color: #efdae4;
+  color: #6f082a;
+  min-height: 46px;
+  font-size: x-large;
+}
+.completed{
+  background-color: #daefe0;
+  color: green;
+  min-height: 46px;
+  font-size: x-large;
+}
+
+.scheduled{
+  background-color: #dae1ef;
+  color: #08276f;
+  min-height: 46px;
+  font-size: x-large;
+}
+.inprogress{
+
+    background-color: #ffa50014;
+    color: orange;
+    min-height: 46px;
+    font-size: x-large;
+
+}
+.type-icon-scheduled{
+  width: 40px;
+    height: 40px;
+    font-size: 40px;
+    color: #08276f;
+    margin-right: 3%;
+    background-color: #dae1ef;
+}
+.type-icon-inprogress{
+  width: 40px;
+    height: 40px;
+    font-size: 40px;
+    background-color: #ffa50014;
+    color: orange;
+    margin-right: 3%;
+
+}
+.type-icon-paused{
+  width: 40px;
+    height: 40px;
+    font-size: 40px;
+    background-color: #efdae4;
+    color: #6f082a;
+    margin-right: 3%;
+
+}
+.type-icon-completed{
+  width: 40px;
+    height: 40px;
+    font-size: 40px;
+    background-color: #daefe0;
+  color: green;
+    margin-right: 3%;
+
+}
+
+.standard{
+  background-color: #daefe0;
+  color: green;
+  min-height: 46px;
+  font-size: x-large;
+}
+.urgent{
+  background-color: #efdae4;
+  color: red;
+  min-height: 46px;
+  font-size: x-large;
+}
+.tablet-button{
+  font-size: x-large;
+  padding: 20px 40px;
+  float:right;
+
+}
+
+
+//expand
+tr.example-detail-row {
+  height: 0;
+  background-color: #ededed;
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px 1px #7e7e7e inset;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+  background: #efefef;
+}
+
+.example-element-row td {
+  border-bottom-width: 0;
+}
+
+.example-element-detail {
+  overflow: hidden;
+  //display: flex;
+  width:100%
+}
+
+.blink {
+  animation: blinker 2s linear infinite;
+}
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
