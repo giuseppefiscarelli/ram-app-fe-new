@@ -9,7 +9,7 @@ import { currentBrowserLanguage } from './modules/translations/translations.conf
 })
 
 export class AppComponent {
-  title = 'ng-enwrap-14';
+  title = 'ng-ram-14';
   constructor(private translation: TranslateService) {
     this.translation.setDefaultLang(currentBrowserLanguage());
     //console.log(currentBrowserLanguage())

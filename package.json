@@ -1,5 +1,5 @@
 {
-  "name": "enwrap-fe",
+  "name": "ram-fe",
   "version": "0.0.1",
   "scripts": {
     "ng": "ng",
@@ -32,7 +32,9 @@
     "moment-timezone": "^0.5.39",
     "ng-apexcharts": "^1.7.4",
     "ng2-pdf-viewer": "^9.1.2",
+    "ngx-currency": "^3.0.0",
     "ngx-mat-timepicker": "^14.0.3",
+    "ngx-moment": "^6.0.2",
     "ngx-papaparse": "^6.0.1",
     "rxjs": "~7.5.0",
     "sweetalert2": "^11.6.4",

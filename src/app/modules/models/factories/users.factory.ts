@@ -1,8 +1,9 @@
-import * as Moment from 'moment';
+
 import {UserDescriptorInterface} from '@configs/network/api.descriptors';
 import { StorageKeys } from '../../../app.costants';
 import { User } from '../user.model';
 import { StorageService } from '../../services/storage.service';
+import moment from 'moment-timezone';
 
 export class UsersFactory {
     static create(descriptor: UserDescriptorInterface): User {
@@ -11,7 +12,7 @@ export class UsersFactory {
 
         keysToDuplicate.forEach(key => instance[key] = descriptor[key]);
 
-        instance.createdAt = Moment.utc(descriptor.createdAt).toISOString();
+        instance.createdAt = moment.utc(descriptor.createdAt).toISOString();
         instance.defineExtraProperties();
 
         return instance;

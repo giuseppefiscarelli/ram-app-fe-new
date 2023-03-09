@@ -1,0 +1,153 @@
+<mat-toolbar class="container-toolbar">
+  <span class="container-toolbar-title">Gestione Istanze</span>
+</mat-toolbar>
+
+<mat-card class="container-card" >
+  <mat-card-content>
+
+    <form [formGroup]="filters">
+         <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
+
+            <mat-form-field fxFlex="20" appearance="legacy">
+              <mat-label>Ricerca</mat-label>
+              <input matInput  formControlName="term"[placeholder]="'Cerca per pec richiedente o ragione sociale'">
+            </mat-form-field>
+
+            <mat-form-field fxFlex="10" appearance="legacy">
+              <mat-label>Id RAM</mat-label>
+              <input matInput  formControlName="id_ram" [placeholder]="'Cerca per id RAM'">
+            </mat-form-field>
+
+            <mat-form-field fxFlex="10">
+              <mat-label>Stato Istanza</mat-label>
+              <mat-select formControlName="statoIstanza">
+                <mat-option *ngFor="let type of this.rendstatus" [value]="type.value">
+                  {{type.view}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field fxFlex="15">
+              <mat-label>Edizione Istanza</mat-label>
+              <mat-select formControlName="type">
+                  <mat-option>Tutte le edizioni</mat-option>
+                <mat-option *ngFor="let t of this.type" [value]="t.id">
+                  {{t.description}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+         </div>
+    </form>
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
+      <h4>Totale Istanze: <span style="font-weight: bold;">{{totRecord}}</span></h4>
+    </div>
+    <div class="table-container">
+      <mat-table #table [dataSource]="dataSource" (scroll)="timeoutScroll($event)">
+        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+        <ng-container matColumnDef="edition">
+          <mat-header-cell *matHeaderCellDef> Edizione </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{getInfoEdizione(element.tipo_istanza)}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="idram">
+          <mat-header-cell *matHeaderCellDef> Id RAM </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{element.id_ram}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="dateSend">
+          <mat-header-cell *matHeaderCellDef> Data Invio </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{element.data_invio | date:"dd/MM/yyyy HH:mm:ss"}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="businessName">
+          <mat-header-cell *matHeaderCellDef> Ragione Sociale </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{element.ragione_sociale}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="pecImpresa">
+          <mat-header-cell *matHeaderCellDef> Pec Impresa </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{element.pec}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <mat-header-cell *matHeaderCellDef> Stato Istanza </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <span class="span-status" [class]="element.rendstatus?element.rendstatus:'pending'" [innerText]="element.rendstatus | rendStatus"></span>
+            <!--<ng-container *ngIf="element.rendstatus === 'canceled'">
+                     <br>
+                     <p>annullata da impresa</p>
+
+             </ng-container>-->
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+          <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+          <mat-cell *matCellDef="let element; let index = index">
+
+            <button
+                mat-icon-button
+                color="primary"
+                style="color:green;"
+                matTooltip="Visualizzazione Utente"
+                matTooltipPosition="above"
+                aria-label="Example icon button with a home icon"
+                [routerLink]="['/istanze','edit',element.id_ram]"
+              >
+              <mat-icon>find_in_page</mat-icon>
+            </button>
+
+
+            <button
+                mat-icon-button
+                color="primary"
+                matTooltip="Visualizzazione Backoffice"
+                matTooltipPosition="above"
+                aria-label="Example icon button with a home icon"
+                [routerLink]="['/istanze','admin',element.id_ram]"
+              >
+              <mat-icon>admin_panel_settings</mat-icon>
+            </button>
+
+
+            <button
+                mat-icon-button
+                color="warn"
+                matTooltip="Annullamento"
+                matTooltipPosition="above"
+                aria-label="Example icon button with a home icon"
+                (click)="onClickCancelIstanza(element, index,'edit')"
+              >
+              <mat-icon>cancel</mat-icon>
+            </button>
+
+
+
+
+
+
+          </mat-cell>
+        </ng-container>
+
+
+
+
+
+      </mat-table>
+    </div>
+
+  </mat-card-content>
+
+</mat-card>

@@ -1,0 +1,32 @@
+<h2 mat-dialog-title>{{this.dialogTitle}}</h2>
+<mat-dialog-content *ngIf="!isLoading">
+    <ng-container *ngIf="this.rendicontazione.status ==='canceled'; else edit">
+        <mat-list >
+            <mat-list-item >
+                <div matLine>Data Eliminazione</div>
+                <div matLine>{{this.rendicontazione.dateCanceled | date:" dd/MM/yyyy HH:mm"}}</div>
+            </mat-list-item>
+            <mat-list-item >
+                <div matLine>User Eliminazione</div>
+                <div matLine>{{this.rendicontazione.userCanceled}}</div>
+            </mat-list-item>
+            <mat-list-item >
+                <div matLine>Note Eliminazione</div>
+                <div matLine>{{this.rendicontazione.noteCanceled}}</div>
+            </mat-list-item>
+        </mat-list>
+    </ng-container>
+    <ng-template #edit>
+        <form [formGroup]="form" >
+            <mat-form-field style="width:100%">
+                <mat-label>Note Annullamento</mat-label>
+                <textarea matInput formControlName="noteCanceled" placeholder="Inserisci riferimenti annullamento"></textarea>
+              </mat-form-field>
+        </form>
+    </ng-template>
+
+</mat-dialog-content>
+<mat-dialog-actions  >
+    <button mat-raised-button color="warn" mat-dialog-close>{{this.btnClose}}</button>
+    <button mat-raised-button color="primary" (click)="onSubmitBtn()">{{btnSubmit}}</button>
+</mat-dialog-actions>

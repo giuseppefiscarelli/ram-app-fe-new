@@ -1,0 +1,74 @@
+<h2 mat-dialog-title>{{this.dialogTitle}}</h2>
+<mat-dialog-content>
+
+    <mat-list dense>
+        <mat-list-item >
+           <div mat-line>Categoria</div>
+           <div mat-line><span class="span-status canceled">{{this.typeVei.catVei}}</span></div>
+        </mat-list-item>
+        <mat-list-item >
+          <div mat-line>Tipo Veicolo</div>
+          <div mat-line><span class="span-status opened">{{this.typeVei.description}}</span></div>
+       </mat-list-item>
+    </mat-list>
+    <form [formGroup]="form">
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
+        <mat-form-field fxFlex="50">
+            <input
+                matInput type="text"
+                placeholder="Targa"
+                formControlName="licensePlate"
+                oninput="this.value = this.value.toUpperCase()"
+                >
+                <mat-error *ngIf="form.get('licensePlate').invalid" [innerHTML]="form.get('licensePlate') | errors"></mat-error>
+        </mat-form-field>
+        <mat-form-field fxFlex="50">
+          <input
+              matInput type="text"
+              placeholder="Marca"
+              formControlName="brand"
+              >
+              <mat-error *ngIf="form.get('brand').invalid" [innerHTML]="form.get('brand') | errors"></mat-error>
+        </mat-form-field>
+      </div>
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
+        <mat-form-field fxFlex="100">
+          <input
+              matInput type="text"
+              placeholder="Modello"
+              formControlName="model"
+              >
+              <mat-error *ngIf="form.get('model').invalid" [innerHTML]="form.get('model') | errors"></mat-error>
+        </mat-form-field>
+      </div>
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
+        <mat-form-field fxFlex="50">
+          <mat-label>Tipo Acquisizione</mat-label>
+          <mat-select formControlName="acquisitionType">
+            <mat-option value="01">Acquisto</mat-option>
+            <mat-option value="02">Leasing</mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.get('acquisitionType').invalid" [innerHTML]="form.get('acquisitionType') | errors"></mat-error>
+
+        </mat-form-field>
+
+        <mat-form-field fxFlex="50">
+          <!-- example for pt-BR money -->
+              <input
+              matInput
+              placeholder="Costo"
+              currencyMask
+              formControlName="amount"
+              [options]="{ prefix: '€ ', thousands: '.', decimal: ',' }"
+              />
+              <mat-error *ngIf="form.get('amount').invalid" [innerHTML]="form.get('amount') | errors"></mat-error>
+
+          </mat-form-field>
+
+      </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions  >
+  <button mat-button color="warn" mat-dialog-close>Annulla</button>
+  <button mat-button color="primary" (click)="onSubmitBtn(this.mode)">{{btnSubmit}}</button>
+</mat-dialog-actions>

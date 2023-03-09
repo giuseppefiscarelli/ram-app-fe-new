@@ -1,0 +1,10 @@
+.mat-card-header-text {
+  margin: 0 16px;
+  text-align: end;
+  width: 100%;
+}
+
+.mat-card-header .mat-card-subtitle:not(:first-child) {
+    font-size: xx-large;
+    margin-top: -8px;
+}

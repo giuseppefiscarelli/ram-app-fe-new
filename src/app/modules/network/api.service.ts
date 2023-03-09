@@ -17,42 +17,61 @@ export class ApiService {
     readonly url: string;
 
     public Authentication: any;
+    public TokenAuth: any;
     public Users: any;
-    public Desks: any;
-    public Company: any;
-    public Employee: any;
-    public Projects: any;
-    public StampingEvent: any;
-    public Task: any;
+    public Subjects: any;
 
+    public ProductCategories: any;
+    public Discounts: any;
+    public DiscountCategories: any;
+    public DiscountClasses: any;
 
-    //dev
-    public FitokData: any;
+    public CheckCf: any;
+    public GetCap: any;
 
-
-
-    ///file
     public Upload: any;
     public Download: any;
     public Attachments: any;
+    public TypeDocument: any;
+    public TypeInstance: any;
+    public Istanza: any;
+    public Veicolo: any;
+    public Allegato: any;
+    public Rendicontazione: any;
 
+    public IstanzaCheck: any;
+
+    public Report: any;
+    public TypeReport: any;
     constructor(private http: HttpClient) {
         this.url = environment.endpoint || `${window.location.protocol}//${window.location.host}`;
         this.url += environment.baseApi || '';
         //console.log(this.url);
         this.Authentication = this.constructApisForGroup('Authentication');
+        this.TokenAuth = this.constructApisForGroup('TokenAuth');
         this.Users = this.constructApisForGroup('Users');
-        this.Desks = this.constructApisForGroup('Desks');
-        this.Company = this.constructApisForGroup('Company');
-        this.Employee = this.constructApisForGroup('Employee');
-        this.Projects = this.constructApisForGroup('Projects');
-        this.Task = this.constructApisForGroup('Task');
-        this.StampingEvent = this.constructApisForGroup('StampingEvent');
-        this.FitokData = this.constructApisForGroup('FitokData');
+        this.Subjects = this.constructApisForGroup('Subjects');
+
+        this.ProductCategories = this.constructApisForGroup('ProductCategories');
+        this.Discounts = this.constructApisForGroup('Discounts');
+        this.DiscountCategories = this.constructApisForGroup('DiscountCategories');
+        this.DiscountClasses = this.constructApisForGroup('DiscountClasses');
+
+        this.CheckCf = this.constructApisForGroup('CheckCf');
+        this.GetCap = this.constructApisForGroup('GetCap');
+
         this.Upload = this.constructApisForGroup('Upload');
         this.Download = this.constructApisForGroup('Download');
         this.Attachments = this.constructApisForGroup('Attachments');
-
+        this.TypeDocument = this.constructApisForGroup('TypeDocument');
+        this.TypeInstance = this.constructApisForGroup('TypeInstance');
+        this.Istanza = this.constructApisForGroup('Istanza');
+        this.Veicolo = this.constructApisForGroup('Veicolo');
+        this.Allegato = this.constructApisForGroup('Allegato');
+        this.Rendicontazione = this.constructApisForGroup('Rendicontazione');
+        this.IstanzaCheck = this.constructApisForGroup('IstanzaCheck');
+        this.Report = this.constructApisForGroup('Report');
+        this.TypeReport = this.constructApisForGroup('TypeReport');
 
     }
 

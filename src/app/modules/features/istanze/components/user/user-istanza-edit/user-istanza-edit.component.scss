@@ -1,0 +1,34 @@
+.container-toolbar{
+  background: rgb(63, 153, 243);
+  color:white;
+  height: 80px;
+  .container-toolbar-title{
+      margin-top: -2%;
+  }
+
+
+}
+.container-card{
+  height: calc(100vh - 176px);
+  margin-left: 2%;
+  margin-right: 2%;
+  top: -34px;
+  overflow-x: auto;
+}
+.mat-progress-bar {
+  height: 30px;
+}
+.progress-section {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  height: 60px;
+}
+.mat-column-action {
+  text-align: right;
+  justify-content: flex-end;
+}
+.mat-column-type {
+ width:40%
+}
+

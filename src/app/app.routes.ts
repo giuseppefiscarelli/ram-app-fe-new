@@ -1,6 +1,5 @@
+import { Routes } from '@angular/router';
 import { IndexComponent } from './components/index/index.component';
-
-import {Routes} from '@angular/router';
 import { LoggedInGuard } from './guards/logged.in.guard';
 
 
@@ -18,15 +17,24 @@ export const ApplicationRoutes: Routes = [
     {
         path: '',
         pathMatch: 'full',
-        redirectTo: '/dashboard',
+        redirectTo: '/istanze',
     },
-    {path: 'dashboard',loadChildren: () => import('./modules/features/dashboard/dashboard.module').then(exports => exports.DashboardModule)},
-    {path: 'monitoring',loadChildren: () => import('./modules/features/monitoring/monitoring.module').then(exports => exports.MonitoringModule)},
     {path: 'users', loadChildren: () => import('./modules/features/users/users.module').then(exports => exports.UsersModule)},
-    {path: 'management',loadChildren: () => import('./modules/features/management/management.module').then(exports => exports.ManagementModule)},
-    {path: 'projects',loadChildren: () => import('./modules/features/projects/projects.module').then(exports => exports.ProjectsModule)},
-    {path: 'employees',loadChildren: () => import('./modules/features/employees/employees.module').then(exports => exports.EmployeesModule)
-  },
+    {
+      path: 'istanze',
+      loadChildren: () => import('./modules/features/istanze/istanze.module').then(exports => exports.IstanzeModule)
+
+    },
+    {
+        path: 'rendicontazione',
+        loadChildren: () => import('./modules/features/istanze/istanze.module').then(exports => exports.IstanzeModule)
+
+    },
+    {
+      path: 'config',
+      loadChildren: () => import('./modules/features/config/config.module').then(exports => exports.ConfigModule)
+  }
+
 
   ]
 

@@ -10,6 +10,7 @@ import {ApplicationState} from '@app/app.state';
 import { StorageService } from '@app/modules/services/storage.service';
 import { StorageKeys } from '@app/app.costants';
 import { AuthenticationSignout } from '@app/modules/store/actions/authentication.actions';
+import Swal from 'sweetalert2';
 
 @Injectable()
 export class OAuthInterceptor implements HttpInterceptor {
@@ -46,12 +47,38 @@ export class OAuthInterceptor implements HttpInterceptor {
                 if (event instanceof HttpResponse) {
                     // Saving token into local storage if it is an authorization route
                     if (this.mustHandleToken(event.url, event.body)) {
-                        const expirationDate = Moment().add(event.body.auth.expiresIn - 60, 'seconds');
-                        const accessToken = `${event.body.tokenType || 'JWT'} ${event.body.auth.accessToken.replace('JWT', '').trim()}`;
+                      const expirationDate = Moment.utc(event.body.auth.expiresIn).add(2, 'hours')
 
-                        this.storage.set(StorageKeys.AUTH_ACCESS_TOKEN_EXP, expirationDate.toISOString());
-                        this.storage.set(StorageKeys.AUTH_ACCESS_TOKEN, accessToken);
-                    }
+                      const accessToken = `${event.body.tokenType || 'JWT'} ${event.body.auth.accessToken.replace('JWT', '').trim()}`;
+
+                      this.storage.set(StorageKeys.AUTH_ACCESS_TOKEN_EXP, expirationDate.toISOString());
+                      this.storage.set(StorageKeys.AUTH_ACCESS_TOKEN, accessToken);
+                    }else{
+
+                      const tokenDate = Moment(this.storage.get(StorageKeys.AUTH_ACCESS_TOKEN_EXP))
+                      const now = Moment()
+
+
+                      if(tokenDate < now){
+
+                          Swal.fire({
+                              title: 'Attenzione!',
+                              text: 'La sessione è scaduta',
+                              icon: 'warning',
+                              timer: 4000,
+                              footer: 'Sarai reindirizzato alla pagina di login',
+                              showCancelButton: false,
+                              allowOutsideClick: false
+                            }).then( (res) => {
+                              this.storage.unset(StorageKeys.AUTH_ACCESS_TOKEN);
+                              this.storage.unset(StorageKeys.AUTH_ACCESS_TOKEN_EXP);
+                              this.storage.unset(StorageKeys.AUTH_LOGGED_USER);
+                              this.store.dispatch(AuthenticationSignout());
+
+                              this.router.navigate(['/auth/signin']);
+                            });
+                      }
+                  }
                 }
             },
             (response: any) => {

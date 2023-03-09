@@ -1,0 +1,378 @@
+<mat-toolbar class="container-toolbar">
+  <span class="container-toolbar-title">
+   <b> Istanza n° {{istanza.id_ram}}/{{typeIstance?typeIstance.year:''}} </b> - <small>{{istanza.ragione_sociale}}</small>
+  </span>
+</mat-toolbar>
+
+
+<mat-card class="container-card" >
+  <mat-card-content>
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center"  fxLayoutGap="30px">
+
+      <mat-list fxFlex="auto">
+        <div mat-subheader>Stato Rendicontazione</div>
+
+        <ng-container *ngIf="enableRendicontazione; else rendScaduta;">
+          <ng-container *ngIf="this.rendicontazione.enable; else noactiverend">
+            <mat-list-item >
+              <p matLine>Stato rendicontazione</p>
+              <p matLine>Avviata</p>
+            </mat-list-item>
+            <mat-list-item>
+              <button
+              mat-raised-button
+              style="background-color: orange; color:white"
+              (click)="onClickRend(this.rendicontazione.enable)">Chiudi Rendicontazione</button>
+
+            </mat-list-item>
+          </ng-container>
+          <ng-template #noactiverend>
+            <ng-container *ngIf="this.rendicontazione.dateEnd; else closedRend">
+              <mat-list-item >
+                <p matLine>Stato rendicontazione</p>
+                <p matLine>Chiusa</p>
+              </mat-list-item>
+              <mat-list-item>
+                  <p matLine>Rendicontazione chiusa il {{this.rendicontazione.dateEnd | date:"dd/MM/yyyy HH:mm"}}</p>
+              </mat-list-item>
+            </ng-container>
+            <ng-template #closedRend>
+              <mat-list-item >
+                <p matLine>Stato rendicontazione</p>
+                <p matLine>Non Avviata</p>
+              </mat-list-item>
+              <mat-list-item>
+                <button
+                mat-raised-button
+                style="background-color: green; color:white"
+                (click)="onClickRend(this.rendicontazione.enable)">Avvia rendicontazione</button>
+              </mat-list-item>
+            </ng-template>
+          </ng-template>
+        </ng-container>
+        <ng-template #rendScaduta>
+          <ng-container *ngIf="this.rendicontazione.enable; else noactiverend">
+            <mat-list-item >
+              <p matLine>Stato rendicontazione</p>
+              <p matLine>Avviata</p>
+            </mat-list-item>
+            <mat-list-item>
+                <p matLine>Termini per la rendicontazione scaduti il {{this.typeIstance.reportingEndDate | date:"dd/MM/yyyy HH:mm"}}</p>
+            </mat-list-item>
+          </ng-container>
+          <ng-template #noactiverend>
+            <ng-container *ngIf="this.rendicontazione.dateEnd; else closedRend">
+              <mat-list-item >
+                <p matLine>Stato rendicontazione</p>
+                <p matLine>Chiusa</p>
+              </mat-list-item>
+              <mat-list-item>
+                  <p matLine>Rrendicontazione chiusa il {{this.rendicontazione.dateEnd | date:"dd/MM/yyyy HH:mm"}}</p>
+              </mat-list-item>
+            </ng-container>
+            <ng-template #closedRend>
+              <mat-list-item >
+                <p matLine>Stato rendicontazione</p>
+                <p matLine>Non Avviata</p>
+              </mat-list-item>
+              <mat-list-item>
+                  <p matLine>Termini per la rendicontazione scaduti il {{this.typeIstance.reportingEndDate | date:"dd/MM/yyyy HH:mm"}}</p>
+              </mat-list-item>
+            </ng-template>
+          </ng-template>
+        </ng-template>
+
+
+          <mat-list-item >
+            <p matLine>Edizione</p>
+            <p matLine>{{typeIstance? typeIstance.description:''}}</p>
+          </mat-list-item>
+      </mat-list>
+      <mat-list fxFlex="auto"  *ngIf="this.userMe.role !== 'user'">
+        <div mat-subheader>Funzioni Admin</div>
+        <mat-list-item>
+          <button
+          mat-raised-button
+          style="background-color: green; color:white"
+          (click)="onClickRend(false)">Avvia rendicontazione</button>
+      </mat-list-item>
+      <mat-list-item>
+          <button
+          mat-raised-button
+          style="background-color: orange; color:white"
+          (click)="onClickRend(true)">Chiudi rendicontazione</button>
+      </mat-list-item>
+    </mat-list>
+    <mat-list fxFlex="auto">
+      <div mat-subheader>Riepilogo Rendicontazione</div>
+      <mat-list-item >
+        <p matLine>Allegati Dichiarazione</p>
+        <div matLine>
+          <section class="progress-section">
+            <mat-progress-bar
+                color="primary"
+                [mode]="mode"
+                [value]="(this.listaAllegatiDich.length / this.totCertEnable)*100">
+            </mat-progress-bar>
+                  <div style="position: absolute; padding: 10px; color: white;">  {{this.listaAllegatiDich.length }} di  {{ totCertEnable }} </div>
+          </section>
+        </div>
+      </mat-list-item>
+      <mat-list-item >
+        <p matLine>Veicoli Inseriti</p>
+        <div matLine>
+          <section class="progress-section">
+            <mat-progress-bar
+                color="accent"
+                [mode]="mode"
+                [value]="(this.listaVeicoli.length / this.totVeicoli)*100">
+            </mat-progress-bar>
+                  <div style="position: absolute; padding: 10px; color: white;">  {{this.listaVeicoli.length }} di  {{ totVeicoli }} </div>
+          </section>
+
+        </div>
+      </mat-list-item>
+  </mat-list>
+    </div>
+
+
+
+      <mat-tab-group mat-align-tabs="center">
+        <mat-tab>
+          <ng-template mat-tab-label><mat-icon class="tab-icon">apartment</mat-icon> Dati della Domanda</ng-template>
+          <mat-card-content>
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center" fxLayoutGap="30px">
+              <mat-list fxFlex="30">
+                <div mat-subheader>Dati Richiedente</div>
+                  <mat-list-item>
+                    <p matLine>Cognome</p>
+                    <p matLine>{{istanza.cognome}}</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <p matLine>Nome</p>
+                    <p matLine>{{istanza.nome}}</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <p matLine>Data di Nascita</p>
+                    <p matLine>{{istanza.data_nascita| date:"dd/MM/yyyy" }}</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <p matLine>Luogo di Nascita</p>
+                    <p matLine>{{istanza.luogo_nascita}} ({{istanza.prov_nascita}})<</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <p matLine>Indirizzo Residenza</p>
+                    <p matLine>{{istanza.indirizzo_residenza}}, {{istanza.civico_residenza}}</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <p matLine>Comune Residenza</p>
+                    <p matLine>{{istanza.cap_residenza}} - {{istanza.comune_residenza}} ({{istanza.prov_residenza}})</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <p matLine>Email</p>
+                    <p matLine>{{istanza.email_richiedente}}</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <p matLine>Tipo</p>
+                    <p matLine>{{istanza.tipo_dichiarante === '1' ?'Legale Rappresentante':''}}
+                      {{istanza.tipo_dichiarante === '2' ?'Procuratore':''}}</p>
+                  </mat-list-item>
+              </mat-list>
+              <mat-list fxFlex="30">
+                <div mat-subheader>Dati Impresa</div>
+                  <mat-list-item>
+                    <p matLine>Ragione Sociale</p>
+                    <p matLine>{{istanza.ragione_sociale}}</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <p matLine>Partita IVA</p>
+                    <p matLine>{{istanza.piva}}</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <p matLine>Codice Fiscale</p>
+                    <p matLine>{{istanza.cf}}</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <p matLine>Indirizzo Impresa</p>
+                    <p matLine>{{istanza.indirizzo_impr}}, {{istanza.civico_impr}}</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <p matLine>Comune Impresa</p>
+                    <p matLine>{{istanza.cap_impr}} - {{istanza.comune_impr}} ({{istanza.prov_impr}})</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <p matLine>Email Impresa</p>
+                    <p matLine>{{istanza.email_impr}}</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <p matLine>Pec Impresa</p>
+                    <p matLine>{{istanza.pec_impr}}</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <p matLine>Telefono Impresa</p>
+                    <p matLine>{{istanza.pref_tel_impr}} / {{istanza.num_tel_impr}}</p>
+                  </mat-list-item>
+              </mat-list>
+              <mat-list fxFlex="30">
+                <div mat-subheader> </div>
+                  <mat-list-item>
+                    <p matLine>Codice Albo</p>
+                    <p matLine>{{istanza.codice_albo}}</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <p matLine>Codice Ren</p>
+                    <p matLine>{{istanza.codice_albo}}</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <p matLine>CCIAA</p>
+                    <p matLine>Provincia {{istanza.cciaa_prov}}</p>
+                    <p matLine>Codice {{istanza.cciaa_prov}}</p>
+                    <p matLine>Data {{istanza.cciaa_data | date :'dd/MM/yyyy'}}<</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <p matLine>Codice A.TE.CO</p>
+                    <p matLine>{{istanza.codice_ateco}}</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <p matLine>Banca</p>
+                    <p matLine>Istituto {{istanza.banca_istituto}}</p>
+                    <p matLine>Agenzia {{istanza.banca_agenzia}}</p>
+                    <p matLine>Iban {{istanza.iban_it}} {{istanza.iban_num_chk}} {{istanza.iban_cin}} {{istanza.iban_abi}} {{istanza.iban_cab}} {{istanza.iban_cc}}</p>
+                  </mat-list-item>
+
+              </mat-list>
+            </div>
+
+          </mat-card-content>
+        </mat-tab>
+
+
+        <mat-tab>
+          <ng-template mat-tab-label><mat-icon class="tab-icon">directions_car</mat-icon> Investimento / Rendicondazione</ng-template>
+
+          <mat-card-content  *ngIf="this.typeIstance">
+
+            <mat-accordion  style="width:100%;margin-bottom:50px;" *ngIf="certEnable">
+              <mat-expansion-panel [expanded]="true">
+                  <mat-expansion-panel-header>
+                      <mat-panel-title>Allegati Dichiarazione</mat-panel-title>
+                      <mat-panel-description> </mat-panel-description>
+                  </mat-expansion-panel-header>
+                  <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
+                    <table mat-table [dataSource]="certEnable">
+                      <tr mat-header-row *matHeaderRowDef="['type','date','note', 'action']"></tr>
+                      <tr mat-row *matRowDef="let row; columns:['type','date','note', 'action'];"></tr>
+                      <ng-container matColumnDef="type" style="width:25%">
+                        <th mat-header-cell *matHeaderCellDef> Tipo </th>
+                        <td mat-cell *matCellDef="let element">{{getCertEnableData(element)}}  </td>
+                      </ng-container>
+                      <ng-container matColumnDef="date">
+                        <th mat-header-cell *matHeaderCellDef> Data Caricamento </th>
+                        <td mat-cell *matCellDef="let element">{{getAlleDichiarazioniData(element)?.createdAt | date:'dd/MM/yyyy HH:mm'}}  </td>
+                      </ng-container>
+                      <ng-container  >
+                        <ng-container matColumnDef="note">
+                          <th mat-header-cell *matHeaderCellDef> Note </th>
+                          <td mat-cell *matCellDef="let element">
+                            <ng-container *ngIf="getAlleDichiarazioniData(element) as alle; else noalle">
+                              {{alle?.note }}
+                            </ng-container>
+                            <ng-template #noalle>
+                              Documento non presente
+                            </ng-template>
+                              </td>
+                        </ng-container>
+                        <ng-container matColumnDef="action">
+                          <th mat-header-cell *matHeaderCellDef> Action </th>
+                          <td mat-cell *matCellDef="let element">
+                            <ng-container *ngIf="getAlleDichiarazioniData(element) as alle; else noalleb">
+                              <button mat-icon-button
+                              aria-label="Example icon button with a vertical three dot icon"
+                              matTooltip="Visualizza Documento"
+                              matTooltipPosition="above"
+                              (click)="viewAllegato(alle.fd)"
+                              color="primary"
+                              ><mat-icon>preview</mat-icon>
+                          </button>
+
+                          <button mat-icon-button
+                                  aria-label="Example icon button with a vertical three dot icon"
+                                  matTooltip="Scarica Documento"
+                                  matTooltipPosition="above"
+                                  (click)="downloadAllegato(alle.fd)"
+                                  color="accent"
+                                  ><mat-icon>download</mat-icon>
+                          </button>
+
+                          <button mat-icon-button
+                              aria-label="Example icon button with a vertical three dot icon"
+                              matTooltip="Aggiorna Documento"
+                              matTooltipPosition="above"
+                              *ngIf="(this.rendicontazione.enable && enableRendicontazione) || this.userMe.role !== 'user'"
+                              (click)="onClickEditAllegato('edit', element, alle)"
+                              style="color:green;"
+                              ><mat-icon>sync</mat-icon>
+                          </button>
+
+                          <button mat-icon-button
+                              aria-label="Example icon button with a vertical three dot icon"
+                              matTooltip="Elimina Documento"
+                              matTooltipPosition="above"
+                              *ngIf="(this.rendicontazione.enable && enableRendicontazione)  || this.userMe.role !== 'user'"
+                              (click)="onClickDeleteAllegato(alle)"
+                              color="accent"
+                              style="color:red;"
+                              ><mat-icon>close</mat-icon>
+                          </button>
+                            </ng-container>
+                            <ng-template #noalleb>
+                              <button
+                              *ngIf="this.rendicontazione.enable && enableRendicontazione"
+                              mat-raised-button  (click)="onClickEditAllegato('create', element)" color="primary">Upload Documento</button>
+                            </ng-template>
+
+                          </td>
+                        </ng-container>
+
+                      </ng-container>
+
+                    </table>
+                  </div>
+
+
+              </mat-expansion-panel>
+            </mat-accordion>
+
+            <mat-accordion style="width:100%;margin-bottom:50px;">
+              <mat-expansion-panel *ngFor="let cat of catEnable" [expanded]="true">
+                  <mat-expansion-panel-header>
+                      <mat-panel-title>Categoria {{cat}} <br> {{getTotalForCat(cat)}}</mat-panel-title>
+                      <mat-panel-description>{{getCatData(cat).description}}</mat-panel-description>
+                  </mat-expansion-panel-header>
+                  <app-content-vei
+
+                      style="background-color: #eaeaea;"
+                      [category]="cat"
+                      [rendicontazione]="this.rendicontazione"
+                      [typeIstance]="typeIstance"
+                      [istanza]="istanza"
+                      (numVeicoli)="totVeicoli"
+                      [listVei]="listaVeicoli"
+                      [listaAllegati]="listaAllegati"
+                      (newVeicoloEvent)="addVei($event)"
+                      (newAllegatoEvent)="addAlle($event)"
+                      [rottamazione]="this.rottamazione"
+                      [enableRendicontazione]="enableRendicontazione"
+                      ></app-content-vei>
+
+              </mat-expansion-panel>
+          </mat-accordion>
+
+          </mat-card-content>
+        </mat-tab>
+      </mat-tab-group>
+
+
+
+  </mat-card-content>
+</mat-card>

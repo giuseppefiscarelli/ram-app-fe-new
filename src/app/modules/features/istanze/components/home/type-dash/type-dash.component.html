@@ -1,0 +1,89 @@
+
+
+<h1>{{this.type.description}}</h1>
+<div class="container-main" fxLayout="row" fxLayout.xs="column"fxLayoutAlign="space-around stretch"  fxLayoutGap="30px">
+
+  <mat-card  fxFlex="20" fxFlex.xs="100">
+    <mat-card-header>
+      <div mat-card-avatar >
+        <button
+        style="background: linear-gradient(60deg, #19a5af, #aefaff);"
+        mat-fab color="warn" aria-label="Example icon button with a home icon">
+          <mat-icon>monitoring</mat-icon>
+        </button>
+      </div>
+      <div class="mat-card-header-text">
+        <mat-card-title >Istanze Totali</mat-card-title>
+        <mat-card-subtitle>{{this.totalIstanze}}</mat-card-subtitle>
+      </div>
+    </mat-card-header>
+  </mat-card>
+
+
+  <mat-card  fxFlex="20" fxFlex.xs="100">
+    <mat-card-header>
+      <div mat-card-avatar >
+        <button
+        style="background: linear-gradient(60deg, #19af61, #97d0b3);"
+        mat-fab color="warn" aria-label="Example icon button with a home icon">
+          <mat-icon>task_alt</mat-icon>
+        </button>
+      </div>
+      <div class="mat-card-header-text">
+        <mat-card-title>Istanze Attive</mat-card-title>
+        <mat-card-subtitle>{{this.activeIstanze}}</mat-card-subtitle>
+      </div>
+    </mat-card-header>
+  </mat-card>
+
+
+  <mat-card  fxFlex="20" fxFlex.xs="100">
+    <mat-card-header>
+      <div mat-card-avatar >
+      <button
+      style="background: linear-gradient(60deg, #1923af, #969be3);"
+      mat-fab color="warn" aria-label="Example icon button with a home icon">
+        <mat-icon>engineering</mat-icon>
+      </button>
+      </div>
+      <div class="mat-card-header-text">
+        <mat-card-title>Istanze in Rendicontazione</mat-card-title>
+        <mat-card-subtitle>{{ this.rendActive}}</mat-card-subtitle>
+      </div>
+    </mat-card-header>
+  </mat-card>
+
+
+  <mat-card  fxFlex="20" fxFlex.xs="100">
+    <mat-card-header>
+      <div mat-card-avatar >
+      <button
+      style="background: linear-gradient(60deg, #a0af19, #d9e191);"
+      mat-fab color="warn" aria-label="Example icon button with a home icon">
+        <mat-icon>how_to_reg</mat-icon>
+      </button>
+      </div>
+      <div class="mat-card-header-text">
+        <mat-card-title>Rendicontazione Chiusa</mat-card-title>
+        <mat-card-subtitle>{{this.rendClosed}}</mat-card-subtitle>
+      </div>
+    </mat-card-header>
+  </mat-card>
+
+  <mat-card fxFlex="20" fxFlex.xs="100">
+    <mat-card-header>
+      <div mat-card-avatar >
+      <button
+      style="background: linear-gradient(60deg, #af1919, #e19191);"
+
+      mat-fab color="warn" aria-label="Example icon button with a home icon">
+        <mat-icon>delete</mat-icon>
+      </button>
+      </div>
+      <div class="mat-card-header-text">
+        <mat-card-title>Istanze Annullate</mat-card-title>
+        <mat-card-subtitle>{{this.rendCanceled}}</mat-card-subtitle>
+      </div>
+    </mat-card-header>
+  </mat-card>
+</div>

@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ng-enwrap-14": {
+    "ng-ram-14": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/enwrap-fe",
+            "outputPath": "dist/ram-fe",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -77,10 +77,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "ng-enwrap-14:build:production"
+              "browserTarget": "ng-ram-14:build:production"
             },
             "development": {
-              "browserTarget": "ng-enwrap-14:build:development"
+              "browserTarget": "ng-ram-14:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -88,7 +88,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ng-enwrap-14:build"
+            "browserTarget": "ng-ram-14:build"
           }
         },
         "test": {

@@ -1,15 +1,17 @@
 import { NotificationsComponent } from './../../../../notifications/notifications.component';
 import { NotificationsModule } from './../../../../notifications/notifications.module';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+
 import { finalize, Observable, take } from 'rxjs';
 import { AuthenticationService } from '../../authentication.service';
 import { TYPE } from '@app/modules/notifications/values.constants';
 import { User } from '@app/modules/models/user.model';
 import { ApplicationState } from '@app/app.state';
 import { select, Store } from '@ngrx/store';
+import { Router } from '@angular/router';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-signin',

@@ -1,5 +1,9 @@
-import { FlexLayoutModule } from '@angular/flex-layout';
+import {  PdfViewerSharedComponent } from './components/pdf-viewer/pdf-viewer.component';
+import { RendStatusPipe } from './pipes/rendStatus.pipe';
+
 import { ReactiveFormsModule } from '@angular/forms';
+import { FlexLayoutModule } from '@angular/flex-layout';
+
 import { StatusTaskPipe } from './pipes/statusTask.pipe';
 import { SharedService } from './shared.service';
 import { FieldErrorsPipe } from './pipes/field.errors.pipe';
@@ -17,19 +21,21 @@ import { MaterialModule } from '../material/material.module';
 import { PriorityPipe } from './pipes/priority.pipe';
 import { PhasePipe } from './pipes/phase.pipe';
 import { TypeOperationPipe } from './pipes/type-operation.pipe';
-import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { PdfViewerModule,  } from 'ng2-pdf-viewer';
 import { NgApexchartsModule } from "ng-apexcharts";
 
 
 @NgModule({
   declarations: [
     MinutesToHours,
+    PdfViewerSharedComponent,
     MillisecondsToHours,
     UserRolePipe,
     FieldErrorsPipe,
     StatusTaskPipe,
     PriorityPipe,
     PhasePipe,
+    RendStatusPipe,
     TypeOperationPipe],
   imports: [
     CommonModule,
@@ -37,7 +43,8 @@ import { NgApexchartsModule } from "ng-apexcharts";
     MaterialModule,
     FlexLayoutModule,
     PdfViewerModule,
-    NgApexchartsModule
+    NgApexchartsModule,
+
 
 
 
@@ -58,9 +65,12 @@ import { NgApexchartsModule } from "ng-apexcharts";
     StatusTaskPipe,
     PriorityPipe,
     PhasePipe,
+    PdfViewerSharedComponent,
     TypeOperationPipe,
     PdfViewerModule,
-    NgApexchartsModule
+    NgApexchartsModule,
+    RendStatusPipe
+
 
   ],
   providers:[SharedService]

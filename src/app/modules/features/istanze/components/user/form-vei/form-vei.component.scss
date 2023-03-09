@@ -1,0 +1,24 @@
+.span-status{
+  padding:0px 10px;
+  border-radius: 10px;
+}
+.enabled{
+  background-color: green;
+  color: white;
+}
+.pending{
+  background-color: green;
+  color: white;
+}
+.opened{
+  background-color: blue;
+  color: white;
+}
+.closed{
+  background-color: orange;
+  color: white;
+}
+.canceled{
+  background-color: red;
+  color: white;
+}

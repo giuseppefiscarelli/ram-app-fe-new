@@ -1,6 +1,7 @@
+import { Router } from '@angular/router';
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatButtonToggle } from '@angular/material/button-toggle';
-import { Router } from '@angular/router';
+
 import { StorageKeys } from '@app/app.costants';
 import { ApplicationState } from '@app/app.state';
 import { User } from '@app/modules/models/user.model';

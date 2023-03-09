@@ -1,0 +1,54 @@
+.container-toolbar{
+  background: rgb(63, 153, 243);
+  color:white;
+  height: 80px;
+  .container-toolbar-title{
+      margin-top: -2%;
+  }
+
+
+}
+.container-card{
+  height: calc(100vh - 176px);
+  margin-left: 2%;
+  margin-right: 2%;
+  top: -34px;
+  overflow-x: auto;
+}
+
+.mat-table {
+  overflow: auto;
+  max-height: 50vh;
+}
+
+.mat-column-action {
+  text-align: right;
+  justify-content: flex-end;
+}
+.mat-column-idram {
+ max-width:60px;
+}
+.span-status{
+  padding:0px 10px;
+  border-radius: 10px;
+}
+.enabled{
+  background-color: green;
+  color: white;
+}
+.pending{
+  background-color: green;
+  color: white;
+}
+.opened{
+  background-color: lightseagreen;
+  color: white;
+}
+.closed{
+  background-color: orange;
+  color: white;
+}
+.canceled{
+  background-color: red;
+  color: white;
+}

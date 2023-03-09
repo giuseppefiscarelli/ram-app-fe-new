@@ -1,0 +1,87 @@
+<mat-toolbar class="container-toolbar">
+  <span class="container-toolbar-title">{{cardTilte}}</span>
+</mat-toolbar>
+
+<mat-card class="container-card" *ngIf="!isLoading">
+  <ng-container *ngIf="this.userMe.role === 'user'; else isadmin;">
+    <mat-card-content  >
+      <div class="table-container">
+        <mat-table #table [dataSource]="istanze"  (scroll)="timeoutScroll($event)" >
+          <mat-header-row *matHeaderRowDef="['idRam','type','businessName','pec','date','action']; sticky: true"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: ['idRam','type','businessName','pec','date','action'];"></mat-row>
+
+          <ng-container matColumnDef="idRam">
+            <mat-header-cell *matHeaderCellDef>  Protocollo RAM </mat-header-cell>
+            <mat-cell *matCellDef="let record">
+              {{record.id_ram}}/{{getTypeInfo(record.tipo_istanza).year}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="type">
+            <mat-header-cell *matHeaderCellDef> Edizione </mat-header-cell>
+            <mat-cell *matCellDef="let i">
+              {{getTypeInfo(i.tipo_istanza).description}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="businessName">
+            <mat-header-cell *matHeaderCellDef> Ragione Sociale </mat-header-cell>
+            <mat-cell *matCellDef="let i">
+              {{i.ragione_sociale}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="pec">
+            <mat-header-cell *matHeaderCellDef> Pec Richiedente </mat-header-cell>
+            <mat-cell *matCellDef="let i">
+              {{i.pec}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="date">
+            <mat-header-cell *matHeaderCellDef> Data Invio </mat-header-cell>
+            <mat-cell *matCellDef="let i">
+              {{i.data_invio | date:'dd/MM/yyyy HH:mm'}}
+            </mat-cell>
+          </ng-container>
+
+
+
+          <ng-container matColumnDef="action">
+            <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+            <mat-cell *matCellDef="let i; let index = index">
+
+              <button mat-flat-button
+                                              aria-label="Example icon button with a vertical three dot icon"
+                                              matTooltip="Visualizza Istanza"
+                                              matTooltipPosition="above"
+                                              [routerLink]="['/istanze','edit',i.id_ram]"
+                                              color="primary"
+                                              >Vai alla mia Istanza</button>
+
+
+
+
+
+            </mat-cell>
+          </ng-container>
+
+
+
+
+
+        </mat-table>
+      </div>
+
+    </mat-card-content>
+
+  </ng-container>
+  <ng-template #isadmin>
+    <mat-tab-content>
+      <ng-container  *ngFor="let item of type">
+        <app-type-dash [type]="item"></app-type-dash>
+      </ng-container>
+
+    </mat-tab-content>
+  </ng-template>
+</mat-card>

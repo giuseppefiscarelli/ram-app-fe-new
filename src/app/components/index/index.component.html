@@ -1,14 +1,12 @@
 <mat-drawer-container  class="main-container" >
-  <mat-drawer #sidenav mode="side" [opened]="opened" class="sidebar-content">
-      <app-sidenav [mobile]="mobile" (statusEmit)="toggleSidenav($event)"></app-sidenav>
-  </mat-drawer>
+
   <mat-drawer-content >
-      <div class="nav-content">
-          <app-navbar [status]="opened" [mobile]="mobile" (statusEmit)="toggleSidenav($event)" ></app-navbar>
-      </div>
-      <div class="main-panel">
+
+          <app-navbar  ></app-navbar>
+
+
           <router-outlet></router-outlet>
-      </div>
+
 
 
 

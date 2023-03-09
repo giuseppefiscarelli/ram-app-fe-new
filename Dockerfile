@@ -8,5 +8,5 @@ RUN npm ci && npm run build
 # stage 2
 
 FROM nginx:alpine
-COPY --from=my-app-build /app/dist/enwrap-fe /usr/share/nginx/html
+COPY --from=my-app-build /app/dist/ram-fe /usr/share/nginx/html
 EXPOSE 80

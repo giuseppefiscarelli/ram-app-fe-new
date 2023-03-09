@@ -1,0 +1,115 @@
+<h2 mat-dialog-title>{{this.dialogTitle}}</h2>
+<mat-dialog-content>
+
+      <h3 >Tipo Documento</h3>
+      <h5 >
+       {{this.type['longDescription']}}
+      </h5>
+      <form [formGroup]="form">
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
+            <div fxFlex="50">
+              <h5>Info Upload</h5>
+              <mat-list role="list">
+                <mat-list-item role="listitem">
+                  <mat-icon mat-list-icon
+                  [style.color]="this.fileDimControl?'green':'red'"
+                  [innerText]="this.fileDimControl?'done':'cancel'"
+                  ></mat-icon>
+                  <div mat-line>Dimensioni</div>
+                  <div mat-line> max 4Mb</div>
+              </mat-list-item>
+
+              <mat-list-item role="listitem">
+                  <mat-icon mat-list-icon
+                  [style.color]="this.typeFileControl?'green':'red'"
+                  [innerText]="this.typeFileControl?'done':'cancel'"
+                  ></mat-icon>
+                  <div mat-line>Formati</div>
+                  <div mat-line> .pdf</div>
+                  <div mat-line> .p7m</div>
+              </mat-list-item>
+              </mat-list>
+            </div>
+            <div fxFlex="50">
+              <h5>Info Upload</h5>
+              <div fxLayout="column">
+                <mat-form-field fxFlex style="width: 30%;">
+                  <mat-label style="color:#06c;">Unità lavorative</mat-label>
+                  <input matInput
+                  type="number"
+
+                  formControlName="unitaLavorative"
+
+                  >
+
+                </mat-form-field>
+                <mat-form-field  fxFlex style="width: 30%;">
+                <mat-label style="color:#06c;">Volumi Fatturato</mat-label>
+                <input matInput
+                currencyMask
+                [options]="{ prefix: '€ ', thousands: '.', decimal: ',' }"
+                formControlName="volumiFatturato"
+                >
+                </mat-form-field>
+
+              </div>
+              <h5>File</h5>
+              <div fxLayout="column" fxLayoutGap="30px">
+                <mat-list role="list" fxFlex>
+                  <ng-container *ngIf="!fileAttach; else file;">
+                      <input
+                      type="file"
+                      class="file-input"
+                      (change)="selectFile($event)"
+                      #fileUpload
+                      style="display:none;">
+                      <mat-list-item role="listitem" >
+                          <div mat-line>
+                              <button
+                                  mat-mini-fab
+                                  color="primary"
+                                  class="upload-btn"
+                                  (click)="fileUpload.click()">
+                                  <mat-icon>attach_file</mat-icon>
+                              </button>
+                                  {{fileName || "Clicca sull'icona per selezionare un File. "}}
+                          </div>
+                          <div mat-line>
+                              <mat-error *ngIf="form.get('attach').invalid && !fileAttach" [innerHTML]="'Il file non soddisfa le condizioni tipo/dimensione'"></mat-error>
+                          </div>
+                      </mat-list-item>
+                  </ng-container>
+                  <ng-template #file>
+                      <mat-list-item role="listitem" >
+                          <div mat-line>
+                              <button
+                              mat-mini-fab
+                              (click)="deleteFile()"
+                              color="warn"
+                              matTooltip="Elimina Documento"
+                              matTooltipPosition="above"
+                              >
+                                  <mat-icon class="mat-24">delete</mat-icon>
+                              </button>
+                              {{fileName}}
+                          </div>
+                          <div mat-line>
+                              <mat-error *ngIf="form.get('attach').invalid && fileAttach" [innerHTML]="'Il file non soddisfa le condizioni tipo/dimensione'"></mat-error>
+                          </div>
+
+
+                      </mat-list-item>
+
+                  </ng-template>
+
+              </mat-list>
+              </div>
+            </div>
+        </div>
+      </form>
+
+</mat-dialog-content>
+<mat-dialog-actions  >
+  <button mat-raised-button color="warn" mat-dialog-close>Annulla</button>
+  <button mat-raised-button color="primary" (click)="onSubmitBtn()">{{btnSubmit}}</button>
+</mat-dialog-actions>

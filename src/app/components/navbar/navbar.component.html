@@ -1,35 +1,50 @@
-<mat-toolbar class="enwrap-navbar">
-  <button mat-icon-button (click)="sidenavToggle(status)" aria-label="Example icon-button with menu icon">
-   <mat-icon>menu</mat-icon>
- </button>
-<!--  <span>Production Monitoring</span> -->
- <span class="example-spacer"></span>
- <!-- <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-   <mat-icon>tablet_mac</mat-icon>
- </button>
- <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
-  <mat-icon>computer</mat-icon>
-</button> -->
+<mat-toolbar class="ram-navbar">
 
-<mat-chip-list>
-  <mat-chip [matMenuTriggerFor]="menub">
-    <img matChipAvatar src="/assets/flag/it.png"> ITA
-  </mat-chip>
-</mat-chip-list>
-<span style="width:50px;"> </span>
-<mat-menu #menub="matMenu">
-  <button mat-menu-item (click)="setLang('it-IT')"><img src="/assets/flag/it.png" style=" height: 46%;vertical-align: middle;"   > ITA</button>
-  <button mat-menu-item (click)="setLang('en-EN')"><img src="/assets/flag/en.png" style=" height: 46%;vertical-align: middle;" > ENG</button>
+  <span style="margin-left:30px;">
+    <img src="/assets/images/logo.svg" alt="Home" style="max-height: 50px;margin-top:7px;">
+  </span>
+  <span style="margin-left: 20px;">
+    <h3>Ministero
+
+      <br>
+      <span style="font-size: small;"> delle infrastrutture e dei trasporti</span>
+    </h3>
 
 
-</mat-menu>
-<mat-chip-list>
-  <mat-chip [matMenuTriggerFor]="menu">
-    <img matChipAvatar src="/assets/images/ind.png">{{userMe.fullname}}
-  </mat-chip>
-</mat-chip-list>
-<mat-menu #menu="matMenu">
-  <button mat-menu-item (click)="onLogoutClick()"> Logout</button>
 
-</mat-menu>
+  </span>
+  <span class="spacer" style="margin-left:50px;">
+
+    <ng-container *ngIf="this.userMe.role !== 'user'; else user">
+      <button mat-button [routerLink]="['/istanze']"  ><mat-icon>home</mat-icon> Home</button>
+
+      <button mat-button [matMenuTriggerFor]="menuB"  *ngIf="this.userMe.role === 'superadmin'"><mat-icon>person</mat-icon> Gestione Utenti</button>
+          <mat-menu #menuB="matMenu">
+              <button mat-menu-item [routerLink]="['/users/list']">Gestione Utenti</button>
+          </mat-menu>
+
+      <button mat-button [matMenuTriggerFor]="menuC" *ngIf="this.userMe.role === 'superadmin'"><mat-icon>settings</mat-icon> Impostazioni</button>
+          <mat-menu #menuC="matMenu">
+              <button mat-menu-item [routerLink]="['/config/list']">Gestione Edizioni Istanze</button>
+              <button mat-menu-item [routerLink]="['/config/create']">Nuova edizione</button>
+              <button mat-menu-item [routerLink]="['/config/config']">Tabelle / Impostazioni</button>
+          </mat-menu>
+
+      <button mat-button [routerLink]="['/istanze/list']"><mat-icon>list</mat-icon> Istanze</button>
+      <!--     <mat-menu #menuD="matMenu">
+              <button mat-menu-item>Dashboard</button>
+              <button mat-menu-item [routerLink]="['/istanze/list']">Istanze</button>
+          </mat-menu> -->
+  </ng-container>
+  <ng-template #user>
+    <button mat-button [routerLink]="['/istanze']"  ><mat-icon>home</mat-icon> Home</button>
+  </ng-template>
+  </span>
+  <span class="header-logo"><img src="/assets/images/logo-ram-2018.png" alt="Home" style="max-height: 60px;margin-top:7px;"></span>
+  <span>
+    <button mat-raised-button (click)="onLogoutClick()"> Logout</button>
+
+  </span>
+
+
 </mat-toolbar>

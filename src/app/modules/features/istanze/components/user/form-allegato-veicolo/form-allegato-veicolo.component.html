@@ -1,0 +1,183 @@
+<h2 mat-dialog-title>{{this.dialogTitle}}</h2>
+<mat-dialog-content>
+  <div fxLayout="row" fxLayout.xs="column"fxLayoutAlign="start"  *ngIf="this.mode === 'create'">
+    <mat-form-field fxFlex="100">
+      <mat-label>Scegli il Tipo Documento</mat-label>
+      <mat-select >
+          <mat-option
+          *ngFor="let type of filteredType"
+          [value]="type.id"
+          (onSelectionChange)="changeType($event, type)"
+      >{{type.description}} </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div fxLayout="row" fxLayout.xs="column"fxLayoutAlign="start" *ngIf="this.visibleForm">
+
+    <div fxFlex="50">
+
+        <form [formGroup]="form">
+
+          <ng-container  *ngFor="let field of fields; let i = index">
+            <ng-container *ngIf="field.type === 'text'">
+              <div fxLayout="row">
+                  <mat-form-field fxFlex="80">
+                    <mat-label style="color:#06c;;">{{listOfPlaceholder[i]}}</mat-label>
+                    <input matInput
+                        type="text"
+                        [formControlName]="i"
+                        [required]="field.required"
+                    >
+
+                </mat-form-field>
+              </div>
+            </ng-container>
+
+            <ng-container *ngIf="field.type === 'number'">
+              <div fxLayout="row">
+                <mat-form-field fxFlex="80">
+                    <mat-label style="color:#06c;">{{listOfPlaceholder[i]}}</mat-label>
+                    <input matInput
+                    type="number"
+                    [formControlName]="i"
+                    [required]="field.required"
+                    >
+
+                </mat-form-field>
+              </div>
+            </ng-container>
+
+            <ng-container *ngIf="field.type === 'valute'">
+              <div fxLayout="row">
+                <mat-form-field fxFlex="80">
+                  <mat-label  style="color:#06c;">{{listOfPlaceholder[i]}}</mat-label>
+                    <input matInput
+                    currencyMask
+                    [formControlName]="i"
+                    [options]="{ prefix: '€ ', thousands: '.', decimal: ',' }"
+                    [required]="field.required"
+                    >
+
+                </mat-form-field>
+              </div>
+            </ng-container>
+
+            <ng-container *ngIf="field.type === 'date'">
+              <div fxLayout="row">
+                  <mat-form-field fxFlex="80">
+                    <mat-label  style="color:#06c;">{{listOfPlaceholder[i]}}</mat-label>
+                    <input matInput
+                    [matDatepicker]="ii"
+                    [formControlName]="i"
+                    [readonly]="true"
+                    [required]="field.required"
+                    >
+                    <mat-hint>Seleziona la data cliccando sull'icona destra</mat-hint>
+                    <mat-datepicker-toggle matSuffix [for]="ii"></mat-datepicker-toggle>
+                    <mat-datepicker #ii></mat-datepicker>
+
+                  </mat-form-field>
+              </div>
+            </ng-container>
+
+
+          </ng-container>
+
+          <div fxLayout="row">
+            <mat-form-field fxFlex="80">
+              <mat-label  style="color:#06c;">Note</mat-label>
+
+              <input matInput
+              type="note"
+
+              formControlName="note"
+
+              >
+
+          </mat-form-field>
+        </div>
+
+        </form>
+
+
+
+
+    </div>
+    <div fxFlex="50">
+      <h4 style="color:#06c;">Info Upload</h4>
+      <mat-list role="list">
+        <mat-list-item role="listitem">
+            <mat-icon mat-list-icon
+            [style.color]="this.fileDimControl?'green':'red'"
+            [innerText]="this.fileDimControl?'done':'cancel'"
+            ></mat-icon>
+            <div mat-line>Dimensioni</div>
+            <div mat-line> max 4Mb</div>
+            <div mat-line> <mat-error [innerHTML]="!this.fileDimControl && fileAttach?'Dimensioni non valide':''"></mat-error></div>
+        </mat-list-item>
+        <mat-list-item role="listitem">
+            <mat-icon mat-list-icon
+            [style.color]="this.typeFileControl?'green':'red'"
+            [innerText]="this.typeFileControl?'done':'cancel'"
+            ></mat-icon>
+            <div mat-line>Formati</div>
+            <div mat-line> .pdf,.p7m</div>
+             <div mat-line> .pdf,.p7m</div>
+            <div mat-line> <mat-error [innerHTML]="!this.typeFileControl && fileAttach?'tipo file non valido':''"></mat-error></div>
+        </mat-list-item>
+
+    </mat-list>
+    <h4 style="color:#06c;">File</h4>
+    <mat-list role="list">
+      <ng-container *ngIf="!fileAttach; else file;">
+          <input
+          type="file"
+          class="file-input"
+          (change)="selectFile($event)"
+          #fileUpload
+          style="display:none;">
+          <mat-list-item role="listitem" >
+              <div mat-line>
+                                      <button
+                                      mat-mini-fab
+                                      color="primary"
+                                      class="upload-btn"
+                                      (click)="fileUpload.click()">
+                                      <mat-icon>attach_file</mat-icon>
+                                  </button>
+                      {{fileName || "Clicca sull'icona per selezionare un File. "}}</div>
+
+          </mat-list-item>
+      </ng-container>
+      <ng-template #file>
+          <mat-list-item role="listitem" >
+              <div mat-line>
+                  <button
+                  mat-mini-fab
+                  (click)="deleteFile()"
+                  color="warn"
+                  matTooltip="Elimina Documento"
+                  matTooltipPosition="above"
+                  >
+                      <mat-icon class="mat-24">delete</mat-icon>
+                  </button>
+                  {{fileAttach.name}}
+              </div>
+              <div mat-line>
+                  <mat-error *ngIf="form.get('attach').invalid && fileAttach" [innerHTML]="'Il file non soddisfa le condizioni tipo/dimensione'"></mat-error>
+              </div>
+          </mat-list-item>
+      </ng-template>
+          <mat-list-item><mat-icon style="color:red;font-size: x-small;">star</mat-icon> Campi Obbligatori</mat-list-item>
+
+  </mat-list>
+    </div>
+  </div>
+
+
+</mat-dialog-content>
+<mat-dialog-actions  >
+  <button mat-button color="warn" mat-dialog-close>Annulla</button>
+  <button mat-button color="primary" (click)="onSubmitBtn()">{{btnSubmit}}</button>
+</mat-dialog-actions>

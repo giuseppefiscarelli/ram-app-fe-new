@@ -1,21 +1,21 @@
 import { Subscription } from 'rxjs';
-import { EmployeesService } from './../../../employees/employees.service';
+
 import { TranslateService } from '@ngx-translate/core';
 import { UsersService } from './../../users.service';
 import { Component, Inject, OnInit } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { User } from '@app/modules/models/user.model';
 import { UserRole } from '@app/app.costants';
 import {CustomValidators} from '@modules/shared/validators/custom.validators';
+import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'app-edit',
   templateUrl: './edit.component.html',
   styleUrls: ['./edit.component.scss'],
-  providers:[EmployeesService]
+
 })
 export class EditComponent implements OnInit {
   userData: User;
@@ -30,7 +30,7 @@ export class EditComponent implements OnInit {
     constructor(  @Inject(MAT_DIALOG_DATA) public data: any,
                   private dialogRef: MatDialogRef<EditComponent>,
                   private service: UsersService,
-                  private empService: EmployeesService,
+
                   private dateAdapter: DateAdapter<any>,
                   private snackbar: MatSnackBar,
                   private translator: TranslateService,
@@ -108,16 +108,7 @@ export class EditComponent implements OnInit {
             const payload = this.form.value;
               this.service.create(payload).subscribe({
               next: (res:User) => {
-                if(res.type === 'employee'){
-                  this.empService.createEmployee({
-                    idUser:res.id,
-                    surname:res.surname,
-                    name:res.name,
-                    company:res.company,
-                    enabled: true
 
-                  }).subscribe();
-                }
                   this.dialogRef.close(res);
                   this.snackbar.open('Utente inserito Correttamente!', 'X',{duration: 4000,panelClass: ["success-snack-style"]});
 
