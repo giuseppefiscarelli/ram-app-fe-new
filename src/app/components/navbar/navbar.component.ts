@@ -36,9 +36,7 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit() {
-    if(this.userMe.type === 'desk'){
-    //  this.sidenavToggle(true)
-    }
+
 
   }
   sidenavToggle(status){

@@ -25,19 +25,7 @@
                 </mat-select>
             </mat-form-field>
         </div>
-        <div fxFlex="25" fxFlex.xs="100" >
-            <mat-form-field appearance="standard">
-                <mat-label>
-                   Abilitazione Accesso
-                </mat-label>
-                <mat-select  formControlName="enable">
-                    <mat-option >Tutti </mat-option>
-                    <mat-option value="true">Attiva </mat-option>
-                    <mat-option value="false">Non Attiva </mat-option>
 
-                </mat-select>
-            </mat-form-field>
-        </div>
 
     </div>
     <div fxLayout="row">
@@ -55,13 +43,13 @@
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
           <ng-container matColumnDef="id">
-              <th mat-header-cell *matHeaderCellDef> No. </th>
+              <th mat-header-cell *matHeaderCellDef> Id </th>
               <td mat-cell *matCellDef="let element"> {{element.id}} </td>
           </ng-container>
 
           <ng-container matColumnDef="fullname">
-              <th mat-header-cell *matHeaderCellDef> Name </th>
-              <td mat-cell *matCellDef="let element"> {{element.surname}} {{element.name}} </td>
+              <th mat-header-cell *matHeaderCellDef> Nominativo </th>
+              <td mat-cell *matCellDef="let element"> {{element.businessName}} </td>
           </ng-container>
 
           <ng-container matColumnDef="email">
@@ -74,21 +62,6 @@
               <td mat-cell *matCellDef="let element"> {{element | role}} </td>
           </ng-container>
 
-          <ng-container matColumnDef="enable">
-              <th mat-header-cell *matHeaderCellDef> Abilitazione accesso </th>
-              <td mat-cell *matCellDef="let element">
-                  <mat-chip-list>
-                      <mat-chip color="warn"
-                      style="pointer-events:none;"
-                      class="status-chip"
-                      [class.enable-chip]="element.enable"
-                      selected
-                      [selectable]="false"
-                      [innerText]="element.enable? 'attivo': 'non attivo'">
-                      </mat-chip>
-                  </mat-chip-list>
-              </td>
-          </ng-container>
 
           <ng-container matColumnDef="action">
               <th mat-header-cell *matHeaderCellDef> Action </th>
@@ -100,9 +73,7 @@
                       (click)="onClickEditBtn('edit', element,i)">
                       <mat-icon>description</mat-icon>
                   </button>
-                  <button mat-icon-button color="warn" aria-label="Example icon button with a heart icon">
-                      <mat-icon>delete</mat-icon>
-                  </button>
+
               </td>
           </ng-container>
       </table>

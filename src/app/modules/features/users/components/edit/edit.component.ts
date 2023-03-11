@@ -1,3 +1,4 @@
+import { NotificationsComponent } from '@app/modules/notifications/notifications.component';
 import { Subscription } from 'rxjs';
 
 import { TranslateService } from '@ngx-translate/core';
@@ -10,6 +11,7 @@ import { User } from '@app/modules/models/user.model';
 import { UserRole } from '@app/app.costants';
 import {CustomValidators} from '@modules/shared/validators/custom.validators';
 import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
+import { TYPE } from '@app/modules/notifications/values.constants';
 
 @Component({
   selector: 'app-edit',
@@ -30,12 +32,12 @@ export class EditComponent implements OnInit {
     constructor(  @Inject(MAT_DIALOG_DATA) public data: any,
                   private dialogRef: MatDialogRef<EditComponent>,
                   private service: UsersService,
-
+                  private notifications: NotificationsComponent,
                   private dateAdapter: DateAdapter<any>,
                   private snackbar: MatSnackBar,
                   private translator: TranslateService,
                   ) {
-
+console.log(data)
                     this.dateAdapter.setLocale('it-IT');
                     this.mode = data.mode;
                     this.roles = Object
@@ -52,6 +54,7 @@ export class EditComponent implements OnInit {
                     if (this.mode ==='edit'){
                       this.dialogTitle = 'Aggiornamento Dati Utente';
                       this.btnSubmit = 'Salva';
+                      this.form = this.initializeForEdit(data.user);
                     }
 
                    }
@@ -59,21 +62,35 @@ export class EditComponent implements OnInit {
     ngOnInit(): void {
     }
 
-    private initializeForCreate(): FormGroup{
-
+    private initializeForCreate(): FormGroup {
       return new FormGroup({
-        name: new FormControl(null, [Validators.required]),
-        surname: new FormControl(null, [Validators.required, Validators.minLength(3)]),
-        email: new FormControl(null, [Validators.required, Validators.email]),
-        role: new FormControl(null, [Validators.required]),
-        password: new FormControl(null, [Validators.required, Validators.minLength(8)]),
-        confirm: new FormControl(null, [Validators.required, Validators.minLength(8)]),
-        type:new FormControl(null, [Validators.required]),
+          email: new FormControl(null, [Validators.required, Validators.email]),
+          role: new FormControl(null, [Validators.required]),
+          password: new FormControl(null, [Validators.required, Validators.minLength(8)]),
+          confirm: new FormControl(null, [Validators.required, Validators.minLength(8)]),
+          businessName:  new FormControl(null),
+          vatNumber:  new FormControl(null),
+          note: new FormControl(null)
       }, {
           validators: CustomValidators.fieldsEquals(['password', 'confirm'])
       });
+  }
+    private initializeForEdit(user: User): FormGroup {
+      this.mode = 'edit';
 
-    }
+      return new FormGroup({
+          id: new FormControl(user.id),
+          email: new FormControl(user.email, [Validators.required, Validators.email]),
+          role: new FormControl(user.role, [Validators.required]),
+          businessName:  new FormControl(user.businessName),
+          password: new FormControl(null, [ Validators.minLength(8)]),
+          confirm: new FormControl(null, [ Validators.minLength(8)]),
+          vatNumber:  new FormControl(user.vatNumber),
+          note: new FormControl(user.note)
+      }, {
+        validators: CustomValidators.fieldsEquals(['password', 'confirm'])
+    });
+  }
 
     onSubmitClick(): void {
       Object
@@ -94,15 +111,22 @@ export class EditComponent implements OnInit {
               }
               delete payload.confirm;
 
-           /*    this.service
+
+
+               this.service
                   .update(payload).subscribe(
                       {
                        next: (user: User) => {
-
+                          this.notifications.toast(
+                            TYPE.SUCCESS,
+                            'Operazione completata',
+                            'Utente aggiornato correttamente'
+                          )
+                          this.dialogRef.close(user)
                       },
                       error:(error: any) => console.error(error)
                     }
-                  ); */
+                  );
           }
           if(this.mode === 'create'){
             const payload = this.form.value;

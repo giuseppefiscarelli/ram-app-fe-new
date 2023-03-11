@@ -1,18 +1,13 @@
 // Entities
+
 export interface UserDescriptorInterface {
-    id: string;
-    role: string;
-    name: string;
-    surname: string;
-    email: string;
-    createdAt: string;
-    enable: boolean;
-    type: string;
-    company: number;
-    environment: {
-        type: string, role: string
-    }[];
-    menu:MenuDescriptorInterface[];
+  id: string;
+  email: string;
+  role: string;
+  businessName: string;
+  vatNumber:string;
+  note:string;
+  createdAt: string;
 }
 export interface MenuDescriptorInterface{
 

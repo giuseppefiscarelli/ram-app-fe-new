@@ -1,19 +1,28 @@
+import { StorageKeys } from '@app/app.costants';
+import { StorageService } from '@app/modules/services/storage.service';
+import { User } from '@app/modules/models/user.model';
+import * as Moment from 'moment';
+
 
 import {UserDescriptorInterface} from '@configs/network/api.descriptors';
-import { StorageKeys } from '../../../app.costants';
-import { User } from '../user.model';
-import { StorageService } from '../../services/storage.service';
-import moment from 'moment-timezone';
 
 export class UsersFactory {
     static create(descriptor: UserDescriptorInterface): User {
         const instance: User = new User();
-        const keysToDuplicate = ['id', 'role', 'name', 'surname', 'email', 'enable', 'type', 'company','environment','menu'];
+        const keysToDuplicate = [
+            'id',
+            'email',
+            'role',
+            'businessName',
+            'vatNumber',
+            'note',
+
+        ];
 
         keysToDuplicate.forEach(key => instance[key] = descriptor[key]);
 
-        instance.createdAt = moment.utc(descriptor.createdAt).toISOString();
-        instance.defineExtraProperties();
+        instance.createdAt = Moment.utc(descriptor.createdAt).toISOString();
+
 
         return instance;
     }
@@ -32,7 +41,7 @@ export class UsersFactory {
             .keys(source)
             .forEach((key: string) => instance[key] = source[key]);
 
-        instance.defineExtraProperties();
+
 
         return instance;
     }

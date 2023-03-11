@@ -2,9 +2,12 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, OnDestro
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { UserRole } from '@app/app.costants';
+import { ApplicationState } from '@app/app.state';
 import { SidenavComponent } from '@app/components/sidenav/sidenav.component';
 import { User } from '@app/modules/models/user.model';
-import { debounceTime, merge, Subscription } from 'rxjs';
+import { PaginatorService } from '@app/modules/services/paginator.service';
+import { select, Store } from '@ngrx/store';
+import { debounceTime, merge, Observable, Subscription, take } from 'rxjs';
 import { UsersService } from '../../users.service';
 import { EditComponent } from '../edit/edit.component';
 
@@ -12,39 +15,49 @@ import { EditComponent } from '../edit/edit.component';
   selector: 'app-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss'],
-  providers:[SidenavComponent],
+  providers:[],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ListComponent implements OnInit , OnDestroy{
-  displayedColumns: string[] = ['id', 'fullname', 'email', 'role', 'enable','action'];
-  start: number = 0;
-  limit: number = 25;
-  end: number = this.limit + this.start;
+  displayedColumns: string[] = ['id', 'fullname', 'email', 'role', 'action'];
+
+
+  user: Observable<User>;
+  userMe: User;
+
+
   filters: FormGroup;
   filters$: Subscription;
   dataSource: User[];
+
+  paginator$: Subscription;
+
   timeScroll:any;
   isLoading: boolean = true;
-  breakpoint: number;
-  userData: User;
+
+
 
   filterOptionsDescriptors: {
       [key: string]: any
   };
     constructor(private service: UsersService,
+                public paginator: PaginatorService,
+                private store: Store<ApplicationState>,
                 private changeDetectorRef: ChangeDetectorRef,
-                private userD: SidenavComponent,
-                private dialog: MatDialog,) {
 
-                  this.userData = this.userD.userMe;
+                private dialog: MatDialog,) {
+                  this.user = this.store.pipe(select('authentication'),select('user'));
+                  this.user.pipe(take(1)).subscribe((me: User) => this.userMe = me);
+
+
                   this.dataSource = [];
                   this.timeScroll = null;
                   this.filters = new FormGroup({
                       term: new FormControl(null),
-                      offset: new FormControl(this.start),
+
                       role: new FormControl(null),
                       enable: new FormControl('true'),
-                      limit: new FormControl(this.limit)
+
                   });
                   this.filterOptionsDescriptors = {
                       role: [
@@ -66,105 +79,92 @@ export class ListComponent implements OnInit , OnDestroy{
                 }
 
     ngOnInit(): void {
-      const payload = {...this.filters.value};
-      Object.keys(payload).forEach(key => {
-          if (payload[key] === undefined || payload[key] === ''|| payload[key] === null ) {
-              delete payload[key] ;
-          }
-      });
-      this.getData(payload);
+
+
       this.createObservable();
+      this.paginator.resetFilters();
     }
     ngOnDestroy(): void {
       //Called once, before the instance is destroyed.
       //Add 'implements OnDestroy' to the class.
       this.filters$.unsubscribe();
+      this.paginator$.unsubscribe()
     }
 
     createObservable(){
-      this.filters$ = merge(
-        this.filters.controls.role.valueChanges,
-        this.filters.controls.term.valueChanges,
-        this.filters.controls.enable.valueChanges,
-       )
-       .pipe(debounceTime(400))
-       .subscribe(
-        (value) => {
+      this.filters$ = this.filters.valueChanges
+      .pipe(debounceTime(400))
+        .subscribe(
+        (value: { [key: string]: string }) => {
 
-            this.start = 0;
-            this.limit = 25;
-            this.end =  this.limit + this.start;
-            this.filters.controls.offset.setValue(this.start)
-            this.filters.controls.limit.setValue(this.limit)
+          const filters = {};
 
 
-            const payload = {...this.filters.value};
-            Object.keys(payload).forEach(key => {
+            Object.keys(value).forEach(key => {
 
 
-                if (payload[key] === undefined || payload[key] === ''|| payload[key] === null ) {
-                    delete payload[key] ;
+                if (value[key] === undefined || value[key] === ''|| value[key] === null ) {
+                    delete value[key] ;
                 }
             });
-            console.log(payload)
-            this.dataSource = []
-            this.getData(payload);
 
+            this.dataSource = [];
+            this.paginator.resetFilters(filters);
+            this.changeDetectorRef.markForCheck();
+
+
+      }
+      );
+
+      this.paginator$ = this.paginator
+      .createStream(this.service.fetch.bind(this.service))
+      .subscribe(
+        {
+         next: (records: User[]) => this.handleSubscriptionResponse(records),
+         error: (error: Error) => this.handleSubscriptionError(error)
         }
-    );
+      );
+
+
     }
+    private handleSubscriptionResponse(res: User[]): void {
+      console.log(res)
+      this.paginator.pagination.offset === 0
+          ? this.dataSource = res
+          : this.dataSource = this.dataSource.concat(res);
 
-    timeoutScroll(event){
-      if(this.timeScroll){ clearTimeout(this.timeScroll);
-
-        }
-        this.timeScroll = setTimeout(() => {
-            this.onTableScroll(event)
-        }, 400);
+      this.isLoading = false;
+      this.changeDetectorRef.markForCheck();
     }
-
-    updateIndex() {
-
-        this.start = this.end;
-        this.end = this.limit + this.start;
-        this.filters.patchValue({offset: this.start,limit: this.limit});
+    private handleSubscriptionError(error: Error): void {
+        this.changeDetectorRef.markForCheck();
     }
+    timeoutScroll(e){
 
-    onTableScroll(e) {
+      console.log(e)
+  if(this.timeScroll){ clearTimeout(this.timeScroll);
 
+  }
+  this.timeScroll = setTimeout(() => {
       const tableViewHeight = e.target.offsetHeight // viewport
       const tableScrollHeight = e.target.scrollHeight // length of all table
       const scrollLocation = e.target.scrollTop; // how far user scrolled
 
       // If the user has scrolled within 200px of the bottom, add more data
-      const buffer = 100;
+      const buffer = 200;
       const limit = tableScrollHeight - tableViewHeight - buffer;
 
-      const payload = this.filters.value;
-      Object.keys(payload).forEach(key => {
-          if (payload[key] === undefined || payload[key] === ''|| payload[key] === null ) {
-              delete payload[key] ;
-          }
-      });
-
-      if (scrollLocation > limit && this.dataSource.length == this.start) {
-          this.getData(payload);
+      if (scrollLocation > limit && this.dataSource.length ) {
+          this.paginator.nextPage();
       }
-    }
-    getData(payload){
-      this.service.fetch(payload).subscribe(
-          (res: User[]) => {
-              if(res && res.length > 0){
-                  let data = res;
-                  this.dataSource = this.dataSource.concat(data);
-                  this.isLoading = false;
-                  this.updateIndex();
-                  this.changeDetectorRef.markForCheck();
-              }
+  }, 100);
 
-          }
-      )
-    }
+}
+
+
+
+
+
 
     onClickEditBtn(mode, user?:User, atIndex?:number){
         switch (mode) {
@@ -185,8 +185,20 @@ export class ListComponent implements OnInit , OnDestroy{
 
           case 'edit':
              const refEdit: MatDialogRef<EditComponent> = this.dialog.open(
-              EditComponent,{disableClose: true,minWidth:'50%',data:{mode}}
+              EditComponent,{disableClose: true,minWidth:'50%',data:{mode,user}}
             );
+            refEdit.afterClosed().subscribe(
+              (updatedUser: User) => {
+                  if (!!updatedUser) {
+                      const currentRecords = [...this.dataSource];
+                      currentRecords[atIndex] = updatedUser;
+
+                      this.dataSource = [...currentRecords];
+                      this.changeDetectorRef.markForCheck();
+                  }
+              }
+          );
+
             break;
 
           default:

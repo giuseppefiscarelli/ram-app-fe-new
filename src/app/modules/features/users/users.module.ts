@@ -7,6 +7,7 @@ import { ListComponent } from './components/list/list.component';
 import { EditComponent } from './components/edit/edit.component';
 import { SharedModule } from '@app/modules/shared/shared.module';
 import { RouterModule } from '@angular/router';
+import { PaginatorService } from '@app/modules/services/paginator.service';
 
 
 
@@ -25,7 +26,8 @@ import { RouterModule } from '@angular/router';
     RouterModule.forChild(UsersRoutes),
   ],
   providers: [
-    UsersService
+    UsersService,
+    PaginatorService,
   ]
 })
 export class UsersModule { }

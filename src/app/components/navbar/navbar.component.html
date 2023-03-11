@@ -18,10 +18,8 @@
     <ng-container *ngIf="this.userMe.role !== 'user'; else user">
       <button mat-button [routerLink]="['/istanze']"  ><mat-icon>home</mat-icon> Home</button>
 
-      <button mat-button [matMenuTriggerFor]="menuB"  *ngIf="this.userMe.role === 'superadmin'"><mat-icon>person</mat-icon> Gestione Utenti</button>
-          <mat-menu #menuB="matMenu">
-              <button mat-menu-item [routerLink]="['/users/list']">Gestione Utenti</button>
-          </mat-menu>
+      <button mat-button [routerLink]="['/users/list']" *ngIf="this.userMe.role === 'superadmin'"><mat-icon>person</mat-icon> Gestione Utenti</button>
+
 
       <button mat-button [matMenuTriggerFor]="menuC" *ngIf="this.userMe.role === 'superadmin'"><mat-icon>settings</mat-icon> Impostazioni</button>
           <mat-menu #menuC="matMenu">

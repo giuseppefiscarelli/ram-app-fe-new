@@ -1,22 +1,14 @@
 <h2 mat-dialog-title [innerText]="'users.modals.'+this.mode+'.title' | translate"></h2>
 <mat-dialog-content>
-  <ng-container *ngIf="this.mode === 'create'">
+
 
     <div [formGroup]="form" >
       <div fxLayout="row"  fxLayout.xs="column" fxLayoutGap="30px;">
-        <div fxFlex fxFlex.xs="100" >
-              <mat-form-field >
-                <input matInput
-                type="text"
-                [placeholder]="'users.modals.edit.fields.surname' | translate"
-                formControlName="surname">
-                <mat-error *ngIf="form.get('surname').invalid" [innerHTML]="form.get('surname') | errors"></mat-error>
-            </mat-form-field>
-         </div>
+
          <div fxFlex fxFlex.xs="100" >
           <mat-form-field>
-            <input matInput type="text" [placeholder]="'users.modals.edit.fields.name' | translate" formControlName="name">
-            <mat-error *ngIf="form.get('name').invalid" [innerHTML]="form.get('name') | errors"></mat-error>
+            <input matInput type="text" [placeholder]="'users.modals.edit.fields.name' | translate" formControlName="businessName">
+            <mat-error *ngIf="form.get('businessName').invalid" [innerHTML]="form.get('businessName') | errors"></mat-error>
             </mat-form-field>
          </div>
 
@@ -41,20 +33,9 @@
             </mat-select>
         </mat-form-field>
         </div>
-        <div fxFlex fxFlex.xs="100" >
-          <mat-form-field>
-            <mat-label>Tipo profilo</mat-label>
-            <mat-select formControlName="type">
-                <mat-option value="user">Solo utenza</mat-option>
-                <mat-option value="employee">Dipendente</mat-option>
-                <mat-option value="cli">Cliente</mat-option>
-                <mat-option value="forn">Fornitore</mat-option>
-                <mat-option value="desk">Postazione</mat-option>
-                <mat-option value="kiosk">Kiosk</mat-option>
-            </mat-select>
-        </mat-form-field>
-        </div>
+
       </div>
+
 
       <div fxLayout="row"  fxLayout.xs="column" fxLayoutGap="30px;">
         <div fxFlex fxFlex.xs="100" >
@@ -72,10 +53,10 @@
         </mat-form-field>
         </div>
       </div>
+    </div>
 
 
-  </div>
-  </ng-container>
+
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button color="warn" mat-dialog-close><mat-icon>close</mat-icon> Chiudi</button>

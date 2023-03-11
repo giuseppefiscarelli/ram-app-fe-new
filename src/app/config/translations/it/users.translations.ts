@@ -1,6 +1,7 @@
 export const UsersLanguagePartialDefinition = {
     roles: {
         administrator: 'Amministratore',
+        administration: 'Amministrativo',
         administrative: 'Back Office',
         worker: 'Magazzino',
         dpo: 'Resp. Privacy',
@@ -13,7 +14,7 @@ export const UsersLanguagePartialDefinition = {
         admin: 'Admin',
         administrative: 'Amministrativo',
         supervisor: 'Responsabile',
-        user: 'Dipendente'
+        user: 'Utente'
     },
     rolesFms: {
         admin: 'Admin',
@@ -41,7 +42,7 @@ export const UsersLanguagePartialDefinition = {
                     values: {
                         admin: 'Amministratore',
                         administrative: 'Amministrazione',
-                        user: 'Dipendente',
+                        user: 'Utente',
                         all: 'Tutti',
                     }
                 },
