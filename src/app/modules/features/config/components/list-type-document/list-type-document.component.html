@@ -1,1 +1,79 @@
-<p>list-type-document works!</p>
+<h3>Tipi Documento</h3>
+<div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
+  <div>
+    <button mat-raised-button (click)="onClickRecord('create')" color="primary">Inserire tipo documento</button>
+
+  </div>
+</div>
+
+<div class="table-container">
+  <mat-table #table [dataSource]="dataSource" (scroll)="timeoutScroll($event)">
+    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef> # </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{element.id}}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="des">
+      <mat-header-cell *matHeaderCellDef> Descrizione </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{element.description}}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="upload">
+      <mat-header-cell *matHeaderCellDef> Upload </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+
+        <mat-icon >{{element.upload  ?'done': 'close' }}</mat-icon>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="required">
+      <mat-header-cell *matHeaderCellDef> Obbligatorio </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+
+        <mat-icon >{{element.required  ?'done': 'close' }}</mat-icon>
+      </mat-cell>
+    </ng-container>
+
+
+
+
+
+    <ng-container matColumnDef="action">
+      <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+      <mat-cell *matCellDef="let element; let index = index">
+
+        <button
+            mat-icon-button
+            color="primary"
+            style="color:green;"
+            matTooltip="Visualizzazione Utente"
+            matTooltipPosition="above"
+            aria-label="Example icon button with a home icon"
+            (click)="onClickRecord('edit', record, index)"
+          >
+          <mat-icon>find_in_page</mat-icon>
+        </button>
+
+
+
+
+
+
+
+
+      </mat-cell>
+    </ng-container>
+
+
+
+
+
+  </mat-table>
+</div>

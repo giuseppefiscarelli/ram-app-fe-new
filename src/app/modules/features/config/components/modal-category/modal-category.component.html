@@ -1,1 +1,29 @@
-<p>modal-category works!</p>
+<h2 mat-dialog-title>{{this.dialogTitle}}</h2>
+<mat-dialog-content>
+    <form [formGroup]="form">
+        <div fxLayout="column" fxLayout.xs="column" fxLayoutGap="30px">
+        <mat-form-field  style="max-width: 100px;">
+          <input matInput
+                    type="text"
+                    [placeholder]="'Codice Categoria'"
+                    formControlName="category"
+                    oninput="this.value = this.value.toUpperCase()"  >
+
+            </mat-form-field>
+            <mat-form-field fxFlex>
+              <textarea matInput
+              type="text"
+              [placeholder]="'Descrizione Categoria'"
+              formControlName="description"
+
+              ></textarea>
+          </mat-form-field>
+
+      </div>
+</form>
+
+</mat-dialog-content>
+<mat-dialog-actions  >
+  <button mat-button color="warn" mat-dialog-close>Chiudi</button>
+  <button mat-button color="primary" (click)="onSubmitBtn(this.mode)">{{btnSubmit}}</button>
+</mat-dialog-actions>

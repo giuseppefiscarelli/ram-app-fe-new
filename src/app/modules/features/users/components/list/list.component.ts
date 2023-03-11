@@ -55,8 +55,8 @@ export class ListComponent implements OnInit , OnDestroy{
                   this.filters = new FormGroup({
                       term: new FormControl(null),
 
-                      role: new FormControl(null),
-                      enable: new FormControl('true'),
+                      role: new FormControl(null)
+
 
                   });
                   this.filterOptionsDescriptors = {
@@ -100,12 +100,13 @@ export class ListComponent implements OnInit , OnDestroy{
           const filters = {};
 
 
-            Object.keys(value).forEach(key => {
+            Object.keys(value).forEach((key: string) => {
 
 
                 if (value[key] === undefined || value[key] === ''|| value[key] === null ) {
                     delete value[key] ;
                 }
+                filters[key] = value[key]
             });
 
             this.dataSource = [];
@@ -142,24 +143,24 @@ export class ListComponent implements OnInit , OnDestroy{
     timeoutScroll(e){
 
       console.log(e)
-  if(this.timeScroll){ clearTimeout(this.timeScroll);
+      if(this.timeScroll){ clearTimeout(this.timeScroll);
 
-  }
-  this.timeScroll = setTimeout(() => {
-      const tableViewHeight = e.target.offsetHeight // viewport
-      const tableScrollHeight = e.target.scrollHeight // length of all table
-      const scrollLocation = e.target.scrollTop; // how far user scrolled
-
-      // If the user has scrolled within 200px of the bottom, add more data
-      const buffer = 200;
-      const limit = tableScrollHeight - tableViewHeight - buffer;
-
-      if (scrollLocation > limit && this.dataSource.length ) {
-          this.paginator.nextPage();
       }
-  }, 100);
+      this.timeScroll = setTimeout(() => {
+          const tableViewHeight = e.target.offsetHeight // viewport
+          const tableScrollHeight = e.target.scrollHeight // length of all table
+          const scrollLocation = e.target.scrollTop; // how far user scrolled
 
-}
+          // If the user has scrolled within 200px of the bottom, add more data
+          const buffer = 200;
+          const limit = tableScrollHeight - tableViewHeight - buffer;
+
+          if (scrollLocation > limit && this.dataSource.length ) {
+              this.paginator.nextPage();
+          }
+      }, 100);
+
+    }
 
 
 

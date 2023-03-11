@@ -1,0 +1,367 @@
+<mat-toolbar class="container-toolbar">
+  <span class="container-toolbar-title">
+   <b> Edizione Istanza  </b>
+  </span>
+</mat-toolbar>
+<mat-card class="container-card" >
+  <mat-card-content>
+
+      <h2>Dati Istanza</h2>
+      <form [formGroup]="form">
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
+
+        <mat-form-field fxFlex="10">
+          <input matInput type="number" maxlength="4"[placeholder]="'Anno Edizione'" formControlName="year">
+          <mat-error *ngIf="form.get('year').invalid" [innerHTML]="form.get('year') | errors"></mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="20">
+          <input matInput type="text" [placeholder]="'Descrizione Edizione'" formControlName="description">
+          <mat-error *ngIf="form.get('description').invalid" [innerHTML]="form.get('description') | errors"></mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput
+          [ngxMatDatetimePicker]="sendStartDate"
+          formControlName="sendStartDate"
+          placeholder="Data Inizio Invio"
+          >
+          <mat-datepicker-toggle matSuffix [for]="sendStartDate"></mat-datepicker-toggle>
+          <ngx-mat-datetime-picker #sendStartDate>
+          </ngx-mat-datetime-picker>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput
+          [ngxMatDatetimePicker]="sendEndDate"
+          formControlName="sendEndDate"
+          placeholder="Data Fine Invio"
+          >
+          <mat-datepicker-toggle matSuffix [for]="sendEndDate"></mat-datepicker-toggle>
+          <ngx-mat-datetime-picker #sendEndDate>
+          </ngx-mat-datetime-picker>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput
+          [ngxMatDatetimePicker]="reportingStartDate"
+          formControlName="reportingStartDate"
+          placeholder="Data Inizio Rendicondazione"
+          >
+          <mat-datepicker-toggle matSuffix [for]="reportingStartDate"></mat-datepicker-toggle>
+          <ngx-mat-datetime-picker #reportingStartDate>
+          </ngx-mat-datetime-picker>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput
+          [ngxMatDatetimePicker]="reportingEndDate"
+          formControlName="reportingEndDate"
+          placeholder="Data Fine Rendicontazione"
+          >
+          <mat-datepicker-toggle matSuffix [for]="reportingEndDate"></mat-datepicker-toggle>
+          <ngx-mat-datetime-picker #reportingEndDate>
+          </ngx-mat-datetime-picker>
+        </mat-form-field>
+
+
+      </div>
+
+      <h2>Allegati Dichiarazione e Certificazioni</h2>
+
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
+        <div  fxFlex>
+          <button mat-raised-button color="primary" (click)="onClickAttInstance('create')">Inserisci</button>
+        </div>
+      </div>
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px" *ngIf="certArt.length > 0">
+        <mat-table fxFlex mat-table [dataSource]="certArt">
+          <mat-header-row *matHeaderRowDef="['id','type','alle','status','note','action']; sticky: true"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: ['id','type','alle','status','note','action'];"></mat-row>
+
+          <ng-container matColumnDef="id">
+            <mat-header-cell *matHeaderCellDef> # </mat-header-cell>
+            <mat-cell *matCellDef="let element; let index = index">
+              {{index + 1}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="type">
+            <mat-header-cell *matHeaderCellDef> Tipo Documento </mat-header-cell>
+            <mat-cell *matCellDef="let c">
+              {{c.description}}
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="alle">
+            <mat-header-cell *matHeaderCellDef> Allegato </mat-header-cell>
+            <mat-cell *matCellDef="let c">
+              <mat-icon >{{c.upload  ?'done': 'close' }}</mat-icon>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="status">
+            <mat-header-cell *matHeaderCellDef> Controllo Stato </mat-header-cell>
+            <mat-cell *matCellDef="let c">
+
+              <mat-icon>{{c.adminControl ?'done': 'close' }}</mat-icon>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="note">
+            <mat-header-cell *matHeaderCellDef> Note Admin </mat-header-cell>
+            <mat-cell *matCellDef="let c">
+              <mat-icon>{{c.adminNote ?'done': 'close' }}</mat-icon>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="action">
+            <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+            <mat-cell *matCellDef="let c; let index = index">
+              <button
+              mat-icon-button
+              color="primary"
+              style="color:green;"
+              matTooltip="Aggiorna"
+              matTooltipPosition="above"
+              aria-label="Example icon button with a home icon"
+              (click)="onClickAttInstance('edit', c, index)"
+            >
+            <mat-icon>find_in_page</mat-icon>
+          </button>
+
+          <button
+          mat-icon-button
+          color="warn"
+          matTooltip="Annullamento"
+          matTooltipPosition="above"
+          aria-label="Example icon button with a home icon"
+          (click)="onClickAttInstance('delete', c, index)"
+        >
+        <mat-icon>cancel</mat-icon>
+          </button>
+            </mat-cell>
+          </ng-container>
+        </mat-table>
+      </div>
+
+      <h2>Categorie Veicoli</h2>
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
+        <div  fxFlex>
+          <button mat-raised-button color="primary" (click)="onClickCatVei('create')">Inserisci Categoria</button>
+        </div>
+      </div>
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px" *ngIf="catVei.length > 0">
+        <mat-table fxFlex mat-table [dataSource]="catVei">
+          <mat-header-row *matHeaderRowDef="['id_vei','cat','des','action']; sticky: true"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: ['id_vei','cat','des','action'];"></mat-row>
+
+          <ng-container matColumnDef="id_vei">
+            <mat-header-cell *matHeaderCellDef> # </mat-header-cell>
+            <mat-cell *matCellDef="let element; let index = index">
+              {{index + 1}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="cat">
+            <mat-header-cell *matHeaderCellDef> Categoria </mat-header-cell>
+            <mat-cell *matCellDef="let c">
+              {{c.category}}
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="des">
+            <mat-header-cell *matHeaderCellDef> Descrizione </mat-header-cell>
+            <mat-cell *matCellDef="let c">
+              {{c.description}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="action">
+            <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+            <mat-cell *matCellDef="let c; let index = index">
+              <button
+              mat-icon-button
+              color="primary"
+              style="color:green;"
+              matTooltip="Aggiorna"
+              matTooltipPosition="above"
+              aria-label="Example icon button with a home icon"
+              (click)="onClickCatVei('edit',c,index)"
+            >
+            <mat-icon>find_in_page</mat-icon>
+          </button>
+
+          <button
+          mat-icon-button
+          color="warn"
+          matTooltip="Annullamento"
+          matTooltipPosition="above"
+          aria-label="Example icon button with a home icon"
+          (click)="onClickCatVei('delete',c,index)"
+        >
+        <mat-icon>cancel</mat-icon>
+          </button>
+            </mat-cell>
+          </ng-container>
+        </mat-table>
+      </div>
+
+      <h2>Tipologie Veicolo</h2>
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
+        <div  fxFlex>
+          <button mat-raised-button color="primary" (click)="onClickTypeVei('create')">Inserisci Tipo Veicolo</button>
+        </div>
+      </div>
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px" *ngIf="catVei.length > 0">
+        <mat-table fxFlex mat-table [dataSource]="typeVeiGroupVIew | keyvalue"  *ngIf="typeVeiGroupVIew">
+          <mat-header-row *matHeaderRowDef="['id_vei','cat','des_span','action']; sticky: true"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: ['id_vei','cat','des_span','action'];"></mat-row>
+
+          <ng-container matColumnDef="id_vei">
+            <mat-header-cell *matHeaderCellDef> # </mat-header-cell>
+            <mat-cell *matCellDef="let element; let index = index">
+              {{index + 1}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="cat">
+            <mat-header-cell *matHeaderCellDef> Categoria </mat-header-cell>
+            <mat-cell *matCellDef="let c">
+              <span class="span-status canceled">{{c.key}}</span>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="des_span">
+            <mat-header-cell *matHeaderCellDef> Veicoli </mat-header-cell>
+            <mat-cell *matCellDef="let c">
+              <span *ngFor="let t of c.value" class="span-status opened">{{t.description}}</span>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="action">
+            <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+            <mat-cell *matCellDef="let c; let index = index">
+              <button
+              mat-icon-button
+              color="primary"
+              style="color:green;"
+              matTooltip="Aggiorna"
+              matTooltipPosition="above"
+              aria-label="Example icon button with a home icon"
+              (click)="onClickCatVei('edit',c,index)"
+            >
+            <mat-icon>find_in_page</mat-icon>
+          </button>
+
+          <button
+          mat-icon-button
+          color="warn"
+          matTooltip="Annullamento"
+          matTooltipPosition="above"
+          aria-label="Example icon button with a home icon"
+          (click)="onClickCatVei('delete',c,index)"
+        >
+        <mat-icon>cancel</mat-icon>
+          </button>
+            </mat-cell>
+          </ng-container>
+        </mat-table>
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
+          <mat-table fxFlex mat-table [dataSource]="typeVei" *ngIf="typeVei.length > 0">
+            <mat-header-row *matHeaderRowDef="['id','cat','s_des','l_des','art','db','type_doc','cont','action']; sticky: true"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: ['id','cat','s_des','l_des','art','db','type_doc','cont','action'];"></mat-row>
+
+            <ng-container matColumnDef="id">
+              <mat-header-cell *matHeaderCellDef> # </mat-header-cell>
+              <mat-cell *matCellDef="let element; let index = index">
+                {{index + 1}}
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="cat">
+              <mat-header-cell *matHeaderCellDef> Categoria </mat-header-cell>
+              <mat-cell *matCellDef="let c">
+                <span class="span-status canceled">{{c.catVei}}</span>
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="s_des">
+              <mat-header-cell *matHeaderCellDef> Descrizione </mat-header-cell>
+              <mat-cell *matCellDef="let c">
+                <span class="span-status opened">{{c.description}}</span>
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="l_des">
+              <mat-header-cell *matHeaderCellDef> Descrizione Estesa </mat-header-cell>
+              <mat-cell *matCellDef="let t">
+                {{t.longDescription}}
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="art">
+              <mat-header-cell *matHeaderCellDef> Art Decreto </mat-header-cell>
+              <mat-cell *matCellDef="let t">
+                {{t.artDm}}
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="db">
+              <mat-header-cell *matHeaderCellDef> Campo db </mat-header-cell>
+              <mat-cell *matCellDef="let t">
+                {{t.campoDb}}
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="type_doc">
+              <mat-header-cell *matHeaderCellDef> Tipi Documento </mat-header-cell>
+              <mat-cell *matCellDef="let t">
+                <mat-chip-list>
+                  <mat-chip color="primary" *ngFor="let type of t.typeDocument">
+                    {{getTypeDocument(type)}}
+                  </mat-chip>
+                </mat-chip-list>
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="cont">
+              <mat-header-cell *matHeaderCellDef> Valore Contributo </mat-header-cell>
+              <mat-cell *matCellDef="let c">
+                {{c.grantValue > 0?(c.grantValue | currency: 'EUR':'symbol':'.2-2':'it'):'ND' }}
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+              <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+              <mat-cell *matCellDef="let c; let index = index">
+
+                <button
+                mat-icon-button
+                color="primary"
+                style="color:green;"
+                matTooltip="Aggiorna"
+                matTooltipPosition="above"
+                aria-label="Example icon button with a home icon"
+                (click)="onClickTypeVei('edit',c,index)"
+              >
+              <mat-icon>find_in_page</mat-icon>
+            </button>
+
+            <button
+            mat-icon-button
+            color="warn"
+            matTooltip="Annullamento"
+            matTooltipPosition="above"
+            aria-label="Example icon button with a home icon"
+            (click)="onClickTypeVei('delete',c,index)"
+          >
+          <mat-icon>cancel</mat-icon>
+            </button>
+              </mat-cell>
+            </ng-container>
+          </mat-table>
+        </div>
+      </div>
+
+    </form>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button color="primary" (click)="onClickSubmit()">{{btnSubmit}}</button>
+
+  </mat-card-actions>
+</mat-card>

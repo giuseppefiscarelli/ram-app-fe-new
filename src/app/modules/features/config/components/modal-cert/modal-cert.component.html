@@ -1,1 +1,26 @@
-<p>modal-cert works!</p>
+<h2 mat-dialog-title>{{this.dialogTitle}}</h2>
+<mat-dialog-content>
+    <form [formGroup]="form">
+        <div fxLayout="column" fxLayout.xs="column" fxLayoutGap="30px">
+        <mat-form-field fxFlex>
+          <input matInput type="text"
+          formControlName="description"
+          [placeholder]="'Tipo Allegato/Certificazione'">
+      </mat-form-field>
+      <mat-form-field fxFlex>
+        <textarea matInput type="text" formControlName="longDescription"[placeholder]="'Descrizione estesa'"></textarea>
+      </mat-form-field>
+      <div fxFlex>
+        <mat-checkbox class="example-margin" formControlName="upload">Upload Allegato</mat-checkbox>
+        <mat-checkbox class="example-margin" formControlName="adminControl">Controllo Stato Admin</mat-checkbox>
+        <mat-checkbox class="example-margin" formControlName="adminNote">Campo Note Admin</mat-checkbox>
+
+      </div>
+      </div>
+</form>
+
+</mat-dialog-content>
+<mat-dialog-actions  >
+  <button mat-button color="warn" mat-dialog-close>Chiudi</button>
+  <button mat-button color="primary" (click)="onSubmitBtn(this.mode)">{{btnSubmit}}</button>
+</mat-dialog-actions>

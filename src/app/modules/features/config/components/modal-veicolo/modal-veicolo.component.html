@@ -1,1 +1,81 @@
-<p>modal-veicolo works!</p>
+<h2 mat-dialog-title>{{this.dialogTitle}}</h2>
+<mat-dialog-content>
+  <form [formGroup]="form">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
+
+      <div fxFlex>
+        <mat-form-field >
+          <mat-label>Categoria Veicolo</mat-label>
+          <mat-select formControlName="catVei">
+            <mat-option *ngFor="let cat of catVei; let index = index"
+
+            [value]="cat.category">
+              {{cat.category}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div fxFlex>
+        <mat-form-field>
+          <input
+          matInput
+          type="text"
+          [placeholder]="'Descrizione Breve'"
+          formControlName="description"
+          oninput="this.value = this.value.toUpperCase()"
+          >
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="50">
+        <mat-form-field style="width:100%">
+          <input matInput
+          type="text"
+          [placeholder]="'Descrizione Estesa'"
+          formControlName="longDescription">
+        </mat-form-field>
+      </div>
+
+      <div fxFlex>
+        <mat-form-field>
+          <input matInput
+          currencyMask
+          [formControlName]="'grantValue'"
+          [placeholder]="'Valore contributo'"
+          [options]="{ prefix: '€ ', thousands: '.', decimal: ',' }"
+
+          >
+      </mat-form-field>
+      </div>
+    </div>
+
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
+
+      <div fxFlex="50">
+        <mat-form-field style="width:100%" >
+          <mat-label>Tipi Documento</mat-label>
+          <mat-select formControlName="typeDocument" multiple>
+            <mat-option *ngFor="let type of typeDocuments" [value]="type.id">{{type.description}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <h3>Documenti selezionati</h3>
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
+      <mat-chip-list>
+        <mat-chip
+        *ngFor="let type of this.form.controls.typeDocument.value"
+        >
+        {{getTypeDescription(type).description}}
+        </mat-chip>
+      </mat-chip-list>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions  >
+  <button mat-button color="warn" mat-dialog-close>Chiudi</button>
+  <button mat-button color="primary" (click)="onSubmitBtn(this.mode)">{{btnSubmit}}</button>
+</mat-dialog-actions>

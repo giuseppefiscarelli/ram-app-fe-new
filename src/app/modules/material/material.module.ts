@@ -30,8 +30,21 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatNativeDateModule} from '@angular/material/core';
 import {ScrollingModule} from '@angular/cdk/scrolling';
-import {NgxMatTimepickerModule} from 'ngx-mat-timepicker';
+//import {NgxMatTimepickerModule} from 'ngx-mat-timepicker';
+//import { NgxMatDatetimePickerModule } from '@angular-material-components/datetime-picker';
+import {
+  NgxMatDatetimePickerModule,
+  NgxMatNativeDateModule,
+  NgxMatTimepickerModule
+} from '@angular-material-components/datetime-picker';
+
+import {PickerFormatsConfig, PickerLocaleConfig} from '@configs/dates/picker.formats.config';
+
 @NgModule({
+  providers: [
+    PickerLocaleConfig,
+    PickerFormatsConfig
+],
     exports: [
         MatAutocompleteModule,
         MatButtonToggleModule,
@@ -64,7 +77,12 @@ import {NgxMatTimepickerModule} from 'ngx-mat-timepicker';
         MatTooltipModule,
         MatNativeDateModule,
         ScrollingModule,
-        NgxMatTimepickerModule
+        NgxMatDatetimePickerModule,
+        NgxMatTimepickerModule,
+        NgxMatNativeDateModule,
+
+
+
 
     ]
 })

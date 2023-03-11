@@ -1,12 +1,12 @@
 # stage 1
 
-FROM node:alpine AS my-app-build
+FROM node:16.10.0-alpine AS my-app-build
 WORKDIR /app
 COPY . .
 RUN npm ci && npm run build
 
 # stage 2
 
-FROM nginx:alpine
+FROM nginx:16.10.0-alpine
 COPY --from=my-app-build /app/dist/ram-fe /usr/share/nginx/html
 EXPOSE 80
