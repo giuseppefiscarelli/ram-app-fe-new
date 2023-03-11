@@ -7,6 +7,6 @@ RUN npm ci && npm run build
 
 # stage 2
 
-FROM nginx:16.10.0-alpine
+FROM nginx:alpine
 COPY --from=my-app-build /app/dist/ram-fe /usr/share/nginx/html
 EXPOSE 80
