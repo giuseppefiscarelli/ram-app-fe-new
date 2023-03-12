@@ -1,3 +1,5 @@
+import { OnlyadminGuard } from './../../../guards/onlyadmin.guard';
+import { AdminIstanzaPageComponent } from './components/admin/admin-istanza-page/admin-istanza-page.component';
 import { IstanzaCheckResolver } from './resolvers/istanzaCheck.resolver';
 import { RendicontazioneResolver } from './resolvers/rendicontazione.resolver';
 import { IstanzaResolver } from './resolvers/istanza.resolver';
@@ -25,13 +27,23 @@ export const IstanzeRoutes: Routes =[
     path: 'edit/:id_ram',
     component: UserIstanzaEditComponent,
     data:{ mode:'edit'},
-   // canActivate: [DirectaccessGuard],
+    canActivate: [DirectaccessGuard],
     resolve:{
         istanza: IstanzaResolver,
         rendicontazione: RendicontazioneResolver,
         istanzaCheck: IstanzaCheckResolver
     }
 },
+{
+  path:'admin/:id_ram',
+  component: AdminIstanzaPageComponent,
+  canActivate:[OnlyadminGuard],
+  resolve:{
+      istanza: IstanzaResolver,
+      rendicontazione: RendicontazioneResolver,
+      istanzaCheck: IstanzaCheckResolver
+  }
+}
 
 ];
 

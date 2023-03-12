@@ -1,3 +1,4 @@
+import { AdminIstanzaPageComponent } from './components/admin/admin-istanza-page/admin-istanza-page.component';
 import { FormVeiComponent } from './components/user/form-vei/form-vei.component';
 import { UserIstanzaEditComponent } from './components/user/user-istanza-edit/user-istanza-edit.component';
 import { TypeDashComponent } from './components/home/type-dash/type-dash.component';
@@ -23,6 +24,9 @@ import { CancelDialogComponent } from './components/admin/cancel-dialog/cancel-d
 import { FormAllegatoComponent } from './components/user/form-allegato/form-allegato.component';
 import { FormAllegatoVeicoloComponent } from './components/user/form-allegato-veicolo/form-allegato-veicolo.component';
 import { ContentVeiComponent } from './components/user/content-vei/content-vei.component';
+import { AdminDialogAllegatoComponent } from './components/admin/admin-dialog-allegato/admin-dialog-allegato.component';
+import { AdminVeicoloDialogComponent } from './components/admin/admin-veicolo-dialog/admin-veicolo-dialog.component';
+import { CheckCertDialogComponent } from './components/admin/check-cert-dialog/check-cert-dialog.component';
 
 export const customCurrencyMaskConfig = {
   align: "left",
@@ -57,7 +61,11 @@ export const customCurrencyMaskConfig = {
     FormAllegatoComponent,
     FormAllegatoVeicoloComponent,
     ContentVeiComponent,
-    FormVeiComponent
+    FormVeiComponent,
+    AdminIstanzaPageComponent,
+    AdminDialogAllegatoComponent,
+    AdminVeicoloDialogComponent,
+    CheckCertDialogComponent
   ],
   providers : [IstanzeService, IstanzaResolver, MyIstanzaResolver, TypeIstanceResolver, RendicontazioneResolver, IstanzaCheckResolver]
 

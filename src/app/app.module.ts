@@ -1,3 +1,4 @@
+import { OnlyadminGuard } from './guards/onlyadmin.guard';
 import { RouterModule } from '@angular/router';
 
 import { NotificationsModule } from './modules/notifications/notifications.module';
@@ -53,7 +54,7 @@ import { NgxCurrencyModule } from 'ngx-currency';
 
   ],
   providers: [
-    StorageService, LoggedInGuard
+    StorageService, LoggedInGuard, OnlyadminGuard
   ],
   bootstrap: [AppComponent]
 })

@@ -1,0 +1,248 @@
+<mat-toolbar class="container-toolbar">
+  <span class="container-toolbar-title">
+    <b>Istanza n° {{istanza.id_ram}}/{{typeIstance?typeIstance.year:''}} </b> - <small>{{istanza.ragione_sociale}}</small>
+  </span>
+</mat-toolbar>
+
+<mat-card class="container-card" >
+  <div fxLayout="row"
+  fxLayout.xs="column"
+  fxLayoutAlign="start"
+  fxLayoutGap="30px">
+
+    <div fxFlex="20">
+      <mat-list dense>
+        <mat-list-item >
+           <div matLine>Stato Rendicontazione</div>
+             <div matLine>
+                <span class="status" [class]="this.rendicontazione.status">
+                    {{this.rendicontazione.status | rendStatus}}
+                </span>
+                </div>
+        </mat-list-item>
+
+        <mat-list-item >
+           <div matLine>Stato Istruttoria</div>
+             <div matLine>
+                <span class="status" [class]="this.statoIstruttoria">
+                    {{this.statoIstruttoria | istruttoriaStatus}}
+                </span>
+                </div>
+        </mat-list-item>
+        <mat-list-item >
+            <div matLine>Veicoli Inseriti</div>
+             <div matLine>{{listaVeicoli.length}}</div>
+         </mat-list-item>
+         <mat-list-item >
+            <div matLine>Allegati caricati</div>
+             <div matLine>{{listaAllegati.length}}</div>
+         </mat-list-item>
+    </mat-list>
+
+    </div>
+    <div fxFlex="80">
+        <mat-tab-group mat-align-tabs="center">
+          <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon class="tab-icon">apartment</mat-icon> Dati Impresa</ng-template>
+
+                <div fxLayout="row" fxLayoutAlign="space-around start" style="margin-top:10%">
+
+                  <div fxFlex="33">
+                    <h3>Dati Richiedente</h3>
+                    <div class="table">
+                        <table >
+                            <tbody>
+                                <tr><td style="font-weight: bold;">Cognome</td><td>{{istanza.cognome}}</td></tr>
+                                <tr ><td style="font-weight: bold;">Nome</td><td>{{istanza.nome}}</td></tr>
+                                <tr><td style="font-weight: bold;">Data di Nascita</td><td>{{istanza.data_nascita| date:"dd/MM/yyyy" }}</td></tr>
+                                <tr ><td style="font-weight: bold;">Luogo di Nascita</td><td>{{istanza.luogo_nascita}} ({{istanza.prov_nascita}})</td></tr>
+                                <tr ><td style="font-weight: bold;">Indirizzo Residenza</td><td>{{istanza.indirizzo_residenza}}, {{istanza.civico_residenza}}</td></tr>
+                                <tr><td style="font-weight: bold;">Comune Residenza</td><td>{{istanza.cap_residenza}} - {{istanza.comune_residenza}} ({{istanza.prov_residenza}})</td></tr>
+                                <tr ><td style="font-weight: bold;">email</td><td>{{istanza.email_richiedente}}</td></tr>
+                                <tr><td style="font-weight: bold;">Tipo</td><td>{{istanza.tipo_dichiarante === '1' ?'Legale Rappresentante':''}}
+                                    {{istanza.tipo_dichiarante === '2' ?'Procuratore':''}}
+                                </td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                  </div>
+                  <div fxFlex="66">
+                    <h3>Dati Impresa</h3>
+                    <div fxLayout="row" fxLayoutAlign="space-around start" style="margin-top:10%">
+                      <div class="table" fxFlex="50" >
+                        <table >
+                            <tbody >
+                                <tr ><td style="font-weight: bold;" >Ragione Sociale</td><td>{{istanza.ragione_sociale}}</td></tr>
+                                <tr ><td style="font-weight: bold;">Partita IVA</td><td>{{istanza.piva}}</td></tr>
+                                <tr ><td style="font-weight: bold;">Codice Fiscale</td><td>{{istanza.cf}}</td></tr>
+                                <tr ><td style="font-weight: bold;">Indirizzo Impresa</td><td>{{istanza.indirizzo_impr}}, {{istanza.civico_impr}}</td></tr>
+                                <tr ><td style="font-weight: bold;">Comune Impresa</td><td>{{istanza.cap_impr}} - {{istanza.comune_impr}} ({{istanza.prov_impr}})</td></tr>
+                                <tr ><td style="font-weight: bold;">Email Impresa</td><td>{{istanza.email_impr}}</td></tr>
+                                <tr><td style="font-weight: bold;">Pec Impresa</td><td>{{istanza.pec_impr}}</td></tr>
+                                <tr><td style="font-weight: bold;">Telefono Impresa</td><td>{{istanza.pref_tel_impr}} / {{istanza.num_tel_impr}}</td></tr>
+                            </tbody>
+                        </table>
+
+                      </div>
+                      <div class="table" fxFlex="50" >
+                        <table   >
+                          <tbody>
+                              <tr><td style="font-weight: bold;">Codice Albo</td><td>{{istanza.codice_albo}}</td></tr>
+                              <tr><td style="font-weight: bold;">Codice Ren</td><td>{{istanza.codice_ren}}</td></tr>
+                              <tr><td style="font-weight: bold;" rowspan="3">CCIAA</td><td>Provincia {{istanza.cciaa_prov}}</td></tr>
+                              <tr ><td>Codice {{istanza.cciaa_prov}}</td></tr>
+                              <tr><td>Data {{istanza.cciaa_data | date :'dd/MM/yyyy'}}</td></tr>
+                              <tr ><td style="font-weight: bold;">Codice A.TE.CO</td><td>{{istanza.codice_ateco}}</td></tr>
+                              <tr ><td style="font-weight: bold;" rowspan="3">Banca</td><td>Istituto {{istanza.banca_istituto}}</td></tr>
+                              <tr><td>Agenzia {{istanza.banca_agenzia}}</td></tr>
+                              <tr><td>Iban {{istanza.iban_it}} {{istanza.iban_num_chk}} {{istanza.iban_cin}} {{istanza.iban_abi}} {{istanza.iban_cab}} {{istanza.iban_cc}}</td></tr>
+                          </tbody>
+                      </table>
+                      </div>
+                    </div>
+
+
+                  </div>
+
+                </div>
+
+          </mat-tab>
+
+
+
+          <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon class="tab-icon">attach_file</mat-icon> Verifica Allagati dichiarazione e Certificazioni</ng-template>
+                <div style="min-height: 60vh;">
+                  <div *ngIf="certEnable.length > 0" >
+                    <h3>Allegati dichiarazione</h3>
+                    <table #tableA mat-table [dataSource]="certEnable">
+
+
+
+                      <ng-container matColumnDef="tipo">
+                        <th mat-header-cell *matHeaderCellDef> Tipo </th>
+                        <td mat-cell *matCellDef="let element"> {{element.longDescription}} </td>
+                      </ng-container>
+
+
+                      <ng-container matColumnDef="data">
+                        <th mat-header-cell *matHeaderCellDef> Data caricamento </th>
+                        <td mat-cell *matCellDef="let element">
+                           {{getCertificazioniData(element.description,'attach').data?(getCertificazioniData(element.description,'attach').data['dataUpload'] | date:"dd/MM/yyyy") : ' '}}
+                      </td>
+                      </ng-container>
+
+                          <ng-container matColumnDef="stato">
+                              <th mat-header-cell *matHeaderCellDef> Stato </th>
+                              <td mat-cell *matCellDef="let element">
+                                  <span class="status-span" [class]="getCertificazioniData(element.description,'attach').status" >
+                                  {{ getCertificazioniData(element.description,'attach').status | statusCheck}}
+
+                                  </span>
+                              </td>
+                            </ng-container>
+
+
+                      <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef> Action </th>
+                        <td mat-cell *matCellDef="let element">
+                          <ng-container *ngIf="getCertificazioniData(element.description,'attach').data">
+                              <button
+                              mat-icon-button color="primary"
+                              aria-label="Example icon button with a home icon"
+                              matTooltip="Visualizza e gestisci documento"
+                              matTooltipPosition="above"
+                              (click)="onClickAllegato('edit', getCertificazioniData(element.description,'attach').data)"
+                              >
+                               <mat-icon>edit_document</mat-icon>
+                             </button>
+                             <button
+                             mat-icon-button color="warn"
+                             matTooltip="Elimina documento"
+                              matTooltipPosition="above"
+                              aria-label="Example icon button with a menu icon"
+                              (click)="onClickAllegato('delete', getCertificazioniData(element.description,'attach').data)"
+                              >
+                               <mat-icon>delete</mat-icon>
+                             </button>
+                          </ng-container>
+
+                      </td>
+                      </ng-container>
+
+
+                      <tr mat-header-row *matHeaderRowDef="['tipo','data','stato','action']"></tr>
+                      <tr mat-row *matRowDef="let row; columns: ['tipo','data','stato','action'];"></tr>
+                    </table>
+
+                    <mat-divider style="margin-top: 20px;"></mat-divider>
+                    <h3>Certificazioni</h3>
+                    <table #tableB mat-table [dataSource]="certControlStatus">
+
+                      <!--- Note that these columns can be defined in any order.
+                            The actual rendered columns are set as a property on the row definition" -->
+
+                      <!-- Position Column -->
+                      <ng-container matColumnDef="tipo">
+                        <th mat-header-cell *matHeaderCellDef> Tipo </th>
+                        <td mat-cell *matCellDef="let element"> {{element.longDescription}}  </td>
+                      </ng-container>
+
+                      <!-- Name Column -->
+                      <ng-container matColumnDef="note">
+                        <th mat-header-cell *matHeaderCellDef> Note </th>
+                        <td mat-cell *matCellDef="let element"> {{getCertificazioniData(element.description, 'cert').note}} </td>
+                      </ng-container>
+                          <!-- Name Column -->
+                          <ng-container matColumnDef="stato">
+                              <th mat-header-cell *matHeaderCellDef> Stato </th>
+                              <td mat-cell *matCellDef="let element">
+                                  <ng-container *ngIf="element.description === 'dimImpresa'; else statusSpan">
+                                      <span class="status-span" [class]="getCertificazioniData(element.description, 'cert').status !== 'toWork' ? 'accepted' : 'toWork'"
+                                      [innerText]="getCertificazioniData(element.description, 'cert').status | dimImpresa"
+                                      >
+                                      </span>
+                                  </ng-container>
+                                  <ng-template #statusSpan>
+                                      <span class="status-span" [class]="getCertificazioniData(element.description, 'cert').status"
+                                      [innerText]="getCertificazioniData(element.description, 'cert').status | statusCheck"
+                                      >
+                                      </span>
+                                  </ng-template>
+
+                               </td>
+                            </ng-container>
+
+                      <!-- Weight Column -->
+                      <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef> Action </th>
+                        <td mat-cell *matCellDef="let element">
+                          <button
+                          mat-icon-button color="primary"
+                          aria-label="Example icon button with a home icon"
+                          matTooltip="Visualizza e gestisci documento"
+                          matTooltipPosition="above"
+                          (click)="onClickCert(element)"
+                          >
+                           <mat-icon>edit_document</mat-icon>
+                         </button>
+                      </td>
+                      </ng-container>
+
+
+                      <tr mat-header-row *matHeaderRowDef="['tipo','note','stato','action']"></tr>
+                      <tr mat-row *matRowDef="let row; columns: ['tipo','note','stato','action'];"></tr>
+                    </table>
+                  </div>
+
+                </div>
+          </mat-tab>
+
+        </mat-tab-group>
+    </div>
+
+</div>
+
+</mat-card>

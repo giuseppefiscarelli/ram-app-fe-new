@@ -22,12 +22,14 @@ import { ListTypeDocumentComponent } from './components/list-type-document/list-
 import { ModalCategoryComponent } from './components/modal-category/modal-category.component';
 import { ModalCertComponent } from './components/modal-cert/modal-cert.component';
 import { ModalVeicoloComponent } from './components/modal-veicolo/modal-veicolo.component';
-import { ReportComponent } from './components/report/report.component';
+
 import { TypeDocResolver } from './resolvers/type-doc.resolver';
 import {TypeIstanceResolver} from './resolvers/type-istance.resolver';
 import { ConfigService } from './config.service';
 import { NgxMatNativeDateModule } from '@angular-material-components/datetime-picker/public-api';
 import { ConfigPanelComponent } from './components/config-panel/config-panel.component';
+import { ReportsEditComponent } from './components/report/reports-edit/reports-edit.component';
+import { ReportsListComponent } from './components/report/reports-list/reports-list.component';
 export const customCurrencyMaskConfig = {
   align: "left",
   allowNegative: true,
@@ -61,9 +63,11 @@ export const customCurrencyMaskConfig = {
     ModalCategoryComponent,
     ModalCertComponent,
     ModalVeicoloComponent,
-    ReportComponent,
+
     EditionEditComponent,
-    ConfigPanelComponent
+    ConfigPanelComponent,
+    ReportsEditComponent,
+    ReportsListComponent
   ],
   providers: [ ConfigService, TypeIstanceResolver, TypeDocResolver, PaginatorService]
 

@@ -14,3 +14,14 @@ export const StoreActionsKeys = {
   ACTION_AUTHENTICATION_SIGNOUT: 'authentication::signout',
   UPDATE_LOGGED_USER: 'loggedUser::update',
 };
+
+export enum statusCheck {
+  TOWORK = 'toWork',
+  PENDING = 'pending',
+  ACCEPTED = 'accepted',
+  REJECTED = 'rejected',
+  FILEUPLOAD = 'fileUpload',
+  NOTFOUND = 'notFound',
+
+}
+

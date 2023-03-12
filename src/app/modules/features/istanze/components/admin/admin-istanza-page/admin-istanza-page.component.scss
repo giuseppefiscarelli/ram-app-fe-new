@@ -1,0 +1,100 @@
+.container-toolbar{
+  background: #0066cc40;
+  height: 80px;
+  .container-toolbar-title{
+      margin-top: -2%;
+  }
+
+
+}
+.container-card{
+  height: calc(100vh - 176px);
+  margin-left: 2%;
+  margin-right: 2%;
+  top: -34px;
+  overflow-x: auto;
+}
+
+
+.status-span{
+  padding:5px;
+  border-radius: 10px;
+  color:white;
+  background-color: orange;
+}
+.toWork{
+  color:white;
+  background-color: lightseagreen;
+}
+.approved{
+  color:white;
+  background-color: green;
+}
+.fileUpload{
+  background-color: lightseagreen;
+  color: white;
+}
+.rejected,.notFound{
+  color:white;
+  background-color: red;
+}
+.status{
+  background-color: green;
+  color: white;
+  padding: 2px 10px;
+  border-radius: 10px;
+}
+.enabled,.accepted{
+  background-color: green;
+  color: white;
+}
+.pending{
+  background-color: orange;
+  color: white;
+}
+.opened{
+  background-color: lightseagreen;
+  color: white;
+}
+.closed,.disabled{
+  background-color: orange;
+  color: white;
+}
+.canceled{
+  background-color: red;
+  color: white;
+}
+.span-category{
+  color: white;
+  background-color: red;
+  padding: 2px 10px;
+  border-radius: 10px;
+}
+.span-type{
+  color: white;
+  background-color: blue;
+  padding: 2px 10px;
+  border-radius: 10px;
+}
+.mat-table{
+  width:100%;
+}
+.mat-column-action {
+  text-align: right;
+  justify-content: flex-end;
+  width:15%;
+}
+.mat-column-tipo{
+ width:'auto';
+}
+.mat-column-note{
+  width:10%;
+ }
+ .mat-column-data{
+  width:10%;
+  min-width:100px;
+ }
+ .mat-column-stato{
+  width:15%;
+  min-width:170px;
+ }

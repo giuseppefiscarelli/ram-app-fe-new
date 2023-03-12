@@ -1,3 +1,5 @@
+import { DimImpresaPipe } from './pipes/dimImpresa.pipe';
+import { StatusCheckPipe } from './pipes/statusCheck.pipe';
 import {  PdfViewerSharedComponent } from './components/pdf-viewer/pdf-viewer.component';
 import { RendStatusPipe } from './pipes/rendStatus.pipe';
 
@@ -23,6 +25,7 @@ import { PhasePipe } from './pipes/phase.pipe';
 import { TypeOperationPipe } from './pipes/type-operation.pipe';
 import { PdfViewerModule,  } from 'ng2-pdf-viewer';
 import { NgApexchartsModule } from "ng-apexcharts";
+import { IstruttoriaStatusPipe } from './pipes/istruttoriaStatus.pipe';
 
 
 @NgModule({
@@ -36,7 +39,10 @@ import { NgApexchartsModule } from "ng-apexcharts";
     PriorityPipe,
     PhasePipe,
     RendStatusPipe,
-    TypeOperationPipe],
+    TypeOperationPipe,
+    StatusCheckPipe,
+    DimImpresaPipe,
+    IstruttoriaStatusPipe],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -69,7 +75,9 @@ import { NgApexchartsModule } from "ng-apexcharts";
     TypeOperationPipe,
     PdfViewerModule,
     NgApexchartsModule,
-    RendStatusPipe
+    RendStatusPipe,
+    IstruttoriaStatusPipe,
+    StatusCheckPipe,DimImpresaPipe
 
 
   ],

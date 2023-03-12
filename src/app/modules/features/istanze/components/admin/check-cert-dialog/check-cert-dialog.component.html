@@ -1,0 +1,54 @@
+<h1 mat-dialog-title>{{this.dialogTitle}}</h1>
+<mat-dialog-content>
+  <mat-list >
+    <mat-list-item>
+       <div mat-line>Tipo Certificazione</div>
+       <div mat-line><b>{{this.type.longDescription}}</b></div>
+    </mat-list-item>
+
+  </mat-list>
+
+  <form [formGroup]="form" style="margin-left:17px;">
+    <div fxLayout="column" fxLayout.xs="column"  fxLayoutAlign="start start" fxLayoutGap="30px">
+
+      <ng-container *ngIf="this.type.adminControl">
+        <mat-form-field fxFlex>
+          <mat-label> Stato Lavorazione</mat-label>
+          <mat-select [formControlName]="this.type.description">
+              <mat-option *ngFor="let statusCheck of filterOptionsDescriptors.statusCheck"
+              [value]="statusCheck.value"
+
+              >
+                  {{statusCheck.title | statusCheck}}
+              </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </ng-container>
+      <ng-container *ngIf="this.type.description === 'dimImpresa'">
+          <mat-form-field fxFlex>
+            <mat-label> Dimensione Impresa</mat-label>
+            <mat-select [formControlName]="this.type.description">
+                <mat-option  disabled="{{getDataImpresa(1)}}" [value]="1">Piccola</mat-option>
+                <mat-option  disabled="{{getDataImpresa(2)}}" [value]="2">Media</mat-option>
+                <mat-option  disabled="{{getDataImpresa(3)}}" [value]="3">Grande</mat-option>
+            </mat-select>
+          </mat-form-field>
+      </ng-container>
+      <ng-container *ngIf="this.type.adminNote">
+          <mat-form-field fxFlex>
+              <mat-label>Note</mat-label>
+              <input matInput
+              type="note"
+              [formControlName]="capitalizeNote(this.type.description)"
+              >
+
+          </mat-form-field>
+      </ng-container>
+
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-raised-button color="warn" mat-dialog-close>Chiudi </button>
+  <button mat-raised-button color="primary" (click)="onSubmitBtn()">{{btnSubmit}}</button>
+</mat-dialog-actions>
