@@ -24,4 +24,12 @@ export enum statusCheck {
   NOTFOUND = 'notFound',
 
 }
+export enum statusAdminVei {
+  toWork = 'toWork',
+  pending = 'pending',
+  accepted = 'accepted',
+  rejected = 'rejected',
+  integrationRequest = 'integrationRequest',
 
+
+}

@@ -1,54 +1,107 @@
-import { NotificationsComponent } from '@app/modules/notifications/notifications.component';
-import { statusCheck } from './../../../../../../app.costants';
-import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
+import { VeiIstruttoriaDialogComponent } from './../vei-istruttoria-dialog/vei-istruttoria-dialog.component';
+import { ConfigService } from '@app/modules/features/config/config.service';
+
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Allegato } from '@app/modules/models/allegato.model';
-import { User } from '@app/modules/models/user.model';
+
 import { Observable, take } from 'rxjs';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApplicationState } from '@app/app.state';
 import { select, Store } from '@ngrx/store';
+
+import { TYPE } from '@app/modules/notifications/values.constants';
+import { statusCheck } from '@app/app.costants';
+import { Allegato } from '@app/modules/models/allegato.model';
+import { Istanza } from '@app/modules/models/istanza.model';
+import { IstanzaCheck } from '@app/modules/models/istanzacheck.model';
+import { TypeIstance } from '@app/modules/models/type-istance.model';
+import { TypeDocument } from '@app/modules/models/typeDocument.model';
+import { User } from '@app/modules/models/user.model';
+import { Veicolo } from '@app/modules/models/veicolo.model';
+import { NotificationsComponent } from '@app/modules/notifications/notifications.component';
 import { IstanzeService } from '../../../istanze.service';
 import { AdminDialogAllegatoComponent } from '../admin-dialog-allegato/admin-dialog-allegato.component';
-import { TYPE } from '@app/modules/notifications/values.constants';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-admin-veicolo-dialog',
   templateUrl: './admin-veicolo-dialog.component.html',
-  styleUrls: ['./admin-veicolo-dialog.component.scss']
+  styleUrls: ['./admin-veicolo-dialog.component.scss'],
+  providers:[ConfigService],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AdminVeicoloDialogComponent implements OnInit {
-  allegato: Allegato;
-   url: string;
-   form: FormGroup;
-   user: Observable<User>;
-   userMe: User;
+  user: Observable<User>;
+    userMe: User;
+    typeDocuments: TypeDocument[];
+    allegatiVeicolo: Allegato[];
+    veicolo: Veicolo;
+    typeIstance: TypeIstance;
+    istanzaCheck: IstanzaCheck;
+    istanza: Istanza;
+    displayedColumnsAllegato: string[] = [
+        'tipo',
+        'note',
+        'stato',
+        'noteAdmin',
+        'action'];
 
-   dialogTitle: string;
-   btnSubmit: string;
-   btnClose: string;
-   type:string;
+        dialogTitle: string;
+        dialogSubTitle: string;
+        btnSubmit: string;
+    form:FormGroup;
+    formVeicolo:FormGroup;
+    typeVeicolo:any;
+    alleSelected: boolean;
+    alleDataSelected: Allegato;
+    isLoading:boolean;
+    url: string;
 
-   statusCheck:statusCheck;
+    statusCheck:statusCheck;
 
    filterOptionsDescriptors: {
     [key: string]: any
     };
-    constructor(
-                @Inject(MAT_DIALOG_DATA) public data: any,
-                private services: IstanzeService,
-                private changeDetectorRef: ChangeDetectorRef,
-                private store: Store<ApplicationState>,
-                private dialogRef: MatDialogRef<AdminDialogAllegatoComponent>,
-                private notifications: NotificationsComponent,
-                private route: ActivatedRoute,
-                private router: Router,
+    datiIstruttoriaShow:boolean=false;
+    valoreContributo:number=0;
+    constructor(@Inject(MAT_DIALOG_DATA) public data: any,
+    private services: IstanzeService,
+    private dialog: MatDialog,
+    private dialogRef: MatDialogRef<AdminVeicoloDialogComponent>,
+    private changeDetectorRef: ChangeDetectorRef,
+    private notifications: NotificationsComponent,
+    private store: Store<ApplicationState>,
+    private configService:ConfigService
     ) {
-      this.allegato = data.allegato;
-      this.dialogTitle = 'Info Allegato Dichiarazione';
+
+
+      this.user = this.store.pipe(select('authentication'),select('user'));
+      this.user.pipe(take(1)).subscribe((userMe: User) => this.userMe = userMe);
+      this.istanza = data.istanza;
+      this.istanzaCheck = data.istanzaCheck;
+      this.veicolo = data.veicolo;
+      this.allegatiVeicolo = data.allegatiVeicolo;
+      this.dialogSubTitle = data.info;
+      this.typeDocuments = data.typeDocuments;
+      this.typeIstance =data.typeIstance;
+      this.dialogTitle = 'Scheda Veicolo';
       this.btnSubmit= 'Aggiorna informazioni e stato lavorazione';
-      this.type='cert';
+      this.typeVeicolo = this.typeIstance.typeVei.find(x=> x['campoDb'] === this.veicolo.type);
+      this.alleSelected = false;
+      this.isLoading = true;
+      this.alleDataSelected = null;
+      this.formVeicolo = this.initializeForEditVeicolo(this.veicolo)
+
+      console.log(this.checkAllegatiStatus())
+   //console.log(this.allegatiVeicolo)
+      const checkDichiarazioni = this.checkDichiarazioni()
+
+      if(checkDichiarazioni && (this.checkAllegatiStatus() === this.allegatiVeicolo.length)){
+          this.datiIstruttoriaShow = true;
+          this.valoreContributo = this.services.calcolaContributo(this.istanza, this.istanzaCheck, this.veicolo, this.typeIstance)
+      }
+
       this.filterOptionsDescriptors = {
           statusCheck: [
 
@@ -66,84 +119,216 @@ export class AdminVeicoloDialogComponent implements OnInit {
               }
           )
       ));
-      if(this.allegato.id_Veicolo){
-          this.dialogTitle = 'Info Allegato Veicolo';
-          this.btnSubmit= 'Aggiorna informazioni e stato lavorazione';
-          this.type='vehicle';
-      }
-      this.url = data.url
-      this.user = this.store.pipe(select('authentication'), select('user'));
-      this.user.pipe(take(1)).subscribe((me: User) => this.userMe = me);
 
-      this.form = this.initializeForEdit(this.allegato)
+
+
     }
 
     ngOnInit(): void {
     }
     initializeForEdit(alle): FormGroup{
-      return new FormGroup({
-          id: new FormControl(alle.id),
-          adminState : new FormControl(alle.adminState, [Validators.required]),
-          adminNote : new FormControl(alle.adminNote),
-          adminDate : new FormControl(),
-          adminUser : new FormControl(),
+        return new FormGroup({
+            id: new FormControl(alle.id),
+            adminState : new FormControl(alle.adminState, [Validators.required]),
+            adminNote : new FormControl(alle.adminNote),
+            adminDate : new FormControl(),
+            adminUser : new FormControl(),
 
-      })
-  }
-  onSubmitBtn(){
-      Object
-      .keys(this.form.controls)
-      .map((key: string) => this.form.get(key))
-      .forEach((control: AbstractControl) => {
-          control.markAsDirty();
-          control.markAsTouched();
-      });
+        })
+    }
+    initializeForEditVeicolo(v: Veicolo): FormGroup{
+        return new FormGroup({
+            id: new FormControl(v.id),
+            adminState : new FormControl(v.adminState, [Validators.required]),
+            adminNote : new FormControl(v.adminNote),
+            adminDateUpdate : new FormControl(),
+            adminUser : new FormControl(this.userMe.email),
+            costoIstr : new FormControl(v.costoIstr, [Validators.required]),
+            noteIstr : new FormControl(),
+            valoreContributo : new FormControl(v.valoreContributo,[Validators.required]),
 
-      if (this.form.valid){
-          const payload = this.form.value;
-        //  console.log(payload)
-          Object.keys(payload).forEach(key => {
-              if (payload[key] === undefined || payload[key] === null ) {
-                  delete payload[key];
-              }
-          });
+        })
+    }
+    getTypeDocument(id){
 
-          this.services.updateAllegato(payload).subscribe(
-              {
-                  next:(res) => {
-                      this.notifications.toast(TYPE.SUCCESS,'Operazione Completata','Informazioni aggiornate con successo')
-                      this.dialogRef.close(res)
-                  },
-                  error:(err)=>{
+        return this.typeDocuments.find(x=> x.id == id).description
+    }
+    getTipoVeicolo(tipo){
 
-                      this.notifications.toast(TYPE.ERROR,'Operazione Non Completata','Errore aggiornamento informazioni')
+        const data = this.typeIstance.typeVei.find(X => X['campoDb'] === tipo);
+    // console.log(data)
+        return data['description'];
+    }
+    onClickAlle(mode,data){
+        console.log(mode,data)
+        this.isLoading = true;
+        this.alleDataSelected = null;
+        if(mode === 'view'){
+            this.alleSelected = true;
+            //this.isLoading = true;
+            const file = data.fd;
+            this.form = this.initializeForEdit(data)
+            this.services.getFile(file)
+            .subscribe(
+            {
+                next: (res) => {
+                    this.alleDataSelected = data;
+                    console.log(res)
+                    const blob = new Blob([res],{type: file.type});
+                    this.url = window.URL.createObjectURL(blob);
+                    console.log(this.url)
 
-                  }
+                },
+                complete:()=>{
+                    this.isLoading = false;
+                    this.changeDetectorRef.markForCheck()
+                }
+            }
+            )
+        }
+    }
+    onSubmitBtn(){
+        Object
+        .keys(this.formVeicolo.controls)
+        .map((key: string) => this.formVeicolo.get(key))
+        .forEach((control: AbstractControl) => {
+            control.markAsDirty();
+            control.markAsTouched();
+        });
 
-              }
-          )
+        if (this.formVeicolo.valid){
+            const payload = this.formVeicolo.value;
+        console.log(payload)
+            Object.keys(payload).forEach(key => {
+                if (payload[key] === undefined || payload[key] === null ) {
+                    delete payload[key];
+                }
+            });
 
-      }
-  }
 
-  viewAllegato(file): void{
+            if((this.veicolo.amount !== payload.costoIstr) || (this.valoreContributo !== payload.valoreContributo)){
+                Swal.fire({
+                    title: 'Attenzione!',
+                    text: 'I valori calcolati sono differenti da quelli accordati',
+                    icon: 'warning',
+                    cancelButtonText:'Torna Indietro',
+                    confirmButtonText:'Prosegui',
+                    showCancelButton: true,
+                    allowOutsideClick: false
+                }).then( (res) => {
+                    if (res && res.value){
 
-      this.services.getFile(file)
-      .subscribe(
-          (res) => {
-              const blob = new Blob([res],{type: file.type});
-              const url = window.URL.createObjectURL(blob);
-             window.open(url);
+                        console.log('aggiorna veicolo')
+                    }
 
-          },
-              error => console.log('Error downloading the file.')
-          );
-  }
+                })
 
-  downloadAllegato(file): void{
+            }else{
+                this.services.updateVeicolo(payload).subscribe(
+                    {
+                        next:(res: Veicolo) => this.veicolo = res,
+                        complete:()=> {
+                            this.changeDetectorRef.markForCheck();
 
-      this.services.getFile(file)
-      .subscribe(
+                            this.notifications.toast(TYPE.SUCCESS,'Operazione Completata', 'Veicolo aggiornato con successo')}
+                    }
+                )
+            }
+        }
+    }
+
+    onClickSubmitAlle(){
+        Object
+        .keys(this.form.controls)
+        .map((key: string) => this.form.get(key))
+        .forEach((control: AbstractControl) => {
+            control.markAsDirty();
+            control.markAsTouched();
+        });
+
+        if (this.form.valid){
+            const payload = this.form.value;
+        // console.log(payload)
+            Object.keys(payload).forEach(key => {
+                if (payload[key] === undefined || payload[key] === null ) {
+                    delete payload[key];
+                }
+            });
+            payload.adminDate = new Date().getTime().toString();
+            payload.adminUser = this.userMe.id;
+        // console.log(payload);
+            this.services.updateAllegato(payload).subscribe(
+
+                (res: Allegato) => {
+                    if(!!res){
+                        this.notifications.toast(
+                          TYPE.SUCCESS,
+                            'Operazione Completata',
+                            'Allegato veicolo aggiornato'
+                        )
+                        let updateItem = this.allegatiVeicolo.find(x=> x.id === res.id);
+                        let index = this.allegatiVeicolo.indexOf(updateItem);
+                        const currentRecords = [...this.allegatiVeicolo];
+                        currentRecords[index] = res;
+                        this.allegatiVeicolo = [...currentRecords];
+                        this.alleSelected = null;
+                        console.log(this.allegatiVeicolo)
+                        console.log(this.checkDichiarazioni(), this.checkAllegatiStatus(), this.allegatiVeicolo.length)
+                        if(this.checkDichiarazioni() && (this.checkAllegatiStatus() === this.allegatiVeicolo.length)){
+                            this.datiIstruttoriaShow = true;
+                            const contributo = this.services.calcolaContributo(this.istanza, this.istanzaCheck, this.veicolo, this.typeIstance)
+                        }else{
+                            this.datiIstruttoriaShow = false;
+                            let payVei = this.veicolo;
+                            payVei.adminState = 'pending';
+                            this.services.updateVeicolo(payVei).subscribe(
+                              (res) => {
+                                this.veicolo = res;
+
+                              }
+                            )
+                        }
+                        this.changeDetectorRef.markForCheck();
+                    }
+                },
+                (error) => {
+                    this.notifications.toast(
+                      TYPE.ERROR,
+                        'Errore',
+                        'Allegato non aggiornato'
+                    )
+                }
+            )
+        }
+    }
+
+    onClickCloseDialog(){
+
+        const dataReturn = {
+            veicolo:this.veicolo,
+            allegati:this.allegatiVeicolo
+        }
+        this.dialogRef.close(dataReturn)
+    }
+
+    viewAllegato(file): void{
+
+        this.services.getFile(file)
+        .subscribe(
+            (res) => {
+                const blob = new Blob([res],{type: file.type});
+                const url = window.URL.createObjectURL(blob);
+            window.open(url);
+
+            },
+                error => console.log('Error downloading the file.')
+            );
+    }
+
+    downloadAllegato(file): void{
+
+        this.services.getFile(file)
+        .subscribe(
         (res) => {
             const blob = new Blob([res], {type: file.type});
             // const url = window.URL.createObjectURL(blob);
@@ -159,6 +344,34 @@ export class AdminVeicoloDialogComponent implements OnInit {
         },
         error => console.log('Error downloading the file.')
         );
-  }
+    }
+
+    checkAllegatiStatus(){
+        const count = this.allegatiVeicolo.filter(x=> (x.adminState ==='accepted' ||  x.adminState ==='rejected') && x.enable).length
+
+        return count
+    }
+    checkDichiarazioni(){
+        const checkDichiarazioni = this.istanzaCheck.contratto === 'accepted' &&
+        this.istanzaCheck.delega === 'accepted' &&
+        this.istanzaCheck.dimImpresa &&
+        this.istanzaCheck.doc === 'accepted' &&
+        this.istanzaCheck.firma === 'accepted' &&
+        this.istanzaCheck.pec === 'accepted' ? true: false;
+        console.log(checkDichiarazioni)
+        return checkDichiarazioni;
+    }
+    onClickDatiIstruttoria(){
+        const veicolo = this.veicolo;
+        const ref: MatDialogRef<VeiIstruttoriaDialogComponent> = this.dialog.open(
+            VeiIstruttoriaDialogComponent,
+            { hasBackdrop: true,
+                data:{
+                    veicolo: veicolo
+                }
+            }
+
+        )
+    }
 
 }

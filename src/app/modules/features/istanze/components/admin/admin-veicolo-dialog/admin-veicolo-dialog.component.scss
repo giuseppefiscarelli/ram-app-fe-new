@@ -1,0 +1,63 @@
+.table-container-vei{
+  overflow: auto;
+  max-height: 35vh;
+
+}
+.table-container-detail{
+  overflow: auto;
+  max-height: 65vh;
+
+}
+.status-span{
+  padding:5px;
+  border-radius: 10px;
+  color:white;
+  background-color: orange;
+}
+.toWork{
+  color:white;
+  background-color: lightseagreen;
+}
+.approved{
+  color:white;
+  background-color: green;
+}
+.fileUpload{
+  background-color: lightseagreen;
+  color: white;
+}
+.rejected,.notFound{
+  color:white;
+  background-color: red;
+}
+.status{
+  background-color: green;
+  color: white;
+  padding: 2px 10px;
+  border-radius: 10px;
+}
+.enabled,.accepted{
+  background-color: green;
+  color: white;
+}
+.pending{
+  background-color: orange;
+  color: white;
+}
+.opened{
+  background-color: lightseagreen;
+  color: white;
+}
+.closed,.disabled{
+  background-color: orange;
+  color: white;
+}
+.canceled{
+  background-color: red;
+  color: white;
+}
+.mat-column-stato {
+  text-align: right;
+  justify-content: flex-end;
+  width:90px;
+}

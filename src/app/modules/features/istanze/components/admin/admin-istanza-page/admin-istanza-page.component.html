@@ -46,7 +46,7 @@
             <ng-template mat-tab-label>
                 <mat-icon class="tab-icon">apartment</mat-icon> Dati Impresa</ng-template>
 
-                <div fxLayout="row" fxLayoutAlign="space-around start" style="margin-top:10%">
+                <div fxLayout="row" fxLayoutAlign="start start" >
 
                   <div fxFlex="33">
                     <h3>Dati Richiedente</h3>
@@ -69,7 +69,7 @@
                   </div>
                   <div fxFlex="66">
                     <h3>Dati Impresa</h3>
-                    <div fxLayout="row" fxLayoutAlign="space-around start" style="margin-top:10%">
+                    <div fxLayout="row" fxLayoutAlign="space-around start" >
                       <div class="table" fxFlex="50" >
                         <table >
                             <tbody >
@@ -240,6 +240,158 @@
                 </div>
           </mat-tab>
 
+          <!-- Veicoli -->
+
+          <mat-tab>
+              <ng-template mat-tab-label>
+                  <mat-icon class="tab-icon">directions_car</mat-icon> Dati Veicoli</ng-template>
+
+
+                  <ng-template matTabContent>
+                    <div [formGroup]="filtersVei" fxLayout="row"   fxLayout.xs="column">
+                      <div fxFlex="15" fxFlex.xs="100" >
+                        <mat-form-field appearance="standard">
+                            <mat-label>
+                              Categoria
+                          </mat-label>
+                          <mat-select  formControlName="category" *ngIf=" this.typeIstance">
+                            <mat-option>Tutte</mat-option>
+                              <mat-option *ngFor="let type of this.typeIstance.categoryVei" [value]="type.category">
+                                  {{type['category']}}
+                              </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                      <div fxFlex="15" fxFlex.xs="100" >
+                        <mat-form-field appearance="standard">
+                            <mat-label>
+                              Tipo Veicolo
+                          </mat-label>
+                          <mat-select  formControlName="type" *ngIf=" this.typeIstance">
+                            <mat-option>Tutti</mat-option>
+                              <mat-option *ngFor="let type of this.typeIstance.typeVei" [value]="type.campoDb">
+                                  {{type['description']}}
+                              </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                      <div fxFlex="15" fxFlex.xs="100" >
+                        <mat-form-field appearance="standard">
+                            <mat-label>
+                              Targa veicolo
+                          </mat-label>
+                          <mat-select  formControlName="licensePlate" *ngIf=" this.listaVeicoli">
+                            <mat-option>Tutti</mat-option>
+                              <mat-option *ngFor="let vei of this.listaVeicoli" [value]="vei.licensePlate">
+                                  {{vei['licensePlate']}}
+                              </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+
+                      <div fxFlex="15" fxFlex.xs="100" >
+                        <mat-form-field appearance="standard">
+                            <mat-label>
+                              Stato veicolo
+                          </mat-label>
+                          <mat-select  formControlName="adminState" >
+
+                            <mat-option *ngFor="let adminState of filterVeiOptionsDescriptors.adminState" [value]="adminState.value">
+                              {{adminState.title | statusCheck}}
+                              </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+
+
+                    </div>
+
+
+
+                    <table mat-table [dataSource]="listaVeicoliFiltered" >
+                      <ng-container matColumnDef="progressivo">
+                          <th mat-header-cell *matHeaderCellDef> Prog </th>
+                          <td mat-cell *matCellDef="let element; let index = index"> {{index + 1}} </td>
+                        </ng-container>
+                      <ng-container matColumnDef="categoria">
+                          <th mat-header-cell *matHeaderCellDef> Categoria </th>
+                          <td mat-cell *matCellDef="let element">
+                              <span class="span-category">
+                                  {{element.category}}
+                              </span>
+                              </td>
+                        </ng-container>
+
+
+                        <ng-container matColumnDef="tipoVeicolo">
+                          <th mat-header-cell *matHeaderCellDef> Tipo Veicolo </th>
+                          <td mat-cell *matCellDef="let element">
+                              <span class="span-type" >{{getTipoVeicolo(element.type)}}</span> </td>
+                        </ng-container>
+
+
+                        <ng-container matColumnDef="dativeicolo">
+                          <th mat-header-cell *matHeaderCellDef> Dati Veicolo </th>
+                          <td mat-cell *matCellDef="let element">
+                              <div style="font-size:smaller;">
+                                  <p style="margin:2px ;"><span>Targa </span> <span class="span-type" style="    border-radius: 3px;
+                                      padding: 2px 5px;" > <b>{{element.licensePlate}}</b></span></p>
+                                  <p style="margin:2px;"><span>Marca </span> <span> <b>{{element.brand}}</b></span></p>
+                                  <p style="margin:2px;"><span>Modello </span> <span> <b>{{element.model}}</b></span></p>
+                              </div>
+
+                          </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="acquisizione">
+                          <th mat-header-cell *matHeaderCellDef> Importo <br>Acquisizione</th>
+                          <td mat-cell *matCellDef="let element">
+                              {{element.amount| currency: 'EUR':'symbol':'.2-2':'it' }}<br>
+                          <span class="status opened">{{element.acquisitionType === '01' ? 'Acquisto': 'Leasing'}}</span>
+                          </td>
+                        </ng-container>
+
+
+                        <ng-container matColumnDef="stato">
+                          <th mat-header-cell *matHeaderCellDef> Stato </th>
+                          <td mat-cell *matCellDef="let element">
+                              <span class="status-span" [class]="element.adminState?element.adminState:'toWork'"
+                              [innerText]="element.adminState?(element.adminState | statusCheck) : ('toWork' | statusCheck)"
+
+
+                              >
+                              </span>
+                        </ng-container>
+
+                        <ng-container matColumnDef="action">
+                          <th mat-header-cell *matHeaderCellDef> Action </th>
+                          <td mat-cell *matCellDef="let element; let index = index">
+
+                              <button
+                              mat-icon-button color="primary"
+                              aria-label="Example icon button with a home icon"
+                              matTooltip="Visualizza e gestisci Veicolo"
+                              matTooltipPosition="above"
+                              (click)="onClickVei('edit',element, index)"
+                              >
+                                <mat-icon>edit_document</mat-icon>
+                              </button>
+
+                        </td>
+                        </ng-container>
+
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+
+                        ></tr>
+
+
+
+                    </table>
+
+                  </ng-template>
+          </mat-tab>
         </mat-tab-group>
     </div>
 

@@ -96,42 +96,63 @@
         <ng-container matColumnDef="action">
           <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
           <mat-cell *matCellDef="let element; let index = index">
+            <ng-container
 
+            *ngIf="!element.rendstatus || element.rendstatus !== 'canceled'; else canceled">
             <button
-                mat-icon-button
-                color="primary"
-                style="color:green;"
-                matTooltip="Visualizzazione Utente"
-                matTooltipPosition="above"
-                aria-label="Example icon button with a home icon"
-                [routerLink]="['/istanze','edit',element.id_ram]"
-              >
-              <mat-icon>find_in_page</mat-icon>
-            </button>
+            mat-icon-button
+            color="primary"
+            style="color:green;"
+            matTooltip="Visualizzazione Utente"
+            matTooltipPosition="above"
+            aria-label="Example icon button with a home icon"
+            [routerLink]="['/istanze','edit',element.id_ram]"
+          >
+          <mat-icon>find_in_page</mat-icon>
+        </button>
 
 
-            <button
-                mat-icon-button
-                color="primary"
-                matTooltip="Visualizzazione Backoffice"
-                matTooltipPosition="above"
-                aria-label="Example icon button with a home icon"
-                [routerLink]="['/istanze','admin',element.id_ram]"
-              >
-              <mat-icon>admin_panel_settings</mat-icon>
-            </button>
+        <button
+            mat-icon-button
+            color="primary"
+            matTooltip="Visualizzazione Backoffice"
+            matTooltipPosition="above"
+            aria-label="Example icon button with a home icon"
+            [routerLink]="['/istanze','admin',element.id_ram]"
+          >
+          <mat-icon>admin_panel_settings</mat-icon>
+        </button>
 
 
-            <button
-                mat-icon-button
-                color="warn"
-                matTooltip="Annullamento"
-                matTooltipPosition="above"
-                aria-label="Example icon button with a home icon"
-                (click)="onClickCancelIstanza(element, index,'edit')"
-              >
-              <mat-icon>cancel</mat-icon>
-            </button>
+        <button
+            mat-icon-button
+            color="warn"
+            matTooltip="Annullamento"
+            matTooltipPosition="above"
+            aria-label="Example icon button with a home icon"
+            (click)="onClickCancelIstanza(element, index,'edit')"
+          >
+          <mat-icon>cancel</mat-icon>
+        </button>
+
+
+            </ng-container>
+            <ng-template #canceled>
+
+              <button
+              mat-icon-button
+              color="warn"
+              matTooltip="Annullamento"
+              matTooltipPosition="above"
+              aria-label="Example icon button with a home icon"
+              (click)="onClickCancelIstanza(element, index,'show')"
+            >
+            <mat-icon>cancel</mat-icon>
+          </button>
+
+            </ng-template>
+
+
 
 
 

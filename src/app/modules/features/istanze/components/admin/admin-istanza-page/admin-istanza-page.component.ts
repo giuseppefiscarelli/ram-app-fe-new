@@ -1,3 +1,5 @@
+import { statusAdminVei } from './../../../../../../app.costants';
+import { DateAdapter } from '@angular/material/core';
 import { ReportsEditComponent } from './../../../../config/components/report/reports-edit/reports-edit.component';
 import { CheckCertDialogComponent } from './../check-cert-dialog/check-cert-dialog.component';
 import { AdminVeicoloDialogComponent } from './../admin-veicolo-dialog/admin-veicolo-dialog.component';
@@ -5,7 +7,7 @@ import Swal from 'sweetalert2';
 import { AdminDialogAllegatoComponent } from './../admin-dialog-allegato/admin-dialog-allegato.component';
 import { ConfigService } from '@app/modules/features/config/config.service';
 import { NotificationsComponent } from '@app/modules/notifications/notifications.component';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { ApplicationState } from '@app/app.state';
@@ -19,9 +21,14 @@ import { TypeReport } from '@app/modules/models/typeReport.model';
 import { User } from '@app/modules/models/user.model';
 import { Veicolo } from '@app/modules/models/veicolo.model';
 import { Store } from '@ngrx/store';
-import { forkJoin, Observable, Subscription } from 'rxjs';
+import { debounceTime, forkJoin, Observable, Subscription } from 'rxjs';
 import { IstanzeService } from '../../../istanze.service';
 
+
+import { registerLocaleData } from '@angular/common';
+import localeIt from '@angular/common/locales/it'
+import { FormControl, FormGroup } from '@angular/forms';
+registerLocaleData(localeIt, 'it');
 @Component({
   selector: 'app-admin-istanza-page',
   templateUrl: './admin-istanza-page.component.html',
@@ -29,14 +36,16 @@ import { IstanzeService } from '../../../istanze.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers:[ConfigService],
 })
-export class AdminIstanzaPageComponent implements OnInit {
+export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
   user: Observable<User>;
   userMe: User;
   mode: string;
   istanza: Istanza;
   rendicontazione: Rendicontazione;
   istanzaCheck :IstanzaCheck;
+
   listaVeicoli: Veicolo[];
+  listaVeicoliFiltered: Veicolo[];
   listaAllegati: Allegato[];
   listaAllegatiVeicoli: Allegato[];
   listaAllegatiDich: Allegato[];
@@ -67,14 +76,24 @@ export class AdminIstanzaPageComponent implements OnInit {
   alleRejecetd=0;
 
 
+
+  filtersVei: FormGroup;
+  filtersVei$: Subscription;
+  filterVeiOptionsDescriptors: {
+    [key: string]: any
+  };
+
+
     constructor(private route: ActivatedRoute,
                 private service: IstanzeService,
                 private dialog: MatDialog,
+                private dateAdapter: DateAdapter<any>,
                 private changeDetectorRef: ChangeDetectorRef,
                 private store: Store<ApplicationState>,
                 private notifications: NotificationsComponent,
                 private configService:ConfigService
                 ) {
+                  this.dateAdapter.setLocale('it-IT');
                   this.istanza = this.route.snapshot.data.istanza;
                   this.rendicontazione = this.route.snapshot.data.rendicontazione;
                   this.istanzaCheck = this.route.snapshot.data.istanzaCheck;
@@ -85,11 +104,36 @@ export class AdminIstanzaPageComponent implements OnInit {
                   this.certControlStatus = [];
                   this.listaAllegatiDich = [];
                   this.listaAllegati = [];
-                  this.listaVeicoli = [];
+                  this.listaVeicoli = this.listaVeicoliFiltered = [];
                   this.typeReport = [];
                   this.reports = [];
                   this.statoIstruttoria = 'disabled';
                   this.funzioniIstruttoria = false;
+                  this.typeIstance = null;
+
+                  this.filtersVei = new FormGroup({
+                    category: new FormControl(null),
+                    type: new FormControl(null),
+                    licensePlate: new FormControl(null),
+                    adminState: new FormControl(null)
+
+                });
+                this.filterVeiOptionsDescriptors = {
+                  adminState: [
+                      {title: 'all', value: null}
+                  ]
+              };
+                Object.keys(statusAdminVei)
+                .map((status: string) => (
+                    this.filterVeiOptionsDescriptors.adminState.push(
+                        {
+                            title: statusAdminVei[status],
+                            value: statusAdminVei[status]
+                        }
+                    )
+                ));
+
+
 
                   this.data$ = forkJoin([
                     this.service.fetchVeicoli({drop:true, id_ram: this.istanza.id_ram}),
@@ -100,11 +144,11 @@ export class AdminIstanzaPageComponent implements OnInit {
                     this.configService.fetchReport({drop:true, enable:true, id_ram:this.istanza.id_ram})
                 ]).subscribe(([vei, alle,ista,typeDocument, typeReport, reports]) =>{
 
-                    this.listaVeicoli=vei;
+                    this.listaVeicoli= this.listaVeicoliFiltered = vei;
                     this.listaAllegati=alle;
 
                     this.typeIstance = ista;
-                    console.log(ista)
+                    console.log(ista, vei)
                     this.typeDocuments = typeDocument;
                     this.typeReport = typeReport;
                     this.reports = reports;
@@ -113,10 +157,66 @@ export class AdminIstanzaPageComponent implements OnInit {
                     this.getStatoIstruttoria();
                     this.getIndicatorData()
                   /*   console.log(vei, alle,ista) */
+                  this.createVeiObservable()
+                  this.changeDetectorRef.markForCheck()
+
                 })
                  }
 
     ngOnInit() {
+    }
+    ngOnDestroy(): void {
+        this.filtersVei$.unsubscribe();
+    }
+    createVeiObservable(){
+
+      this.filtersVei$ = this.filtersVei.valueChanges
+      .pipe(debounceTime(400))
+      .subscribe(
+          (value: { [key: string]: string }) => {
+              const filters = {};
+             // this.totRecord = 0;
+              Object.keys(value)
+                  .forEach((key: string) => {
+
+                    if (value[key] === undefined || value[key] === ''|| value[key] === null ) {
+                      delete filters[key] ;
+                    }else{
+                      filters[key] = value[key]
+                    }
+                 //   console.log(value, key)
+
+
+                  });
+                  this.listaVeicoliFiltered = this.listaVeicoli;
+
+                  if(filters['category']){
+                    this.listaVeicoliFiltered = this.listaVeicoliFiltered.filter(x=> x['category'] === filters['category'])
+                  }
+
+                  if(filters['type']){
+                    this.listaVeicoliFiltered = this.listaVeicoliFiltered.filter(x=> x['type'] === filters['type'])
+                  }
+                  if(filters['licensePlate']){
+                    this.listaVeicoliFiltered = this.listaVeicoliFiltered.filter(x=> x['licensePlate'] === filters['licensePlate'])
+                  }
+                  if(filters['adminState']){
+                    this.listaVeicoliFiltered = this.listaVeicoliFiltered.filter(x=> x['adminState'] === filters['adminState'])
+                  }
+                 // console.log(filters, this.listaVeicoliFiltered)
+
+
+                 // this.listaVeicoli=vei;
+             // this.dataSource = [];
+             // this.paginator.resetFilters(filters);
+            //  const payloadCount = filters;
+            //  delete payloadCount['list'];
+           //   payloadCount['total'] = 'true';
+           this.changeDetectorRef.markForCheck()
+            //  this.changeDetectorRef.markForCheck();
+
+          }
+      );
     }
 
   getCertificazioni(){
