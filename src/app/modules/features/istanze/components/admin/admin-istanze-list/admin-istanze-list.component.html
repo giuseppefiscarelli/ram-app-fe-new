@@ -36,13 +36,22 @@
               </mat-select>
             </mat-form-field>
 
+            <mat-form-field fxFlex="15">
+              <mat-label>Stato Istruttoria</mat-label>
+              <mat-select  formControlName="istrActive">
+                <mat-option *ngFor="let item of filterOptionsDescriptors.statusIstance" [value]="item.value">
+                  {{item.title}}
+                </mat-option>
+            </mat-select>
+            </mat-form-field>
+
          </div>
     </form>
     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
       <h4>Totale Istanze: <span style="font-weight: bold;">{{totRecord}}</span></h4>
     </div>
-    <div class="table-container">
-      <mat-table #table [dataSource]="dataSource" (scroll)="timeoutScroll($event)">
+    <div class="table-container" (scroll)="timeoutScroll($event)">
+      <mat-table #table [dataSource]="dataSource" >
         <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 
@@ -90,6 +99,21 @@
                      <p>annullata da impresa</p>
 
              </ng-container>-->
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="istrStatus">
+          <mat-header-cell *matHeaderCellDef> Stato Istruttoria </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+
+            <ng-container *ngIf="getStatusIstruttoria(element) as statusIstr">
+              <span class="span-status"
+              [class]="statusIstr.style"
+              [innerText]="statusIstr.text">
+            </span>
+
+
+            </ng-container>
+
           </mat-cell>
         </ng-container>
 

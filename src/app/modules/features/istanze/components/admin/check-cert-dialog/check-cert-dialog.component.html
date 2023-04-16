@@ -24,6 +24,7 @@
           </mat-select>
         </mat-form-field>
       </ng-container>
+
       <ng-container *ngIf="this.type.description === 'dimImpresa'">
           <mat-form-field fxFlex>
             <mat-label> Dimensione Impresa</mat-label>
@@ -32,8 +33,14 @@
                 <mat-option  disabled="{{getDataImpresa(2)}}" [value]="2">Media</mat-option>
                 <mat-option  disabled="{{getDataImpresa(3)}}" [value]="3">Grande</mat-option>
             </mat-select>
+
           </mat-form-field>
+
+            <mat-checkbox formControlName="forceDimImpresa">Forza Aggiornamento dimensioni Impresa</mat-checkbox>
+
       </ng-container>
+
+
       <ng-container *ngIf="this.type.adminNote">
           <mat-form-field fxFlex>
               <mat-label>Note</mat-label>
@@ -41,6 +48,7 @@
               type="note"
               [formControlName]="capitalizeNote(this.type.description)"
               >
+              <mat-error *ngIf="form.get('noteDimImpresa').invalid" [innerHTML]="form.get('noteDimImpresa') | errors"></mat-error>
 
           </mat-form-field>
       </ng-container>

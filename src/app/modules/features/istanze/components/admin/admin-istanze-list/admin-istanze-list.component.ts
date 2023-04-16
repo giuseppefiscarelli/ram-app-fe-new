@@ -44,6 +44,7 @@ export class AdminIstanzeListComponent implements OnInit , OnDestroy{
     'businessName',
     'pecImpresa',
     'status',
+    'istrStatus',
     'action'
     ];
   timeScroll:any;
@@ -76,7 +77,13 @@ export class AdminIstanzeListComponent implements OnInit , OnDestroy{
         {value: 'closed', view:'Rendicontazione Chiusa'},
 
 
-    ]
+      ];
+      this.filterOptionsDescriptors = {
+        statusIstance: [
+            {title: 'Tutti', value: null},
+            {title: 'In lavorazione', value: 'true'}
+        ]
+    };
     this.type$ = this.serviceConf.fetchTypeInstance({drop:true}).subscribe(
       (x: TypeIstance[])=> this.type = x)
     this.filters = new FormGroup({
@@ -84,6 +91,7 @@ export class AdminIstanzeListComponent implements OnInit , OnDestroy{
           type: new FormControl(null),
           list: new FormControl('true'),
           role: new FormControl(null),
+          istrActive :new FormControl(null),
           active: new FormControl(null),
           id_ram: new FormControl(null),
           statoIstanza: new FormControl(null)
@@ -134,10 +142,11 @@ export class AdminIstanzeListComponent implements OnInit , OnDestroy{
 
         this.paginator$ = this.paginator
         .createStream(this.service.fetchIstanze.bind(this.service))
-        .subscribe(
-            (records: Istanza[]) => this.handleSubscriptionResponse(records),
-            (error: Error) => this.handleSubscriptionError(error)
-        );
+        .subscribe({
+
+            next:(records: Istanza[]) => this.handleSubscriptionResponse(records),
+            error:(error: Error) => this.handleSubscriptionError(error)
+        });
         this.paginator.resetFilters({list:'true'});
         this.service.countIstanze({total:'true'}).subscribe(
             (total) =>{ this.totRecord = total;this.changeDetectorRef.markForCheck();}
@@ -162,7 +171,7 @@ export class AdminIstanzeListComponent implements OnInit , OnDestroy{
     }
     timeoutScroll(e){
 
-            console.log(e)
+       //     console.log(e)
         if(this.timeScroll){ clearTimeout(this.timeScroll);
 
         }
@@ -211,6 +220,23 @@ export class AdminIstanzeListComponent implements OnInit , OnDestroy{
               }
           }
       )
-  }
+    }
+    getStatusIstruttoria(element){
+    //  console.log(element)
+      let data = {
+        text: 'Rendicontazione in attesa',
+        style: 'closed'
+      }
+      if(element.rendstatus === 'closed'){
+        if(element.istaupdated > element.istacreated){
+          data = {
+            text: 'In Lavorazione',
+            style: 'enabled'
+          }
+        }
+      }
+
+      return data
+    }
 
 }

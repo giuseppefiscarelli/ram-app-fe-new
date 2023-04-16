@@ -8,16 +8,14 @@
 
 }
 .container-card{
-  height: calc(100vh - 176px);
+  min-height: calc(79vh);
   margin-left: 2%;
   margin-right: 2%;
-  top: -34px;
-  overflow-x: auto;
-
+  top: -22px;
 }
 .table-container{
   overflow: auto;
-  max-height: 70vh;
+  max-height: 62vh;
 
 }
 .mat-table{

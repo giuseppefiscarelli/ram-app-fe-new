@@ -1,0 +1,162 @@
+<h2 mat-dialog-title>{{this.dialogTitle}}</h2>
+<mat-dialog-content>
+
+  <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
+    <div fxFlex="40" >
+      <form [formGroup]="form" style="max-height:65vh;overflow-x: auto;">
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
+          <mat-form-field fxFlex="100" style="width:100%">
+            <input matInput
+            type="text"
+            [placeholder]="'Descrizione Tipo Report'"
+            formControlName="description"
+
+            >
+          </mat-form-field>
+        </div>
+
+        <div fxLayout="column" fxLayout.xs="column" fxLayoutGap="30px">
+          <h3 fxFlex>Intestazione</h3>
+          <form  fxLayout="column" fxLayout.xs="column" fxLayoutGap="30px" [formGroup]="formIntestazione">
+            <h5 fxFlex>Logo</h5>
+
+              <mat-radio-group
+               fxLayout="row"
+               fxLayoutAlign="start stretch"
+                fxLayout.xs="column"
+                fxLayoutGap="30px"
+                formControlName="logo"
+                >
+                <mat-radio-button fxFlex  fxFlexAlign="stretch" value="./../../../../assets/report/int_ammb.png">
+                  <mat-card  style="width:100px">
+                    <img mat-card-image src="./../../../../assets/report/int_ammb.png">
+                  </mat-card>
+
+
+                </mat-radio-button>
+                <mat-radio-button fxFlex  fxFlexAlign="stretch" value="./../../../../assets/report/intest.png">
+
+                  <mat-card  style="width:100px">
+                    <img mat-card-image src="./../../../../assets/report/intest.png">
+                  </mat-card>
+                </mat-radio-button>
+                <mat-radio-button  fxFlex fxFlexAlign="stretch"value="./../../../../assets/report/ram_nuovo_logo.png">
+
+                  <mat-card style="width:100px">
+                    <img mat-card-image src="./../../../../assets/report/ram_nuovo_logo.png">
+                  </mat-card>
+                </mat-radio-button>
+              </mat-radio-group>
+
+
+
+            <h5 fxFlex>Dimensioni</h5>
+              <div
+                  fxLayout="row"
+                  fxLayoutAlign="start start"
+                  fxLayout.xs="column"
+                  fxLayoutGap="30px"
+               >
+               <mat-form-field fxFlex="15">
+                <input matInput type="number" [placeholder]="'Larghezza (px)'" formControlName="dimensions">
+                </mat-form-field>
+              </div>
+              <h5 fxFlex>Margini</h5>
+              <div
+                      fxLayout="row"
+                      fxLayoutAlign="start start"
+                      fxLayout.xs="column"
+                      fxLayoutGap="30px"
+                  >
+                  <mat-form-field fxFlex="15">
+                    <input matInput type="number" [placeholder]="'Superiore'" formControlName="marginTop">
+                  </mat-form-field>
+                  <mat-form-field fxFlex="15">
+                    <input matInput type="number"[placeholder]="'Destro'" formControlName="marginRight">
+                  </mat-form-field>
+                  <mat-form-field fxFlex="15">
+                    <input matInput type="number"[placeholder]="'Inferiore'" formControlName="marginBottom">
+                  </mat-form-field>
+                  <mat-form-field fxFlex="15">
+                    <input matInput type="number"[placeholder]="'Sinistro'" formControlName="marginLeft">
+                  </mat-form-field>
+
+              </div>
+              <div
+                  fxLayout="row"
+                  fxLayoutAlign="start start"
+                  fxLayout.xs="column"
+                  fxLayoutGap="30px"
+               >
+               <button mat-stroked-button color="primary" (click)="getPreview()">preview</button>
+              </div>
+            <h5 fxFlex>Contenuto</h5>
+              <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
+                <angular-editor fxFlex="100"
+                formControlName="subHeaderData"
+                [config]="config"></angular-editor>
+
+              </div>
+
+
+
+          </form>
+
+
+
+          <h3 fxFlex>Oggetto</h3>
+          <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
+            <mat-form-field fxFlex="100" style="width:100%">
+              <input matInput
+              type="text"
+              [placeholder]="'oggetto'"
+              formControlName="object"
+
+              >
+            </mat-form-field>
+          </div>
+
+          <h3 fxFlex>Contenuto</h3>
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
+              <angular-editor fxFlex="100"
+              formControlName="content"
+              [config]="config"></angular-editor>
+
+            </div>
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
+              <button mat-stroked-button color="primary" (click)="getPreview()">preview</button>
+            </div>
+          <h3 fxFlex>Firma</h3>
+        </div>
+
+
+
+
+
+      </form>
+
+
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
+
+      </div>
+    </div>
+    <div fxFlex="60">
+      <h3>Anteprima</h3>
+      <ng-container *ngIf="this.preview">
+        <pdf-viewer [src]="this.preview"
+        [render-text]="true"
+        [original-size]="false"
+        style="width: 100%; height:65vh;"
+        ></pdf-viewer>
+      </ng-container>
+
+    </div>
+
+  </div>
+
+
+  </mat-dialog-content>
+  <mat-dialog-actions  >
+    <button mat-button color="warn" mat-dialog-close>Chiudi</button>
+    <button mat-button color="primary" (click)="onSubmitBtn(this.mode)">{{btnSubmit}}</button>
+  </mat-dialog-actions>

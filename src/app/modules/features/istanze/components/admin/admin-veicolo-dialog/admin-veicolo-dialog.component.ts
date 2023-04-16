@@ -32,33 +32,35 @@ import Swal from 'sweetalert2';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AdminVeicoloDialogComponent implements OnInit {
+
+
   user: Observable<User>;
-    userMe: User;
-    typeDocuments: TypeDocument[];
-    allegatiVeicolo: Allegato[];
-    veicolo: Veicolo;
-    typeIstance: TypeIstance;
-    istanzaCheck: IstanzaCheck;
-    istanza: Istanza;
-    displayedColumnsAllegato: string[] = [
-        'tipo',
-        'note',
-        'stato',
-        'noteAdmin',
-        'action'];
+  userMe: User;
+  typeDocuments: TypeDocument[];
+  allegatiVeicolo: Allegato[];
+  veicolo: Veicolo;
+  typeIstance: TypeIstance;
+  istanzaCheck: IstanzaCheck;
+  istanza: Istanza;
+  displayedColumnsAllegato: string[] = [
+      'tipo',
+      'note',
+      'stato',
+      'noteAdmin',
+      'action'];
 
-        dialogTitle: string;
-        dialogSubTitle: string;
-        btnSubmit: string;
-    form:FormGroup;
-    formVeicolo:FormGroup;
-    typeVeicolo:any;
-    alleSelected: boolean;
-    alleDataSelected: Allegato;
-    isLoading:boolean;
-    url: string;
+      dialogTitle: string;
+      dialogSubTitle: string;
+      btnSubmit: string;
+  form:FormGroup;
+  formVeicolo:FormGroup;
+  typeVeicolo:any;
+  alleSelected: boolean;
+  alleDataSelected: Allegato;
+  isLoading:boolean;
+  url: string;
 
-    statusCheck:statusCheck;
+  statusCheck:statusCheck;
 
    filterOptionsDescriptors: {
     [key: string]: any
@@ -93,7 +95,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
       this.alleDataSelected = null;
       this.formVeicolo = this.initializeForEditVeicolo(this.veicolo)
 
-      console.log(this.checkAllegatiStatus())
+  //    console.log(this.checkAllegatiStatus())
    //console.log(this.allegatiVeicolo)
       const checkDichiarazioni = this.checkDichiarazioni()
 
@@ -101,7 +103,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
           this.datiIstruttoriaShow = true;
           this.valoreContributo = this.services.calcolaContributo(this.istanza, this.istanzaCheck, this.veicolo, this.typeIstance)
       }
-
+    //  console.log(this.valoreContributo)
       this.filterOptionsDescriptors = {
           statusCheck: [
 
@@ -125,7 +127,33 @@ export class AdminVeicoloDialogComponent implements OnInit {
     }
 
     ngOnInit(): void {
+
+      this.formVeicolo.controls.adminState.valueChanges.subscribe(
+        (val) => {
+          console.log(val)
+          if(val && (val ==='rejected' || val === 'pending')){
+            const required = Validators.required
+         //   this.formVeicolo.get('costoIstr').removeValidators(required)
+         this.formVeicolo.get('costoIstr').clearValidators()
+         this.formVeicolo.get('costoIstr').updateValueAndValidity()
+         this.formVeicolo.get('valoreContributo').clearValidators()
+         this.formVeicolo.get('valoreContributo').updateValueAndValidity()
+         console.log(this.formVeicolo)
+
+           // this.formVeicolo.controls.valoreContributo.removeValidators(required)
+          //  console.log(this.formVeicolo)
+
+          }else{
+            this.formVeicolo.controls.costroIstr.setValidators([Validators.required])
+            this.formVeicolo.controls.valoreContributo.setValidators([Validators.required])
+          }
+       //   this.formVeicolo.clearValidators()
+        //  this.formVeicolo.updateValueAndValidity()
+          console.log(this.formVeicolo)
+        }
+      )
     }
+
     initializeForEdit(alle): FormGroup{
         return new FormGroup({
             id: new FormControl(alle.id),
@@ -136,6 +164,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
 
         })
     }
+
     initializeForEditVeicolo(v: Veicolo): FormGroup{
         return new FormGroup({
             id: new FormControl(v.id),
@@ -149,18 +178,21 @@ export class AdminVeicoloDialogComponent implements OnInit {
 
         })
     }
+
     getTypeDocument(id){
 
         return this.typeDocuments.find(x=> x.id == id).description
     }
+
     getTipoVeicolo(tipo){
 
         const data = this.typeIstance.typeVei.find(X => X['campoDb'] === tipo);
     // console.log(data)
         return data['description'];
     }
+
     onClickAlle(mode,data){
-        console.log(mode,data)
+     //   console.log(mode,data)
         this.isLoading = true;
         this.alleDataSelected = null;
         if(mode === 'view'){
@@ -173,10 +205,11 @@ export class AdminVeicoloDialogComponent implements OnInit {
             {
                 next: (res) => {
                     this.alleDataSelected = data;
-                    console.log(res)
+                  //  console.log(res)
+                 //   console.log(file)
                     const blob = new Blob([res],{type: file.type});
                     this.url = window.URL.createObjectURL(blob);
-                    console.log(this.url)
+                 //   console.log(this.url)
 
                 },
                 complete:()=>{
@@ -187,6 +220,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
             )
         }
     }
+
     onSubmitBtn(){
         Object
         .keys(this.formVeicolo.controls)
@@ -217,7 +251,15 @@ export class AdminVeicoloDialogComponent implements OnInit {
                     allowOutsideClick: false
                 }).then( (res) => {
                     if (res && res.value){
+                      this.services.updateVeicolo(payload).subscribe(
+                        {
+                            next:(res: Veicolo) => this.veicolo = res,
+                            complete:()=> {
+                                this.changeDetectorRef.markForCheck();
 
+                                this.notifications.toast(TYPE.SUCCESS,'Operazione Completata', 'Veicolo aggiornato con successo')}
+                        }
+                    )
                         console.log('aggiorna veicolo')
                     }
 
@@ -272,11 +314,12 @@ export class AdminVeicoloDialogComponent implements OnInit {
                         currentRecords[index] = res;
                         this.allegatiVeicolo = [...currentRecords];
                         this.alleSelected = null;
-                        console.log(this.allegatiVeicolo)
-                        console.log(this.checkDichiarazioni(), this.checkAllegatiStatus(), this.allegatiVeicolo.length)
+                      //  console.log(this.allegatiVeicolo)
+                     //   console.log(this.checkDichiarazioni(), this.checkAllegatiStatus(), this.allegatiVeicolo.length)
                         if(this.checkDichiarazioni() && (this.checkAllegatiStatus() === this.allegatiVeicolo.length)){
                             this.datiIstruttoriaShow = true;
-                            const contributo = this.services.calcolaContributo(this.istanza, this.istanzaCheck, this.veicolo, this.typeIstance)
+                            this.valoreContributo = this.services.calcolaContributo(this.istanza, this.istanzaCheck, this.veicolo, this.typeIstance)
+                          //  this.formVeicolo.controls.valoreContributo.setValue(contributo)
                         }else{
                             this.datiIstruttoriaShow = false;
                             let payVei = this.veicolo;
@@ -311,18 +354,29 @@ export class AdminVeicoloDialogComponent implements OnInit {
         this.dialogRef.close(dataReturn)
     }
 
-    viewAllegato(file): void{
+    viewAllegato(file,name): void{
+    //  console.log(file)
+   //   window.open('www.google.it');
+   //   console.log( this.alleDataSelected)
 
-        this.services.getFile(file)
-        .subscribe(
-            (res) => {
-                const blob = new Blob([res],{type: file.type});
-                const url = window.URL.createObjectURL(blob);
-            window.open(url);
 
-            },
-                error => console.log('Error downloading the file.')
-            );
+      const res: any = this.alleDataSelected
+      const blob = new Blob([res],{type: file.type});
+   //   console.log(blob)
+      const url = window.URL.createObjectURL(blob);
+   //   console.log(url)
+      window.open(url,name);
+
+        // this.services.getFile(file)
+        // .subscribe(
+        //     (res) => {
+        //         const blob = new Blob([res],{type: file.type});
+        //         const url = window.URL.createObjectURL(blob);
+        //     window.open(url,name);
+
+        //     },
+        //         error => console.log('Error downloading the file.')
+        //     );
     }
 
     downloadAllegato(file): void{
@@ -351,6 +405,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
 
         return count
     }
+
     checkDichiarazioni(){
         const checkDichiarazioni = this.istanzaCheck.contratto === 'accepted' &&
         this.istanzaCheck.delega === 'accepted' &&
@@ -358,9 +413,10 @@ export class AdminVeicoloDialogComponent implements OnInit {
         this.istanzaCheck.doc === 'accepted' &&
         this.istanzaCheck.firma === 'accepted' &&
         this.istanzaCheck.pec === 'accepted' ? true: false;
-        console.log(checkDichiarazioni)
+    //    console.log(checkDichiarazioni)
         return checkDichiarazioni;
     }
+
     onClickDatiIstruttoria(){
         const veicolo = this.veicolo;
         const ref: MatDialogRef<VeiIstruttoriaDialogComponent> = this.dialog.open(

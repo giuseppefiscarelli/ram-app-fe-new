@@ -495,9 +495,9 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
 
                  }
                  if(res.veicolo){
-                     const upVeicoli = [...this.listaVeicoli];
+                     const upVeicoli = [...this.listaVeicoliFiltered];
                      upVeicoli[atIndex] = res.veicolo;
-                     this.listaVeicoli = [...upVeicoli];
+                     this.listaVeicoliFiltered = [...upVeicoli];
                      this.changeDetectorRef.markForCheck();
                  }
 

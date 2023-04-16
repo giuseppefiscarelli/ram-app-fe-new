@@ -1,3 +1,6 @@
+import { TypeReportListComponent } from './components/report/type-report-list/type-report-list.component';
+import { TypeReportEditComponent } from './components/report/type-report-edit/type-report-edit.component';
+import { ReportService } from './report.service';
 import { NgxMatDatetimePickerModule } from '@angular-material-components/datetime-picker';
 import { EditionEditComponent } from './components/edition-edit/edition-edit.component';
 import { PaginatorService } from '@app/modules/services/paginator.service';
@@ -30,6 +33,7 @@ import { NgxMatNativeDateModule } from '@angular-material-components/datetime-pi
 import { ConfigPanelComponent } from './components/config-panel/config-panel.component';
 import { ReportsEditComponent } from './components/report/reports-edit/reports-edit.component';
 import { ReportsListComponent } from './components/report/reports-list/reports-list.component';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 export const customCurrencyMaskConfig = {
   align: "left",
   allowNegative: true,
@@ -52,7 +56,7 @@ export const customCurrencyMaskConfig = {
     TranslationsModule.forChild(),
     RouterModule.forChild(ConfigRoutes),
     NgxMatTimepickerModule,
-
+    AngularEditorModule,
     NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
   ],
   declarations: [
@@ -63,13 +67,20 @@ export const customCurrencyMaskConfig = {
     ModalCategoryComponent,
     ModalCertComponent,
     ModalVeicoloComponent,
-
     EditionEditComponent,
     ConfigPanelComponent,
     ReportsEditComponent,
-    ReportsListComponent
+    ReportsListComponent,
+    TypeReportEditComponent,
+    TypeReportListComponent
   ],
-  providers: [ ConfigService, TypeIstanceResolver, TypeDocResolver, PaginatorService]
+  providers: [
+    ConfigService,
+    ReportService ,
+    TypeIstanceResolver,
+    TypeDocResolver,
+    PaginatorService
+  ]
 
 })
 export class ConfigModule { }

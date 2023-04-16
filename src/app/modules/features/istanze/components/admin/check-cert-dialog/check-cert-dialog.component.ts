@@ -1,6 +1,6 @@
 import { NotificationsComponent } from '@app/modules/notifications/notifications.component';
 import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { statusCheck } from '@app/app.costants';
@@ -69,6 +69,19 @@ export class CheckCertDialogComponent implements OnInit {
 
     ngOnInit(): void {
       this.form = this.initializeForEdit(this.istanzaCheck)
+
+      this.form.controls.forceDimImpresa.valueChanges.subscribe(
+        (val) =>{
+          if (val && val === true){
+
+            this.form.get('noteDimImpresa').setValidators(Validators.required)
+
+          }else{
+            this.form.get('noteDimImpresa').clearValidators()
+          }
+          this.form.get('noteDimImpresa').updateValueAndValidity()
+        }
+      )
     }
 
     initializeForEdit(ic:IstanzaCheck):FormGroup{
@@ -79,6 +92,7 @@ export class CheckCertDialogComponent implements OnInit {
           noteContratto: new FormControl(ic.noteContratto),
           delega: new FormControl(ic.delega),
           noteDelega: new FormControl(ic.noteDelega),
+          forceDimImpresa: new FormControl(null),
           dimImpresa: new FormControl(ic.dimImpresa),
           noteDimImpresa: new FormControl(ic.noteDimImpresa),
           doc: new FormControl(ic.doc),
@@ -128,7 +142,11 @@ export class CheckCertDialogComponent implements OnInit {
   getDataImpresa(dim){
       const alleData = this.allegati.find(x=> x.typeDocument === 'pmi' && x.adminState === 'accepted')
      // console.log(dim, alleData)
-      if(dim === 1){
+
+      const force = this.form.controls.forceDimImpresa.value
+      console.log(force)
+      if(!force){
+        if(dim === 1){
           if(alleData.jsonData['unita_lavorative'] < 50 && alleData.jsonData['volumi_fatturato'] < 10000000){
               return false
           }
@@ -147,7 +165,12 @@ export class CheckCertDialogComponent implements OnInit {
           }
       }
 
-      return true
+      }else{
+        return false
+      }
+
+
+
   }
 
 }
