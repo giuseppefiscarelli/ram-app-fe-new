@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { TypeIstance } from '@app/modules/models/type-istance.model';
 import { forkJoin, Subscription } from 'rxjs';
 import { IstanzeService } from '../../../istanze.service';
@@ -9,7 +9,7 @@ import { IstanzeService } from '../../../istanze.service';
   styleUrls: ['./type-dash.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TypeDashComponent implements OnInit {
+export class TypeDashComponent implements OnInit, OnChanges {
     @Input() type:TypeIstance;
     value$: Subscription;
     totalIstanze = 0;
@@ -17,14 +17,34 @@ export class TypeDashComponent implements OnInit {
     rendActive =0;
     rendClosed = 0;
     rendCanceled  = 0;
+    today:Date;
     constructor(
       private service: IstanzeService,
       private changeDetectorRef: ChangeDetectorRef,
     ) {
-
+        this.today = new Date();
      }
 
     ngOnInit() {
+
+      
+
+    }
+    ngOnDestroy(): void {
+      this.value$.unsubscribe()
+
+   }
+   ngOnChanges(changes: SimpleChanges): void {
+       console.log(changes)
+       if(changes['type'] && changes['type'].currentValue){
+        this.type = changes['type'].currentValue
+        this.today = new Date();
+        console.log(this.today)
+       // console.log('oggi:'+this.today.getTime().toString(), this.type.reportingEndDate)
+        if(this.today.getTime().toString() > this.type.reportingEndDate){
+          console.log('scaduto'+this.type.id)
+        }
+
       this.value$ = forkJoin([
         this.service.countIstanze({total:true, type:this.type.id}),
         this.service.countIstanze({total:true,active:true,type:this.type.id}),
@@ -41,10 +61,7 @@ export class TypeDashComponent implements OnInit {
             this.changeDetectorRef.markForCheck();
         }
     )
-    }
-    ngOnDestroy(): void {
-      this.value$.unsubscribe()
-
+       }
    }
 
 }

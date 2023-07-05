@@ -75,6 +75,7 @@ export class AdminIstanzeListComponent implements OnInit , OnDestroy{
         {value: 'canceled', view:'Annullata'},
         {value: 'rend', view:'In Rendicontazione'},
         {value: 'closed', view:'Rendicontazione Chiusa'},
+        {value: 'expired', view:'Scaduta'},
 
 
       ];

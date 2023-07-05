@@ -12,6 +12,7 @@ export class RendStatusPipe implements PipeTransform {
         case 'canceled':return  'Annullata';
         case 'opened':return  'In Rendicontazione';
         case 'closed':return  'Rendicontazione Chiusa';
+        case 'expired': return 'Scaduta';
 
 
         default:return  'Attiva';

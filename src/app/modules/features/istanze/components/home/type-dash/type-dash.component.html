@@ -1,9 +1,9 @@
 
 
 <h1>{{this.type.description}}</h1>
-<div class="container-main" fxLayout="row" fxLayout.xs="column"fxLayoutAlign="space-around stretch"  fxLayoutGap="30px">
+<div class="container">
 
-  <mat-card  fxFlex="20" fxFlex.xs="100">
+  <mat-card  class="item">
     <mat-card-header>
       <div mat-card-avatar >
         <button
@@ -20,7 +20,7 @@
   </mat-card>
 
 
-  <mat-card  fxFlex="20" fxFlex.xs="100">
+  <mat-card  class="item">
     <mat-card-header>
       <div mat-card-avatar >
         <button
@@ -37,7 +37,7 @@
   </mat-card>
 
 
-  <mat-card  fxFlex="20" fxFlex.xs="100">
+  <mat-card  class="item">
     <mat-card-header>
       <div mat-card-avatar >
       <button
@@ -54,7 +54,7 @@
   </mat-card>
 
 
-  <mat-card  fxFlex="20" fxFlex.xs="100">
+  <mat-card  class="item">
     <mat-card-header>
       <div mat-card-avatar >
       <button
@@ -70,7 +70,24 @@
     </mat-card-header>
   </mat-card>
 
-  <mat-card fxFlex="20" fxFlex.xs="100">
+  <mat-card class="item">
+    <mat-card-header>
+      <div mat-card-avatar >
+      <button
+      style="background: linear-gradient(60deg, violet, rgb(240, 163, 240));"
+
+      mat-fab color="warn" aria-label="Example icon button with a home icon">
+        <mat-icon>timer_off</mat-icon>
+      </button>
+      </div>
+      <div class="mat-card-header-text">
+        <mat-card-title>Istanze Scadute</mat-card-title>
+        <mat-card-subtitle>{{this.rendCanceled}}</mat-card-subtitle>
+      </div>
+    </mat-card-header>
+  </mat-card>
+
+  <mat-card class="item">
     <mat-card-header>
       <div mat-card-avatar >
       <button

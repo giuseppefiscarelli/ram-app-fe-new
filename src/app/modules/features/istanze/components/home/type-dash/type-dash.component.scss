@@ -3,8 +3,23 @@
   text-align: end;
   width: 100%;
 }
+mat-card-title{
+  min-height: 50px;
+}
 
 .mat-card-header .mat-card-subtitle:not(:first-child) {
     font-size: xx-large;
-    margin-top: -8px;
+    
+}
+.container {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr); /* Crea 6 colonne con larghezza uguale */
+  grid-gap: 10px; /* Aggiungi spaziatura tra le mat-card */
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
 }
