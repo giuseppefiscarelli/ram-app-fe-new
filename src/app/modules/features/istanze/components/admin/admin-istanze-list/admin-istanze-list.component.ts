@@ -224,18 +224,26 @@ export class AdminIstanzeListComponent implements OnInit , OnDestroy{
     getStatusIstruttoria(element){
     //  console.log(element)
       let data = {
-        text: 'Rendicontazione in attesa',
-        style: 'closed'
+        text: 'In Rendicontazione',
+        style: 'closed',
+        status: 'rend'
       }
       if(element.rendstatus === 'closed'){
         if(element.istaupdated > element.istacreated){
           data = {
             text: 'In Lavorazione',
-            style: 'enabled'
+            style: 'opened',
+            status:'work'
+          }
+        }else if(element.istaupdated === element.istacreated){
+          data = {
+            text: 'In Lavorazione',
+            style: 'pending',
+            status:'pending'
           }
         }
       }
-
+      console.log(data)
       return data
     }
 

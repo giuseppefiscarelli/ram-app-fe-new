@@ -1,7 +1,7 @@
 <h2 mat-dialog-title>{{this.dialogTitle}}</h2>
 <mat-dialog-content>
 
-  <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
+  <!-- <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
     <div fxFlex="40" >
       <form [formGroup]="form" style="max-height:65vh;overflow-x: auto;">
         <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
@@ -152,7 +152,45 @@
 
     </div>
 
+  </div> -->
+  <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
+
+    <div fxFlex="40" >
+        <form [formGroup]="form">
+          <mat-form-field>
+            <mat-label>Tipo Report</mat-label>
+            <mat-select formControlName="type">
+                <mat-option *ngFor="let type of filterOptionsDescriptors.type" [value]="type.value">
+                  {{type.title}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Tipo Istanza</mat-label>
+          <mat-select formControlName="typeistance">
+              <mat-option *ngFor="let type of filterOptionsDescriptors.typeistance" [value]="type.value">
+                {{type.title}}
+              </mat-option>
+          </mat-select>
+        </mat-form-field>
+        </form>
+    </div>
+    <div fxFlex="60" *ngIf="this.mode ==='edit'" >
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
+        <button mat-raised-button color="primary" (click)="testDoc(this.record.type)">Anteprima</button>
+        <button *ngIf="preview" mat-raised-button color="primary" (click)="download(this.preview)">Download</button>
+      </div>
+      <h3>Anteprima</h3>
+      <ng-container *ngIf="this.preview">
+        <pdf-viewer [src]="this.preview"
+        [render-text]="true"
+        [original-size]="false"
+        style="width: 100%; height:65vh;"
+        ></pdf-viewer>
+      </ng-container>
+    </div>
   </div>
+
 
 
   </mat-dialog-content>

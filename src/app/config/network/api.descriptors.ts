@@ -172,6 +172,8 @@ export interface IstanzaCheckDescriptorInterface {
   delega: string;
   noteDelega:  string;
   totContributo: string;
+  createdAt: number;
+  updatedAt: number;
 }
 
 export interface RendicontazioneDescriptorInterface{
@@ -260,7 +262,8 @@ export interface TypesReportDescriptorInterface{
   enable:boolean;
   content: [];
   detail:[];
-  typeInstance: number | TypeIstanceDescriptorInterface;
+  typeistance: TypeIstanceDescriptorInterface;
+  type: string;
 }
 export interface VeicoloDescriptorInterface{
   id:number;

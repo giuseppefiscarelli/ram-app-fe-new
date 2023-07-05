@@ -9,5 +9,6 @@ export class TypeReport{
     enable:boolean;
     content: [];
     detail:[];
-    typeInstance: number | TypeIstance
+    typeistance: TypeIstance;
+    type: string;
 }

@@ -13,12 +13,13 @@
     <div fxFlex="20">
       <mat-list dense>
         <mat-list-item >
-           <div matLine>Stato Rendicontazione</div>
-             <div matLine>
-                <span class="status" [class]="this.rendicontazione.status">
-                    {{this.rendicontazione.status | rendStatus}}
-                </span>
-                </div>
+            <div matLine>Stato Rendicontazione</div>
+            <div matLine>
+              <span class="status" [class]="this.rendicontazione.status">
+                  {{this.rendicontazione.status | rendStatus}}
+              </span>
+            </div>
+            <div matLine *ngIf="this.rendicontazione.status ==='closed'">{{this.rendicontazione.dateEnd | date:"dd/MM/yyyy HH:mm"}}</div>
         </mat-list-item>
 
         <mat-list-item >
@@ -27,6 +28,7 @@
                 <span class="status" [class]="this.statoIstruttoria">
                     {{this.statoIstruttoria | istruttoriaStatus}}
                 </span>
+                {{this.statoIstruttoria}}
                 </div>
         </mat-list-item>
         <mat-list-item >
@@ -43,9 +45,10 @@
     <div fxFlex="80">
         <mat-tab-group mat-align-tabs="center">
           <mat-tab>
+         
             <ng-template mat-tab-label>
                 <mat-icon class="tab-icon">apartment</mat-icon> Dati Impresa</ng-template>
-
+            <ng-template matTabContent>
                 <div fxLayout="row" fxLayoutAlign="start start" >
 
                   <div fxFlex="33">
@@ -106,14 +109,16 @@
                   </div>
 
                 </div>
-
+            </ng-template>
           </mat-tab>
 
 
 
           <mat-tab>
+            
             <ng-template mat-tab-label>
                 <mat-icon class="tab-icon">attach_file</mat-icon> Verifica Allagati dichiarazione e Certificazioni</ng-template>
+            <ng-template matTabContent>    
                 <div style="min-height: 60vh;">
                   <div *ngIf="certEnable.length > 0" >
                     <h3>Allegati dichiarazione</h3>
@@ -238,11 +243,13 @@
                   </div>
 
                 </div>
+            </ng-template>
           </mat-tab>
 
           <!-- Veicoli -->
 
           <mat-tab>
+            
               <ng-template mat-tab-label>
                   <mat-icon class="tab-icon">directions_car</mat-icon> Dati Veicoli</ng-template>
 
@@ -391,6 +398,44 @@
                     </table>
 
                   </ng-template>
+          </mat-tab>
+
+
+          <!--Comunicazioni-->
+          
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <mat-icon class="tab-icon">mail</mat-icon> Comunicazioni
+            </ng-template>
+            <ng-template matTabContent>
+            <div fxLayout="row" fxLayoutAlign="start start" >
+              <div fxFlex="50">
+                
+                   <mat-list>
+                    <mat-list-item  *ngFor="let type of typeReport; let index=index">
+
+                
+                      <mat-icon mat-list-icon [style.color]="getEnableReport(type)?'green':'red'" >{{getEnableReport(type)?'done':'close'}}</mat-icon>
+                      <span > {{type.description}}</span>
+
+                   
+                           <button [disabled]="!getEnableReport(type)" style=" margin-left: auto;"mat-raised-button color="primary" (click)="onClickReport('generate', type, index)">
+                            {{getEnableReport(type)?'Genera':'Non disponibile'}}
+                          </button>
+
+
+
+                    </mat-list-item>
+                   </mat-list>
+                      
+                   
+                 
+                     
+                
+              </div>
+              
+            </div>
+          </ng-template>
           </mat-tab>
         </mat-tab-group>
     </div>

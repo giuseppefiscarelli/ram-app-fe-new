@@ -23,7 +23,9 @@ export class IstanzaCheckFactory{
             'noteContratto',
             'delega',
             'noteDelega',
-            'totContributo'
+            'totContributo',
+            'createdAt',
+            'updatedAt'
         ];
         keysToDuplicate.forEach(key => istance[key] = descriptor[key]);
         return istance;

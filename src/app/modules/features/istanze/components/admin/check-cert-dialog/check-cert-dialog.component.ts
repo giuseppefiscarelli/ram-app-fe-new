@@ -40,6 +40,7 @@ export class CheckCertDialogComponent implements OnInit {
                 private route: ActivatedRoute,
                 private router: Router
     ) {
+     console.log(data)
       this.type = data.data;
       this.allegati = data.allegati;
       this.istanzaCheck = data.istanzaCheck
@@ -68,6 +69,7 @@ export class CheckCertDialogComponent implements OnInit {
      }
 
     ngOnInit(): void {
+
       this.form = this.initializeForEdit(this.istanzaCheck)
 
       this.form.controls.forceDimImpresa.valueChanges.subscribe(
@@ -141,11 +143,11 @@ export class CheckCertDialogComponent implements OnInit {
   }
   getDataImpresa(dim){
       const alleData = this.allegati.find(x=> x.typeDocument === 'pmi' && x.adminState === 'accepted')
-     // console.log(dim, alleData)
+    //  console.log(dim, alleData)
 
       const force = this.form.controls.forceDimImpresa.value
-      console.log(force)
-      if(!force){
+     // console.log(force)
+      if(!force && alleData){
         if(dim === 1){
           if(alleData.jsonData['unita_lavorative'] < 50 && alleData.jsonData['volumi_fatturato'] < 10000000){
               return false

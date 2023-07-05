@@ -9,7 +9,10 @@ export class IstruttoriaStatusPipe implements PipeTransform {
     switch (value) {
         case 'enabled':return  'Attiva';
         case 'disabled':return  'Non Attiva';
-
+        case 'work' : return 'In lavorazione';
+        case 'pending' : return 'In attesa di lavorazione';
+        case 'rend' : return 'In rendicontazione';
+        case 'closed' : return 'Istruttoria Chiusa';
 
     }
   }

@@ -1,0 +1,5 @@
+.container {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Due colonne che occupano entrambe il 50% dello spazio */
+    height: 100vh; /* Altezza del container */
+  }

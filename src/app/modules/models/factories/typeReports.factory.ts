@@ -13,7 +13,8 @@ export class TypeReportsFactory{
             'enable',
             'content',
             'detail',
-            'typeInstance'
+            'typeistance',
+            'type'
         ];
         keysToDuplicate.forEach(key => instance[key] = descriptor[key]);
         return instance;

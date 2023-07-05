@@ -33,3 +33,11 @@ export enum statusAdminVei {
 
 
 }
+
+export enum typeReport{
+  integrazione='integrazione',
+  ammissione= 'ammissione',
+  inammissibilita='inammissibilita',
+  rigetto='rigetto'
+
+}

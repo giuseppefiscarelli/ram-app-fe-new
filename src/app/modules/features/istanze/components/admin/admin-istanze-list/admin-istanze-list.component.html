@@ -93,7 +93,26 @@
         <ng-container matColumnDef="status">
           <mat-header-cell *matHeaderCellDef> Stato Istanza </mat-header-cell>
           <mat-cell *matCellDef="let element">
-            <span class="span-status" [class]="element.rendstatus?element.rendstatus:'pending'" [innerText]="element.rendstatus | rendStatus"></span>
+            <div class="status-container">
+              <span class="span-status" [class]="element.rendstatus?element.rendstatus:'pending'" 
+              [innerText]="element.rendstatus | rendStatus"></span>
+
+              <ng-container *ngIf="element.rendstatus === 'closed'">
+            
+                <p>chiusa il: {{element.dateend | date:"dd/MM/yyyy HH:mm"}}</p>
+              </ng-container>
+              <ng-container *ngIf="element.rendstatus === 'opened'">
+            
+                <p>avviata il: {{element.daterendstart | date:"dd/MM/yyyy HH:mm"}}</p>
+              </ng-container>
+              <ng-container *ngIf="element.rendstatus === 'canceled'">
+            
+                <p>annullata il: {{element.datecanceled | date:"dd/MM/yyyy HH:mm"}}</p>
+              </ng-container>
+            </div>
+        
+           
+            
             <!--<ng-container *ngIf="element.rendstatus === 'canceled'">
                      <br>
                      <p>annullata da impresa</p>
@@ -104,15 +123,14 @@
         <ng-container matColumnDef="istrStatus">
           <mat-header-cell *matHeaderCellDef> Stato Istruttoria </mat-header-cell>
           <mat-cell *matCellDef="let element">
-
-            <ng-container *ngIf="getStatusIstruttoria(element) as statusIstr">
-              <span class="span-status"
-              [class]="statusIstr.style"
-              [innerText]="statusIstr.text">
-            </span>
-
-
-            </ng-container>
+            <div class="status-container">
+              <ng-container *ngIf="getStatusIstruttoria(element) as statusIstr">
+                <span class="span-status"
+                  [class]="statusIstr.style"
+                  [innerText]="statusIstr.status | istruttoriaStatus">
+                </span>
+              </ng-container>
+            </div>
 
           </mat-cell>
         </ng-container>

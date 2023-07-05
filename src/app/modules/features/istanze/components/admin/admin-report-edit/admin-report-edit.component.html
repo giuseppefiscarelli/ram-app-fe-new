@@ -1,0 +1,101 @@
+<h1 mat-dialog-title>{{this.dialogTitle}}</h1>
+<mat-dialog-content>
+    <div class="container">
+        <div class="child">
+            <h3>Dati Documento</h3>
+            <mat-list dense>
+                <div mat-subheader>Dati Azienda</div>
+                <mat-list-item >
+                  <div mat-line>Ragione Sociale</div>
+                  <div mat-line>{{this.istanza.ragione_sociale}}</div>
+                </mat-list-item>
+                
+                <mat-list-item >
+                  <div mat-line>Indirizzo</div>
+                  <div mat-line>{{this.istanza.indirizzo_impr}}, {{this.istanza.civico_impr}}</div>
+                  <div mat-line>{{this.istanza.cap_impr}} - {{this.istanza.comune_impr}} {{this.istanza.prov_impr}} </div>
+                </mat-list-item>
+
+                <mat-list-item >
+                    <div mat-line>Pec</div>
+                    <div mat-line>{{this.istanza.pec_impr}}</div>
+                </mat-list-item>
+
+                <mat-list-item >
+                    <div mat-line>id Istanza RAM</div>
+                    <div mat-line>{{this.istanza.id_ram}}/{{this.typeReport['typeistance']['year']}}</div>
+                </mat-list-item>
+            </mat-list>
+
+            <ng-container *ngIf="this.typeReport.type==='integrazione'">
+                <form [formGroup]="form">
+                    <mat-form-field >
+                        <mat-label  style="color:#06c;">Data Report</mat-label>
+                        <input matInput
+                        [matDatepicker]="dataProt"
+                        formControlName="dataProt"
+                        [readonly]="true"
+                        >
+                        <mat-hint>Seleziona la data cliccando sull'icona destra</mat-hint>
+                        <mat-datepicker-toggle matSuffix [for]="dataProt"></mat-datepicker-toggle>
+                        <mat-datepicker #dataProt></mat-datepicker>
+    
+                      </mat-form-field>
+
+                      <mat-form-field >
+                        <mat-label style="color:#06c;;">Protocollo Report</mat-label>
+                        <input matInput
+                            type="text"
+                            formControlName="numProt"
+                           
+                        >
+    
+                    </mat-form-field>
+                    <mat-divider style="margin:10px 10px"></mat-divider>
+
+                    <mat-label style="color:#06c;">Richiesta documentazione</mat-label>
+                        <div formArrayName="detail" style=" margin-top: 20px;">
+                        
+                        
+                        <ng-container  *ngFor="let control of myArrayControls; let i = index" style="width:100%">
+                            <mat-form-field style="width:70%">
+                                
+                                <textarea  matInput [formControlName]="i"></textarea>
+                            </mat-form-field>
+                            <button mat-raised-button color="warn" style="margin-left:10px;" (click)="removeControl(i)">
+                                <mat-icon>remove</mat-icon> Rimuovi
+                              </button>
+                          
+                            
+                        </ng-container>
+                        
+
+                        
+                        
+                      </div>
+                      <button mat-raised-button color="primary"(click)="addControl()" style=" margin-top: 20px;">
+                        <mat-icon>add</mat-icon> Inserisci richiesta
+                      </button>
+                      
+                </form>
+
+            </ng-container>
+        </div>
+        <div class="child">
+            <h3>Anteprima Documento</h3>
+            <h3>Anteprima</h3>
+            <ng-container *ngIf="this.preview">
+              <pdf-viewer [src]="this.preview"
+              [render-text]="true"
+              [original-size]="false"
+              style="width: 100%; height:65vh;"
+              ></pdf-viewer>
+            </ng-container>
+        </div>
+      </div>
+</mat-dialog-content>
+<mat-dialog-actions  >
+    <button mat-button color="warn" mat-dialog-close>Annulla</button>
+    <button mat-button color="primary" (click)="onSubmitBtn()">{{btnSubmit}}</button>
+  </mat-dialog-actions>
+  

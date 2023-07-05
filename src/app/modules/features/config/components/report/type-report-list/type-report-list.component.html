@@ -5,3 +5,74 @@
 
   </div>
 </div>
+<div class="table-container">
+
+  <mat-table #table [dataSource]="dataSource" (scroll)="timeoutScroll($event)">
+    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef> # </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{element.id}}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="description">
+      <mat-header-cell *matHeaderCellDef> Descrizione </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{element.description}}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="type">
+      <mat-header-cell *matHeaderCellDef> Tipo Report </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{element.type}}
+        
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="typeistance">
+      <mat-header-cell *matHeaderCellDef> Edizione Istanza </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+
+      {{element.typeistance['description']}}
+      </mat-cell>
+    </ng-container>
+
+
+
+
+
+    <ng-container matColumnDef="action">
+      <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+      <mat-cell *matCellDef="let element; let index = index">
+
+        <button
+            mat-icon-button
+            color="primary"
+            style="color:green;"
+            matTooltip="Visualizzazione Utente"
+            matTooltipPosition="above"
+            aria-label="Example icon button with a home icon"
+            (click)="onClickRecord('edit', element, index)"
+          >
+          <mat-icon>find_in_page</mat-icon>
+        </button>
+
+
+
+
+
+
+
+
+      </mat-cell>
+    </ng-container>
+
+
+
+
+
+  </mat-table>
+</div>

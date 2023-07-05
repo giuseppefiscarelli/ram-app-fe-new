@@ -28,6 +28,7 @@ import { AdminDialogAllegatoComponent } from './components/admin/admin-dialog-al
 import { AdminVeicoloDialogComponent } from './components/admin/admin-veicolo-dialog/admin-veicolo-dialog.component';
 import { CheckCertDialogComponent } from './components/admin/check-cert-dialog/check-cert-dialog.component';
 import { VeiIstruttoriaDialogComponent } from './components/admin/vei-istruttoria-dialog/vei-istruttoria-dialog.component';
+import { AdminReportEditComponent } from './components/admin/admin-report-edit/admin-report-edit.component';
 
 export const customCurrencyMaskConfig = {
   align: "left",
@@ -67,7 +68,8 @@ export const customCurrencyMaskConfig = {
     AdminDialogAllegatoComponent,
     AdminVeicoloDialogComponent,
     CheckCertDialogComponent,
-    VeiIstruttoriaDialogComponent
+    VeiIstruttoriaDialogComponent,
+    AdminReportEditComponent
   ],
   providers : [IstanzeService, IstanzaResolver, MyIstanzaResolver, TypeIstanceResolver, RendicontazioneResolver, IstanzaCheckResolver]
 

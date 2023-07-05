@@ -25,7 +25,14 @@ export class AllegatoFactory {
             'adminUser',
             'fd'
         ];
-        keysToDuplicate.forEach(key => instance[key] = descriptor[key]);
+        keysToDuplicate.forEach(key => {
+            
+           
+                instance[key] = descriptor[key]
+            
+          
+        
+        });
         return instance;
 
     }

@@ -16,4 +16,6 @@ export class IstanzaCheck {
     delega: string;
     noteDelega:  string;
     totContributo: string;
+    createdAt: number;
+    updatedAt: number;
 }
