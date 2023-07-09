@@ -219,7 +219,8 @@ constructor() { }
                   alignment: 'center'  // Allinea il testo al centro
                 }
               ],
-              alignment: 'center'  // Allinea lo stack al centro del contenitore
+              alignment: 'center',
+              margin:[25,25]  // Allinea lo stack al centro del contenitore
             }
           ]
         }
@@ -229,7 +230,7 @@ constructor() { }
 
        ]
        content.push(
-        {text: 'Prot n° '+dataReport['numProt']} ,
+        {text: 'Prot n° '+dataReport['numProt'],margin: [ 0, 10, 0, 0 ]} ,
         {text: 'Roma li '+dataReport['dataProt']},
         {text: 'Spett.Le',alignment:'right',margin: [ 0, 0, 0, 0 ]}, 
         {text: dataReport['ragSociale'],alignment:'right',margin: [ 0, 0, 0, 0 ]},
@@ -285,7 +286,7 @@ constructor() { }
           defaultStyle: {
             font: 'Times'
           },
-          pageMargins: [ 20,100, 20, 80 ],
+          pageMargins: [ 25,100, 30, 80 ],
           header: function(currentPage, pageCount) {
             if (currentPage === 1) {
               return header
@@ -328,10 +329,10 @@ constructor() { }
       let logo  = await this.getBase64ImageFromURL('../../../../assets/report/int_ammb.png');
       let firma  = await this.getBase64ImageFromURL('../../../../assets/report/firma_disanto.png');
 
-      header= [{image: logo,width: 240, margin: [0,0, 0, 0]}]
+      header= [{image: logo,width: 240, margin: [25,25]}]
 
       content.push(
-      {text: 'Prot n° '+dataReport['numProt']} ,
+      {text: 'Prot n° '+dataReport['numProt'],margin: [0,25,0,0]} ,
       {text: 'Roma li '+moment(Number(dataReport['dataProt'])).format('DD/MM/YYYY')},
       {text: 'Spett.Le',alignment:'right',margin: [ 0, 0, 0, 0 ]}, 
       {text: dataReport['ragSociale'],alignment:'right',margin: [ 0, 0, 0, 0 ]},
@@ -543,7 +544,7 @@ constructor() { }
         defaultStyle: {
           font: 'Times'
         },
-        pageMargins: [ 20,100, 20, 80 ],
+        pageMargins: [ 25,100, 30, 80 ],
         header: function(currentPage, pageCount) {
           if (currentPage === 1) {
             return header
@@ -586,10 +587,10 @@ constructor() { }
     if(type === 'rigetto'){
       let logo  = await this.getBase64ImageFromURL('../../../../assets/report/int_ammb.png');
       let firma  = await this.getBase64ImageFromURL('../../../../assets/report/firma_disanto.png');
-      header= [{image: logo,width: 240, margin: [0,0, 0, 0]}];
+      header= [{image: logo,width: 240, margin: [20,20, 0, 0]}];
 
        content.push(
-        {text: 'Prot n° '+dataReport['numProt']} ,
+        {text: 'Prot n° '+dataReport['numProt'], margin: [0,25, 0, 0]} ,
         {text: 'Roma li '+moment(Number(dataReport['dataProt'])).format('DD/MM/YYYY')},
         {text: 'Spett.Le',alignment:'right',margin: [ 0, 0, 0, 0 ]}, 
         {text: dataReport['ragSociale'],alignment:'right',margin: [ 0, 0, 0, 0 ]},
@@ -648,7 +649,7 @@ constructor() { }
       defaultStyle: {
         font: 'Times'
       },
-      pageMargins: [ 20,100, 20, 80 ],
+      pageMargins: [ 25,100, 30, 80 ],
       header: function(currentPage, pageCount) {
         if (currentPage === 1) {
           return header
@@ -692,10 +693,10 @@ constructor() { }
       let firma  = await this.getBase64ImageFromURL('../../../../assets/report/firma_resp.png');
      
       
-      header= [{image: logo,width: 240, margin: [0,0, 0, 0]}];
+      header= [{image: logo,width: 240, margin: [20,20, 0, 0]}];
 
       content.push(
-        {text: 'Prot n° '+dataReport['numProt']} ,
+        {text: 'Prot n° '+dataReport['numProt'],margin: [ 0, 25, 0, 0 ]} ,
         {text: 'Roma li '+moment(Number(dataReport['dataProt'])).format('DD/MM/YYYY')},
         {text: 'Spett.Le',alignment:'right',margin: [ 0, 0, 0, 0 ]}, 
         {text: dataReport['ragSociale'],alignment:'right',margin: [ 0, 0, 0, 0 ]},
@@ -725,7 +726,7 @@ constructor() { }
         {
           image: firma,
           alignment:'right',
-          width: 150, margin: [40,0, 0, 10]
+          width: 100, margin: [40,0, 0, 10]
         }
 
 
@@ -738,7 +739,7 @@ constructor() { }
         defaultStyle: {
           font: 'Times'
         },
-        pageMargins: [ 20,100, 20, 80 ],
+        pageMargins: [ 25,100, 30, 80 ],
         header: function(currentPage, pageCount) {
           if (currentPage === 1) {
             return header
