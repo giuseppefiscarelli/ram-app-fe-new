@@ -54,6 +54,7 @@ export class AdminIstanzeListComponent implements OnInit , OnDestroy{
   filterOptionsDescriptors: {
       [key: string]: any
   };
+  today: Date;
     constructor(
                     private service: IstanzeService,
                     public paginator: PaginatorService,
@@ -65,9 +66,11 @@ export class AdminIstanzeListComponent implements OnInit , OnDestroy{
                     private serviceConf: ConfigService,
     ) {
       this.dateAdapter.setLocale('it-IT');
+      this.today = new Date();
       this.user = this.store.pipe(select('authentication'),select('user'));
       this.user.pipe(take(1)).subscribe((me: User) => this.userMe = me);
       this.dataSource = [];
+      this.type = [];
       this.timeScroll = null;
       this.rendstatus = [
         {value: null, view:'Tutti gli stati'},
@@ -117,6 +120,7 @@ export class AdminIstanzeListComponent implements OnInit , OnDestroy{
                                 case 'rend': filters['rend'] = 'rendEnable';break;
                                 case 'canceled': filters['rend'] = 'rendCanceled';break;
                                 case 'closed': filters['rend'] = 'rendClosed';break;
+                                case 'expired': filters['rend'] = 'rendExpired';break;
                             }
                         }else{
                             filters[key] = value[key]
@@ -193,7 +197,7 @@ export class AdminIstanzeListComponent implements OnInit , OnDestroy{
     }
 
     getInfoEdizione(id){
-      const data = this.type.find(x=>x.id ===id)
+      const data =this.type.length>0? this.type.find(x=>x.id ===id):{description:'',year:''}
      // console.log(data)
       return `${data.description} - ${data.year}`
     }
@@ -244,8 +248,66 @@ export class AdminIstanzeListComponent implements OnInit , OnDestroy{
           }
         }
       }
-      console.log(data)
+    //  console.log(data)
       return data
+    }
+
+    getStatusRendicontazione(element){
+     
+      let spanData :any ={
+       
+      }
+      const isExpired = Number(element.reportingenddate) < this.today.getTime()
+    
+      if(element){
+        
+        if(element.rendstatus){
+          
+         
+          if(element.rendstatus === 'pending'){
+            spanData.status = element.rendstatus;
+            spanData.pData ='avviata il :';
+            spanData.date = element.daterendstart
+          }
+          if(element.rendstatus === 'opened'){
+            spanData.status = element.rendstatus;
+            spanData.pData ='avviata il :';
+            spanData.date = element.daterendstart
+          }
+          if(isExpired){
+            spanData.status = 'expired';
+            spanData.pData ='scaduta il :';
+            spanData.date = element.reportingenddate
+          }
+          if(element.rendstatus === 'closed'){
+            spanData.status = element.rendstatus;
+            spanData.pData ='chiusa il :';
+            spanData.date = element.dateend
+          }
+          if(element.rendstatus === 'canceled'){
+            spanData.status = element.rendstatus;
+            spanData.pData ='annullata il :';
+            spanData.date = element.datecanceled
+          }
+        }else{
+       
+          
+            if(isExpired){
+              spanData.status = 'expired';
+              spanData.pData ='scaduta il :';
+              spanData.date = element.reportingenddate
+            }else{
+              spanData.status = 'pending';
+              spanData.pData ='';
+              spanData.date = null;
+            }
+        }
+      }
+     
+      return spanData
+
+      
+
     }
 
 }
