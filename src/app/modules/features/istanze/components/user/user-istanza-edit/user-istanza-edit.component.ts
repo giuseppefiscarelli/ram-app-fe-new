@@ -58,6 +58,7 @@ export class UserIstanzaEditComponent implements OnInit {
   today:Date;
   enableRendicontazione: boolean;
   isLoading = true;
+  isExpired = false;
 
     constructor(  private route: ActivatedRoute,
                   private service: IstanzeService,
@@ -84,31 +85,25 @@ export class UserIstanzaEditComponent implements OnInit {
                     this.rottamazione=false;
                     this.enableRendicontazione =true;
 
-                    this.totVeicoli = this.istanza.nv1 +
-                                      this.istanza.nv2 +
-                                      this.istanza.nv3 +
-                                      this.istanza.nv4 +
-                                      this.istanza.nv5 +
-                                      this.istanza.nv6 +
-                                      this.istanza.nv7 +
-                                      this.istanza.nv8 +
-                                      this.istanza.nv9 +
-                                      this.istanza.nv10 +
-                                      this.istanza.nv11 +
-                                      this.istanza.r_nv_1 +
-                                      this.istanza.r_nv_2 +
-                                      this.istanza.r_nv_3 +
-                                      this.istanza.rim_nv_1 +
-                                      this.istanza.rim_nv_2 +
-                                      this.istanza.rim_nv_3;
+                    this.totVeicoli = this.istanza.nv1 + 
+                    this.istanza.nv2 + 
+                    this.istanza.nv3+ 
+                    this.istanza.nv4+ 
+                    this.istanza.nv5+ 
+                    this.istanza.nv6+ 
+                    this.istanza.nv7+ 
+                    this.istanza.nv8+ 
+                    this.istanza.nv9+ 
+                    this.istanza.nv10;
+                
                     this.totCertEnable = 0;
-                    this.rottamazione = (
-                      this.istanza.rim_rott_1 ||
-                      this.istanza.rim_rott_2 ||
-                      this.istanza.r_rott_1 ||
-                      this.istanza.r_rott_2 ||
-                      this.istanza.r_rott_3
-                      )?true:false;
+                    // this.rottamazione = (
+                    //   this.istanza.rim_rott_1 ||
+                    //   this.istanza.rim_rott_2 ||
+                    //   this.istanza.r_rott_1 ||
+                    //   this.istanza.r_rott_2 ||
+                    //   this.istanza.r_rott_3
+                    //   )?true:false;
 
                     this.today= new Date();
                     this.vei$ = forkJoin([
@@ -120,19 +115,23 @@ export class UserIstanzaEditComponent implements OnInit {
                           this.listaVeicoli=vei;
                           this.listaAllegati=alle;
                           this.typeIstance = ista;
+                          this.isExpired = Number(this.typeIstance.reportingEndDate) < this.today.getTime()
+                          console.log('è scaduta:'+this.isExpired)
                           this.typeVeiGroupView = this.groupByKey(this.typeIstance.typeVei,'catVei');
                           this.typeIstance.certAttach.map(
                               (cert) => {
 
                                   let campoDb = cert['description'];
-                                  if(campoDb === 'ampl' && this.rottamazione){
-                                  }
+                                //   if(campoDb === 'ampl' && this.rottamazione){
+                                //   }
                                   const cList = this.listaAllegati.filter(x=> x.typeDocument === campoDb )
                                   const upList = [...this.listaAllegatiDich.concat(cList)];
                                   this.listaAllegati = this.listaAllegati.filter(x=> x.typeDocument !== campoDb)
                                   this.listaAllegatiDich = [...upList];
                                   let check = this.istanza[campoDb]??null;
-                                  if(check === 'Yes' || (campoDb === 'pmi' && (this.istanza.tipo_impresa === '1' || this.istanza.tipo_impresa === '2'))|| ((this.istanza.rim_nv_1 > 0 || this.istanza.rim_nv_2 > 0) && campoDb === 'ampl')){
+                                  if(check === 'Yes' || 
+                                  (campoDb === 'pmi' &&(this.istanza.tipo_impresa === '1' || this.istanza.tipo_impresa === '2'))||
+                                   ((this.istanza.rim_nv_1 > 0 || this.istanza.rim_nv_2 > 0) && campoDb === 'ampl')){
                                       this.totCertEnable++;
                                       this.certEnable.push(campoDb);
                                   }
