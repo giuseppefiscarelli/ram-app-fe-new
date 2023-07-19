@@ -20,7 +20,7 @@ export class AppComponent {
 
     //     window.location.reload();
     // }
-    //   });
+       });
 
       // Controlla se ci sono aggiornamenti disponibili
       this.swUpdate.checkForUpdate();
