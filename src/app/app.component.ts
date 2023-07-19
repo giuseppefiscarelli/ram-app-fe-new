@@ -18,7 +18,6 @@ export class AppComponent {
        console.log('swevent',event)
        if(event.type ==='VERSION_READY'){
             if(confirm("New version available. Load New Version?")) {
-
         window.location.reload();
     }
        }
