@@ -46,6 +46,7 @@ import { ServiceWorkerModule, SwPush } from '@angular/service-worker';
     NotificationsModule.forRoot(),
     RouterModule.forRoot(ApplicationRoutes, {useHash: true}),
     FlexLayoutModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     TranslationsModule.forRoot(),
     FormsModule,
     StoreModule.forRoot({

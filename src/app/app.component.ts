@@ -15,7 +15,7 @@ export class AppComponent {
     //console.log(currentBrowserLanguage());
     if (this.swUpdate.isEnabled) {
       this.swUpdate.versionUpdates.subscribe((event: VersionEvent) => {
-       console.log(event)
+       console.log('swevent',event)
        if(confirm("New version available. Load New Version?")) {
 
         window.location.reload();
