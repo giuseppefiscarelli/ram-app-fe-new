@@ -27,6 +27,7 @@ import {UserRolePipe} from './pipes/user.role.pipe';
 import { environment } from '../environments/environment'
 import { FormsModule } from '@angular/forms';
 import { NgxCurrencyModule } from 'ngx-currency';
+import { ServiceWorkerModule, SwPush } from '@angular/service-worker';
 @NgModule({
   declarations: [
     AppComponent,
@@ -50,6 +51,7 @@ import { NgxCurrencyModule } from 'ngx-currency';
     StoreModule.forRoot({
             authentication: AuthenticationReducer
         }),
+
 
 
   ],

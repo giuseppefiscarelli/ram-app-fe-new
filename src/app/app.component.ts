@@ -1,7 +1,7 @@
 import { TranslateService } from '@ngx-translate/core';
 import { Component } from '@angular/core';
 import { currentBrowserLanguage } from './modules/translations/translations.config';
-
+import { SwUpdate, UpdateAvailableEvent, VersionEvent } from '@angular/service-worker';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -10,8 +10,16 @@ import { currentBrowserLanguage } from './modules/translations/translations.conf
 
 export class AppComponent {
   title = 'ng-ram-14';
-  constructor(private translation: TranslateService) {
+  constructor(private translation: TranslateService,private swUpdate: SwUpdate) {
     this.translation.setDefaultLang(currentBrowserLanguage());
-    //console.log(currentBrowserLanguage())
+    //console.log(currentBrowserLanguage());
+    if (this.swUpdate.isEnabled) {
+      this.swUpdate.versionUpdates.subscribe((event: VersionEvent) => {
+       console.log(event)
+      });
+
+      // Controlla se ci sono aggiornamenti disponibili
+      this.swUpdate.checkForUpdate();
+    }
 }
 }
