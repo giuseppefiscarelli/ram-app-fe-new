@@ -74,6 +74,7 @@ export class IstanzaHomeComponent implements OnInit {
                     ]
                  ).subscribe(
                      ([type,istanze])=>{
+                      console.log(istanze)
                          this.type = type;
 
 
