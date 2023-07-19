@@ -16,11 +16,11 @@ export class AppComponent {
     if (this.swUpdate.isEnabled) {
       this.swUpdate.versionUpdates.subscribe((event: VersionEvent) => {
        console.log('swevent',event)
-       if(confirm("New version available. Load New Version?")) {
+    //    if(confirm("New version available. Load New Version?")) {
 
-        window.location.reload();
-    }
-      });
+    //     window.location.reload();
+    // }
+    //   });
 
       // Controlla se ci sono aggiornamenti disponibili
       this.swUpdate.checkForUpdate();
