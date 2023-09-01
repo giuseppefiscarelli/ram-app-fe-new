@@ -476,9 +476,9 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
     }
 
     onClickVei(mode,veicolo: Veicolo, atIndex: number){
-
+     // console.log(this.listaAllegatiVeicoli)
       const allegatiVeicolo = this.listaAllegatiVeicoli.filter(x=>x.id_Veicolo && x.id_Veicolo === veicolo.id)
-    //  console.log(allegatiVeicolo);
+     // console.log(allegatiVeicolo);
       if(mode === 'edit'){
           const ref: MatDialogRef<AdminVeicoloDialogComponent> = this.dialog.open(
               AdminVeicoloDialogComponent,{
@@ -505,21 +505,23 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
                   console.log(res)
 
                   if(res.allegati){
-                    // let updateAllegati =
-                    let otherAlle = [...this.listaAllegatiVeicoli.filter(x=>x.id_Veicolo && x.id_Veicolo !== veicolo.id)]
-
+                   
+                 
+                    let otherAlle = [...this.listaAllegatiVeicoli.filter(x=>x.id_Veicolo && (x.id_Veicolo !== res.veicolo.id))]
+                  
                     const updateRecords = [...otherAlle].concat(res.allegati)
-                    console.log(updateRecords)
+                    
                     this.listaAllegatiVeicoli = [...updateRecords];
-                    this.changeDetectorRef.markForCheck()
+                    
 
                   }
                   if(res.veicolo){
                       const upVeicoli = [...this.listaVeicoliFiltered];
                       upVeicoli[atIndex] = res.veicolo;
                       this.listaVeicoliFiltered = [...upVeicoli];
-                      this.changeDetectorRef.markForCheck();
+                     // this.changeDetectorRef.markForCheck();
                   }
+                  this.changeDetectorRef.markForCheck()
 
               }
           )

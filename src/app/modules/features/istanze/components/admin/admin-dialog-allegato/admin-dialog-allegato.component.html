@@ -3,7 +3,7 @@
 
   <div fxLayout="row" fxLayoutAlign="start start" >
 
-    <div class="33">
+    <div fxFlex="33">
       <mat-list dense>
         <mat-list-item>
            <div mat-line>Data Caricamento</div>
@@ -64,8 +64,8 @@
 
 
     </div>
-    <div class="66">
-          <pdf-viewer [src]="this.url"
+    <div fxFlex="66"*ngIf="this.file">
+          <pdf-viewer [src]="this.file"
             [render-text]="true"
             [original-size]="false"
             style="width: 100%; height:65vh;"

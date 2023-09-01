@@ -227,20 +227,54 @@ export class FormAllegatoComponent implements OnInit {
   }
   selectFile(event: any): void {
       this.fileAttach = event.target.files[0];
-      this.fileName = this.fileAttach.name;
-      if(this.fileAttach.type === 'application/pdf' || this.fileAttach.type === 'application/pkcs7-mime' || this.fileAttach.type === 'application/x-pkcs7-mime'){
-          this.typeFileControl = true;
-      }
-      if(this.fileAttach.size < 4194304){
-          this.fileDimControl = true;
-      }
-      if(this.fileDimControl && this.typeFileControl){
-          this.form.controls.attach.setValue(true)
-      }else{
-          this.form.controls.attach.setValue(false)
-      }
+    //   this.fileName = this.fileAttach.name;
+    //   console.log(this.fileAttach.type)
+    //   if(this.fileAttach.type === 'application/pdf' || this.fileAttach.type === 'application/pkcs7-mime' || this.fileAttach.type === 'application/x-pkcs7-mime'){
+    //       this.typeFileControl = true;
+    //   }
+    //   if(this.fileAttach.size < 4194304){
+    //       this.fileDimControl = true;
+    //   }
+    //   if(this.fileDimControl && this.typeFileControl){
+    //       this.form.controls.attach.setValue(true)
+    //   }else{
+    //       this.form.controls.attach.setValue(false)
+    //   }
+      ////new control
 
-      this.form.controls.filenameUpload.setValue(this.fileAttach.name)
+     if(!this.fileAttach){
+        this.typeFileControl = false;
+        this.fileDimControl = false;
+        this.form.controls.attach.setValue(false);
+        this.fileName = null;
+        return;
+     }
+     this.fileName = this.fileAttach.name;
+     this.form.controls.filenameUpload.setValue(this.fileAttach.name)
+     if (this.fileAttach.type === 'application/pdf' ||
+        this.fileAttach.type === 'application/pkcs7-mime' ||
+        this.fileAttach.type === 'application/x-pkcs7-mime'
+    ) {
+        this.typeFileControl = true;
+        this.form.controls.attach.setValue(false);
+      
+        if(this.fileAttach.size < 4194304){
+            this.fileDimControl = true;
+            this.form.controls.attach.setValue(true)
+        }
+        
+        return
+    } else {
+        console.log("Tipo di file non supportato");
+        this.typeFileControl = false;
+        this.fileDimControl = false;
+        this.form.controls.attach.setValue(false);
+    
+        return;
+    }
+
+
+      //this.form.controls.filenameUpload.setValue(this.fileAttach.name)
 
   }
   deleteFile(): void{
