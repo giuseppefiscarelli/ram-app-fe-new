@@ -1,1 +1,9 @@
-<router-outlet></router-outlet>
+
+<div class="loading-container" [ngClass]="{'hidden': !loading}">
+    <div class="spinner-container">
+      <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+      <p>Caricamento in corso...</p>
+    </div>
+  </div>
+
+  <router-outlet></router-outlet>

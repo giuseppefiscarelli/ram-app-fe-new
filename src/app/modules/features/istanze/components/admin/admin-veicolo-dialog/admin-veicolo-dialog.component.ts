@@ -300,47 +300,50 @@ export class AdminVeicoloDialogComponent implements OnInit {
             payload.adminUser = this.userMe.id;
         // console.log(payload);
             this.services.updateAllegato(payload).subscribe(
-
-                (res: Allegato) => {
-                    if(!!res){
-                        this.notifications.toast(
-                          TYPE.SUCCESS,
-                            'Operazione Completata',
-                            'Allegato veicolo aggiornato'
-                        )
-                        let updateItem = this.allegatiVeicolo.find(x=> x.id === res.id);
-                        let index = this.allegatiVeicolo.indexOf(updateItem);
-                        const currentRecords = [...this.allegatiVeicolo];
-                        currentRecords[index] = res;
-                        this.allegatiVeicolo = [...currentRecords];
-                        this.alleSelected = null;
-                      //  console.log(this.allegatiVeicolo)
-                     //   console.log(this.checkDichiarazioni(), this.checkAllegatiStatus(), this.allegatiVeicolo.length)
-                        if(this.checkDichiarazioni() && (this.checkAllegatiStatus() === this.allegatiVeicolo.length)){
-                            this.datiIstruttoriaShow = true;
-                            this.valoreContributo = this.services.calcolaContributo(this.istanza, this.istanzaCheck, this.veicolo, this.typeIstance)
-                          //  this.formVeicolo.controls.valoreContributo.setValue(contributo)
-                        }else{
-                            this.datiIstruttoriaShow = false;
-                            let payVei = this.veicolo;
-                            payVei.adminState = 'pending';
-                            this.services.updateVeicolo(payVei).subscribe(
-                              (res) => {
-                                this.veicolo = res;
-
-                              }
+                
+                    (res: Allegato) => {
+                        if(!!res){
+                            this.notifications.toast(
+                            TYPE.SUCCESS,
+                                'Operazione Completata',
+                                'Allegato veicolo aggiornato'
                             )
+                            let updateItem = this.allegatiVeicolo.find(x=> x.id === res.id);
+                            let index = this.allegatiVeicolo.indexOf(updateItem);
+                            console.log(this.allegatiVeicolo)
+                            const currentRecords = [...this.allegatiVeicolo];
+                            currentRecords[index] = res;
+                            this.allegatiVeicolo = [...currentRecords];
+                            console.log(this.allegatiVeicolo)
+                            this.alleSelected = null;
+                        //  console.log(this.allegatiVeicolo)
+                        //   console.log(this.checkDichiarazioni(), this.checkAllegatiStatus(), this.allegatiVeicolo.length)
+                            if(this.checkDichiarazioni() && (this.checkAllegatiStatus() === this.allegatiVeicolo.length)){
+                                this.datiIstruttoriaShow = true;
+                                this.valoreContributo = this.services.calcolaContributo(this.istanza, this.istanzaCheck, this.veicolo, this.typeIstance)
+                            //  this.formVeicolo.controls.valoreContributo.setValue(contributo)
+                            }else{
+                                this.datiIstruttoriaShow = false;
+                                let payVei = this.veicolo;
+                                payVei.adminState = 'pending';
+                                this.services.updateVeicolo(payVei).subscribe(
+                                (res) => {
+                                    this.veicolo = res;
+
+                                }
+                                )
+                            }
+                            this.changeDetectorRef.markForCheck();
                         }
-                        this.changeDetectorRef.markForCheck();
+                    },
+                    (error) => {
+                        this.notifications.toast(
+                        TYPE.ERROR,
+                            'Errore',
+                            'Allegato non aggiornato'
+                        )
                     }
-                },
-                (error) => {
-                    this.notifications.toast(
-                      TYPE.ERROR,
-                        'Errore',
-                        'Allegato non aggiornato'
-                    )
-                }
+                
             )
         }
     }
