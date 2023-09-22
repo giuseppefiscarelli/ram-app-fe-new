@@ -255,7 +255,16 @@ export class FormAllegatoComponent implements OnInit {
      console.log(this.fileAttach)
      if (this.fileAttach.type === 'application/pdf' ||
         this.fileAttach.type === 'application/pkcs7-mime' ||
-        this.fileAttach.type === 'application/x-pkcs7-mime'
+        this.fileAttach.type === 'application/x-pkcs7-mime' ||
+        this.fileAttach.type === 'application/pkcs7' ||
+        this.fileAttach.type === 'application/pkcs-crl' ||
+        this.fileAttach.type === 'application/pkcs10' ||
+        this.fileAttach.type === 'application/x-pkcs10' ||
+        this.fileAttach.type === 'application/pkcs-12' ||
+        this.fileAttach.type === 'application/x-pkcs12' ||
+        this.fileAttach.type === 'application/x-pkcs7-signature' ||
+        this.fileAttach.type === 'application/x-pkcs7-certreqresp' ||
+        this.fileAttach.type === 'application/pkcs7-signature' 
     ) {
         this.typeFileControl = true;
         this.form.controls.attach.setValue(false);
