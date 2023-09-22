@@ -37,6 +37,7 @@ export class FormAllegatoComponent implements OnInit {
                   private dialogRef: MatDialogRef<FormAllegatoComponent>,
                   private notifications: NotificationsComponent,
                   ) {
+                    console.log(data)
                     this.user = this.store.pipe(select('authentication'), select('user'));
                     this.user.pipe(take(1)).subscribe((me: User) => this.userMe = me);
                     this.mode = data.mode;
@@ -250,7 +251,8 @@ export class FormAllegatoComponent implements OnInit {
         return;
      }
      this.fileName = this.fileAttach.name;
-     this.form.controls.filenameUpload.setValue(this.fileAttach.name)
+     this.form.controls.filenameUpload.setValue(this.fileAttach.name);
+     console.log(this.fileAttach)
      if (this.fileAttach.type === 'application/pdf' ||
         this.fileAttach.type === 'application/pkcs7-mime' ||
         this.fileAttach.type === 'application/x-pkcs7-mime'
