@@ -43,6 +43,9 @@ export class ApiService {
 
     public Report: any;
     public TypeReport: any;
+
+    public MailConfig:any;
+
     constructor(private http: HttpClient) {
         this.url = environment.endpoint || `${window.location.protocol}//${window.location.host}`;
         this.url += environment.baseApi || '';
@@ -72,10 +75,13 @@ export class ApiService {
         this.IstanzaCheck = this.constructApisForGroup('IstanzaCheck');
         this.Report = this.constructApisForGroup('Report');
         this.TypeReport = this.constructApisForGroup('TypeReport');
+        this.MailConfig = this.constructApisForGroup('MailConfig');
 
     }
 
     private constructApisForGroup(group: string): ApiGroup {
+
+       
         const paths = Definitions.paths;
         const keys = Object.keys(paths);
         const apis = {};

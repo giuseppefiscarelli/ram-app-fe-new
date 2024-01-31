@@ -2,88 +2,153 @@
 <mat-dialog-content>
     <div class="container">
         <div class="child">
-            <h3>Dati Documento</h3>
-            <mat-list dense>
-                <div mat-subheader>Dati Azienda</div>
-                <mat-list-item >
-                  <div mat-line>Ragione Sociale</div>
-                  <div mat-line>{{this.istanza.ragione_sociale}}</div>
-                </mat-list-item>
-                
-                <mat-list-item >
-                  <div mat-line>Indirizzo</div>
-                  <div mat-line>{{this.istanza.indirizzo_impr}}, {{this.istanza.civico_impr}}</div>
-                  <div mat-line>{{this.istanza.cap_impr}} - {{this.istanza.comune_impr}} {{this.istanza.prov_impr}} </div>
-                </mat-list-item>
+          <div fxLayout="row">
 
-                <mat-list-item >
-                    <div mat-line>Pec</div>
-                    <div mat-line>{{this.istanza.pec_impr}}</div>
-                </mat-list-item>
+            <div fxFlex="50">
+              <h3>Dati Documento</h3>
+              <mat-list dense>
+                  <div mat-subheader>Dati Azienda</div>
+                  <mat-list-item >
+                    <div mat-line>Ragione Sociale</div>
+                    <div mat-line>{{this.istanza.ragione_sociale}}</div>
+                  </mat-list-item>
 
-                <mat-list-item >
-                    <div mat-line>id Istanza RAM</div>
-                    <div mat-line>{{this.istanza.id_ram}}/{{this.typeReport['typeistance']['year']}}</div>
-                </mat-list-item>
-            </mat-list>
+                  <mat-list-item >
+                    <div mat-line>Indirizzo</div>
+                    <div mat-line>{{this.istanza.indirizzo_impr}}, {{this.istanza.civico_impr}}</div>
+                    <div mat-line>{{this.istanza.cap_impr}} - {{this.istanza.comune_impr}} {{this.istanza.prov_impr}} </div>
+                  </mat-list-item>
 
-            <ng-container *ngIf="this.typeReport.type==='integrazione'">
-                <form [formGroup]="form">
-                    <mat-form-field >
-                        <mat-label  style="color:#06c;">Data Report</mat-label>
-                        <input matInput
-                        [matDatepicker]="dataProt"
-                        formControlName="dataProt"
-                        [readonly]="true"
-                        >
-                        <mat-hint>Seleziona la data cliccando sull'icona destra</mat-hint>
-                        <mat-datepicker-toggle matSuffix [for]="dataProt"></mat-datepicker-toggle>
-                        <mat-datepicker #dataProt></mat-datepicker>
-    
-                      </mat-form-field>
+                  <mat-list-item >
+                      <div mat-line>Pec</div>
+                      <div mat-line>{{this.istanza.pec_impr}}</div>
+                  </mat-list-item>
 
-                      <mat-form-field >
-                        <mat-label style="color:#06c;;">Protocollo Report</mat-label>
-                        <input matInput
-                            type="text"
-                            formControlName="numProt"
-                           
-                        >
-    
+                  <mat-list-item >
+                      <div mat-line>id Istanza RAM</div>
+                      <div mat-line>{{this.istanza.id_ram}}/{{this.typeReport['typeistance']['year']}}</div>
+                  </mat-list-item>
+              </mat-list>
+
+
+            </div>
+
+            <div fxFlex="50">
+              <ng-container  *ngIf="this.alleDich.length> 0 || this.alleVei.length > 0">
+                <ng-container  *ngIf="this.alleDich.length> 0">
+
+                  <mat-list dense>
+                    <div mat-subheader>Allegati dichiarazione non accettati</div>
+                    <mat-list-item *ngFor="let doc of alleDich">
+                      <div mat-line>{{getAlleDichDescription(doc.typeDocument)}}</div>
+                    </mat-list-item>
+                  </mat-list>
+                </ng-container>
+
+                <ng-container  *ngIf="this.alleVei.length> 0">
+
+                  <mat-list dense>
+                    <div mat-subheader>Allegati veicolo non accettati</div>
+                    <mat-list-item *ngFor="let doc of alleDich">
+                      <div mat-line></div>
+                    </mat-list-item>
+                  </mat-list>
+                </ng-container>
+              </ng-container>
+
+
+            </div>
+
+          </div>
+          <div fxLayout="row">
+            <div fxFlex="100" *ngIf="this.typeReport.type==='integrazione'">
+              <form [formGroup]="form">
+                  <!-- <mat-form-field >
+                      <mat-label  style="color:#06c;">Data Report</mat-label>
+                      <input matInput
+                      [matDatepicker]="dataProt"
+                      formControlName="dataProt"
+                      [readonly]="true"
+                      >
+                      <mat-hint>Seleziona la data cliccando sull'icona destra</mat-hint>
+                      <mat-datepicker-toggle matSuffix [for]="dataProt"></mat-datepicker-toggle>
+                      <mat-datepicker #dataProt></mat-datepicker>
+
                     </mat-form-field>
-                    <mat-divider style="margin:10px 10px"></mat-divider>
 
-                    <mat-label style="color:#06c;">Richiesta documentazione</mat-label>
-                        <div formArrayName="detail" style=" margin-top: 20px;">
-                        
-                        
-                        <ng-container  *ngFor="let control of myArrayControls; let i = index" style="width:100%">
-                            <mat-form-field style="width:70%">
-                                
-                                <textarea  matInput [formControlName]="i"></textarea>
-                            </mat-form-field>
-                            <button mat-raised-button color="warn" style="margin-left:10px;" (click)="removeControl(i)">
-                                <mat-icon>remove</mat-icon> Rimuovi
-                              </button>
-                          
-                            
-                        </ng-container>
-                        
+                    <mat-form-field >
+                      <mat-label style="color:#06c;;">Protocollo Report</mat-label>
+                      <input matInput
+                          type="text"
+                          formControlName="numProt"
 
-                        
-                        
-                      </div>
-                      <button mat-raised-button color="primary"(click)="addControl()" style=" margin-top: 20px;">
-                        <mat-icon>add</mat-icon> Inserisci richiesta
+                      >
+
+                  </mat-form-field> -->
+                  <mat-divider style="margin:10px 10px"></mat-divider>
+
+                  <mat-label style="color:#06c;">Richiesta documentazione</mat-label>
+                      <div formArrayName="detail" style=" margin-top: 20px;">
+
+
+                      <ng-container  *ngFor="let control of myArrayControls; let i = index" style="width:100%">
+                          <mat-form-field style="width:70%">
+
+                              <textarea  matInput [formControlName]="i"></textarea>
+                          </mat-form-field>
+                          <button mat-raised-button color="warn" style="margin-left:10px;" (click)="removeControl(i)">
+                              <mat-icon>remove</mat-icon> Rimuovi
+                            </button>
+
+
+                      </ng-container>
+
+
+
+
+                    </div>
+                    <button mat-raised-button color="primary"(click)="addControl()" style=" margin-top: 20px;">
+                      <mat-icon>add</mat-icon> Inserisci richiesta
+                    </button>
+
+              </form>
+
+            </div>
+
+            <div fxFlex="100" *ngIf="this.typeReport.type==='rigetto'">
+              <form [formGroup]="form">
+                <mat-label style="color:#06c;">motivazioni Rigetto</mat-label>
+                <div formArrayName="detail" style=" margin-top: 20px;">
+
+
+                <ng-container  *ngFor="let control of myArrayControls; let i = index" style="width:100%">
+                    <mat-form-field style="width:70%">
+
+                        <textarea  matInput [formControlName]="i"></textarea>
+                    </mat-form-field>
+                    <button mat-raised-button color="warn" style="margin-left:10px;" (click)="removeControl(i)">
+                        <mat-icon>remove</mat-icon> Rimuovi
                       </button>
-                      
-                </form>
 
-            </ng-container>
+
+                </ng-container>
+
+
+
+
+              </div>
+              <button mat-raised-button color="primary"(click)="addControl()" style=" margin-top: 20px;">
+                <mat-icon>add</mat-icon> Inserisci motivazione
+              </button>
+
+              </form>
+            </div>
+          </div>
+
         </div>
         <div class="child">
-            <h3>Anteprima Documento</h3>
-            <h3>Anteprima</h3>
+            <button mat-raised-button color="primary" (click)="previewDoc()">Anteprima Documento</button>
+            <h3 *ngIf="this.preview">Anteprima</h3>
             <ng-container *ngIf="this.preview">
               <pdf-viewer [src]="this.preview"
               [render-text]="true"
@@ -98,4 +163,3 @@
     <button mat-button color="warn" mat-dialog-close>Annulla</button>
     <button mat-button color="primary" (click)="onSubmitBtn()">{{btnSubmit}}</button>
   </mat-dialog-actions>
-  

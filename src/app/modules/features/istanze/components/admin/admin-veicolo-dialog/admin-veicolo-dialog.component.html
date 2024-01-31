@@ -19,100 +19,137 @@
     </div>
     <div fxFlex="40">
       <h3>Dati Istruttoria</h3>
-      <ng-container *ngIf="!datiIstruttoriaShow; else datiIstruttoria">
-        <h3><mat-icon>error</mat-icon> Allegati dichiarazione, allegati veicolo e cerificazioni non validati</h3>
-       </ng-container>
-       <ng-template #datiIstruttoria>
-        <form [formGroup]="formVeicolo">
-          <div class="table">
-              <table class="table-sm" style="width:100%;">
-                  <tr>
+        <ng-container *ngIf="!datiIstruttoriaShow; else datiIstruttoria">
+          <h3><mat-icon>error</mat-icon> Allegati dichiarazione, allegati veicolo e cerificazioni non validati</h3>
+        </ng-container>
+        <ng-template #datiIstruttoria>
+          <form [formGroup]="formVeicolo">
+            <div class="table">
+                <table class="table-sm" style="width:100%;">
+                    <tr>
+                        <td></td>
+                        <th>Calcolato</th>
+                        <th>Accordato</th>
+                    </tr>
+                    <tr>
+                        <td>Costo Veicolo</td>
+                        <td> {{veicolo.amount| currency: 'EUR':'symbol':'.2-2':'it' }} </td>
+                        <td>
+                            <mat-form-field>
+                            <input matInput
+                                currencyMask
+                                formControlName="costoIstr"
+                                [options]="{ prefix: '€ ', thousands: '.', decimal: ',' }"
+                            >
+                            <mat-error *ngIf="formVeicolo.get('costoIstr').invalid" [innerHTML]="formVeicolo.get('costoIstr') | errors"></mat-error>
+
+                        </mat-form-field>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Valore Contributo</td>
+                        <td> {{valoreContributo | currency: 'EUR':'symbol':'.2-2':'it' }} </td>
+                        <td>
+                            <mat-form-field>
+                            <input matInput
+                                currencyMask
+                                formControlName="valoreContributo"
+                                [options]="{ prefix: '€ ', thousands: '.', decimal: ',' }"
+                            >
+                            <mat-error *ngIf="formVeicolo.get('valoreContributo').invalid" [innerHTML]="formVeicolo.get('valoreContributo') | errors"></mat-error>
+
+                        </mat-form-field>
+                        </td>
+                    </tr>
+                    <tr >
+                      <td>Maggiorazione PMI</td>
+                      <td> {{valoreMaggPmi | currency: 'EUR':'symbol':'.2-2':'it' }} </td>
+                      <td *ngIf="this.istanza.pmi === 'Yes';else noMagg">
+                          <mat-form-field>
+                          <input matInput
+                              currencyMask
+                              formControlName="pmiIstr"
+                              [options]="{ prefix: '€ ', thousands: '.', decimal: ',' }"
+                          >
+                          <mat-error *ngIf="formVeicolo.get('pmiIstr').invalid" [innerHTML]="formVeicolo.get('pmiIstr') | errors"></mat-error>
+
+                      </mat-form-field>
+                      </td>
+                  </tr>
+                  <tr >
+                    <td>Maggiorazione Rete</td>
+                    <td> {{valoreMaggRete | currency: 'EUR':'symbol':'.2-2':'it' }} </td>
+                    <td *ngIf="this.istanza.rete === 'Yes';else noMagg">
+                        <mat-form-field>
+
+                            <input matInput
+                                currencyMask
+
+                                formControlName="reteIstr"
+                                [options]="{ prefix: '€ ', thousands: '.', decimal: ',' }"
+                            >
+
+                        <mat-error *ngIf="formVeicolo.get('reteIstr').invalid" [innerHTML]="formVeicolo.get('reteIstr') | errors"></mat-error>
+
+                    </mat-form-field>
+                    </td>
+                    <ng-template #noMagg>
+                      <td>Maggiorazione non prevista</td>
+                    </ng-template>
+                </tr>
+
+
+                    <tr>
+                        <td>Stato Lavorazione
+                            <br>
+                            <span class="status-span" style="padding:0 10px;" [class]="this.veicolo.adminState?this.veicolo.adminState:'toWork'"
+                            [innerText]="this.veicolo.adminState?(this.veicolo.adminState | statusCheck) : ('toWork' | statusCheck)"
+
+
+                            >
+                            </span>
+                        </td>
                       <td></td>
-                      <th>Calcolato</th>
-                      <th>Accordato</th>
-                  </tr>
-                  <tr>
-                      <td>Costo Veicolo</td>
-                      <td> {{veicolo.amount| currency: 'EUR':'symbol':'.2-2':'it' }} </td>
-                      <td>
-                          <mat-form-field>
-                          <input matInput
-                              currencyMask
-                              formControlName="costoIstr"
-                              [options]="{ prefix: '€ ', thousands: '.', decimal: ',' }"
-                          >
-                          <mat-error *ngIf="formVeicolo.get('costoIstr').invalid" [innerHTML]="formVeicolo.get('costoIstr') | errors"></mat-error>
+                        <td >
+                            <mat-form-field>
 
-                      </mat-form-field>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td>Valore Contributo</td>
-                      <td> {{valoreContributo | currency: 'EUR':'symbol':'.2-2':'it' }} </td>
-                      <td>
-                          <mat-form-field>
-                          <input matInput
-                              currencyMask
-                              formControlName="valoreContributo"
-                              [options]="{ prefix: '€ ', thousands: '.', decimal: ',' }"
-                          >
-                          <mat-error *ngIf="formVeicolo.get('valoreContributo').invalid" [innerHTML]="formVeicolo.get('valoreContributo') | errors"></mat-error>
+                                <mat-select formControlName="adminState">
+                                    <mat-option *ngFor="let statusCheck of filterOptionsDescriptors.statusCheck" [value]="statusCheck.value">
+                                        <span class="status-span" style="padding:0 10px;"[class]="statusCheck.value?statusCheck.value:'toWork'"
+                                        [innerText]="statusCheck.value?(statusCheck.value | statusCheck) : ('toWork' | statusCheck)"
+                                        >
+                                        </span>
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="formVeicolo.get('adminState').invalid" [innerHTML]="formVeicolo.get('adminState') | errors"></mat-error>
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                    <tr>
 
-                      </mat-form-field>
-                      </td>
-                  </tr>
+                    <td colspan="3">
 
-                  <tr>
-                      <td>Stato Lavorazione
-                          <br>
-                          <span class="status-span" style="padding:0 10px;" [class]="this.veicolo.adminState?this.veicolo.adminState:'toWork'"
-                          [innerText]="this.veicolo.adminState?(this.veicolo.adminState | statusCheck) : ('toWork' | statusCheck)"
+                        <mat-form-field style="width: 100%;">
+                            <mat-label>Note</mat-label>
+                            <textarea matInput formControlName="adminNote"></textarea>
+                        </mat-form-field>
+                    </td>
+                    </tr>
+                </table>
+                <button
+                        mat-raised-button color="primary"
+                        aria-label="Example icon button with a home icon"
+                        matTooltip="Aggiorna dati"
+                        matTooltipPosition="above"
+                        (click)="onSubmitBtn()"
+                        style="float:right;"
+                    >
+                        <mat-icon>edit_document</mat-icon> Aggiorna dati Istruttoria
+                    </button>
+            </div>
 
-
-                          >
-                          </span>
-                      </td>
-                    <td></td>
-                      <td >
-                          <mat-form-field>
-
-                              <mat-select formControlName="adminState">
-                                  <mat-option *ngFor="let statusCheck of filterOptionsDescriptors.statusCheck" [value]="statusCheck.value">
-                                      <span class="status-span" style="padding:0 10px;"[class]="statusCheck.value?statusCheck.value:'toWork'"
-                                      [innerText]="statusCheck.value?(statusCheck.value | statusCheck) : ('toWork' | statusCheck)"
-                                      >
-                                      </span>
-                                  </mat-option>
-                              </mat-select>
-                              <mat-error *ngIf="formVeicolo.get('adminState').invalid" [innerHTML]="formVeicolo.get('adminState') | errors"></mat-error>
-                          </mat-form-field>
-                      </td>
-                  </tr>
-                  <tr>
-
-                  <td colspan="3">
-
-                      <mat-form-field style="width: 100%;">
-                          <mat-label>Note</mat-label>
-                          <textarea matInput formControlName="adminNote"></textarea>
-                      </mat-form-field>
-                  </td>
-                  </tr>
-              </table>
-              <button
-                      mat-raised-button color="primary"
-                      aria-label="Example icon button with a home icon"
-                      matTooltip="Aggiorna dati"
-                      matTooltipPosition="above"
-                      (click)="onSubmitBtn()"
-                      style="float:right;"
-                  >
-                      <mat-icon>edit_document</mat-icon> Aggiorna dati Istruttoria
-                  </button>
-          </div>
-
-      </form>
-       </ng-template>
+        </form>
+        </ng-template>
     </div>
     <div fxFlex="30">
 
@@ -176,7 +213,7 @@
                   <button
                       mat-icon-button color="primary"
                       aria-label="Example icon button with a home icon"
-                     
+
                       (click)="onClickAlle('view',element)"
                   >
                       <mat-icon>edit_document</mat-icon>

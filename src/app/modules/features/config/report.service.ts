@@ -4,11 +4,14 @@ import moment from 'moment';
 import pdfMake from 'pdfmake/build/pdfmake';
 //import pdfFonts from 'pdfmake/build/vfs_fonts';///
 import pdfFonts from "../../../../assets/custom-fonts";
+import { HttpClient } from '@angular/common/http';
+import { Observable, map } from 'rxjs';
+import { ApiService } from '@app/modules/network/api.service';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 @Injectable()
 export class ReportService {
 
-constructor() { }
+constructor(private http:HttpClient,  private API: ApiService,) { }
 
 
 
@@ -77,7 +80,7 @@ constructor() { }
     //     )
     //   }
     // }
-  
+
     pdfMake.fonts = {
       'Arial' : {
         normal: 'ARIAL.TTF',
@@ -92,10 +95,10 @@ constructor() { }
         bolditalics: 'timesbi.ttf'
       }
     }
-   
 
-    
-    
+
+
+
     if(!dataReport){
       dataReport = {
         numProt: 'numero Protocollo da inserire',
@@ -116,14 +119,14 @@ constructor() { }
           'Lorem Ipsum è un testo segnaposto utilizzato nel settore della tipografia e della stampa. Lorem Ipsum è considerato il testo segnaposto standard sin dal sedicesimo secolo, quando un anonimo tipografo prese una cassetta di caratteri e li assemblò per preparare un testo campione. È sopravvissuto non solo a più di cinque secoli, ma anche al passaggio alla videoimpaginazione, pervenendoci sostanzialmente inalterato.'
 
         ],
-       
+
         artAa:{
           numero :0,
           importo:0,
           maggiorazioni:0,
           totale:0
         },
-        
+
         artAb:{
           numero :0,
           importo:0,
@@ -160,7 +163,7 @@ constructor() { }
           maggiorazioni:0,
           totale:0
         },
-        
+
         artCb:{
           numero :0,
           importo:0,
@@ -185,23 +188,23 @@ constructor() { }
         dataPreavvisoRigetto:0,
         dataNotaInammissibilita:0,
         motivazioneInammissibilita:'motivazione'
-       
+
       }
     }
     console.log(dataReport
       )
 
-    
+
     if(type === 'integrazione'){
       let logo  = await this.getBase64ImageFromURL('../../../../assets/report/ram_nuovo_logo.png');
       let firma  = await this.getBase64ImageFromURL('../../../../assets/report/firma_fb.png');
 
       let listaRichieste =[];
 
-    
+
        header= [
-        
-         
+
+
         {
           columns: [
             {
@@ -220,23 +223,23 @@ constructor() { }
                 }
               ],
               alignment: 'center',
-              margin:[25,25]  // Allinea lo stack al centro del contenitore
+              margin:[40,40]  // Allinea lo stack al centro del contenitore
             }
           ]
         }
-           
-        
-      
+
+
+
 
        ]
-       content.push(
-        {text: 'Prot n° '+dataReport['numProt'],margin: [ 0, 10, 0, 0 ]} ,
-        {text: 'Roma li '+dataReport['dataProt']},
-        {text: 'Spett.Le',alignment:'right',margin: [ 0, 0, 0, 0 ]}, 
-        {text: dataReport['ragSociale'],alignment:'right',margin: [ 0, 0, 0, 0 ]},
-        {text: `${dataReport['indirizzo']}, ${dataReport['numCivico']}`,alignment:'right',margin: [ 0, 0, 0, 0 ]},
-        {text: `${dataReport['cap']} - ${dataReport['citta']} ${dataReport['prov']}`,alignment:'right',margin: [ 0, 0, 0, 0 ]},
-        { text:[ 'Raccomandata via pec all\'indirizzo: ', {text:dataReport['pecImpresa'], bold:true}],margin: [ 0, 10 ]},
+      content.push(
+        // {text: 'Prot n° '+dataReport['numProt'],margin: [ 0, 10, 0, 0 ]} ,
+        // {text: 'Roma li '+dataReport['dataProt']},
+        {text: 'Spett.Le',alignment:'left',margin: [ 250, 0, 0, 0 ]},
+        {text: dataReport['ragSociale'],alignment:'left',margin: [ 250, 0, 0, 0 ]},
+        {text: `${dataReport['indirizzo']}, ${dataReport['numCivico']}`,alignment:'left',margin: [ 250, 0, 0, 0 ]},
+        {text: `${dataReport['cap']} - ${dataReport['citta']} ${dataReport['prov']}`,alignment:'left',margin: [ 250, 0, 0, 10 ]},
+        { text:[ 'Raccomandata via pec all\'indirizzo: ', {text:dataReport['pecImpresa'], bold:true}], alignment:'left',margin: [ 0, 10 ]},
         {text:'Oggetto: Contributi ai sensi del D.D. 12 aprile 2022 n.155 per le finalità di cui al D.M. 18 novembre 2021 n. 459 - "Incentivi agli investimenti nel settore dell\'autotrasporto" ', bold:true, margin: [ 0, 5, 0, 5 ], alignment:'justify'},
         {
           text:[
@@ -245,39 +248,41 @@ constructor() { }
             {text: `prot. R.A.M. S.p.a. In ${dataReport['idRam']}/${dataReport['year']}`, bold: true},
             { text: ' abbiamo necessità di ricevere i seguenti chiarimenti e/o documenti:'}
           ], alignment:'justify'
-          },
-          {ul:dataReport['detail'], margin:[0,10], bold:true},
+        },
+        {ul:dataReport['detail'], margin:[0,10], bold:true},
           {
             text:[
-              {text: 'Pertanto, ai sensi e per gli effetti dell\'art. 12, comma 4 del D.D 12 aprile 2022 n.155, Vi invitiamo a fornirci la suddetta documentazione '},
+              {text: 'Pertanto, ai sensi e per gli effetti dell\'art. 10, comma 4 del D.D 12 aprile 2022 n.155, Vi invitiamo a fornirci la suddetta documentazione '},
               {text:'entro e non oltre il termine perentorio di quindici giorni ', bold:true},
               {text:'decorrenti dalla data di ricezione della presente, accedendo al gestionale dedicato sul Portale, già utilizzato per la rendicontazione della domanda. Il Portale sarà abilitato alla modifica dei dati e, all\'interno della Sezione "Richieste integrazioni", al caricamento dei documenti contenenti le integrazioni richieste.'}
-            ], alignment:'justify',  margin:[10,5]
+            ], alignment:'justify',  margin:[0,0]
           },
-          
+
             {text:'Al fine di porre in condizione codesta spett.le impresa di rispettare pienamente quanto previsto dal decreto in oggetto specificato, si invita quest\'ultima a tenere presenti le seguenti inderogabili disposizioni:'},
             {
-              ul:[
+              ol:[
                 'la documentazione inviata dovrà rispettare scrupolosamente i criteri di sostanza e di forma richiesti;',
                 'decorso il termine perentorio suindicato, l\'istruttoria verrà conclusa sulla sola base della documentazione valida disponibile, senza che possa in alcun modo avviarsi qualsiasi, ulteriore fase di interlocuzione.'
               ], margin:[10,5], alignment:'justify'
              },
-             {text:'Per qualsiasi informazione, potrete rivolgerVi al nostro Help Desk Incentivi \n (e-mail:incentivoinvestimenti@ramspa.it). Cordiali saluti'}
+             {text:'Per qualsiasi informazione, potrete rivolgerVi al nostro Help Desk Incentivi \n (e-mail:incentivoinvestimenti@ramspa.it).'},
+             {text:' Cordiali saluti'}
+
             ,
               {
                 image: firma,
                 alignment:'right',
                 width: 150, margin: [40,0, 0, 10]
               }
-           
-          
 
-        
+
+
+
            )
 
-         footer ={ columns: [
-            {text:'RAM Logistica Infrastrutture e Trasporti Spa \n Via Nomentana, 2 00161 Roma \n T +39 06 44124461 / F +39 06 44126168 \ninfo@ramspa.it ', alignment: 'left',margin:[20,30,0,0], fontSize: 9, color:'#548cd4' },
-       
+      footer ={ columns: [
+            {text:'RAM Logistica Infrastrutture e Trasporti Spa \n Via Nomentana, 2 00161 Roma \n T +39 06 44124461 / F +39 06 44126168 \ninfo@ramspa.it - www.ramspa.it ', alignment: 'left',margin:[20,30,0,0], fontSize: 9, color:'#548cd4' },
+
             {text:'Azionista unico Ministero dell Economia e delle Finanze \nCapitale sociale € 1.000.000,00 \nIscritta al Registro delle Imprese di Roma \n P.Iva e C.F 07926631008 ', alignment: 'left',margin:[20,30,0,0], fontSize: 9, color:'#548cd4'}
         ]}
 
@@ -286,12 +291,12 @@ constructor() { }
           defaultStyle: {
             font: 'Times'
           },
-          pageMargins: [ 25,100, 30, 80 ],
+          pageMargins: [ 40,100, 40, 80 ],
           header: function(currentPage, pageCount) {
             if (currentPage === 1) {
               return header
             }},
-    
+
           content: content,
           footer: (currentPage, pageCount) => {
             return footer
@@ -334,7 +339,7 @@ constructor() { }
       content.push(
       {text: 'Prot n° '+dataReport['numProt'],margin: [0,25,0,0]} ,
       {text: 'Roma li '+moment(Number(dataReport['dataProt'])).format('DD/MM/YYYY')},
-      {text: 'Spett.Le',alignment:'right',margin: [ 0, 0, 0, 0 ]}, 
+      {text: 'Spett.Le',alignment:'right',margin: [ 0, 0, 0, 0 ]},
       {text: dataReport['ragSociale'],alignment:'right',margin: [ 0, 0, 0, 0 ]},
       {text: `${dataReport['indirizzo']}, ${dataReport['numCivico']}`,alignment:'right',margin: [ 0, 0, 0, 0 ]},
       {text: `${dataReport['cap']} - ${dataReport['citta']} ${dataReport['prov']}`,alignment:'right',margin: [ 0, 0, 0, 0 ]},
@@ -356,10 +361,10 @@ constructor() { }
         style: 'tableExample',
         table: {
           headerRows: 1,
-          
+
           widths:['*',100,60,70,65,70],
           body:[
-            [ 
+            [
               { text: 'Categoria Investimenti', bold:true, alignment:'center',margin:[0,10]},
               { text: 'Sotto-Categoria Investimenti', bold:true, alignment:'center'},
               { text: 'Numero acquisizioni finanziabili', bold:true, alignment:'center'},
@@ -420,7 +425,7 @@ constructor() { }
 
 
 
-            ],  
+            ],
             [
               {text:'Art.1, comma 5, lett b) -2)', alignment:'center'},
               {text:'Art.3, comma 4', alignment:'left' },
@@ -431,9 +436,9 @@ constructor() { }
 
 
 
-            ],  
+            ],
 
-              
+
             [
               {rowSpan:3, text:'Art.1, comma 5, lett c)', alignment:'center', margin:[0,15]},
               {text:'Art.3, comma 5, lett a)', alignment:'left' },
@@ -470,7 +475,7 @@ constructor() { }
             {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(dataReport['artD']['totale'])},
 
 
-          ],  
+          ],
           [
             {text:'Totale Contributo(€)', colSpan:5, alignment:'right', bold:true},
             '',
@@ -481,14 +486,14 @@ constructor() { }
 
 
 
-          ],  
+          ],
 
           ]
         }
       },
       {alignment:'justify',text:'Si comunica altresì che, ai sensi dell’art. 3, comma 4, della legge 7 agosto 1990 n. 241, avverso il presente atto è ammesso ricorso giurisdizionale avanti al competente Tribunale Amministrativo Regionale oppure, in alternativa, ricorso straordinario al Presidente della Repubblica, rispettivamente entro sessanta e centoventi giorni dal ricevimento dello stesso'},
 
-      
+
         {text:'AVVERTENZE:',bold:true},
         {text:[
           {text:'Si ricorda che a norma dell’'},
@@ -504,7 +509,7 @@ constructor() { }
         {text:[
           {text:'Soltanto in caso di contributo spettante di importo superiore ad euro 150.000,00',bold:true},
           {text:' – essendo necessario acquisire l’informazione antimafia ai sensi del decreto legislativo n. 159/2011 e successive ii e mm – dovrà essere allegata, entro 15 (quindici) giorni lavorativi dal ricevimento della presente:'},
-          
+
 
         ], alignment:'justify',margin: [0,10,0,0]},
         {
@@ -527,7 +532,7 @@ constructor() { }
           {text:'Per qualsiasi informazione, è a disposizione il servizio Help Desk Incentivi (e-mail:'},
           {text:'incentivoinvestimenti@ramspa.it',bold:true},
           {text:')'},
-          
+
 
 
         ], alignment:'justify',margin: [0,10,0,0]},
@@ -587,57 +592,57 @@ constructor() { }
     if(type === 'rigetto'){
       let logo  = await this.getBase64ImageFromURL('../../../../assets/report/int_ammb.png');
       let firma  = await this.getBase64ImageFromURL('../../../../assets/report/firma_disanto.png');
-      header= [{image: logo,width: 240, margin: [20,20, 0, 0]}];
+      header= [{image: logo,width: 240, margin: [40,20, 0, 0]}];
 
        content.push(
-        {text: 'Prot n° '+dataReport['numProt'], margin: [0,25, 0, 0]} ,
-        {text: 'Roma li '+moment(Number(dataReport['dataProt'])).format('DD/MM/YYYY')},
-        {text: 'Spett.Le',alignment:'right',margin: [ 0, 0, 0, 0 ]}, 
-        {text: dataReport['ragSociale'],alignment:'right',margin: [ 0, 0, 0, 0 ]},
-        {text: `${dataReport['indirizzo']}, ${dataReport['numCivico']}`,alignment:'right',margin: [ 0, 0, 0, 0 ]},
-        {text: `${dataReport['cap']} - ${dataReport['citta']} ${dataReport['prov']}`,alignment:'right',margin: [ 0, 0, 0, 0 ]},
-        { text:[ 'Raccomandata via pec all\'indirizzo: ', {text:dataReport['pecImpresa'], bold:true}],margin: [ 0, 10 ]},
+       // {text: 'Prot n° '+dataReport['numProt'], margin: [0,25, 0, 0]} ,
+       // {text: 'Roma li '+moment(Number(dataReport['dataProt'])).format('DD/MM/YYYY')},
+        {text: 'Spett.Le',alignment:'left',margin: [ 250, 10, 0, 10 ]},
+        {text: dataReport['ragSociale'],alignment:'left',margin: [ 250, 0, 0, 0 ]},
+        {text: `${dataReport['indirizzo']}, ${dataReport['numCivico']}`,alignment:'left',margin: [ 250, 0, 0, 0 ]},
+        {text: `${dataReport['cap']} - ${dataReport['citta']} ${dataReport['prov']}`,alignment:'left',margin: [ 250, 0, 0, 10 ]},
+        { text:[ 'Raccomandata via pec all\'indirizzo: ', {text:dataReport['pecImpresa'], bold:true}], alignment:'left',margin: [ 0, 10 ]},
         {text:'Oggetto: Contributi ai sensi del D.D. 12 aprile 2022 n.155 per le finalità di cui al D.M. 18 novembre 2021 n. 459 - "Incentivi agli investimenti nel settore dell\'autotrasporto" ', bold:true, margin: [ 0, 5, 0, 5 ], alignment:'justify'},
         {text:`Protocollo Istanza In ${dataReport['idRam']}/${dataReport['year']} Informativa ai sensi dell'art.10-bis legge 241/90`, bold:true, margin: [ 0, 5, 0, 5 ], alignment:'justify'},
-        {alignment:'justify',text:`In riferimento alla domanda di ammissione agli incentivi di cui al D.M. 12 maggio 2020 n. 203 acquisita in data ${moment(Number(dataReport['dataIdRam'])).format('DD/MM/YYYY')} con prot. n. ${dataReport['idRam']}/${dataReport['year']} si comunica che, sulla base delle risultanze dell'istruttoria effettuata dalla società RAM S.p.A e della valutazione di questa Commissione, l'istanza di ammissione al finanziamento degli investimenti di cui all'art. 1 del 12 maggio 2020 n.203, destinato alle imprese di autotrasporti merci, è risultata`},
+        {alignment:'justify',text:`In riferimento alla domanda di ammissione agli incentivi di cui al D.M. 18 novembre 2021 n. 459 acquisita in data ${moment(dataReport['dataIdRam']).format('DD/MM/YYYY')} con prot. n. ${dataReport['idRam']}/${dataReport['year']} si comunica che, sulla base delle risultanze dell'istruttoria effettuata dalla società RAM S.p.A e della valutazione di questa Commissione, l'istanza di ammissione al finanziamento degli investimenti di cui all'art. 1 del 18 novembre 2021 n.459, destinato alle imprese di autotrasporti merci, è risultata`},
         {text:'INAMMISSIBILE',alignment:'center',margin: [ 0,10 ], bold:true},
         {text:'Per la/le seguente/i motivazione/i:'},
         {
-          ul:dataReport['detail'], bold:true,margin:[10,0],alignment:'justify',
+          ul:dataReport['detail'], bold:true,margin:[0,10],alignment:'justify',
         },
         {
           text:[
-            {text:'Si comunica che, ai sensi dell\'art. 10-bis, comma 1, della legge n. 241/1990, l\'impresa in indirizzo ha tempo 10 giorni dalla ricezione della presente per produrre per iscritto le proprie eventuali osservazioni, corredate se del caso, da idonea documentazione che',margin:[0,10]},
-            {bold:true, text:' dovrà essere inviata alla RAM S.p.A., esclusivamente presso il seguente indirizzo di posta elettronica certificata: ram.investimenti@pec.it'},
-    
+            {text:'Si comunica che, ai sensi dell\'art. 10-bis, comma 1, della legge n. 241/1990, l\'impresa in indirizzo ha tempo 10 giorni dalla ricezione della presente per produrre per iscritto le proprie eventuali osservazioni, corredate se del caso, da idonea documentazione che ',margin:[0,10]},
+            {bold:true, decoration: 'underline' ,text:'dovrà essere inviata alla RAM S.p.A., esclusivamente presso il seguente indirizzo di posta elettronica certificata: ram.investimenti2022@legalmail.it'},
+
           ],alignment:'justify'
         },
-     
-        { 
+
+        {
             stack: [
-               
+
               {
-                text: 'Il Presidente',
+                text: 'Il PresidenteLa presidente della commissione',
                 margin: [0, 5],  // Aggiungi margine superiore e inferiore per spaziare il testo
-              
+
                 alignment: 'center'  // Allinea il testo al centro
               },
               {
-                text: '(Dott.ssa Monica Macioce)',
+                text: '(Ing. Donatella Orlandi)',
                 margin: [0, 5],  // Aggiungi margine superiore e inferiore per spaziare il testo
-             
+
                 alignment: 'center'  // Allinea il testo al centro
               }
             ],
             alignment: 'left',  // Allinea lo stack al centro del contenitore,
 
-           
+
             margin:[200,20,20,0],
-        
+
               width: 'auto',
-             
-            
-         
+
+
+
         }
 
        )
@@ -649,7 +654,7 @@ constructor() { }
       defaultStyle: {
         font: 'Times'
       },
-      pageMargins: [ 25,100, 30, 80 ],
+      pageMargins: [ 40,100, 40, 80 ],
       header: function(currentPage, pageCount) {
         if (currentPage === 1) {
           return header
@@ -691,14 +696,14 @@ constructor() { }
     if(type === 'inammissibilita'){
       let logo  = await this.getBase64ImageFromURL('../../../../assets/report/int_ammb.png');
       let firma  = await this.getBase64ImageFromURL('../../../../assets/report/firma_resp.png');
-     
-      
+
+
       header= [{image: logo,width: 240, margin: [20,20, 0, 0]}];
 
       content.push(
         {text: 'Prot n° '+dataReport['numProt'],margin: [ 0, 25, 0, 0 ]} ,
         {text: 'Roma li '+moment(Number(dataReport['dataProt'])).format('DD/MM/YYYY')},
-        {text: 'Spett.Le',alignment:'right',margin: [ 0, 0, 0, 0 ]}, 
+        {text: 'Spett.Le',alignment:'right',margin: [ 0, 0, 0, 0 ]},
         {text: dataReport['ragSociale'],alignment:'right',margin: [ 0, 0, 0, 0 ]},
         {text: `${dataReport['indirizzo']}, ${dataReport['numCivico']}`,alignment:'right',margin: [ 0, 0, 0, 0 ]},
         {text: `${dataReport['cap']} - ${dataReport['citta']} ${dataReport['prov']}`,alignment:'right',margin: [ 0, 0, 0, 0 ]},
@@ -712,10 +717,10 @@ constructor() { }
             {text:`VISTA la nota prot. n. In/${dataReport['protPreavvisoRigetto']} del${moment(Number(dataReport['dataPreavvisoRigetto'])).format('DD/MM/YYYY')} con la quale è stato dat preavviso di regetto della suddetta istanza di finanziamento;`},
             {text:`CONSIDERATO che non è pervenuta alcuna risposta alla predetta nota del ${moment(Number(dataReport['notaInammissibilita'])).format('DD/MM/YYYY')}`},
             {text:'CONSIDERATO che premane la seguente motivazione di inammissibilità:'}
-            
+
           ],
           margin:[10,0],
-          
+
           alignment:'justify'
         },
         {text:dataReport['motivazioneInammissibilita'], margin:[10,0,0,0]},
@@ -744,7 +749,7 @@ constructor() { }
           if (currentPage === 1) {
             return header
           }},
-  
+
         content: content,
         footer: (currentPage, pageCount) => {
           return footer
@@ -780,10 +785,10 @@ constructor() { }
     }
 
 
-    
 
-   
-    
+
+
+
 
 
 
@@ -796,4 +801,13 @@ constructor() { }
   //  console.log(report)
    // return url
   }
+
+  uploadAllegatoFile(payload): Observable<any> {
+    const formData: FormData = new FormData();
+    formData.append('file', payload, payload.filename);
+    return this.API.Upload.create(formData)
+    .pipe(
+        map((response: any) => response)
+    );
+}
 }

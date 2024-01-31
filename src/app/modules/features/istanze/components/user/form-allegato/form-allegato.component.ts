@@ -43,6 +43,7 @@ export class FormAllegatoComponent implements OnInit {
                     this.mode = data.mode;
                     this.istanza = data.istanza;
                     this.type = data.type;
+                    console.log(this.type['description'])
 
                   //  console.log(this.type)
 
@@ -269,19 +270,19 @@ export class FormAllegatoComponent implements OnInit {
     ) {
         this.typeFileControl = true;
         this.form.controls.attach.setValue(false);
-      
+
         if(this.fileAttach.size < 4194304){
             this.fileDimControl = true;
             this.form.controls.attach.setValue(true)
         }
-        
+
         return
     } else {
         console.log("Tipo di file non supportato");
         this.typeFileControl = false;
         this.fileDimControl = false;
         this.form.controls.attach.setValue(false);
-    
+
         return;
     }
 

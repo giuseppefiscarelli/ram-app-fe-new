@@ -66,7 +66,10 @@ export class AdminVeicoloDialogComponent implements OnInit {
     [key: string]: any
     };
     datiIstruttoriaShow:boolean=false;
-    valoreContributo:number=0;
+    valoreContributo:number = 0;
+    valoreMaggPmi: number = 0;
+    valoreMaggRete: number = 0;
+
     constructor(@Inject(MAT_DIALOG_DATA) public data: any,
     private services: IstanzeService,
     private dialog: MatDialog,
@@ -81,6 +84,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
       this.user = this.store.pipe(select('authentication'),select('user'));
       this.user.pipe(take(1)).subscribe((userMe: User) => this.userMe = userMe);
       this.istanza = data.istanza;
+      console.log(this.istanza)
       this.istanzaCheck = data.istanzaCheck;
       this.veicolo = data.veicolo;
       this.allegatiVeicolo = data.allegatiVeicolo;
@@ -95,14 +99,20 @@ export class AdminVeicoloDialogComponent implements OnInit {
       this.alleDataSelected = null;
       this.formVeicolo = this.initializeForEditVeicolo(this.veicolo)
 
-  //    console.log(this.checkAllegatiStatus())
+      console.log(this.checkAllegatiStatus(), this.allegatiVeicolo.length, 'prova')
    //console.log(this.allegatiVeicolo)
-      const checkDichiarazioni = this.checkDichiarazioni()
+      const checkDichiarazioni = this.checkDichiarazioni();
+      console.log(checkDichiarazioni,'cdich')
 
       if(checkDichiarazioni && (this.checkAllegatiStatus() === this.allegatiVeicolo.length)){
           this.datiIstruttoriaShow = true;
-          this.valoreContributo = this.services.calcolaContributo(this.istanza, this.istanzaCheck, this.veicolo, this.typeIstance)
-      }
+          let contributo  = this.services.calcolaContributo(this.istanza, this.istanzaCheck, this.veicolo, this.typeIstance)
+          this.valoreContributo = contributo['valoreContributo'];
+          this.valoreMaggPmi = contributo['magg_pmi'];
+          this.valoreMaggRete = contributo['magg_rete'];
+
+        console.log(this.valoreContributo,'valo contr')
+        }
     //  console.log(this.valoreContributo)
       this.filterOptionsDescriptors = {
           statusCheck: [
@@ -175,6 +185,8 @@ export class AdminVeicoloDialogComponent implements OnInit {
             costoIstr : new FormControl(v.costoIstr, [Validators.required]),
             noteIstr : new FormControl(),
             valoreContributo : new FormControl(v.valoreContributo,[Validators.required]),
+            pmiIstr : new FormControl(v.pmiIstr),
+            reteIstr : new FormControl(v.reteIstr),
 
         })
     }
@@ -300,7 +312,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
             payload.adminUser = this.userMe.id;
         // console.log(payload);
             this.services.updateAllegato(payload).subscribe(
-                
+
                     (res: Allegato) => {
                         if(!!res){
                             this.notifications.toast(
@@ -320,8 +332,14 @@ export class AdminVeicoloDialogComponent implements OnInit {
                         //   console.log(this.checkDichiarazioni(), this.checkAllegatiStatus(), this.allegatiVeicolo.length)
                             if(this.checkDichiarazioni() && (this.checkAllegatiStatus() === this.allegatiVeicolo.length)){
                                 this.datiIstruttoriaShow = true;
-                                this.valoreContributo = this.services.calcolaContributo(this.istanza, this.istanzaCheck, this.veicolo, this.typeIstance)
-                            //  this.formVeicolo.controls.valoreContributo.setValue(contributo)
+                                let contributo  = this.services.calcolaContributo(this.istanza, this.istanzaCheck, this.veicolo, this.typeIstance)
+                                this.valoreContributo = contributo['valoreContributo'];
+                                this.valoreMaggPmi = contributo['magg_pmi'];
+                                this.valoreMaggRete = contributo['magg_rete'];
+
+                                console.log(this.valoreContributo,'valore contributo')
+
+                                //  this.formVeicolo.controls.valoreContributo.setValue(contributo)
                             }else{
                                 this.datiIstruttoriaShow = false;
                                 let payVei = this.veicolo;
@@ -343,7 +361,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
                             'Allegato non aggiornato'
                         )
                     }
-                
+
             )
         }
     }

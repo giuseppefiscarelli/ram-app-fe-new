@@ -106,56 +106,64 @@ export class AdminIstanzeListComponent implements OnInit , OnDestroy{
 
     ngOnInit(): void {
 
-        this.filters$ = this.filters.valueChanges
-        .pipe(debounceTime(400))
-        .subscribe(
-            (value: { [key: string]: string }) => {
-                const filters = {};
-                this.totRecord = 0;
-                Object.keys(value)
-                    .forEach((key: string) => {
-                        if(key ==='statoIstanza'){
-                            switch (value[key]) {
-                                case 'enable':filters['active'] = 'true';break;
-                                case 'rend': filters['rend'] = 'rendEnable';break;
-                                case 'canceled': filters['rend'] = 'rendCanceled';break;
-                                case 'closed': filters['rend'] = 'rendClosed';break;
-                                case 'expired': filters['rend'] = 'rendExpired';break;
-                            }
-                        }else{
-                            filters[key] = value[key]
-                        }
-                        if (value[key] === undefined || value[key] === ''|| value[key] === null ) {
-                            delete filters[key] ;
-                        }
 
 
-                    });
-
-                this.dataSource = [];
-                this.paginator.resetFilters(filters);
-                const payloadCount = filters;
-                delete payloadCount['list'];
-                payloadCount['total'] = 'true';
-                this.service.countIstanze(payloadCount).subscribe(
-                    (total) => {this.totRecord = total; this.changeDetectorRef.markForCheck();}
-                )
-                this.changeDetectorRef.markForCheck();
-
-            }
-        );
-
-        this.paginator$ = this.paginator
-        .createStream(this.service.fetchIstanze.bind(this.service))
-        .subscribe({
-
-            next:(records: Istanza[]) => this.handleSubscriptionResponse(records),
-            error:(error: Error) => this.handleSubscriptionError(error)
-        });
-        this.paginator.resetFilters({list:'true'});
         this.service.countIstanze({total:'true'}).subscribe(
-            (total) =>{ this.totRecord = total;this.changeDetectorRef.markForCheck();}
+            (total) =>{
+              this.totRecord = total;
+             // this.changeDetectorRef.markForCheck();
+            }
         )
+        this.createObservable()
+        this.paginator.resetFilters({list:'true'});
+    }
+    createObservable(){
+      this.filters$ = this.filters.valueChanges
+      .pipe(debounceTime(400))
+      .subscribe(
+          (value: { [key: string]: string }) => {
+              const filters = {};
+              this.totRecord = 0;
+              Object.keys(value)
+                  .forEach((key: string) => {
+                      if(key ==='statoIstanza'){
+                          switch (value[key]) {
+                              case 'enable':filters['active'] = 'true';break;
+                              case 'rend': filters['rend'] = 'rendEnable';break;
+                              case 'canceled': filters['rend'] = 'rendCanceled';break;
+                              case 'closed': filters['rend'] = 'rendClosed';break;
+                              case 'expired': filters['rend'] = 'rendExpired';break;
+                          }
+                      }else{
+                          filters[key] = value[key]
+                      }
+                      if (value[key] === undefined || value[key] === ''|| value[key] === null ) {
+                          delete filters[key] ;
+                      }
+
+
+                  });
+
+              this.dataSource = [];
+              this.paginator.resetFilters(filters);
+              const payloadCount = filters;
+              delete payloadCount['list'];
+              payloadCount['total'] = 'true';
+              this.service.countIstanze(payloadCount).subscribe(
+                  (total) => {this.totRecord = total; this.changeDetectorRef.markForCheck();}
+              )
+              this.changeDetectorRef.markForCheck();
+
+          }
+      );
+
+      this.paginator$ = this.paginator
+      .createStream(this.service.fetchIstanze.bind(this.service))
+      .subscribe({
+
+          next:(records: Istanza[]) => this.handleSubscriptionResponse(records),
+          error:(error: Error) => this.handleSubscriptionError(error)
+      });
     }
     ngOnDestroy(): void {
       this.filters$.unsubscribe()
@@ -199,6 +207,7 @@ export class AdminIstanzeListComponent implements OnInit , OnDestroy{
     getInfoEdizione(id){
       const data =this.type.length>0? this.type.find(x=>x.id ===id):{description:'',year:''}
      // console.log(data)
+     this.changeDetectorRef.markForCheck()
       return `${data.description} - ${data.year}`
     }
 
@@ -253,17 +262,17 @@ export class AdminIstanzeListComponent implements OnInit , OnDestroy{
     }
 
     getStatusRendicontazione(element){
-     
+
       let spanData :any ={
-       
+
       }
       const isExpired = Number(element.reportingenddate) < this.today.getTime()
-    
+
       if(element){
-        
+
         if(element.rendstatus){
-          
-         
+
+
           if(element.rendstatus === 'pending'){
             spanData.status = element.rendstatus;
             spanData.pData ='avviata il :';
@@ -290,8 +299,8 @@ export class AdminIstanzeListComponent implements OnInit , OnDestroy{
             spanData.date = element.datecanceled
           }
         }else{
-       
-          
+
+
             if(isExpired){
               spanData.status = 'expired';
               spanData.pData ='scaduta il :';
@@ -303,10 +312,10 @@ export class AdminIstanzeListComponent implements OnInit , OnDestroy{
             }
         }
       }
-     
+
       return spanData
 
-      
+
 
     }
 

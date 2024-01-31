@@ -8,12 +8,17 @@ import { EditComponent } from './components/edit/edit.component';
 
 import {Routes} from '@angular/router';
 import { TypeIstanceResolver } from './resolvers/type-istance.resolver';
+import { MailConfigListComponent } from './components/mail-config/mail-config-list/mail-config-list.component';
 
 export const ConfigRoutes: Routes = [
     {
         path: 'list',
         component: EditionListComponent
     },
+    {
+      path: 'mail-config',
+      component: MailConfigListComponent
+  },
     {
         path:'create',
         data:{ mode:'create'},

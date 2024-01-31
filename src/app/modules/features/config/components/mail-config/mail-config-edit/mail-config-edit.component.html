@@ -1,0 +1,51 @@
+<h2 mat-dialog-title [innerText]="dialogTitle"></h2>
+<mat-dialog-content>
+  <div [formGroup]="form" >
+    <div fxLayout="row"  fxLayout.xs="column" fxLayoutGap="30px;">
+
+       <div fxFlex fxFlex.xs="100" >
+        <mat-form-field>
+          <input matInput type="text" [placeholder]="'Username'" formControlName="user">
+          <mat-error *ngIf="form.get('user').invalid" [innerHTML]="form.get('user') | errors"></mat-error>
+          </mat-form-field>
+       </div>
+
+    </div>
+    <div fxLayout="row"  fxLayout.xs="column" fxLayoutGap="30px;">
+
+      <div fxFlex fxFlex.xs="100" >
+       <mat-form-field>
+         <input matInput type="text" [placeholder]="'Host' | translate" formControlName="host">
+         <mat-error *ngIf="form.get('host').invalid" [innerHTML]="form.get('host') | errors"></mat-error>
+         </mat-form-field>
+      </div>
+
+   </div>
+   <div fxLayout="row"  fxLayout.xs="column" fxLayoutGap="30px;">
+
+    <div fxFlex fxFlex.xs="100" >
+     <mat-form-field>
+       <input matInput type="text" [placeholder]="'Porta' | translate" formControlName="port">
+       <mat-error *ngIf="form.get('port').invalid" [innerHTML]="form.get('port') | errors"></mat-error>
+       </mat-form-field>
+    </div>
+
+ </div>
+ <div fxLayout="row"  fxLayout.xs="column" fxLayoutGap="30px;">
+
+  <div fxFlex fxFlex.xs="100" >
+   <mat-form-field>
+     <input matInput type="text" [placeholder]="'Password' | translate" formControlName="password">
+     <mat-error *ngIf="form.get('password').invalid" [innerHTML]="form.get('password') | errors"></mat-error>
+     </mat-form-field>
+  </div>
+
+</div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button color="warn" mat-dialog-close><mat-icon>close</mat-icon> Chiudi</button>
+  <button mat-button color="primary" style="background-color:green; color:white" (click)="onSubmitClick()"  [innerText]="btnSubmit"></button>
+
+</mat-dialog-actions>

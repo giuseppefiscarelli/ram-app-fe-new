@@ -58,7 +58,10 @@
         <ng-container matColumnDef="edition">
           <mat-header-cell *matHeaderCellDef> Edizione </mat-header-cell>
           <mat-cell *matCellDef="let element">
-            {{getInfoEdizione(element.tipo_istanza)}}
+            <ng-container *ngIf="type && type.length > 0">
+              {{getInfoEdizione(element.tipo_istanza)}}
+            </ng-container>
+
           </mat-cell>
         </ng-container>
 
@@ -96,7 +99,7 @@
 
             <ng-container *ngIf="getStatusRendicontazione(element) as rendStatus">
               <div class="status-container">
-                <span class="span-status" [class]="rendStatus.status" 
+                <span class="span-status" [class]="rendStatus.status"
                 [innerText]="rendStatus.status | rendStatus"></span>
                 <p>{{rendStatus.pData}} {{rendStatus.date?(rendStatus.date | date:"dd/MM/yyyy HH:mm"):null}}</p>
               </div>
@@ -104,25 +107,25 @@
 
 
             <!-- <div class="status-container">
-              <span class="span-status" [class]="element.rendstatus?element.rendstatus:'pending'" 
+              <span class="span-status" [class]="element.rendstatus?element.rendstatus:'pending'"
               [innerText]="element.rendstatus | rendStatus"></span>
 
               <ng-container *ngIf="element.rendstatus === 'closed'">
-            
+
                 <p>chiusa il: {{element.dateend | date:"dd/MM/yyyy HH:mm"}}</p>
               </ng-container>
               <ng-container *ngIf="element.rendstatus === 'opened'">
-            
+
                 <p>avviata il: {{element.daterendstart | date:"dd/MM/yyyy HH:mm"}}</p>
               </ng-container>
               <ng-container *ngIf="element.rendstatus === 'canceled'">
-            
+
                 <p>annullata il: {{element.datecanceled | date:"dd/MM/yyyy HH:mm"}}</p>
               </ng-container>
             </div> -->
-        
-           
-            
+
+
+
             <!--<ng-container *ngIf="element.rendstatus === 'canceled'">
                      <br>
                      <p>annullata da impresa</p>
@@ -141,17 +144,17 @@
                 </span>
               </ng-container>
 
-              
+
             </div>
 
             <ng-template #expired>
               <ng-container  *ngIf="getStatusRendicontazione(element) as rendStatus">
                 <div class="status-container">
-                  <span class="span-status" [class]="rendStatus.status" 
+                  <span class="span-status" [class]="rendStatus.status"
                   [innerText]="rendStatus.status | rendStatus"></span>
                 </div>
               </ng-container>
-             
+
             </ng-template>
 
           </mat-cell>

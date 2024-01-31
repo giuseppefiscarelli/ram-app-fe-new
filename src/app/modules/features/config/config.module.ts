@@ -33,7 +33,10 @@ import { NgxMatNativeDateModule } from '@angular-material-components/datetime-pi
 import { ConfigPanelComponent } from './components/config-panel/config-panel.component';
 import { ReportsEditComponent } from './components/report/reports-edit/reports-edit.component';
 import { ReportsListComponent } from './components/report/reports-list/reports-list.component';
+import {PecConfigListComponent} from './components/pec-config-list/pec-config-list.component'
 import { AngularEditorModule } from '@kolkov/angular-editor';
+import  {MailConfigListComponent} from './components/mail-config/mail-config-list/mail-config-list.component';
+import { MailConfigEditComponent } from './components/mail-config/mail-config-edit/mail-config-edit.component'
 export const customCurrencyMaskConfig = {
   align: "left",
   allowNegative: true,
@@ -72,7 +75,12 @@ export const customCurrencyMaskConfig = {
     ReportsEditComponent,
     ReportsListComponent,
     TypeReportEditComponent,
-    TypeReportListComponent
+    TypeReportListComponent,
+    PecConfigListComponent,
+    MailConfigListComponent,
+    MailConfigEditComponent
+
+
   ],
   providers: [
     ConfigService,
