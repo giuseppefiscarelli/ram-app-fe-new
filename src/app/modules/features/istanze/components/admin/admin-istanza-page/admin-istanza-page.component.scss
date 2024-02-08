@@ -48,6 +48,7 @@
   background-color: green;
   color: white;
 }
+.rendOpen,
 .pending{
   background-color: orange;
   color: white;
@@ -84,6 +85,11 @@
   justify-content: flex-end;
   width:15%;
 }
+.mat-column-actionReport {
+  text-align: right;
+  justify-content: flex-end;
+  width:25%;
+}
 .mat-column-tipo{
  width:'auto';
 }
@@ -94,9 +100,13 @@
   width:10%;
   min-width:100px;
  }
- .mat-column-stato{
+ .mat-column-stato,.mat-column-info{
   width:15%;
   min-width:170px;
+ }
+ .mat-column-id {
+  width:60px;
+  max-width:60px;
  }
 
 

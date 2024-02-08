@@ -27,6 +27,7 @@ import {UserRolePipe} from './pipes/user.role.pipe';
 import { environment } from '../environments/environment'
 import { FormsModule } from '@angular/forms';
 import { NgxCurrencyModule } from 'ngx-currency';
+import { ServiceWorkerModule, SwPush } from '@angular/service-worker';
 @NgModule({
   declarations: [
     AppComponent,
@@ -45,11 +46,13 @@ import { NgxCurrencyModule } from 'ngx-currency';
     NotificationsModule.forRoot(),
     RouterModule.forRoot(ApplicationRoutes, {useHash: true}),
     FlexLayoutModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     TranslationsModule.forRoot(),
     FormsModule,
     StoreModule.forRoot({
             authentication: AuthenticationReducer
         }),
+
 
 
   ],

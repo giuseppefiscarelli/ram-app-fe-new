@@ -3,3 +3,10 @@
     grid-template-columns: 1fr 1fr; /* Due colonne che occupano entrambe il 50% dello spazio */
     height: 100vh; /* Altezza del container */
   }
+
+  .span-type{
+    color: white;
+    background-color: blue;
+    padding: 2px 10px;
+    border-radius: 10px;
+  }

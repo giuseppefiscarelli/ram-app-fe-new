@@ -66,7 +66,10 @@ export class AdminVeicoloDialogComponent implements OnInit {
     [key: string]: any
     };
     datiIstruttoriaShow:boolean=false;
-    valoreContributo:number=0;
+    valoreContributo:number = 0;
+    valoreMaggPmi: number = 0;
+    valoreMaggRete: number = 0;
+
     constructor(@Inject(MAT_DIALOG_DATA) public data: any,
     private services: IstanzeService,
     private dialog: MatDialog,
@@ -81,6 +84,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
       this.user = this.store.pipe(select('authentication'),select('user'));
       this.user.pipe(take(1)).subscribe((userMe: User) => this.userMe = userMe);
       this.istanza = data.istanza;
+      console.log(this.istanza)
       this.istanzaCheck = data.istanzaCheck;
       this.veicolo = data.veicolo;
       this.allegatiVeicolo = data.allegatiVeicolo;
@@ -95,14 +99,20 @@ export class AdminVeicoloDialogComponent implements OnInit {
       this.alleDataSelected = null;
       this.formVeicolo = this.initializeForEditVeicolo(this.veicolo)
 
-  //    console.log(this.checkAllegatiStatus())
+      console.log(this.checkAllegatiStatus(), this.allegatiVeicolo.length, 'prova')
    //console.log(this.allegatiVeicolo)
-      const checkDichiarazioni = this.checkDichiarazioni()
+      const checkDichiarazioni = this.checkDichiarazioni();
+      console.log(checkDichiarazioni,'cdich')
 
       if(checkDichiarazioni && (this.checkAllegatiStatus() === this.allegatiVeicolo.length)){
           this.datiIstruttoriaShow = true;
-          this.valoreContributo = this.services.calcolaContributo(this.istanza, this.istanzaCheck, this.veicolo, this.typeIstance)
-      }
+          let contributo  = this.services.calcolaContributo(this.istanza, this.istanzaCheck, this.veicolo, this.typeIstance)
+          this.valoreContributo = contributo['valoreContributo'];
+          this.valoreMaggPmi = contributo['magg_pmi'];
+          this.valoreMaggRete = contributo['magg_rete'];
+
+        console.log(this.valoreContributo,'valo contr')
+        }
     //  console.log(this.valoreContributo)
       this.filterOptionsDescriptors = {
           statusCheck: [
@@ -133,19 +143,26 @@ export class AdminVeicoloDialogComponent implements OnInit {
           console.log(val)
           if(val && (val ==='rejected' || val === 'pending')){
             const required = Validators.required
-         //   this.formVeicolo.get('costoIstr').removeValidators(required)
-         this.formVeicolo.get('costoIstr').clearValidators()
-         this.formVeicolo.get('costoIstr').updateValueAndValidity()
-         this.formVeicolo.get('valoreContributo').clearValidators()
-         this.formVeicolo.get('valoreContributo').updateValueAndValidity()
-         console.log(this.formVeicolo)
+            //   this.formVeicolo.get('costoIstr').removeValidators(required)
+            if(val === 'rejected'){
+              this.formVeicolo.get('costoIstr').setValue('0')
+              this.formVeicolo.get('valoreContributo').setValue('0')
+              this.formVeicolo.get('costoIstr').disable()
+              this.formVeicolo.get('valoreContributo').disable()
 
-           // this.formVeicolo.controls.valoreContributo.removeValidators(required)
-          //  console.log(this.formVeicolo)
-
+            }
+            this.formVeicolo.get('costoIstr').clearValidators()
+            this.formVeicolo.get('costoIstr').updateValueAndValidity()
+            this.formVeicolo.get('valoreContributo').clearValidators()
+            this.formVeicolo.get('valoreContributo').updateValueAndValidity()
+            console.log(this.formVeicolo)
+              // this.formVeicolo.controls.valoreContributo.removeValidators(required)
+              //  console.log(this.formVeicolo)
           }else{
-            this.formVeicolo.controls.costroIstr.setValidators([Validators.required])
-            this.formVeicolo.controls.valoreContributo.setValidators([Validators.required])
+            this.formVeicolo.get('costoIstr').enable()
+            this.formVeicolo.get('valoreContributo').enable()
+            this.formVeicolo.get('costoIstr').setValidators([Validators.required])
+            this.formVeicolo.get('valoreContributo').setValidators([Validators.required])
           }
        //   this.formVeicolo.clearValidators()
         //  this.formVeicolo.updateValueAndValidity()
@@ -175,6 +192,8 @@ export class AdminVeicoloDialogComponent implements OnInit {
             costoIstr : new FormControl(v.costoIstr, [Validators.required]),
             noteIstr : new FormControl(),
             valoreContributo : new FormControl(v.valoreContributo,[Validators.required]),
+            pmiIstr : new FormControl(v.pmiIstr),
+            reteIstr : new FormControl(v.reteIstr),
 
         })
     }
@@ -301,46 +320,55 @@ export class AdminVeicoloDialogComponent implements OnInit {
         // console.log(payload);
             this.services.updateAllegato(payload).subscribe(
 
-                (res: Allegato) => {
-                    if(!!res){
-                        this.notifications.toast(
-                          TYPE.SUCCESS,
-                            'Operazione Completata',
-                            'Allegato veicolo aggiornato'
-                        )
-                        let updateItem = this.allegatiVeicolo.find(x=> x.id === res.id);
-                        let index = this.allegatiVeicolo.indexOf(updateItem);
-                        const currentRecords = [...this.allegatiVeicolo];
-                        currentRecords[index] = res;
-                        this.allegatiVeicolo = [...currentRecords];
-                        this.alleSelected = null;
-                      //  console.log(this.allegatiVeicolo)
-                     //   console.log(this.checkDichiarazioni(), this.checkAllegatiStatus(), this.allegatiVeicolo.length)
-                        if(this.checkDichiarazioni() && (this.checkAllegatiStatus() === this.allegatiVeicolo.length)){
-                            this.datiIstruttoriaShow = true;
-                            this.valoreContributo = this.services.calcolaContributo(this.istanza, this.istanzaCheck, this.veicolo, this.typeIstance)
-                          //  this.formVeicolo.controls.valoreContributo.setValue(contributo)
-                        }else{
-                            this.datiIstruttoriaShow = false;
-                            let payVei = this.veicolo;
-                            payVei.adminState = 'pending';
-                            this.services.updateVeicolo(payVei).subscribe(
-                              (res) => {
-                                this.veicolo = res;
-
-                              }
+                    (res: Allegato) => {
+                        if(!!res){
+                            this.notifications.toast(
+                            TYPE.SUCCESS,
+                                'Operazione Completata',
+                                'Allegato veicolo aggiornato'
                             )
+                            let updateItem = this.allegatiVeicolo.find(x=> x.id === res.id);
+                            let index = this.allegatiVeicolo.indexOf(updateItem);
+                            console.log(this.allegatiVeicolo)
+                            const currentRecords = [...this.allegatiVeicolo];
+                            currentRecords[index] = res;
+                            this.allegatiVeicolo = [...currentRecords];
+                            console.log(this.allegatiVeicolo)
+                            this.alleSelected = null;
+                        //  console.log(this.allegatiVeicolo)
+                        //   console.log(this.checkDichiarazioni(), this.checkAllegatiStatus(), this.allegatiVeicolo.length)
+                            if(this.checkDichiarazioni() && (this.checkAllegatiStatus() === this.allegatiVeicolo.length)){
+                                this.datiIstruttoriaShow = true;
+                                let contributo  = this.services.calcolaContributo(this.istanza, this.istanzaCheck, this.veicolo, this.typeIstance)
+                                this.valoreContributo = contributo['valoreContributo'];
+                                this.valoreMaggPmi = contributo['magg_pmi'];
+                                this.valoreMaggRete = contributo['magg_rete'];
+
+                                console.log(this.valoreContributo,'valore contributo')
+
+                                //  this.formVeicolo.controls.valoreContributo.setValue(contributo)
+                            }else{
+                                this.datiIstruttoriaShow = false;
+                                let payVei = this.veicolo;
+                                payVei.adminState = 'pending';
+                                this.services.updateVeicolo(payVei).subscribe(
+                                (res) => {
+                                    this.veicolo = res;
+
+                                }
+                                )
+                            }
+                            this.changeDetectorRef.markForCheck();
                         }
-                        this.changeDetectorRef.markForCheck();
+                    },
+                    (error) => {
+                        this.notifications.toast(
+                        TYPE.ERROR,
+                            'Errore',
+                            'Allegato non aggiornato'
+                        )
                     }
-                },
-                (error) => {
-                    this.notifications.toast(
-                      TYPE.ERROR,
-                        'Errore',
-                        'Allegato non aggiornato'
-                    )
-                }
+
             )
         }
     }

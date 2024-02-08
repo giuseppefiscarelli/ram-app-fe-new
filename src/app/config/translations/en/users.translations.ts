@@ -1,122 +1,123 @@
 export const UsersLanguagePartialDefinition = {
     roles: {
-        administrator: 'Amministratore',
+        administrator: 'Administrator',
+        administration: 'Administration',
         administrative: 'Back Office',
-        worker: 'Magazzino',
-        dpo: 'Resp. Privacy',
+        worker: 'Warehouse',
+        dpo: 'Privacy Officer',
         user: 'User',
         admin: 'Admin',
-        administrativeEmployee: 'Amministrazione',
-        wharehouseWorker: 'Magazzino',
+        administrativeEmployee: 'Administration',
+        wharehouseWorker: 'Warehouse',
     },
     rolesAms: {
         admin: 'Admin',
-        administrative: 'Amministrativo',
-        supervisor: 'Responsabile',
-        user: 'Dipendente'
+        administrative: 'Administration',
+        supervisor: 'Supervisor',
+        user: 'User'
     },
     rolesFms: {
         admin: 'Admin',
-        administrative: 'Responsabile Flotta',
-        user: 'Dipendente / Autista',
+        administrative: 'Fleet Manager',
+        user: 'Employee / Driver',
         PM: 'Project Manager'
     },
     rolesTms: {
         admin: 'Admin',
-        administrative: 'Responsabile',
-        user: 'Dipendente',
+        administrative: 'Manager',
+        user: 'Employee',
         PM: 'Project Manager'
     },
     rolesPms: {
         admin: 'Admin',
-        administrative: 'Responsabile',
-        user: 'Dipendente',
+        administrative: 'Manager',
+        user: 'Employee',
         PM: 'Project Manager'
     },
     list: {
         filters: {
             fields: {
                 role: {
-                    placeholder: 'Scegli il ruolo',
+                    placeholder: 'Choose the role',
                     values: {
-                        admin: 'Amministratore',
-                        administrative: 'Amministrazione',
-                        user: 'Dipendente',
-                        all: 'Tutti',
+                        admin: 'Administrator',
+                        administrative: 'Administration',
+                        user: 'User',
+                        all: 'All',
                     }
                 },
-                hint: 'Cerca per nome, cognome o email...',
+                hint: 'Search by name, surname, or email...',
             }
         },
         header: {
             id: '#',
-            user: 'Utente',
+            user: 'User',
             email: 'Email',
-            role: 'Ruolo',
-            createdAt: 'Data creazione',
-            actions: 'Azioni'
+            role: 'Role',
+            createdAt: 'Creation Date',
+            actions: 'Actions'
         },
         footer: {
-            loading: 'Carico altri risultati...'
+            loading: 'Loading more results...'
         },
         button:{
-          create:'Inserimento nuovo utente'
+          create:'Create new user'
         }
     },
     modals: {
         create: {
-            title: 'Inserimento nuovo utente',
+            title: 'Create new user',
             sections: {
-                info: 'Informazioni personali',
-                signin: 'Informazioni per l\'accesso'
+                info: 'Personal Information',
+                signin: 'Login Information'
             },
             fields: {
-                name: 'Nome',
-                surname: 'Cognome',
-                email: 'Indirizzo email (valido anche per l\'accesso)',
-                role: 'Ruolo:',
+                name: 'Name',
+                surname: 'Surname',
+                email: 'Email address (also used for login)',
+                role: 'Role:',
                 password: 'Password',
-                confirm: 'Conferma password'
+                confirm: 'Confirm password'
             },
-            action: 'Crea utente',
+            action: 'Create user',
             errors: {
-                passwordsMismatch: 'Le password non coincidono'
+                passwordsMismatch: 'Passwords do not match'
             }
         },
         edit: {
-            title: 'Modifica utente',
+            title: 'Edit user',
             sections: {
-                info: 'Informazioni personali'
+                info: 'Personal Information'
             },
             fields: {
-                name: 'Nome',
-                surname: 'Cognome',
-                email: 'Indirizzo email (valido anche per l\'accesso)',
-                role: 'Ruolo:'
+                name: 'Name',
+                surname: 'Surname',
+                email: 'Email address (also used for login)',
+                role: 'Role:'
             },
-            action: 'Salva informazioni'
+            action: 'Save information'
         },
         remove: {
-            title: 'Rimozione utente',
-            message: 'Sei sicuro di voler rimuovere l\'utente <b>{{fullname}}</b>? L\'operazione è irreversibile.',
+            title: 'Remove user',
+            message: 'Are you sure you want to remove the user <b>{{fullname}}</b>? This operation is irreversible.',
             buttons: {
-                skip: 'Annulla',
-                confirm: 'Conferma'
+                skip: 'Cancel',
+                confirm: 'Confirm'
             }
         }
     },
     notifications: {
         create: {
-            title: 'Creazione utente',
-            message: 'L\'utente <b>{{fullname}}</b> è stato creato con successo'
+            title: 'User Creation',
+            message: 'The user <b>{{fullname}}</b> has been created successfully'
         },
         edit: {
-            title: 'Modifica utente',
-            message: 'L\'utente <b>{{fullname}}</b> è stato aggiornato'
+            title: 'Edit user',
+            message: 'The user <b>{{fullname}}</b> has been updated'
         },
         remove: {
-            title: 'Rimozione utente',
-            message: 'L\'utente è stato rimosso con successo'
+            title: 'Remove user',
+            message: 'The user has been successfully removed'
         }
     }
 };

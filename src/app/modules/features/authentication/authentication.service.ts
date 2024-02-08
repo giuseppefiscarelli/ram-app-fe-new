@@ -32,7 +32,7 @@ export class AuthenticationService {
 
                   this.http = new HttpClient(handler);
                   this.urlAddress ='https://jsonip.com'
-                  this.getIPAddress();
+                //  this.getIPAddress();
     }
     public getIPAddress(){
       this.http.get<{ip: string}>('https://jsonip.com')

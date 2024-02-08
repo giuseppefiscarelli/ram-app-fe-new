@@ -11,6 +11,7 @@ import { TYPE } from '@app/modules/notifications/values.constants';
 import { Store, select } from '@ngrx/store';
 import { Observable, take } from 'rxjs';
 import { IstanzeService } from '../../../istanze.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-admin-dialog-allegato',
@@ -23,6 +24,8 @@ export class AdminDialogAllegatoComponent implements OnInit {
    form: FormGroup;
    user: Observable<User>;
    userMe: User;
+
+   file:any;
 
    dialogTitle: string;
    btnSubmit: string;
@@ -44,6 +47,7 @@ export class AdminDialogAllegatoComponent implements OnInit {
     private notifications: NotificationsComponent,
     private route: ActivatedRoute,
     private router: Router,
+    private sanitizer: DomSanitizer
   ) {
     this.allegato = data.allegato;
     this.dialogTitle = 'Info Allegato Dichiarazione';
@@ -54,6 +58,23 @@ export class AdminDialogAllegatoComponent implements OnInit {
 
         ]
     };
+    this.file = null;
+    this.services.getFile(this.allegato.fd)
+    .subscribe(
+        (res) => {
+          const blob = new Blob([res],{type: this.allegato.fd['type']});
+          this.file = window.URL.createObjectURL(blob).toString();
+           console.log(this.file)
+
+           //let pdfBlobUrl = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob)).toString();
+           // const url = window.URL.createObjectURL(blob);
+          // window.open(url);
+         // const objectUrl: string = URL.createObjectURL(blob);
+        //   window.open(objectUrl,'_blank');
+
+        },
+            error => console.log('Error downloading the file.')
+        );
 
     Object.keys(statusCheck)
     .filter(x => x === 'ACCEPTED' || x === 'PENDING' || x === 'REJECTED')
@@ -71,7 +92,9 @@ export class AdminDialogAllegatoComponent implements OnInit {
         this.btnSubmit= 'Aggiorna informazioni e stato lavorazione';
         this.type='vehicle';
     }
+   
     this.url = data.url
+    
     this.user = this.store.pipe(select('authentication'), select('user'));
     this.user.pipe(take(1)).subscribe((me: User) => this.userMe = me);
 
@@ -88,7 +111,6 @@ export class AdminDialogAllegatoComponent implements OnInit {
         adminNote : new FormControl(alle.adminNote),
         adminDate : new FormControl(),
         adminUser : new FormControl(),
-
     })
 }
 onSubmitBtn(){
@@ -99,7 +121,6 @@ onSubmitBtn(){
         control.markAsDirty();
         control.markAsTouched();
     });
-
     if (this.form.valid){
         const payload = this.form.value;
       //  console.log(payload)
@@ -108,7 +129,6 @@ onSubmitBtn(){
                 delete payload[key];
             }
         });
-
         this.services.updateAllegato(payload).subscribe(
             {
                 next:(res) => {
@@ -116,50 +136,27 @@ onSubmitBtn(){
                     this.dialogRef.close(res)
                 },
                 error:(err)=>{
-
-                    this.notifications.toast(TYPE.ERROR,'Operazione Non Completata','Errore aggiornamento informazioni')
-
+                 this.notifications.toast(TYPE.ERROR,'Operazione Non Completata','Errore aggiornamento informazioni')
                 }
-
             }
         )
-
     }
 }
 
 viewAllegato(file): void{
-
-    this.services.getFile(file)
-    .subscribe(
-        (res) => {
-            const blob = new Blob([res],{type: file.type});
-            const url = window.URL.createObjectURL(blob);
-           window.open(url);
-
-        },
-            error => console.log('Error downloading the file.')
-        );
+    window.open(this.file,'_blank');
+    
 }
 
 downloadAllegato(file): void{
-
-    this.services.getFile(file)
-    .subscribe(
-      (res) => {
-          const blob = new Blob([res], {type: file.type});
-          // const url = window.URL.createObjectURL(blob);
-          // window.open(url);
-          const objectUrl: string = URL.createObjectURL(blob);
-          const a: HTMLAnchorElement = document.createElement('a') as HTMLAnchorElement;
-          a.href = objectUrl;
-          a.download = file.filename;
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          URL.revokeObjectURL(objectUrl);
-      },
-      error => console.log('Error downloading the file.')
-      );
+    const a: HTMLAnchorElement = document.createElement('a') as HTMLAnchorElement;
+    a.href = this.file;
+    a.download = file.filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(this.file);
+    
 }
 
 }

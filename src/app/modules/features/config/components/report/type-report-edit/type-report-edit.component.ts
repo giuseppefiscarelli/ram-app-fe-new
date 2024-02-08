@@ -7,6 +7,9 @@ import { typeReport } from '@app/app.costants';
 import { TypeIstance } from '@app/modules/models/type-istance.model';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import htmlToPdfmake from 'html-to-pdfmake';
+import { pdfMake } from 'pdfmake/build/pdfmake';
+import { pdfFonts } from 'pdfmake/build/vfs_fonts';
+import { saveAs } from 'file-saver';
 import { TypeReport } from '@app/modules/models/typeReport.model';
 @Component({
   selector: 'app-type-report-edit',
@@ -25,7 +28,8 @@ export class TypeReportEditComponent implements OnInit {
   htmlContent = '';
 
   typeIstance: TypeIstance[];
-  record: TypeReport
+  record: TypeReport;
+  reportData: any;
 
   config: AngularEditorConfig = {
     editable: true,
@@ -274,16 +278,23 @@ export class TypeReportEditComponent implements OnInit {
 
 
   async testDoc(type){
-    console.log(type)
+    //console.log(type)
     let dataReport = null
-      const data =  await this.reportService.generateReport(type,dataReport);
-    data.getDataUrl((dataUrl) => {
+    this.reportData =  await this.reportService.generateReport(type,dataReport);
+   // console.log(this.reportData);
+    this.reportData.getDataUrl((dataUrl) => {
+      //console.log(dataUrl)
       this.preview = dataUrl;
     })
+
+
   }
 
   download(pdf){
-    pdf.download('preview.pdf')
+    this.reportData.getBlob((data) => {
+      saveAs(data, 'nome_file.pdf');
+    })
+
   }
 
 }

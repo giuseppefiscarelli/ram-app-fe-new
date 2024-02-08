@@ -107,6 +107,8 @@ export class istanzaFactory{
             'data_agg',
             'tipo_istanza',
 
+            'data_invio'
+
         ];
 
         keysToDuplicate.forEach(key=> {

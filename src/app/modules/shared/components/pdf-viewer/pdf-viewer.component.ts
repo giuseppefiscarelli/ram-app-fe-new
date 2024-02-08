@@ -15,6 +15,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 export class PdfViewerSharedComponent implements OnInit {
   pdfSrc :string
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,) {
+    console.log(data)
     this.pdfSrc = data.url
    }
 
