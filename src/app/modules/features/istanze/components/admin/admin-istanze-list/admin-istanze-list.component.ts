@@ -55,7 +55,6 @@ export class AdminIstanzeListComponent implements OnInit , OnDestroy{
       [key: string]: any
   };
   today: Date;
-  today: Date;
     constructor(
                     private service: IstanzeService,
                     public paginator: PaginatorService,
