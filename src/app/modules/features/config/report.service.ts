@@ -235,12 +235,16 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
       content.push(
         // {text: 'Prot n° '+dataReport['numProt'],margin: [ 0, 10, 0, 0 ]} ,
         // {text: 'Roma li '+dataReport['dataProt']},
-        {text: 'Spett.Le',alignment:'left',margin: [ 250, 0, 0, 0 ]},
+        {text: 'Spett.Le',alignment:'left',margin: [ 250, 30, 0, 0 ]},
         {text: dataReport['ragSociale'],alignment:'left',margin: [ 250, 0, 0, 0 ]},
         {text: `${dataReport['indirizzo']}, ${dataReport['numCivico']}`,alignment:'left',margin: [ 250, 0, 0, 0 ]},
         {text: `${dataReport['cap']} - ${dataReport['citta']} ${dataReport['prov']}`,alignment:'left',margin: [ 250, 0, 0, 10 ]},
         { text:[ 'Raccomandata via pec all\'indirizzo: ', {text:dataReport['pecImpresa'], bold:true}], alignment:'left',margin: [ 0, 10 ]},
-        {text:'Oggetto: Contributi ai sensi del D.D. 12 aprile 2022 n.155 per le finalità di cui al D.M. 18 novembre 2021 n. 459 - "Incentivi agli investimenti nel settore dell\'autotrasporto" ', bold:true, margin: [ 0, 5, 0, 5 ], alignment:'justify'},
+        {columns:[
+          {text:'Oggetto: ',width: 'auto',bold:true},
+          {text:'Contributi ai sensi del D.D. 12 aprile 2022 n.155 per le finalità di cui al D.M. 18 novembre 2021 n. 459 - "Incentivi agli investimenti nel settore dell\'autotrasporto" ',margin: [ 5, 0, 0, 0 ], bold:true, alignment:'justify'},
+
+        ],margin: [ 0, 5, 0, 5 ]},
         {
           text:[
            {text:'In qualità di soggetto attuatore, per conto del Ministero delle Infrastrutture e della Mobilità Sostenibili della gestione operativa del decreto in oggetto, Vi comunichiamo che a seguito di verifiche effettuate, per poter istruire la Vostra istanza '}
@@ -249,7 +253,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
             { text: ' abbiamo necessità di ricevere i seguenti chiarimenti e/o documenti:'}
           ], alignment:'justify'
         },
-        {ul:dataReport['detail'], margin:[0,10], bold:true},
+        {ul:dataReport['detail'], margin:[20,10], bold:true},
           {
             text:[
               {text: 'Pertanto, ai sensi e per gli effetti dell\'art. 10, comma 4 del D.D 12 aprile 2022 n.155, Vi invitiamo a fornirci la suddetta documentazione '},
@@ -263,7 +267,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
               ol:[
                 'la documentazione inviata dovrà rispettare scrupolosamente i criteri di sostanza e di forma richiesti;',
                 'decorso il termine perentorio suindicato, l\'istruttoria verrà conclusa sulla sola base della documentazione valida disponibile, senza che possa in alcun modo avviarsi qualsiasi, ulteriore fase di interlocuzione.'
-              ], margin:[10,5], alignment:'justify'
+              ], margin:[20,5], alignment:'justify'
              },
              {text:'Per qualsiasi informazione, potrete rivolgerVi al nostro Help Desk Incentivi \n (e-mail:incentivoinvestimenti@ramspa.it).'},
              {text:' Cordiali saluti'}
@@ -272,7 +276,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
               {
                 image: firma,
                 alignment:'right',
-                width: 150, margin: [40,0, 0, 10]
+                width: 130, margin: [40,0, 0, 10]
               }
 
 
@@ -280,11 +284,14 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
 
            )
 
-      footer ={ columns: [
-            {text:'RAM Logistica Infrastrutture e Trasporti Spa \n Via Nomentana, 2 00161 Roma \n T +39 06 44124461 / F +39 06 44126168 \ninfo@ramspa.it - www.ramspa.it ', alignment: 'left',margin:[20,30,0,0], fontSize: 9, color:'#548cd4' },
+      footer ={
+        columns: [
+            {text:'RAM Logistica Infrastrutture e Trasporti Spa \n Via Nomentana, 2 00161 Roma \n T +39 06 44124461 / F +39 06 44126168 \ninfo@ramspa.it - www.ramspa.it ', alignment: 'left',margin:[50,0,0,0], fontSize: 9, color:'#548cd4' },
 
-            {text:'Azionista unico Ministero dell Economia e delle Finanze \nCapitale sociale € 1.000.000,00 \nIscritta al Registro delle Imprese di Roma \n P.Iva e C.F 07926631008 ', alignment: 'left',margin:[20,30,0,0], fontSize: 9, color:'#548cd4'}
-        ]}
+            {text:'Azionista unico Ministero dell Economia e delle Finanze \nCapitale sociale € 1.000.000,00 \nIscritta al Registro delle Imprese di Roma \n P.Iva e C.F 07926631008 ', alignment: 'left',margin:[20,0,0,0], fontSize: 9, color:'#548cd4'},
+
+          ]
+      }
 
         var docDefinition = {
           pageSize: 'A4',
@@ -337,18 +344,20 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
       header= [{image: logo,width: 240, margin: [25,25]}]
 
       content.push(
-      {text: 'Prot n° '+dataReport['numProt'],margin: [0,25,0,0]} ,
-      {text: 'Roma li '+moment(Number(dataReport['dataProt'])).format('DD/MM/YYYY')},
-      {text: 'Spett.Le',alignment:'right',margin: [ 0, 0, 0, 0 ]},
-      {text: dataReport['ragSociale'],alignment:'right',margin: [ 0, 0, 0, 0 ]},
-      {text: `${dataReport['indirizzo']}, ${dataReport['numCivico']}`,alignment:'right',margin: [ 0, 0, 0, 0 ]},
-      {text: `${dataReport['cap']} - ${dataReport['citta']} ${dataReport['prov']}`,alignment:'right',margin: [ 0, 0, 0, 0 ]},
-      { text:[ 'Raccomandata via pec all\'indirizzo: ', {text:dataReport['pecImpresa'], bold:true}],margin: [ 0, 10 ]},
-      {text:'Oggetto: Contributi ai sensi del D.D. 12 aprile 2022 n.155 per le finalità di cui al D.M. 18 novembre 2021 n. 459 - "Incentivi agli investimenti nel settore dell\'autotrasporto" ', bold:true, margin: [ 0, 5, 0, 5 ], alignment:'justify'},
+      // {text: 'Prot n° '+dataReport['numProt'],margin: [0,25,0,0]} ,
+      // {text: 'Roma li '+moment(Number(dataReport['dataProt'])).format('DD/MM/YYYY')},
+      {text: 'Spett.Le',alignment:'left',margin: [ 250, 10, 0, 10 ]},
+      {text: dataReport['ragSociale'],alignment:'left',margin: [ 250, 0, 0, 0 ]},
+      {text: `${dataReport['indirizzo']}, ${dataReport['numCivico']}`,alignment:'left',margin: [ 250, 0, 0, 0 ]},
+      {text: `${dataReport['cap']} - ${dataReport['citta']} ${dataReport['prov']}`,alignment:'left',margin: [ 250, 0, 0, 10 ]},
+      {text:[ 'Raccomandata via pec all\'indirizzo: ', {text:dataReport['pecImpresa'], bold:true}], alignment:'left',margin: [ 0, 10 ]},
+      {text:'Oggetto: Contributi ai sensi del D.D. 12 aprile 2022 n.155 per le finalità di cui al D.M. 18 novembre 2021 n. 459 - "Incentivi agli investimenti nel settore dell\'autotrasporto. " ', bold:true, margin: [ 0, 5, 0, 0 ], alignment:'justify'},
+      {text:`Protocollo Istanza In ${dataReport['idRam']}/${dataReport['year']} Informativa ai sensi dell'art.10-bis legge 241/90`, bold:true, margin: [ 0, 0, 0, 5 ], alignment:'justify'},
+
       {text:'IL DIRETTORE GENERALE',alignment:'center',margin: [ 0,10 ], bold:true},
       {
         ul:[
-          {text: `VISTA la domanda di ammissione al contributo di cui all'oggeto presentata da Codesta impresa e acquisista con protocollo n°${dataReport['idRam']}/${dataReport['year']} del ${moment(Number(dataReport['dataIdRam'])).format('DD/MM/YYYY')}`},
+          {text: `VISTA la domanda di ammissione al contributo di cui all'oggetto presentata da Codesta impresa e acquisista con protocollo n°${dataReport['idRam']}/${dataReport['year']} del ${moment(dataReport['dataIdRam']).format('DD/MM/YYYY')}`},
           {text:`VISTO il verbale di riunione della Commissione, istituita ai sensi dell'art. 12, comma 3, D.D. 12 aprile 2022 n.155 , tenutasi il giorno ${moment(Number(dataReport['dataVerbale'])).format('DD/MM/YYYY')}`}
         ],
         alignment:'justify'
@@ -356,7 +365,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
       {text:'fermo restando la permanenza dei requisiti di ammissibilità richiesti dalla normativa vigente, dispone per l\'istanza di finanziamento presenteta da Codesta impresa la relativa',
       alignment:'justify'},
       {text:'AMMISSIONE',alignment:'center',margin: [ 0,10 ], bold:true},
-      {text:'per gli importi di seguito ripartiti secondo le categorie e sottocategorie di investimento di cui agli artt. 1 e 2 D.M. 12 maggio 2020 n. 203:', alignment:'justify'},
+      {text:'per gli importi di seguito ripartiti secondo le categorie e sottocategorie di investimento di cui agli artt. 1 e 2 D.M. 18 novembre 2021 n. 459:', alignment:'justify'},
       {
         style: 'tableExample',
         table: {
@@ -374,38 +383,38 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
             ],
 
             [
-              {rowSpan:5, text:'Art.1, comma 5, lett a)', alignment:'center',margin:[0,30]},
-              {text:'Art.3, comma 2, lett a)', alignment:'left' },
-              {text:dataReport['artAa']['numero']},
-              {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(dataReport['artAa']['importo'])},
-              {text:dataReport['artAa']['maggiorazione']},
-              {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(dataReport['artAa']['totale'])},
+              {rowSpan:4, text:'Art.2, comma 5, lett a)', alignment:'center',margin:[0,30]},
+                {text:'Art.5, comma 1, lett a)', alignment:'left' },
+                {text:dataReport['artAa']['numero']},
+                {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(dataReport['artAa']['importo'])},
+                {text:dataReport['artAa']['maggiorazione']},
+                {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(dataReport['artAa']['totale'])},
 
 
             ],
               [ '',
-                {text:'Art.3, comma 2, lett b)', alignment:'left' },
+                {text:'Art.5, comma 1, lett b)', alignment:'left' },
                 {text:dataReport['artAb']['numero']},
                 {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(dataReport['artAb']['importo'])},
                 {text:dataReport['artAb']['maggiorazione']},
                 {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(dataReport['artAb']['totale'])},
                 ],
               [   '',
-                {text:'Art.3, comma 2, lett c)', alignment:'left' },
+                {text:'Art.5, comma 1, lett c)', alignment:'left' },
                 {text:dataReport['artAc']['numero']},
                 {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(dataReport['artAc']['importo'])},
                 {text:dataReport['artAc']['maggiorazione']},
                 {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(dataReport['artAc']['totale'])},
 
               ],
-              [   '',
-                {text:'Art.3, comma 2, lett d)', alignment:'left' },
-                {text:dataReport['artAd']['numero']},
-                {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(dataReport['artAd']['importo'])},
-                {text:dataReport['artAd']['maggiorazione']},
-                {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(dataReport['artAd']['totale'])},
+              // [   '',
+              //   {text:'Art.3, comma 2, lett d)', alignment:'left' },
+              //   {text:dataReport['artAd']['numero']},
+              //   {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(dataReport['artAd']['importo'])},
+              //   {text:dataReport['artAd']['maggiorazione']},
+              //   {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(dataReport['artAd']['totale'])},
 
-              ],
+              // ],
               [   '',
                 {text:'Maggiorazione Rottamazione', colSpan:4, bold:true, alignment:'right'},
                 '',
@@ -416,8 +425,8 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
               ],
 
             [
-              {text:'Art.1, comma 5, lett b) -1)', alignment:'center'},
-              {text:'Art.3, comma 3', alignment:'left' },
+              {text:'Art.2, comma 1, lett b)', alignment:'center'},
+              {text:'Art.5, comma 3', alignment:'left' },
               {text:dataReport['artB1']['numero']},
               {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(dataReport['artB1']['importo'])},
               {text:dataReport['artB1']['maggiorazione']},
@@ -427,8 +436,8 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
 
             ],
             [
-              {text:'Art.1, comma 5, lett b) -2)', alignment:'center'},
-              {text:'Art.3, comma 4', alignment:'left' },
+              {text:'Art.2, comma 1, lett b)', alignment:'center'},
+              {text:'Art.5, comma 4', alignment:'left' },
               {text:dataReport['artB2']['numero']},
               {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(dataReport['artB2']['importo'])},
               {text:dataReport['artB2']['maggiorazione']},
@@ -440,8 +449,8 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
 
 
             [
-              {rowSpan:3, text:'Art.1, comma 5, lett c)', alignment:'center', margin:[0,15]},
-              {text:'Art.3, comma 5, lett a)', alignment:'left' },
+              {rowSpan:3, text:'Art.2, comma 1, lett c)', alignment:'center', margin:[0,15]},
+              {text:'Art.5, comma 5, lett a)', alignment:'left' },
               {text:dataReport['artCa']['numero']},
               {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(dataReport['artCa']['importo'])},
               {text:dataReport['artCa']['maggiorazione']},
@@ -451,7 +460,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
 
             ],
             [ '',
-            {text:'Art.3, comma 5, lett b)', alignment:'left' },
+            {text:'Art.5, comma 5, lett b)', alignment:'left' },
             {text:dataReport['artCb']['numero']},
             {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(dataReport['artCb']['importo'])},
             {text:dataReport['artCb']['maggiorazione']},
@@ -459,23 +468,14 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
 
           ],
           [   '',
-            {text:'Art.3, comma 5, lett c)', alignment:'left' },
+            {text:'Art.5, comma 5, lett c)', alignment:'left' },
             {text:dataReport['artCc']['numero']},
             {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(dataReport['artCc']['importo'])},
             {text:dataReport['artCc']['maggiorazione']},
             {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(dataReport['artCc']['totale'])},
 
           ],
-          [
-            {text:'Art.1, comma 5, lett d)', alignment:'center'},
-            {text:'Art.3, comma 7' , alignment:'left' },
-            {text:dataReport['artD']['numero']},
-            {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(dataReport['artD']['importo'])},
-            {text:dataReport['artD']['maggiorazione']},
-            {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(dataReport['artD']['totale'])},
 
-
-          ],
           [
             {text:'Totale Contributo(€)', colSpan:5, alignment:'right', bold:true},
             '',
@@ -488,17 +488,22 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
 
           ],
 
-          ]
-        }
+          ],
+
+        },
+
       },
-      {alignment:'justify',text:'Si comunica altresì che, ai sensi dell’art. 3, comma 4, della legge 7 agosto 1990 n. 241, avverso il presente atto è ammesso ricorso giurisdizionale avanti al competente Tribunale Amministrativo Regionale oppure, in alternativa, ricorso straordinario al Presidente della Repubblica, rispettivamente entro sessanta e centoventi giorni dal ricevimento dello stesso'},
+      {
+        alignment:'justify',
+        pageBreak: 'before',
+        text:'Si comunica altresì che, ai sensi dell’art. 3, comma 4, della legge 7 agosto 1990 n. 241, avverso il presente atto è ammesso ricorso giurisdizionale avanti al competente Tribunale Amministrativo Regionale oppure, in alternativa, ricorso straordinario al Presidente della Repubblica, rispettivamente entro sessanta e centoventi giorni dal ricevimento dello stesso'},
 
 
         {text:'AVVERTENZE:',bold:true},
         {text:[
           {text:'Si ricorda che a norma dell’'},
-          {text:'Art. 1 co. 9 del DM 203/2020 i mezzi oggetti di contributo non possono essere alienati, concessi in locazione o in noleggio e devono rimanere nella piena disponibilità del beneficiario del contributo fino a tutto il 31 dicembre 2023',bold:true},
-          {text:', pena la revoca del contributo erogato. Non si procede all\'erogazione del contributo anche nel caso di trasferimento della disponibilità dei beni oggetto degli incentivi nel periodo intercorrente fra la data di presentazione della domanda e la data di pagamento del beneficio.'}
+          {text:'Art. 2 comma 6 del DM 459/2021 i mezzi oggetti di contributo non possono essere alienati, concessi in locazione o in noleggio e devono rimanere nella piena disponibilità del beneficiario del contributo entro il triennio decorrente alla data di erogazione del contributo, pena la revoca del contributo erogato.',bold:true},
+          {text:'Non si procede all\'erogazione del contributo anche nel caso di trasferimento della disponibilità dei beni oggetto degli incentivi nel periodo intercorrente fra la data di presentazione della domanda e la data di pagamento del beneficio.'}
 
         ], alignment:'justify'},
         {text:[
@@ -539,7 +544,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
         {
           image: firma,
           alignment:'right',
-          width: 150, margin: [40,0, 0, 10]
+          width: 140, margin: [40,0, 0, 10]
         }
 
       )

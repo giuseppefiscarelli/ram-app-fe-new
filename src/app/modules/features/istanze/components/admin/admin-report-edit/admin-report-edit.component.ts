@@ -16,6 +16,9 @@ import { IstanzeService } from '../../../istanze.service';
 import moment from 'moment';
 import { NotificationsComponent } from '@app/modules/notifications/notifications.component';
 import { TYPE } from '@app/modules/notifications/values.constants';
+import { Veicolo } from '@app/modules/models/veicolo.model';
+import { statusAdminVei } from '@app/app.costants';
+import { TypeDocument } from '@app/modules/models/typeDocument.model';
 
 @Component({
   selector: 'app-admin-report-edit',
@@ -38,6 +41,9 @@ export class AdminReportEditComponent implements OnInit {
 
    alleDich: Allegato[] = [];
    alleVei:  Allegato[] = [];
+   veicoli: Veicolo[] = [];
+   rejectedVeicoli: Veicolo[]= [];
+   typesDocument: TypeDocument[] = [];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -52,11 +58,16 @@ export class AdminReportEditComponent implements OnInit {
     this.typeInstance = data.typeInstance;
     this.alleDich = data.listaAllegatiDich.filter(x=> x.adminState === 'rejected');
     this.alleVei = data.listaAllegatiVeicoli.filter(x=> x.adminState === 'rejected');
-
-    //console.log(this.alleDich, this.alleVei);
+    this.veicoli = data.veicoli;
+    this.typesDocument = data.typesDocuments;
+    console.log(this.typeInstance)
+    console.table(this.typeInstance.typeVei)
+    this.rejectedVeicoli = this.veicoli.filter(x=> x.adminState === statusAdminVei.rejected)
+  //  console.log(this.alleDich, this.alleVei);
+    console.log(this.veicoli, this.rejectedVeicoli)
     this.mode = data.mode;
     this.typeReport = data.typeReport;
-    console.log(this.typeReport)
+    //console.log(this.typeReport)
     this.user = this.store.pipe(select('authentication'), select('user'));
 
     this.user.pipe(take(1)).subscribe((me: User) => this.userMe = me);
@@ -78,6 +89,55 @@ export class AdminReportEditComponent implements OnInit {
         year:this.typeReport['typeistance']['year'],
       })
 
+    }
+
+    console.log(this.typeReport)
+    if(this.typeReport.type === 'ammissione'){
+      this.typeInstance.typeVei.map(
+        (vei) => {
+          let campo = vei['campoDb']
+
+          let veicoli = this.veicoli.filter(x=> x.type === campo && x.adminState === statusAdminVei.accepted)
+          console.log(campo,veicoli)
+          if(veicoli.length>0){
+            veicoli.map((x) => {
+              let totaleArt = 0;
+              if(vei['artDm'] === '2A'){
+                let formArt = this.form.controls['artAa'] as FormGroup;
+
+                console.log(formArt.controls['numero']);
+                console.log(formArt.controls['importo']);
+                console.log(formArt.controls['maggiorazioni']);
+                console.log(formArt.controls['totale']);
+
+
+              }else if(vei['artDm'] === '2B'){
+                let formArt = this.form.controls['artAb'] as FormGroup;
+
+              }else if(vei['artDm'] === '2C'){
+                let formArt = this.form.controls['artAc'] as FormGroup;
+
+              }else if(vei['artDm'] === '3'){
+
+              }else if(vei['artDm'] === '4'){
+
+              }else if(vei['artDm'] === '5A'){
+
+              }else if(vei['artDm'] === '5B'){
+
+              }
+
+            })
+
+
+
+
+
+
+
+          }
+        }
+      )
     }
 
    }
@@ -194,6 +254,14 @@ export class AdminReportEditComponent implements OnInit {
     return certType['longDescription']
   }
 
+  getTypeDucument(idType){
+   // console.log(idType)
+    return this.typesDocument.find(x=>x.id == idType)
+  }
+  getVeicolo(idVeicolo){
+    return this.veicoli.find(x=> x.id  === idVeicolo)
+  }
+
   async onSubmitBtn(){
     Object
     .keys(this.form.controls)
@@ -213,7 +281,7 @@ export class AdminReportEditComponent implements OnInit {
       //console.log(data)
       data.getBlob((blob) => {
         //console.log(blob)
-        blob.filename = new Date().getTime()+'_'+payload.idRam+'_'+this.typeReport.type+'.pdf';
+        blob.filename = `${payload.idRam}_${this.typeReport.type}_${new Date().getTime()}.pdf`;
         this.reportService.uploadAllegatoFile(blob).pipe(
           switchMap((res: any) => {
             const filenameS: string = res.file[0].fd.substring(res.file[0].fd.lastIndexOf('/') + 1);

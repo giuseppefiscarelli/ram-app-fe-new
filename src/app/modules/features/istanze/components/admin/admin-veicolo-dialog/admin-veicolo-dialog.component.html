@@ -1,8 +1,15 @@
-<h1 mat-dialog-title>{{this.dialogTitle}}</h1>
-<h1 mat-dialog-title>{{this.dialogSubTitle}}</h1>
+
+
+  <h1  mat-dialog-title>{{this.dialogTitle}}
+    <button mat-icon-button  (click)="onClickCloseDialog()" aria-label="Chiudi" style="float:inline-end">
+      <mat-icon>close</mat-icon>
+    </button>
+  </h1>
+  <h1  mat-dialog-title>{{this.dialogSubTitle}}</h1>
+
+
 <mat-dialog-content>
   <div fxLayout="row" fxLayoutAlign="start start" >
-
     <div fxFlex="30">
       <h3>Dati Veicolo</h3>
       <div class="table">
@@ -405,7 +412,9 @@
   </div>
 
 </mat-dialog-content>
-  <mat-dialog-actions>
+
+
+  <mat-dialog-actions  align="end">
         <button mat-raised-button color="warn" (click)="onClickCloseDialog()">Chiudi </button>
 <!--         <button mat-raised-button color="primary" (click)="onSubmitBtn()">{{btnSubmit}}</button>
  -->     </mat-dialog-actions>

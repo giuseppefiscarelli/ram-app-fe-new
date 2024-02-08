@@ -143,19 +143,26 @@ export class AdminVeicoloDialogComponent implements OnInit {
           console.log(val)
           if(val && (val ==='rejected' || val === 'pending')){
             const required = Validators.required
-         //   this.formVeicolo.get('costoIstr').removeValidators(required)
-         this.formVeicolo.get('costoIstr').clearValidators()
-         this.formVeicolo.get('costoIstr').updateValueAndValidity()
-         this.formVeicolo.get('valoreContributo').clearValidators()
-         this.formVeicolo.get('valoreContributo').updateValueAndValidity()
-         console.log(this.formVeicolo)
+            //   this.formVeicolo.get('costoIstr').removeValidators(required)
+            if(val === 'rejected'){
+              this.formVeicolo.get('costoIstr').setValue('0')
+              this.formVeicolo.get('valoreContributo').setValue('0')
+              this.formVeicolo.get('costoIstr').disable()
+              this.formVeicolo.get('valoreContributo').disable()
 
-           // this.formVeicolo.controls.valoreContributo.removeValidators(required)
-          //  console.log(this.formVeicolo)
-
+            }
+            this.formVeicolo.get('costoIstr').clearValidators()
+            this.formVeicolo.get('costoIstr').updateValueAndValidity()
+            this.formVeicolo.get('valoreContributo').clearValidators()
+            this.formVeicolo.get('valoreContributo').updateValueAndValidity()
+            console.log(this.formVeicolo)
+              // this.formVeicolo.controls.valoreContributo.removeValidators(required)
+              //  console.log(this.formVeicolo)
           }else{
-            this.formVeicolo.controls.costroIstr.setValidators([Validators.required])
-            this.formVeicolo.controls.valoreContributo.setValidators([Validators.required])
+            this.formVeicolo.get('costoIstr').enable()
+            this.formVeicolo.get('valoreContributo').enable()
+            this.formVeicolo.get('costoIstr').setValidators([Validators.required])
+            this.formVeicolo.get('valoreContributo').setValidators([Validators.required])
           }
        //   this.formVeicolo.clearValidators()
         //  this.formVeicolo.updateValueAndValidity()

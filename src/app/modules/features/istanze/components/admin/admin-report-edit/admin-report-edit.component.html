@@ -32,33 +32,38 @@
 
 
             </div>
-
             <div fxFlex="50">
               <ng-container  *ngIf="this.alleDich.length> 0 || this.alleVei.length > 0">
                 <ng-container  *ngIf="this.alleDich.length> 0">
-
                   <mat-list dense>
-                    <div mat-subheader>Allegati dichiarazione non accettati</div>
+                    <div mat-subheader style="padding-bottom: 0px;">Allegati dichiarazione non accettati</div>
                     <mat-list-item *ngFor="let doc of alleDich">
                       <div mat-line>{{getAlleDichDescription(doc.typeDocument)}}</div>
                     </mat-list-item>
                   </mat-list>
                 </ng-container>
-
-                <ng-container  *ngIf="this.alleVei.length> 0">
-
+                <ng-container  *ngIf="this.rejectedVeicoli.length> 0">
+                  <mat-divider></mat-divider>
                   <mat-list dense>
-                    <div mat-subheader>Allegati veicolo non accettati</div>
-                    <mat-list-item *ngFor="let doc of alleDich">
-                      <div mat-line></div>
+                    <div mat-subheader style="padding-bottom: 0px;">Veicoli non accettati</div>
+                    <mat-list-item *ngFor="let vei of rejectedVeicoli">
+                      <div mat-line>Veicolo <b>{{vei.brand}} {{vei.model}}</b></div>
+                      <div mat-line>Targa <span class="span-type"> <b>{{vei.licensePlate}}</b></span></div>
+                    </mat-list-item>
+                  </mat-list>
+                </ng-container>
+                <ng-container  *ngIf="this.alleVei.length> 0">
+                  <mat-divider></mat-divider>
+                  <mat-list dense>
+                    <div mat-subheader style="padding-bottom: 0px;">Allegati veicolo non accettati</div>
+                    <mat-list-item *ngFor="let doc of alleVei">
+                      <div mat-line>Documento: {{getTypeDucument(doc.typeDocument)?.description}}</div>
+                      <div mat-line *ngIf="getVeicolo(doc.id_Veicolo) as veicolo">Targa Veicolo: {{veicolo.licensePlate}}</div>
                     </mat-list-item>
                   </mat-list>
                 </ng-container>
               </ng-container>
-
-
             </div>
-
           </div>
           <div fxLayout="row">
             <div fxFlex="100" *ngIf="this.typeReport.type==='integrazione'">
@@ -140,6 +145,23 @@
               <button mat-raised-button color="primary"(click)="addControl()" style=" margin-top: 20px;">
                 <mat-icon>add</mat-icon> Inserisci motivazione
               </button>
+
+              </form>
+            </div>
+            <div fxFlex="100" *ngIf="this.typeReport.type==='ammissione'">
+              <form [formGroup]="form">
+                <mat-form-field>
+                  <input matInput
+                  [matDatepicker]="dataVerbale"
+                  formControlName="dataVerbale"
+                  placeholder="Data Verbale riunione"
+                  >
+                  <mat-datepicker-toggle matSuffix [for]="dataVerbale"></mat-datepicker-toggle>
+                  <mat-datepicker #dataVerbale>
+                  </mat-datepicker>
+                </mat-form-field>
+
+
 
               </form>
             </div>

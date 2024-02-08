@@ -1,3 +1,4 @@
+import { StatusReportPipe } from './pipes/statusReport.pipe';
 import { DimImpresaPipe } from './pipes/dimImpresa.pipe';
 import { StatusCheckPipe } from './pipes/statusCheck.pipe';
 import {  PdfViewerSharedComponent } from './components/pdf-viewer/pdf-viewer.component';
@@ -42,6 +43,7 @@ import { IstruttoriaStatusPipe } from './pipes/istruttoriaStatus.pipe';
     TypeOperationPipe,
     StatusCheckPipe,
     DimImpresaPipe,
+    StatusReportPipe,
     IstruttoriaStatusPipe],
   imports: [
     CommonModule,
@@ -50,14 +52,6 @@ import { IstruttoriaStatusPipe } from './pipes/istruttoriaStatus.pipe';
     FlexLayoutModule,
     PdfViewerModule,
     NgApexchartsModule,
-
-
-
-
-
-
-
-
   ],
   exports:[
     CommonModule,
@@ -77,7 +71,8 @@ import { IstruttoriaStatusPipe } from './pipes/istruttoriaStatus.pipe';
     NgApexchartsModule,
     RendStatusPipe,
     IstruttoriaStatusPipe,
-    StatusCheckPipe,DimImpresaPipe
+    StatusCheckPipe,DimImpresaPipe,
+    StatusReportPipe
 
 
   ],

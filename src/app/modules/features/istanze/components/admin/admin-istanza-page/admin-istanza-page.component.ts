@@ -269,15 +269,20 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
 
     getEnableReport(data){
       const hasStatusInvioDefined = this.reports.some(record => record.statusInvio !== undefined && record.statusInvio !== null && record.enable);
-      //console.log(hasStatusInvioDefined)
       if(this.rendicontazione.status !== 'opened' && (hasStatusInvioDefined || this.reports.length ==0)){
         if(data.type === 'rigetto'){
-          return this.listaAllegati.some(x=> x.adminState === 'rejected')
+          return this.listaAllegati.some(x=> x.adminState === 'rejected') ||  this.listaVeicoli.filter(x=> x.adminState === statusAdminVei.rejected)
          }else if(data.type === 'integrazione'){
-          const check = this.listaAllegati.some(x=> x.adminState === 'rejected') || this.listaVeicoli.some(x=> x.adminState !== 'accepted')
+          const check = this.listaAllegati.some(x=> x.adminState === 'rejected') || this.listaVeicoli.some(x=> x.adminState && x.adminState !== 'accepted')
+
           return check
          }else if(data.type === 'ammissione'){
-          return this.listaAllegati.every(x=> x.adminState === 'accepted') && this.listaVeicoli.every(x=> x.adminState === 'accepted')
+          let listVeicoliAccetati = this.listaVeicoli.filter(x=> x.adminState === statusAdminVei.accepted);
+          let alleFiltrati = this.listaAllegati.filter(allegato => listVeicoliAccetati.map(veicolo => veicolo.id).includes(allegato.id_Veicolo));
+          let checkAlle = [...this.listaAllegatiDich, ...alleFiltrati].every(x=> x.adminState === 'accepted')
+
+         // console.log(checkAlle , listVeicoliAccetati)
+          return checkAlle && (listVeicoliAccetati.length === this.listaVeicoli.length)
          }else if(data.type === 'inammissibilita'){
           return this.reports.length > 0 &&  this.reports.find(x=> x.typeReport === data.id && x.status ==='send' && x.enable) ? true: false
          }
@@ -290,32 +295,22 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
       // //console.log(type)
       switch (mode) {
           case 'cert':
-            //  const typeData = this.typeIstance.certAttach.find(x=> x['description'] === type);
               const certData = this.istanzaCheck[type]??'toWork';
-
               const noteAdminData = this.istanzaCheck['note'+type[0].toUpperCase() + type.slice(1)]
-            //  //console.log(certData)
               return {status:certData, note:noteAdminData}
-
-
           case 'attach':
               const alleData = this.listaAllegatiDich.find(x=> x.typeDocument === type);
-
               let status = 'notFound';
-
               if(alleData){
-
                   if(alleData.adminState){
-                  status = alleData.adminState;
+                    status = alleData.adminState;
                   }else{
-                  status = 'fileUpload'
+                    status = 'fileUpload'
                   }
               }
               const instanzaCheckData = {
                   note: this.istanzaCheck['note']
               }
-
-          //    //console.log(alleData)
               return  {status,data:alleData};
 
       }
@@ -334,18 +329,14 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
 
       typeIstance.certAttach.map(
           (cert) => {
-               //console.log(cert)
               let campoDb = cert['description'];
               if(campoDb === 'ampl' && this.rottamazione){
 
               }
-          //    //console.log(campoDb)
               const cList = this.listaAllegati.filter(x=> x.typeDocument === campoDb )
-              //console.log(cList)
               const upList = [...this.listaAllegatiDich.concat(cList)];
               this.listaAllegatiDich = [...upList];
               let check = this.istanza[campoDb]??null;
-             //console.log(this.listaAllegatiVeicoli)
               if(check === 'Yes' ||
               (campoDb === 'pmi' && (
                 this.istanza.tipo_impresa === '1' ||
@@ -354,7 +345,6 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
                 )||
                 ((this.istanza.rim_nv_1 > 0 || this.istanza.rim_nv_2 > 0) && campoDb === 'ampl')){
                   this.totCertEnable++;
-
                   this.certEnable.push(cert);
               }
               if(!cert['upload']){
@@ -366,15 +356,12 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
     }
 
     viewAllegato(allegato): void{
-
       const file = allegato.fd;
-
       this.service.getFile(file)
       .subscribe(
           (res) => {
               const blob = new Blob([res],{type: file.type});
               const url = window.URL.createObjectURL(blob);
-
                     const ref : MatDialogRef<AdminDialogAllegatoComponent> = this.dialog.open(AdminDialogAllegatoComponent,{
                       panelClass: 'dialog-responsive',
                       //disableClose: true,
@@ -385,17 +372,14 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
                       data: {
                           url,
                           allegato,
-
                       }
                   })
-
                   ref.afterClosed().subscribe(
                       (res: Allegato)=>{
                           //console.log(res)
                           if(!!res){
                               const currentRecordsA = [...this.listaAllegati];
                               const currentRecordsB = [...this.listaAllegatiDich];
-
                               currentRecordsA[this.listaAllegati.findIndex(x=> x.id === res.id)] = res;
                               currentRecordsB[this.listaAllegatiDich.findIndex(x=> x.id === res.id)] = res;
                               this.listaAllegati = [...currentRecordsA];
@@ -403,12 +387,10 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
 
 
                               if(res.typeDocument && res.typeDocument === 'pmi'){
-                                  //console.log(this.istanzaCheck);
                                   this.istanzaCheck.pmi = res.adminState
                               }
 
                               if(res.typeDocument && res.typeDocument === 'rete'){
-                                  //console.log(this.istanzaCheck);
                                   this.istanzaCheck.rete = res.adminState
                               }
                               this.service.updateIstanzaCheck(this.istanzaCheck).subscribe(
@@ -418,10 +400,6 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
 
                                   }
                               )
-
-                              /*  currentRecords[atIndex] = updatedUser;
-
-                              this.records = [...currentRecords]; */
                           }
                       }
                   )
@@ -432,8 +410,6 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
 
     viewReport(data:Report){
       let file = data.fd;
-
-
       this.service.getFile(file)
       .subscribe(
         {
@@ -467,7 +443,6 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
           URL.revokeObjectURL(f);
         }
       })
-
     }
     deleteReport(id){
       Swal.fire({
@@ -480,7 +455,6 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
         confirmButtonText:'SI \n Conferma eliminazione',
         cancelButtonText: 'NO Esci senza eliminare'
       }).then( (res) => {
-
         if (res && res.value){
           this.configService.updateReport({
             id,
@@ -490,7 +464,7 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
             next:(res)=> {
               if(!!res){
                 this.reports = this.reports.filter((x) => x.id !== res.id && x.enable)
-            }
+              }
             },
             complete:()=> this.changeDetectorRef.markForCheck()
           })
@@ -499,38 +473,27 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
     }
 
     getTipoVeicolo(tipo){
-
       const data = this.typeIstance.typeVei.find(X => X['campoDb'] === tipo);
-      // //console.log(data)
       return data['description'];
     }
 
     getStatoIstruttoria(){
-
-
-      //console.log(this.rendicontazione.status)
       if(this.rendicontazione.status === 'closed' || this.rendicontazione.status === 'reporting'){
           this.statoIstruttoria = 'enabled';
           this.funzioniIstruttoria = true;
-          //console.log(this)
           if((this.istanzaCheck.updatedAt > this.istanzaCheck.createdAt) || this.listaAllegati.some(x=> x.adminState !== null)){
             this.statoIstruttoria = 'work';
           }
           else if(this.istanzaCheck.updatedAt === this.istanzaCheck.createdAt){
             this.statoIstruttoria = 'pending';
           }
-
       }else if(this.rendicontazione.status === 'opened'){
         this.statoIstruttoria = 'rendOpen'
       }
-
-
     }
 
     onClickAllegato(mode, data?, atIndex?){
-    //   //console.log(mode, data)
       if(mode === 'edit'){
-
           this.viewAllegato(data)
       }
       if(mode === 'delete'){
@@ -544,28 +507,20 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
               confirmButtonText:'SI \n Conferma eliminazione',
               cancelButtonText: 'NO Esci senza eliminare'
             }).then( (res) => {
-
                   if (res && res.value){
-
                   }
-
             });
       }
-
-
     }
 
     onClickVei(mode,veicolo: Veicolo, atIndex: number){
-      //console.log(this.listaAllegatiVeicoli)
       const allegatiVeicolo = this.listaAllegatiVeicoli.filter(x=>x.id_Veicolo && x.id_Veicolo === veicolo.id)
-      //console.log(allegatiVeicolo);
       if(mode === 'edit'){
           const ref: MatDialogRef<AdminVeicoloDialogComponent> = this.dialog.open(
               AdminVeicoloDialogComponent,{
                   panelClass: 'dialog-responsive',
                   disableClose: true,
                   width:'90%',
-
                   maxWidth:'90%',
                   maxHeight:'90%',
                   data:{
@@ -582,24 +537,18 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
 
           ref.afterClosed().subscribe(
               (res) => {
-                  //console.log(res)
+                  console.log(res)
 
                   if(res.allegati){
-
-
                     let otherAlle = [...this.listaAllegatiVeicoli.filter(x=>x.id_Veicolo && (x.id_Veicolo !== res.veicolo.id))]
-
                     const updateRecords = [...otherAlle].concat(res.allegati)
-
                     this.listaAllegatiVeicoli = [...updateRecords];
-
-
+                    this.listaAllegati = [...this.listaAllegatiDich, ...this.listaAllegatiVeicoli];
                   }
                   if(res.veicolo){
                       const upVeicoli = [...this.listaVeicoliFiltered];
                       upVeicoli[atIndex] = res.veicolo;
-                      this.listaVeicoliFiltered = [...upVeicoli];
-                     // this.changeDetectorRef.markForCheck();
+                      this.listaVeicoli = this.listaVeicoliFiltered = [...upVeicoli];
                   }
                   this.changeDetectorRef.markForCheck()
 
@@ -610,43 +559,35 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
     }
 
     onClickCert(data){
-          // //console.log(data)
-          // //console.log(this.istanzaCheck)
-          const ref: MatDialogRef<CheckCertDialogComponent> = this.dialog.open(
-              CheckCertDialogComponent,
-              {
-                  data:{
-                      istanzaCheck :this.istanzaCheck,
-                      data,
-                      alle:this.certEnable,
-                      allegati: this.listaAllegatiDich
-                  }
-              }
-          )
-          ref.afterClosed().subscribe(
-              (res:IstanzaCheck) => {
-                  if(!!res){
-                      this.istanzaCheck = res;
-                      this.changeDetectorRef.markForCheck()
-                  }
-              }
-          )
+      const ref: MatDialogRef<CheckCertDialogComponent> = this.dialog.open(
+        CheckCertDialogComponent,
+        {
+          data:{
+            istanzaCheck :this.istanzaCheck,
+            data,
+            alle:this.certEnable,
+            allegati: this.listaAllegatiDich
+          }
+        }
+      )
+      ref.afterClosed().subscribe(
+        (res:IstanzaCheck) => {
+          if(!!res){
+            this.istanzaCheck = res;
+            this.changeDetectorRef.markForCheck()
+          }
+        }
+      )
     }
 
     getIndicatorData(){
       this.alleTotal = this.listaAllegati.length;
-    //   //console.log(this.listaAllegati)
       this.allePending = this.listaAllegati.filter(x=> x.adminState ==='pending').length
       this.alleAccepted = this.listaAllegati.filter(x=> x.adminState ==='accepted').length
       this.alleRejecetd = this.listaAllegati.filter(x=> x.adminState ==='rejecetd').length
-
-      // //console.log(this.alleTotal, this.alleAccepted, this.allePending, this.alleRejecetd)
     }
 
     onClickGenerateReport(type){
-
-
-      //console.log(type)
       const ref: MatDialogRef<ReportsEditComponent>  = this.dialog.open(
           ReportsEditComponent,
           {
@@ -670,13 +611,10 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
       )
     }
     onClickReport(mode, typeReport?:typeReport, atIndex?){
-      //console.log(mode)
-
       const ref : MatDialogRef<AdminReportEditComponent> = this.dialog.open(AdminReportEditComponent,{
         panelClass: 'dialog-responsive',
         //disableClose: true,
         width:'90%',
-
         maxWidth:'90%',
         maxHeight:'90%',
         data: {
@@ -687,6 +625,7 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
             istanza:this.istanza,
             typeInstance:this.typeIstance,
             veicoli:this.listaVeicoli,
+            typesDocuments:this.typeDocuments,
             listaAllegatiDich: this.listaAllegatiDich,
             listaAllegatiVeicoli: this.listaAllegatiVeicoli
 

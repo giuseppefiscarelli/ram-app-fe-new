@@ -254,8 +254,8 @@ export class FormAllegatoVeicoloComponent implements OnInit {
 
       if(this.fileAttach.type === 'application/pdf' || this.fileAttach.type === 'application/pkcs7-mime' || this.fileAttach.type === 'application/x-pkcs7-mime'){
           this.typeFileControl = true;
-      }
-      if(this.fileAttach.size < 4194304){
+      }let limit = this.userMe.role === 'user'?4194304:10194304
+      if(this.fileAttach.size < limit){
           this.fileDimControl = true;
       }
       if(this.fileDimControl && this.typeFileControl){

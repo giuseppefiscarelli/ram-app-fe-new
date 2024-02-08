@@ -6,9 +6,9 @@
 
 <mat-card class="container-card" >
   <div fxLayout="row"
-  fxLayout.xs="column"
-  fxLayoutAlign="start"
-  fxLayoutGap="30px">
+    fxLayout.xs="column"
+    fxLayoutAlign="start"
+    fxLayoutGap="30px">
 
     <div fxFlex="20">
       <mat-list dense>
@@ -31,6 +31,10 @@
 
                 </div>
         </mat-list-item>
+        <mat-list-item >
+          <div matLine>Veicoli Inseriti</div>
+           <div matLine>{{listaVeicoli.length}}</div>
+       </mat-list-item>
         <mat-list-item >
             <div matLine>Veicoli Inseriti</div>
              <div matLine>{{listaVeicoli.length}}</div>
@@ -463,8 +467,9 @@
                 <ng-container matColumnDef="status">
                   <th mat-header-cell *matHeaderCellDef> Stato </th>
                   <td mat-cell *matCellDef="let element; let index = index">
-                    Stato Report: {{element.status}}<br>
-                    Stato invio: {{element.statusInvio}}</td>
+                    Stato Report: {{element.status | statusReport}}<br>
+                    Stato invio: {{element.statusInvio | statusReport }}
+                  </td>
                 </ng-container>
 
                 <ng-container matColumnDef="actionReport">
@@ -492,7 +497,8 @@
                  <button
                     mat-icon-button
                     color="primary"
-                    style="color:purple;"
+
+                    [disabled]="true"
                     matTooltip="Componi Pec"
                     matTooltipPosition="above"
                     aria-label="Example icon button with a home icon"
@@ -501,7 +507,7 @@
                 <button
                   mat-icon-button
                   color="accent"
-
+                  disabled="true"
                   matTooltip="Sostituisci documento"
                   matTooltipPosition="above"
                   aria-label="Example icon button with a home icon"

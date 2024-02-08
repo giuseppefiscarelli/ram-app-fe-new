@@ -270,8 +270,8 @@ export class FormAllegatoComponent implements OnInit {
     ) {
         this.typeFileControl = true;
         this.form.controls.attach.setValue(false);
-
-        if(this.fileAttach.size < 4194304){
+        let limit = this.userMe.role === 'user'?4194304:10194304
+        if(this.fileAttach.size < limit){
             this.fileDimControl = true;
             this.form.controls.attach.setValue(true)
         }
