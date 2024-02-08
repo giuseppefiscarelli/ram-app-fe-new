@@ -242,21 +242,21 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
         { text:[ 'Raccomandata via pec all\'indirizzo: ', {text:dataReport['pecImpresa'], bold:true}], alignment:'left',margin: [ 0, 10 ]},
         {columns:[
           {text:'Oggetto: ',width: 'auto',bold:true},
-          {text:'Contributi ai sensi del D.D. 12 aprile 2022 n.155 per le finalità di cui al D.M. 18 novembre 2021 n. 459 - "Incentivi agli investimenti nel settore dell\'autotrasporto" ',margin: [ 5, 0, 0, 0 ], bold:true, alignment:'justify'},
+          {text:'Contributi ai sensi del D.D. 7 aprile 2022 n.1448 per le finalità di cui al D.M. 18 novembre 2021 n. 461 - "Incentivi agli investimenti nel settore dell\'autotrasporto" ',margin: [ 5, 0, 0, 0 ], bold:true, alignment:'justify'},
 
         ],margin: [ 0, 5, 0, 5 ]},
         {
           text:[
            {text:'In qualità di soggetto attuatore, per conto del Ministero delle Infrastrutture e della Mobilità Sostenibili della gestione operativa del decreto in oggetto, Vi comunichiamo che a seguito di verifiche effettuate, per poter istruire la Vostra istanza '}
             ,
-            {text: `prot. R.A.M. S.p.a. In ${dataReport['idRam']}/${dataReport['year']}`, bold: true},
+            {text: `prot. R.A.M. S.p.a. ES ${dataReport['idRam']}/${dataReport['year']}`, bold: true},
             { text: ' abbiamo necessità di ricevere i seguenti chiarimenti e/o documenti:'}
           ], alignment:'justify'
         },
         {ul:dataReport['detail'], margin:[20,10], bold:true},
           {
             text:[
-              {text: 'Pertanto, ai sensi e per gli effetti dell\'art. 10, comma 4 del D.D 12 aprile 2022 n.155, Vi invitiamo a fornirci la suddetta documentazione '},
+              {text: 'Pertanto, ai sensi e per gli effetti dell\'art. 7, comma 4 del D.D 7 aprile 2022 n.148, Vi invitiamo a fornirci la suddetta documentazione '},
               {text:'entro e non oltre il termine perentorio di quindici giorni ', bold:true},
               {text:'decorrenti dalla data di ricezione della presente, accedendo al gestionale dedicato sul Portale, già utilizzato per la rendicontazione della domanda. Il Portale sarà abilitato alla modifica dei dati e, all\'interno della Sezione "Richieste integrazioni", al caricamento dei documenti contenenti le integrazioni richieste.'}
             ], alignment:'justify',  margin:[0,0]
