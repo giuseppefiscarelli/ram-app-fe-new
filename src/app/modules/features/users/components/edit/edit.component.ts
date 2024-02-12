@@ -70,27 +70,29 @@ console.log(data)
           confirm: new FormControl(null, [Validators.required, Validators.minLength(8)]),
           businessName:  new FormControl(null),
           vatNumber:  new FormControl(null),
-          note: new FormControl(null)
+          note: new FormControl(null),
+          enablePec: new FormControl(false)
       }, {
           validators: CustomValidators.fieldsEquals(['password', 'confirm'])
       });
-  }
+    }
     private initializeForEdit(user: User): FormGroup {
-      this.mode = 'edit';
+        this.mode = 'edit';
 
-      return new FormGroup({
-          id: new FormControl(user.id),
-          email: new FormControl(user.email, [Validators.required, Validators.email]),
-          role: new FormControl(user.role, [Validators.required]),
-          businessName:  new FormControl(user.businessName),
-          password: new FormControl(null, [ Validators.minLength(8)]),
-          confirm: new FormControl(null, [ Validators.minLength(8)]),
-          vatNumber:  new FormControl(user.vatNumber),
-          note: new FormControl(user.note)
-      }, {
-        validators: CustomValidators.fieldsEquals(['password', 'confirm'])
-    });
-  }
+        return new FormGroup({
+            id: new FormControl(user.id),
+            email: new FormControl(user.email, [Validators.required, Validators.email]),
+            role: new FormControl(user.role, [Validators.required]),
+            businessName:  new FormControl(user.businessName),
+            password: new FormControl(null, [ Validators.minLength(8)]),
+            confirm: new FormControl(null, [ Validators.minLength(8)]),
+            vatNumber:  new FormControl(user.vatNumber),
+            note: new FormControl(user.note),
+            enablePec: new FormControl(user.enablePec)
+        }, {
+          validators: CustomValidators.fieldsEquals(['password', 'confirm'])
+      });
+    }
 
     onSubmitClick(): void {
       Object

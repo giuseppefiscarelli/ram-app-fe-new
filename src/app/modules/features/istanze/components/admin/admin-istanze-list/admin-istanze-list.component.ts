@@ -6,13 +6,15 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Istanza, Rendicontazione } from '@app/modules/models/istanza.model';
 import { TypeIstance } from '@app/modules/models/type-istance.model';
 import { User } from '@app/modules/models/user.model';
-import { debounceTime, Observable, Subscription, take } from 'rxjs';
+import { debounceTime, filter, Observable, Subscription, take, forkJoin } from 'rxjs';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ApplicationState } from '@app/app.state';
 import { select, Store } from '@ngrx/store';
 import { StorageService } from '@app/modules/services/storage.service';
 import { DateAdapter } from '@angular/material/core';
 import { ConfigService } from '@app/modules/features/config/config.service';
+import { ActivatedRoute, NavigationEnd, NavigationStart, Router, RouterEvent } from '@angular/router';
+import { TypeReport } from '@app/modules/models/typeReport.model';
 
 @Component({
   selector: 'app-admin-istanze-list',
@@ -31,6 +33,7 @@ export class AdminIstanzeListComponent implements OnInit , OnDestroy{
   filters$: Subscription;
 
   type:TypeIstance[];
+  typeReports: TypeReport[]=[];
   type$: Subscription;
   rendstatus:any[];
   totRecord: number;
@@ -55,9 +58,12 @@ export class AdminIstanzeListComponent implements OnInit , OnDestroy{
       [key: string]: any
   };
   today: Date;
+  routerSubscription$: Subscription;
     constructor(
                     private service: IstanzeService,
                     public paginator: PaginatorService,
+                    private router: Router,
+                    private route: ActivatedRoute,
                     private changeDetectorRef: ChangeDetectorRef,
                     private dialog: MatDialog,
                     private store: Store<ApplicationState>,
@@ -88,8 +94,23 @@ export class AdminIstanzeListComponent implements OnInit , OnDestroy{
             {title: 'In lavorazione', value: 'true'}
         ]
     };
-    this.type$ = this.serviceConf.fetchTypeInstance({drop:true}).subscribe(
-      (x: TypeIstance[])=> this.type = x)
+    this.routerSubscription$ = this.router.events.pipe(
+      filter((event: RouterEvent) => event instanceof NavigationStart)
+    ).subscribe((event: NavigationStart) => {
+
+      const targetRoute = event.url;
+      if(!targetRoute.startsWith('/istanze/admin/')){
+        localStorage.removeItem('filters');
+      }
+    });
+    this.type$ = forkJoin([
+      this.serviceConf.fetchTypeInstance({drop:true}),
+      this.serviceConf.fetchTypeReport({drop:true})
+    ]).subscribe(
+      ([x,typesReport])=> {
+        this.type = x;
+        this.typeReports = typesReport;
+      })
     this.filters = new FormGroup({
           term: new FormControl(null),
           type: new FormControl(null),
@@ -106,8 +127,6 @@ export class AdminIstanzeListComponent implements OnInit , OnDestroy{
 
     ngOnInit(): void {
 
-
-
         this.service.countIstanze({total:'true'}).subscribe(
             (total) =>{
               this.totRecord = total;
@@ -115,8 +134,22 @@ export class AdminIstanzeListComponent implements OnInit , OnDestroy{
             }
         )
         this.createObservable()
-        this.paginator.resetFilters({list:'true'});
+
+
+        this.route.queryParams.subscribe(params => {
+          console.log(params)
+
+        });
+        const filters = JSON.parse(localStorage.getItem('filters'));
+        console.log(filters)
+        if(filters){
+          //this.paginator.resetFilters(filters);
+          this.filters.setValue(filters)
+        }else{
+          this.paginator.resetFilters({list:'true'});
+        }
     }
+
     createObservable(){
       this.filters$ = this.filters.valueChanges
       .pipe(debounceTime(400))
@@ -169,6 +202,7 @@ export class AdminIstanzeListComponent implements OnInit , OnDestroy{
       this.filters$.unsubscribe()
       this.paginator$.unsubscribe()
       this.type$.unsubscribe()
+      this.routerSubscription$.unsubscribe()
     }
     private handleSubscriptionResponse(res: Istanza[]): void {
       console.log(res)
@@ -236,28 +270,40 @@ export class AdminIstanzeListComponent implements OnInit , OnDestroy{
       )
     }
     getStatusIstruttoria(element){
-    //  console.log(element)
+      console.log(element)
       let data = {
         text: 'In Rendicontazione',
         style: 'closed',
         status: 'rend'
       }
-      if(element.rendstatus === 'closed'){
-        if(element.istaupdated > element.istacreated){
-          data = {
-            text: 'In Lavorazione',
-            style: 'opened',
-            status:'work'
-          }
-        }else if(element.istaupdated === element.istacreated){
-          data = {
-            text: 'In Lavorazione',
-            style: 'pending',
-            status:'pending'
+      if(element.statusreport){
+        let type = this.typeReports.find(x=> x.id === element.typereport)
+        console.log(type)
+        data = {
+          text: type.description,
+          style:  element.statusreport,
+          status: element.statusreport
+        }
+      }else{
+        if(element.rendstatus === 'closed'){
+          if(element.istaupdated > element.istacreated){
+            data = {
+              text: 'In Lavorazione',
+              style: 'opened',
+              status:'work'
+            }
+          }else if(element.istaupdated === element.istacreated){
+            data = {
+              text: 'In Lavorazione',
+              style: 'pending',
+              status:'pending'
+            }
           }
         }
       }
-    //  console.log(data)
+
+
+      console.log(data)
       return data
     }
 
@@ -317,6 +363,11 @@ export class AdminIstanzeListComponent implements OnInit , OnDestroy{
 
 
 
+    }
+    goToIstanza(id){
+      localStorage.setItem('filters', JSON.stringify(this.filters.getRawValue()));
+
+      this.router.navigate(['/istanze', 'admin', id]);
     }
 
 }

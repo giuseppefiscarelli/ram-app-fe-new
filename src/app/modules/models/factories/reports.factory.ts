@@ -48,7 +48,9 @@ export class ReportsFactory{
             'dataPreavvisoRigetto',
             'dataNotaInammissibilita',
             'motivazioneInammissibilita',
-            'fd'
+            'fd',
+            'body',
+            'subject'
         ];
         keysToDuplicate.forEach(key => instance[key] = descriptor[key]);
         return instance;

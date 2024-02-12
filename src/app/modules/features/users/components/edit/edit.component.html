@@ -35,6 +35,10 @@
         </div>
 
       </div>
+      <mat-checkbox
+      *ngIf="this.form.get('role').value !== 'user'"
+      class="example-margin" formControlName="enablePec">Abilitazione Invio PEC</mat-checkbox>
+
 
 
       <div fxLayout="row"  fxLayout.xs="column" fxLayoutGap="30px;">

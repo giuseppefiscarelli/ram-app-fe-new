@@ -274,24 +274,29 @@ export class AdminVeicoloDialogComponent implements OnInit {
                         {
                             next:(res: Veicolo) => this.veicolo = res,
                             complete:()=> {
-                                this.changeDetectorRef.markForCheck();
-
-                                this.notifications.toast(TYPE.SUCCESS,'Operazione Completata', 'Veicolo aggiornato con successo')}
+                              this.changeDetectorRef.markForCheck();
+                              this.notifications.toast(
+                                TYPE.SUCCESS,
+                                'Operazione Completata',
+                                'Veicolo aggiornato con successo'
+                            )}
                         }
                     )
-                        console.log('aggiorna veicolo')
+                    console.log('aggiorna veicolo')
                     }
-
                 })
-
             }else{
                 this.services.updateVeicolo(payload).subscribe(
                     {
                         next:(res: Veicolo) => this.veicolo = res,
                         complete:()=> {
                             this.changeDetectorRef.markForCheck();
-
-                            this.notifications.toast(TYPE.SUCCESS,'Operazione Completata', 'Veicolo aggiornato con successo')}
+                            this.notifications.toast(
+                              TYPE.SUCCESS,
+                              'Operazione Completata',
+                              'Veicolo aggiornato con successo'
+                              )
+                            }
                     }
                 )
             }

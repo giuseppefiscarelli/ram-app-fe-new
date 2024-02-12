@@ -18,5 +18,6 @@ export class Allegato{
     adminNote: string;
     adminDate: string;
     adminUser: number;
-    fd:[]
+    fd:[];
+    targa: string;
 }

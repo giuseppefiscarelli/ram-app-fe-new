@@ -3,6 +3,7 @@ export const UsersLanguagePartialDefinition = {
         administrator: 'Amministratore',
         administration: 'Amministrativo',
         administrative: 'Back Office',
+        superadmin: 'Super Admin',
         worker: 'Magazzino',
         dpo: 'Resp. Privacy',
         user: 'User',
@@ -43,6 +44,7 @@ export const UsersLanguagePartialDefinition = {
                         admin: 'Amministratore',
                         administrative: 'Amministrazione',
                         user: 'Utente',
+                        superadmin: 'Super Admin',
                         all: 'Tutti',
                     }
                 },

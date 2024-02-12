@@ -35,7 +35,7 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
-
+<!--
             <mat-form-field fxFlex="15">
               <mat-label>Stato Istruttoria</mat-label>
               <mat-select  formControlName="istrActive">
@@ -43,7 +43,7 @@
                   {{item.title}}
                 </mat-option>
             </mat-select>
-            </mat-form-field>
+            </mat-form-field> -->
 
          </div>
     </form>
@@ -138,10 +138,23 @@
           <mat-cell *matCellDef="let element">
             <div class="status-container" *ngIf="getStatusRendicontazione(element).status !== 'expired'; else expired">
               <ng-container *ngIf="getStatusIstruttoria(element) as statusIstr ">
-                <span class="span-status"
+                <ng-container *ngIf="!element.statusreport;else rep">
+                  <span class="span-status"
                   [class]="statusIstr.style"
                   [innerText]="statusIstr.status | istruttoriaStatus">
                 </span>
+                </ng-container>
+                <ng-template #rep>
+                  <span class="span-status"
+                  [class]="statusIstr.style"
+                  [innerText]="statusIstr.text">
+                </span><br>
+                <span class="span-status"
+                [class]="statusIstr.style"
+                [innerText]="statusIstr.status | statusReport">
+              </span>
+                </ng-template>
+
               </ng-container>
 
 
@@ -185,7 +198,8 @@
             matTooltip="Visualizzazione Backoffice"
             matTooltipPosition="above"
             aria-label="Example icon button with a home icon"
-            [routerLink]="['/istanze','admin',element.id_ram]"
+            (click)="goToIstanza(element.id_ram)"
+
           >
           <mat-icon>admin_panel_settings</mat-icon>
         </button>

@@ -5,6 +5,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
   selector: 'app-pdf-viewer',
   template: `
   <pdf-viewer [src]="pdfSrc"
+
               [render-text]="true"
               [original-size]="false"
               style="width: 80vh; height:80vh;"
@@ -13,13 +14,15 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./pdf-viewer.component.css']
 })
 export class PdfViewerSharedComponent implements OnInit {
-  pdfSrc :string
+  pdfSrc :string; isLoading = true;
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,) {
-    console.log(data)
-    this.pdfSrc = data.url
+
+    this.pdfSrc = data.url;
+    this.isLoading = false;
    }
 
   ngOnInit() {
+
   }
 
 }

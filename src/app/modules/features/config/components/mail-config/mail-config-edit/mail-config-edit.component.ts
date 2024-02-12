@@ -25,6 +25,7 @@ export class MailConfigEditComponent implements OnInit {
   ) {
     this.mode = data.mode;
     this.record = data.record;
+
     if(this.mode === 'create'){
       this.dialogTitle = 'Inserimento Nuovi parametri';
       this.btnSubmit = 'Salva';
