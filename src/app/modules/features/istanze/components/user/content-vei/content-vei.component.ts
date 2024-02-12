@@ -68,6 +68,7 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
       this.typeDoc$ = this.service.fetchTypeDocuments({drop:true}).subscribe(
           (records: TypeDocument[]) => this.typeDocuments = records,
       )
+
     }
 
     ngOnInit(): void {
@@ -96,6 +97,7 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
       )
 
       this.docList = doc['typeDocument'];
+      console.log(this.rottamazione, this.docList)
       if(!this.rottamazione){
           this.docList = this.docList.filter(x=> (x !== 11 && x !== 14))
       }

@@ -86,7 +86,7 @@
                           <button mat-flat-button color="primary"
                           style="float:right;background-color: green;"
                           (click)="onClickInsertVei('edit',v,index)"
-                          *ngIf="this.rendicontazione.enable"
+                          *ngIf="this.rendicontazione.enable || this.userMe.role === 'superadmin'"
                           ><mat-icon>refresh</mat-icon>Aggiorna dati Veicolo</button></span>
                       </div>
 
@@ -119,7 +119,7 @@
                     <div fxFlex="100">
                       <h3>Documenti Veicolo</h3>
 
-                        <button mat-raised-button *ngIf="this.rendicontazione.enable" (click)="newAllegato(v)" color="primary">Inserisci Documento</button>
+                        <button mat-raised-button *ngIf="this.rendicontazione.enable  || this.userMe.role === 'superadmin'" (click)="newAllegato(v)" color="primary">Inserisci Documento</button>
                        <!-- <div class="table" *ngIf="listAlleFiltered.length > 0">
                           <table style="width:95%;">
                               <thead>

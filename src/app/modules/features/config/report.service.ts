@@ -5,8 +5,12 @@ import pdfMake from 'pdfmake/build/pdfmake';
 //import pdfFonts from 'pdfmake/build/vfs_fonts';///
 import pdfFonts from "../../../../assets/custom-fonts";
 import { HttpClient } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { Observable, from, groupBy, map, mergeMap, reduce } from 'rxjs';
 import { ApiService } from '@app/modules/network/api.service';
+import { TypeIstance } from '@app/modules/models/type-istance.model';
+import { Veicolo } from '@app/modules/models/veicolo.model';
+import { Allegato } from '@app/modules/models/allegato.model';
+import { Istanza } from '@app/modules/models/istanza.model';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 @Injectable()
 export class ReportService {
@@ -43,9 +47,10 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
 
 
 
-   async generateReport(type,dataReport){
+   async generateReport(type,dataReport, veicoli?:Veicolo[], allegatiVeicoli?:Allegato[],typeIstance?: TypeIstance, istanza?:Istanza){
     console.log(dataReport);
     console.log(type)
+    console.log(istanza)
 //    return true
       console.log(pdfFonts.fonts)
     var header = [];
@@ -338,6 +343,70 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
     }
 
     if(type === 'ammissione'){
+
+
+      let veicoliAccettati = veicoli?.filter(x=> x.adminState === 'accepted')
+      console.log(veicoli)
+      console.log(typeIstance)
+
+      console.log(veicoliAccettati)
+
+
+
+      // veicoliAccettati.map((veicolo)=> {
+
+      //   if()
+      // } )
+
+      // Converto l'array in un Observable
+      const data$ = from(veicoli);
+
+      // Converto l'array di nuovi dati in un oggetto con 'campoDb' come chiave
+      const typeDataMap: { [key: string]: any } = typeIstance.typeVei.reduce((acc, item) => {
+          acc[item['campoDb']] = item;
+          return acc;
+      }, {});
+
+      // Raggruppo gli oggetti per l'attributo 'type' e calcolo la somma degli importi per ciascun gruppo
+      const groupedData$: Observable<{ type: string; typeVei: string | null; artDm: string | null; totalAmount: number; numAccepted: number }[]> = data$.pipe(
+          groupBy(obj => obj['type']), // Raggruppo gli oggetti per 'type'
+          mergeMap(group => group.pipe(
+              reduce((acc, val) => ({ totalAmount: acc.totalAmount + val['amount'], numAccepted: acc.numAccepted + (val['adminState'] === 'accepted' ? 1 : 0) }), { totalAmount: 0, numAccepted: 0 }), // Calcolo la somma degli importi e il numero di veicoli con adminState === 'accepted' per ciascun gruppo
+              map(({ totalAmount, numAccepted }) => ({
+                  type: group.key,
+                  typeVei: typeDataMap[group.key] ? typeDataMap[group.key].campoDb : null,
+                  artDm: typeDataMap[group.key] ? typeDataMap[group.key].artDm : null,
+                  totalAmount,
+                  numAccepted
+              })) // Costruisco un oggetto con 'type', 'typeVei', 'artDm', la somma degli importi e il numero di veicoli con adminState === 'accepted'
+          )),
+          reduce((acc, val) => [...acc, val], []) // Raccolgo tutti gli oggetti risultanti in un array
+      );
+
+      // Osservo i risultati
+      groupedData$.subscribe(result => console.log(result));
+      let myGroupedData: { type: string; typeVei: string | null; totalAmount: number }[];
+      // Osservo i risultati
+      groupedData$.subscribe(result =>  myGroupedData = result);
+
+      console.log(myGroupedData)
+
+      // let art5a = {
+      //   totalVeicoli: veicoli.filter(x=> x.adminState === 'accepted' && )
+      // }
+
+
+
+
+
+
+
+
+
+
+
+
+
       let logo  = await this.getBase64ImageFromURL('../../../../assets/report/int_ammb.png');
       let firma  = await this.getBase64ImageFromURL('../../../../assets/report/firma_disanto.png');
 
@@ -383,11 +452,11 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
             ],
 
             [
-              {rowSpan:4, text:'Art.2, comma 5, lett a)', alignment:'center',margin:[0,30]},
+              {rowSpan:4, text:'Art.5, comma 1, lett a)', alignment:'center',margin:[0,30]},
                 {text:'Art.5, comma 1, lett a)', alignment:'left' },
                 {text:dataReport['artAa']['numero']},
                 {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(dataReport['artAa']['importo'])},
-                {text:dataReport['artAa']['maggiorazione']},
+                {text:istanza.pmi && istanza.pmi === 'Yes'?'10%':null},
                 {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(dataReport['artAa']['totale'])},
 
 
@@ -396,14 +465,14 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
                 {text:'Art.5, comma 1, lett b)', alignment:'left' },
                 {text:dataReport['artAb']['numero']},
                 {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(dataReport['artAb']['importo'])},
-                {text:dataReport['artAb']['maggiorazione']},
+                {text:istanza.pmi && istanza.pmi === 'Yes'?'10%':null},
                 {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(dataReport['artAb']['totale'])},
                 ],
               [   '',
-                {text:'Art.5, comma 1, lett c)', alignment:'left' },
+                {text:'Art.5, comma 2, lett c)', alignment:'left' },
                 {text:dataReport['artAc']['numero']},
                 {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(dataReport['artAc']['importo'])},
-                {text:dataReport['artAc']['maggiorazione']},
+                {text:istanza.pmi && istanza.pmi === 'Yes'?'10%':null},
                 {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(dataReport['artAc']['totale'])},
 
               ],
@@ -429,7 +498,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
               {text:'Art.5, comma 3', alignment:'left' },
               {text:dataReport['artB1']['numero']},
               {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(dataReport['artB1']['importo'])},
-              {text:dataReport['artB1']['maggiorazione']},
+              {text:istanza.pmi && istanza.pmi === 'Yes'?'10%':null},
               {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(dataReport['artB1']['totale'])},
 
 
@@ -440,7 +509,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
               {text:'Art.5, comma 4', alignment:'left' },
               {text:dataReport['artB2']['numero']},
               {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(dataReport['artB2']['importo'])},
-              {text:dataReport['artB2']['maggiorazione']},
+              {text:istanza.pmi && istanza.pmi === 'Yes'?'10%':null},
               {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(dataReport['artB2']['totale'])},
 
 
@@ -453,7 +522,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
               {text:'Art.5, comma 5, lett a)', alignment:'left' },
               {text:dataReport['artCa']['numero']},
               {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(dataReport['artCa']['importo'])},
-              {text:dataReport['artCa']['maggiorazione']},
+              {text:istanza.pmi && istanza.pmi === 'Yes'?'10%':null},
               {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(dataReport['artCa']['totale'])},
 
 
@@ -809,10 +878,22 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
 
   uploadAllegatoFile(payload): Observable<any> {
     const formData: FormData = new FormData();
+
     formData.append('file', payload, payload.filename);
     return this.API.Upload.create(formData)
     .pipe(
         map((response: any) => response)
     );
+  }
+  uploadAllegato(file:File): Observable<any> {
+    const formData: FormData = new FormData();
+    formData.append('file', file);
+    return this.API.Upload.create(formData)
+    .pipe(
+        map((response: any) => response)
+    );
 }
+
+
+
 }

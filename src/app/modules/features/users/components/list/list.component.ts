@@ -19,7 +19,7 @@ import { EditComponent } from '../edit/edit.component';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ListComponent implements OnInit , OnDestroy{
-  displayedColumns: string[] = ['id', 'fullname', 'email', 'role', 'action'];
+  displayedColumns: string[] = ['id', 'fullname', 'email', 'role','pec', 'action'];
 
 
   user: Observable<User>;
@@ -54,7 +54,7 @@ export class ListComponent implements OnInit , OnDestroy{
                   this.timeScroll = null;
                   this.filters = new FormGroup({
                       term: new FormControl(null),
-
+                      enablePec:new FormControl(null),
                       role: new FormControl(null)
 
 
@@ -105,10 +105,12 @@ export class ListComponent implements OnInit , OnDestroy{
 
                 if (value[key] === undefined || value[key] === ''|| value[key] === null ) {
                     delete value[key] ;
+                }else{
+                  filters[key] = value[key]
                 }
-                filters[key] = value[key]
-            });
 
+            });
+            console.log(filters)
             this.dataSource = [];
             this.paginator.resetFilters(filters);
             this.changeDetectorRef.markForCheck();

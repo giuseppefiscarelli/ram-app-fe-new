@@ -33,27 +33,29 @@
   padding:0px 10px;
   border-radius: 10px;
   text-align:center;
- 
+
 }
-.enabled{
+.enabled,.accepted,.sent,.completed{
   background-color: green;
   color: white;
 }
-.pending{
-  background-color: green;
-  color: white;
-}
-.opened{
+
+
+.opened,.generated{
   background-color: lightseagreen;
   color: white;
 }
-.closed{
+.closed,.pending{
   background-color: orange;
   color: white;
 }
 .expired{
   background-color: violet;
   color: white;
+}
+.prepared{
+  color:white;
+  background-color: blue;
 }
 .canceled{
   background-color: red;

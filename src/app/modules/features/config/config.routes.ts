@@ -9,6 +9,7 @@ import { EditComponent } from './components/edit/edit.component';
 import {Routes} from '@angular/router';
 import { TypeIstanceResolver } from './resolvers/type-istance.resolver';
 import { MailConfigListComponent } from './components/mail-config/mail-config-list/mail-config-list.component';
+import { ReportsListComponent } from './components/report/reports-list/reports-list.component';
 
 export const ConfigRoutes: Routes = [
     {
@@ -27,6 +28,10 @@ export const ConfigRoutes: Routes = [
     {
         path:'config',
         component:ConfigPanelComponent
+    },
+    {
+      path:'mail/list',
+      component:ReportsListComponent
     },
     {
         path:'edit/:id',

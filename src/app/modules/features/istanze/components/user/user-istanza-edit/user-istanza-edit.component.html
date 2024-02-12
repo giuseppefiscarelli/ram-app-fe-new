@@ -145,35 +145,35 @@
               <mat-list fxFlex="30">
                 <div mat-subheader>Dati Richiedente</div>
                   <mat-list-item>
-                    <p matLine>Cognome</p>
+                    <p matLine style="font-weight: bold;">Cognome</p>
                     <p matLine>{{istanza.cognome}}</p>
                   </mat-list-item>
                   <mat-list-item>
-                    <p matLine>Nome</p>
+                    <p matLine style="font-weight: bold;">Nome</p>
                     <p matLine>{{istanza.nome}}</p>
                   </mat-list-item>
                   <mat-list-item>
-                    <p matLine>Data di Nascita</p>
+                    <p matLine style="font-weight: bold;">Data di Nascita</p>
                     <p matLine>{{istanza.data_nascita| date:"dd/MM/yyyy" }}</p>
                   </mat-list-item>
                   <mat-list-item>
-                    <p matLine>Luogo di Nascita</p>
+                    <p matLine style="font-weight: bold;">Luogo di Nascita</p>
                     <p matLine>{{istanza.luogo_nascita}} ({{istanza.prov_nascita}})<</p>
                   </mat-list-item>
                   <mat-list-item>
-                    <p matLine>Indirizzo Residenza</p>
+                    <p matLine style="font-weight: bold;">Indirizzo Residenza</p>
                     <p matLine>{{istanza.indirizzo_residenza}}, {{istanza.civico_residenza}}</p>
                   </mat-list-item>
                   <mat-list-item>
-                    <p matLine>Comune Residenza</p>
+                    <p matLine style="font-weight: bold;">Comune Residenza</p>
                     <p matLine>{{istanza.cap_residenza}} - {{istanza.comune_residenza}} ({{istanza.prov_residenza}})</p>
                   </mat-list-item>
                   <mat-list-item>
-                    <p matLine>Email</p>
+                    <p matLine style="font-weight: bold;">Email</p>
                     <p matLine>{{istanza.email_richiedente}}</p>
                   </mat-list-item>
                   <mat-list-item>
-                    <p matLine>Tipo</p>
+                    <p matLine style="font-weight: bold;">Tipo</p>
                     <p matLine>{{istanza.tipo_dichiarante === '1' ?'Legale Rappresentante':''}}
                       {{istanza.tipo_dichiarante === '2' ?'Procuratore':''}}</p>
                   </mat-list-item>
@@ -181,63 +181,80 @@
               <mat-list fxFlex="30">
                 <div mat-subheader>Dati Impresa</div>
                   <mat-list-item>
-                    <p matLine>Ragione Sociale</p>
+                    <p matLine style="font-weight: bold;">Ragione Sociale</p>
                     <p matLine>{{istanza.ragione_sociale}}</p>
                   </mat-list-item>
                   <mat-list-item>
-                    <p matLine>Partita IVA</p>
+                    <p matLine style="font-weight: bold;">Partita IVA</p>
                     <p matLine>{{istanza.piva}}</p>
                   </mat-list-item>
                   <mat-list-item>
-                    <p matLine>Codice Fiscale</p>
+                    <p matLine style="font-weight: bold;">Codice Fiscale</p>
                     <p matLine>{{istanza.cf}}</p>
                   </mat-list-item>
                   <mat-list-item>
-                    <p matLine>Indirizzo Impresa</p>
+                    <p matLine style="font-weight: bold;">Indirizzo Impresa</p>
                     <p matLine>{{istanza.indirizzo_impr}}, {{istanza.civico_impr}}</p>
                   </mat-list-item>
                   <mat-list-item>
-                    <p matLine>Comune Impresa</p>
+                    <p matLine style="font-weight: bold;">Comune Impresa</p>
                     <p matLine>{{istanza.cap_impr}} - {{istanza.comune_impr}} ({{istanza.prov_impr}})</p>
                   </mat-list-item>
                   <mat-list-item>
-                    <p matLine>Email Impresa</p>
+                    <p matLine style="font-weight: bold;">Email Impresa</p>
                     <p matLine>{{istanza.email_impr}}</p>
                   </mat-list-item>
                   <mat-list-item>
-                    <p matLine>Pec Impresa</p>
+                    <p matLine style="font-weight: bold;">Pec Impresa</p>
                     <p matLine>{{istanza.pec_impr}}</p>
                   </mat-list-item>
                   <mat-list-item>
-                    <p matLine>Telefono Impresa</p>
+                    <p matLine style="font-weight: bold;">Telefono Impresa</p>
                     <p matLine>{{istanza.pref_tel_impr}} / {{istanza.num_tel_impr}}</p>
                   </mat-list-item>
               </mat-list>
               <mat-list fxFlex="30">
                 <div mat-subheader> </div>
                   <mat-list-item>
-                    <p matLine>Codice Albo</p>
+                    <p matLine style="font-weight: bold;">Codice Albo</p>
                     <p matLine>{{istanza.codice_albo}}</p>
                   </mat-list-item>
                   <mat-list-item>
-                    <p matLine>Codice Ren</p>
+                    <p matLine style="font-weight: bold;">Codice Ren</p>
                     <p matLine>{{istanza.codice_albo}}</p>
                   </mat-list-item>
                   <mat-list-item>
-                    <p matLine>CCIAA</p>
+                    <p matLine style="font-weight: bold;">CCIAA</p>
                     <p matLine>Provincia {{istanza.cciaa_prov}}</p>
                     <p matLine>Codice {{istanza.cciaa_prov}}</p>
                     <p matLine>Data {{istanza.cciaa_data | date :'dd/MM/yyyy'}}</p>
                   </mat-list-item>
                   <mat-list-item>
-                    <p matLine>Codice A.TE.CO</p>
+                    <p matLine style="font-weight: bold;">Codice A.TE.CO</p>
                     <p matLine>{{istanza.codice_ateco}}</p>
                   </mat-list-item>
                   <mat-list-item>
-                    <p matLine>Banca</p>
-                    <p matLine>Istituto {{istanza.banca_istituto}}</p>
+                    <p matLine style="font-weight: bold;">Banca</p>
+                    <p matLine >Istituto {{istanza.banca_istituto}}</p>
                     <p matLine>Agenzia {{istanza.banca_agenzia}}</p>
                     <p matLine>Iban {{istanza.iban_it}} {{istanza.iban_num_chk}} {{istanza.iban_cin}} {{istanza.iban_abi}} {{istanza.iban_cab}} {{istanza.iban_cc}}</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <p matLine style="font-weight: bold;">Maggiorazione PMI</p>
+                    <p matLine>{{istanza.pmi && istanza.pmi === 'Yes'?'Presente':'Non presente'}}</p>
+                  </mat-list-item>
+
+                  <mat-list-item>
+                    <p matLine style="font-weight: bold;">Maggiorazione Rete</p>
+                    <p matLine>{{istanza.rete && istanza.rete === 'Yes'?'Presente':'Non presente'}}</p>
+                  </mat-list-item>
+
+                  <mat-list-item>
+                    <p matLine style="font-weight: bold;"> Dimensioni Impresa</p>
+                    <p matLine>{{
+                    istanza.tipo_impresa === '1'?'Piccola':
+                    istanza.tipo_impresa === '2'?'Media':
+                    istanza.tipo_impresa === '3'?'Grande':null}}</p>
                   </mat-list-item>
 
               </mat-list>
@@ -327,7 +344,7 @@
                             </ng-container>
                             <ng-template #noalleb>
                               <button
-                              *ngIf="this.rendicontazione.enable && enableRendicontazione"
+                              *ngIf="(this.rendicontazione.enable && enableRendicontazione) || this.userMe.role === 'superadmin'"
                               mat-raised-button  (click)="onClickEditAllegato('create', element)" color="primary">Upload Documento</button>
                             </ng-template>
 

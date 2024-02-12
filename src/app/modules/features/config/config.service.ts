@@ -13,6 +13,7 @@ import { map, Observable } from 'rxjs';
 import { ApiService } from '@modules/network/api.service';
 import { TypeDocument } from './../../models/typeDocument.model';
 import { Injectable } from '@angular/core';
+import { HttpHeaders } from '@angular/common/http';
 
 
 @Injectable()
@@ -89,6 +90,11 @@ export class ConfigService{
             )
         );
     }
+    countReport(payload?: any): Observable<any>{
+      return this.API.Report.fetch(payload)
+
+      ;
+  }
     getReport(id: string): Observable<Report> {
         return this.API.Report.get({id})
             .pipe(
@@ -100,6 +106,13 @@ export class ConfigService{
             .pipe(
                 map((record: ReportDerscriptorInterface) => ReportsFactory.create(record))
             );
+    }
+    getFile(file: any): Observable<any> {
+      return this.API.Download.get(file, {
+          responseType: 'blob',
+          headers: new HttpHeaders().append('Content-Type', 'application/json')
+      });
+
     }
 
     //mailconfig

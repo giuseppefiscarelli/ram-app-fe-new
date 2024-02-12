@@ -44,7 +44,9 @@ export class Report {
   dataPreavvisoRigetto: string | null;
   dataNotaInammissibilita: string | null;
   motivazioneInammissibilita: string | null;
-  fd:[]
+  fd:[];
+  body: string;
+  subject: string;
 
 }
 

@@ -18,6 +18,8 @@ export class UserRolePipe implements PipeTransform {
                 return this.translator.instant('users.roles.administrator');
             case UserRole.ADMINISTRATIVE:
                 return this.translator.instant('users.roles.administration');
+            case UserRole.SUPERADMIN:
+                  return this.translator.instant('users.roles.superadmin');
             case UserRole.USER:
                 return this.translator.instant('users.roles.user');
 

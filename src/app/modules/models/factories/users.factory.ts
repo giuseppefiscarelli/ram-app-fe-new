@@ -16,6 +16,7 @@ export class UsersFactory {
             'businessName',
             'vatNumber',
             'note',
+            'enablePec'
 
         ];
 

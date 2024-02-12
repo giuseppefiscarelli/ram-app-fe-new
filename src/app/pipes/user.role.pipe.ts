@@ -11,13 +11,15 @@ export class UserRolePipe implements PipeTransform {
     }
 
     transform(user: User): string {
-
+        console.log(user.role)
         switch (user.role) {
             case UserRole.ADMINISTRATOR:
                // return this.translator.instant('users.roles.administrator');
                return 'Admin'
             case UserRole.ADMINISTRATIVE:
                 return 'Back Office'
+                case UserRole.SUPERADMIN:
+                  return 'Super Admin'
                 //return this.translator.instant('users.roles.administration');
                 case UserRole.USER:
                 return this.translator.instant('users.roles.user');

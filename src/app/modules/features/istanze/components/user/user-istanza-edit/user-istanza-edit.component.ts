@@ -314,14 +314,14 @@ export class UserIstanzaEditComponent implements OnInit {
           (res) => {
               const blob = new Blob([res],{type: file.type});
               const url = window.URL.createObjectURL(blob);
-           //   window.open(url);
-              const ref: MatDialogRef<PdfViewerSharedComponent> = this.dialog.open(PdfViewerSharedComponent,
-                  {
-                      data:{
-                          url: url
-                      }
-                  }
-              );
+              window.open(url);
+              // const ref: MatDialogRef<PdfViewerSharedComponent> = this.dialog.open(PdfViewerSharedComponent,
+              //     {
+              //         data:{
+              //             url: url
+              //         }
+              //     }
+              // );
           },
               error => console.log('Error downloading the file.')
           );

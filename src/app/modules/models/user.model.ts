@@ -7,6 +7,7 @@ export class User {
     vatNumber:string;
     note:string;
     createdAt: string;
+    enablePec:boolean;
 
 
     constructor() {

@@ -24,7 +24,8 @@ export class AllegatoFactory {
             'adminNote',
             'adminDate',
             'adminUser',
-            'fd'
+            'fd',
+            'targa'
         ];
         keysToDuplicate.forEach(key => {
 

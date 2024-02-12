@@ -8,6 +8,7 @@ export interface UserDescriptorInterface {
   vatNumber:string;
   note:string;
   createdAt: string;
+  rnablePec:boolean;
 }
 export interface MenuDescriptorInterface{
 
@@ -40,6 +41,7 @@ export interface AllegatoDescriptorInterface{
   adminDate: string;
   adminUser: number;
   fd:[];
+  targa:string;
 }
 export interface FileDescriptorInterface {
   id: string;
@@ -240,6 +242,8 @@ export interface ReportDerscriptorInterface{
   dataPreavvisoRigetto: string ;
   dataNotaInammissibilita: string ;
   motivazioneInammissibilita: string;
+  body: string;
+  subject: string;
 }
 
 export interface MailConfigDescriptorInterface{
