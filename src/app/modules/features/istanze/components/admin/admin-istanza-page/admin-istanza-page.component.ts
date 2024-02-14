@@ -123,14 +123,8 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
                   this.istanza.nv7 +
                   this.istanza.nv8 +
                   this.istanza.nv9 +
-                  this.istanza.nv10 +
-                  this.istanza.nv11 +
-                  this.istanza.r_nv_1 +
-                  this.istanza.r_nv_2 +
-                  this.istanza.r_nv_3 +
-                  this.istanza.rim_nv_1 +
-                  this.istanza.rim_nv_2 +
-                  this.istanza.rim_nv_3;
+                  this.istanza.nv10
+
 
                   this.totCertEnable = 0;
                   this.certEnable = [];
@@ -262,7 +256,7 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
     }
 
     getCertificazioni(){
-    // //console.log(this.typeIstance.certAttach)
+   console.log(this.typeIstance.certAttach)
      const type = this.typeIstance.certAttach;
 
      type.map(
@@ -395,6 +389,7 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
 
       typeIstance.certAttach.map(
           (cert) => {
+            console.log(cert)
               let campoDb = cert['description'];
               if(campoDb === 'ampl' && this.rottamazione){
 
@@ -416,8 +411,10 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
               if(!cert['upload']){
                   this.certControlStatus.push(cert)
               }
+
           }
       )
+      console.log (this.certControlStatus)
       this.changeDetectorRef.markForCheck();
     }
 

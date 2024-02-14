@@ -136,69 +136,73 @@
                 <mat-icon class="tab-icon">attach_file</mat-icon> Verifica Allegati dichiarazione e Certificazioni</ng-template>
             <ng-template matTabContent>
                 <div style="min-height: 60vh;">
-                  <div *ngIf="certEnable.length > 0" >
-                    <h3>Allegati dichiarazione</h3>
-                    <table #tableA mat-table [dataSource]="certEnable">
+                  <div *ngIf="certEnable.length > 0 || certControlStatus.length >0 " >
+                    <ng-container *ngIf="certEnable.length > 0" >
+                      <h3>Allegati dichiarazione</h3>
+                      <table #tableA mat-table [dataSource]="certEnable">
 
 
 
-                      <ng-container matColumnDef="tipo">
-                        <th mat-header-cell *matHeaderCellDef> Tipo </th>
-                        <td mat-cell *matCellDef="let element"> {{element.longDescription}} </td>
-                      </ng-container>
+                        <ng-container matColumnDef="tipo">
+                          <th mat-header-cell *matHeaderCellDef> Tipo </th>
+                          <td mat-cell *matCellDef="let element"> {{element.longDescription}} </td>
+                        </ng-container>
 
 
-                      <ng-container matColumnDef="data">
-                        <th mat-header-cell *matHeaderCellDef> Data caricamento </th>
-                        <td mat-cell *matCellDef="let element">
-                           {{getCertificazioniData(element.description,'attach').data?(getCertificazioniData(element.description,'attach').data['dataUpload'] | date:"dd/MM/yyyy") : ' '}}
-                      </td>
-                      </ng-container>
+                        <ng-container matColumnDef="data">
+                          <th mat-header-cell *matHeaderCellDef> Data caricamento </th>
+                          <td mat-cell *matCellDef="let element">
+                             {{getCertificazioniData(element.description,'attach').data?(getCertificazioniData(element.description,'attach').data['dataUpload'] | date:"dd/MM/yyyy") : ' '}}
+                        </td>
+                        </ng-container>
 
-                          <ng-container matColumnDef="stato">
-                              <th mat-header-cell *matHeaderCellDef> Stato </th>
-                              <td mat-cell *matCellDef="let element">
-                                  <span class="status-span" [class]="getCertificazioniData(element.description,'attach').status" >
-                                  {{ getCertificazioniData(element.description,'attach').status | statusCheck}}
+                            <ng-container matColumnDef="stato">
+                                <th mat-header-cell *matHeaderCellDef> Stato </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <span class="status-span" [class]="getCertificazioniData(element.description,'attach').status" >
+                                    {{ getCertificazioniData(element.description,'attach').status | statusCheck}}
 
-                                  </span>
-                              </td>
+                                    </span>
+                                </td>
+                              </ng-container>
+
+
+                        <ng-container matColumnDef="action">
+                          <th mat-header-cell *matHeaderCellDef> Action </th>
+                          <td mat-cell *matCellDef="let element">
+                            <ng-container *ngIf="getCertificazioniData(element.description,'attach').data">
+                                <button
+                                mat-icon-button color="primary"
+                                aria-label="Example icon button with a home icon"
+                                matTooltip="Visualizza e gestisci documento"
+                                matTooltipPosition="above"
+                                (click)="onClickAllegato('edit', getCertificazioniData(element.description,'attach').data)"
+                                >
+                                 <mat-icon>edit_document</mat-icon>
+                               </button>
+                               <button
+                               mat-icon-button color="warn"
+                               matTooltip="Elimina documento"
+                                matTooltipPosition="above"
+                                aria-label="Example icon button with a menu icon"
+                                (click)="onClickAllegato('delete', getCertificazioniData(element.description,'attach').data)"
+                                >
+                                 <mat-icon>delete</mat-icon>
+                               </button>
                             </ng-container>
 
-
-                      <ng-container matColumnDef="action">
-                        <th mat-header-cell *matHeaderCellDef> Action </th>
-                        <td mat-cell *matCellDef="let element">
-                          <ng-container *ngIf="getCertificazioniData(element.description,'attach').data">
-                              <button
-                              mat-icon-button color="primary"
-                              aria-label="Example icon button with a home icon"
-                              matTooltip="Visualizza e gestisci documento"
-                              matTooltipPosition="above"
-                              (click)="onClickAllegato('edit', getCertificazioniData(element.description,'attach').data)"
-                              >
-                               <mat-icon>edit_document</mat-icon>
-                             </button>
-                             <button
-                             mat-icon-button color="warn"
-                             matTooltip="Elimina documento"
-                              matTooltipPosition="above"
-                              aria-label="Example icon button with a menu icon"
-                              (click)="onClickAllegato('delete', getCertificazioniData(element.description,'attach').data)"
-                              >
-                               <mat-icon>delete</mat-icon>
-                             </button>
-                          </ng-container>
-
-                      </td>
-                      </ng-container>
+                        </td>
+                        </ng-container>
 
 
-                      <tr mat-header-row *matHeaderRowDef="['tipo','data','stato','action']"></tr>
-                      <tr mat-row *matRowDef="let row; columns: ['tipo','data','stato','action'];"></tr>
-                    </table>
+                        <tr mat-header-row *matHeaderRowDef="['tipo','data','stato','action']"></tr>
+                        <tr mat-row *matRowDef="let row; columns: ['tipo','data','stato','action'];"></tr>
+                      </table>
 
-                    <mat-divider style="margin-top: 20px;"></mat-divider>
+                      <mat-divider style="margin-top: 20px;"></mat-divider>
+                    </ng-container>
+
+
                     <h3>Certificazioni</h3>
                     <table #tableB mat-table [dataSource]="certControlStatus">
 

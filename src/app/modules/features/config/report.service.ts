@@ -201,7 +201,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
 
 
     if(type === 'integrazione'){
-      let logo  = await this.getBase64ImageFromURL('../../../../assets/report/ram_nuovo_logo.png');
+      let logo  = await this.getBase64ImageFromURL('../../../../assets/images/logo-ram-2024.jpg');
       let firma  = await this.getBase64ImageFromURL('../../../../assets/report/firma_fb.png');
 
       let listaRichieste =[];
