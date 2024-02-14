@@ -201,15 +201,22 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
 
 
     if(type === 'integrazione'){
-      let logo  = await this.getBase64ImageFromURL('../../../../assets/images/logo-ram-2024.jpg');
+      let logo  = await this.getBase64ImageFromURL('../../../../assets/images/logo-ram-2024.png');
       let firma  = await this.getBase64ImageFromURL('../../../../assets/report/firma_fb.png');
 
       let listaRichieste =[];
-
+      // let details = dataReport['detail'].map(x=> {
+      //    x.margin = [0, 0, 0, 10]
+      //   return x
+      // })
+      let details = dataReport['detail'].map(
+        (item) => {
+          return { text: item, margin: [0, 0, 0, 5] };
+        }
+      )
+      console.log(details)
 
        header= [
-
-
         {
           columns: [
             {
@@ -228,7 +235,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
                 }
               ],
               alignment: 'center',
-              margin:[40,40]  // Allinea lo stack al centro del contenitore
+              margin:[40,20]  // Allinea lo stack al centro del contenitore
             }
           ]
         }
@@ -258,7 +265,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
             { text: ' abbiamo necessità di ricevere i seguenti chiarimenti e/o documenti:'}
           ], alignment:'justify'
         },
-        {ul:dataReport['detail'], margin:[20,10], bold:true},
+        {ul:details, bold:true,alignment:'justify', style:'listStyle'},
           {
             text:[
               {text: 'Pertanto, ai sensi e per gli effetti dell\'art. 7, comma 4 del D.D 7 aprile 2022 n.148, Vi invitiamo a fornirci la suddetta documentazione '},
@@ -274,7 +281,17 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
                 'decorso il termine perentorio suindicato, l\'istruttoria verrà conclusa sulla sola base della documentazione valida disponibile, senza che possa in alcun modo avviarsi qualsiasi, ulteriore fase di interlocuzione.'
               ], margin:[20,5], alignment:'justify'
              },
-             {text:'Per qualsiasi informazione, potrete rivolgerVi al nostro Help Desk Incentivi \n (e-mail:incentivoinvestimenti@ramspa.it).'},
+
+             {
+              text:[
+                {text:'Per qualsiasi informazione, potrete rivolgerVi al nostro Help Desk Incentivi \n'},
+                {text: `(e-mail:`},
+                {text: `incentivoinvestimenti@ramspa.it`, bold: true},
+                {text: `)`, bold: true},
+
+              ]
+             },
+
              {text:' Cordiali saluti'}
 
             ,
@@ -320,6 +337,10 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
             bold: true,
             margin: [0, 0, 0, 10]
           },
+          listStyle: {
+            margin: [0, 10]// Imposta l'altezza della linea a 2 volte l'altezza del carattere
+        },
+
           subheader: {
             fontSize: 16,
             bold: true,
