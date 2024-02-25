@@ -15,6 +15,7 @@ import { DateAdapter } from '@angular/material/core';
 import { ConfigService } from '@app/modules/features/config/config.service';
 import { ActivatedRoute, NavigationEnd, NavigationStart, Router, RouterEvent } from '@angular/router';
 import { TypeReport } from '@app/modules/models/typeReport.model';
+import moment from 'moment';
 
 @Component({
   selector: 'app-admin-istanze-list',
@@ -285,12 +286,24 @@ export class AdminIstanzeListComponent implements OnInit , OnDestroy{
         let type = this.typeReports.find(x=> x.id === element.typereport);
        // console.log(type, this.typeReports)
        // console.log(type)
+      // console.log(element.datainvioreport)
+      //    console.log(moment(Number(element.datainvioreport)))
+          if(element.datainvioreport && type && (moment() < moment(Number(element.datainvioreport)).add(15,'days'))){
+            data = {
+              text: type.description + ' - Attiva',
+              style:  element.statusreport,
+              status: element.statusreport
+            }
 
-          data = {
-            text: type.description,
-            style:  element.statusreport,
-            status: element.statusreport
+          // console.log(type)
+          }else{
+            data = {
+              text: type.description,
+              style:  element.statusreport,
+              status: element.statusreport
+            }
           }
+
 
 
       }else{

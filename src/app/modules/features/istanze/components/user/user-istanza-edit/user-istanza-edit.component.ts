@@ -1,3 +1,4 @@
+import { typeReport } from '@app/app.costants';
 import { PdfViewerSharedComponent } from './../../../../../shared/components/pdf-viewer/pdf-viewer.component';
 import { FormAllegatoComponent } from './../form-allegato/form-allegato.component';
 import { NotificationsComponent } from '@app/modules/notifications/notifications.component';
@@ -21,6 +22,7 @@ import { ReportService } from '@app/modules/features/config/report.service';
 import { TypeDocument } from '@app/modules/models/typeDocument.model';
 import { TypeReport } from '@app/modules/models/typeReport.model';
 import { Report } from '@app/modules/models/report.model';
+import moment from 'moment';
 
 @Component({
   selector: 'app-user-istanza-edit',
@@ -69,6 +71,9 @@ export class UserIstanzaEditComponent implements OnInit {
   typeDocuments: TypeDocument[] =[];
   typeReport: TypeReport[] = [];
   reports: Report[] = [];
+  istruttoriaRend : boolean = false;
+  istruttoriaData: Report;
+  dataFineIstruttoria: any;
 
     constructor(  private route: ActivatedRoute,
                   private service: IstanzeService,
@@ -126,14 +131,11 @@ export class UserIstanzaEditComponent implements OnInit {
                       this.configService.fetchReport({drop:true, enable:true, id_ram:this.istanza.id_ram})
                     ]).subscribe(
                       ([vei,alle,ista, typeDocument, typeReport, reports]) => {
-                          this.listaVeicoli=vei;
-                          this.listaAllegati=alle;
+                          this.listaVeicoli = vei;
+                          this.listaAllegati = alle;
                           this.typeIstance = ista;
-
                           this.typeDocuments = typeDocument;
                           this.typeReport = typeReport;
-                          //console.log(typeReport)
-                      //    console.log(reports)
                           this.reports = reports;
 
 
@@ -195,6 +197,32 @@ export class UserIstanzaEditComponent implements OnInit {
                               this.enableRendicontazione =false;
                               this.rendicontazione.enable = false;
                           }
+                          let istruttoria = this.getStatusIstruttoria(this.reports);
+                          console.log(istruttoria)
+                          if(istruttoria){
+                            this.istruttoriaData = istruttoria;
+                            let typeReport = istruttoria.typeReport['type'];
+                            console.log(typeReport)
+
+                            if(typeReport === 'integrazione'){
+                              this.dataFineIstruttoria= moment(Number(this.istruttoriaData.dataInvio)).add(15,'days');
+
+
+                              let scadenza = moment();
+                              console.log(scadenza)
+                              if(this.dataFineIstruttoria.isAfter(moment())){
+                                console.log('rendicondazione apertra')
+                                this.enableRendicontazione =true;
+                                this.rendicontazione.enable = true;
+                                this.istruttoriaRend = true;
+                              }else{
+                                console.log('rendicondazione chiusaa')
+
+                              }
+                            }
+                          }
+
+                          console.log( this.enableRendicontazione )
                           this.changeDetectorRef.markForCheck()
                           this.isLoading = false;
                   })
@@ -556,6 +584,15 @@ export class UserIstanzaEditComponent implements OnInit {
           })
   }
 
+  getStatusIstruttoria(reports: Report[]){
+      const validReports = reports.filter(obj => obj.dataInvio !== null);
+      validReports.sort((a, b) => Number(b.dataInvio) - Number(a.dataInvio));
+      if(validReports.length > 0){
+        return validReports[0];
+      }
+      return false
 
+
+  }
 
 }

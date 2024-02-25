@@ -13,7 +13,7 @@ import { select, Store } from '@ngrx/store';
 import { TYPE } from '@app/modules/notifications/values.constants';
 import { statusCheck } from '@app/app.costants';
 import { Allegato } from '@app/modules/models/allegato.model';
-import { Istanza } from '@app/modules/models/istanza.model';
+import { Istanza, Rendicontazione } from '@app/modules/models/istanza.model';
 import { IstanzaCheck } from '@app/modules/models/istanzacheck.model';
 import { TypeIstance } from '@app/modules/models/type-istance.model';
 import { TypeDocument } from '@app/modules/models/typeDocument.model';
@@ -23,6 +23,8 @@ import { NotificationsComponent } from '@app/modules/notifications/notifications
 import { IstanzeService } from '../../../istanze.service';
 import { AdminDialogAllegatoComponent } from '../admin-dialog-allegato/admin-dialog-allegato.component';
 import Swal from 'sweetalert2';
+import { Report } from '@app/modules/models/report.model';
+import moment from 'moment';
 
 @Component({
   selector: 'app-admin-veicolo-dialog',
@@ -61,6 +63,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
   url: string;
 
   statusCheck:statusCheck;
+  rendicontazione: Rendicontazione;
 
    filterOptionsDescriptors: {
     [key: string]: any
@@ -69,7 +72,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
     valoreContributo:number = 0;
     valoreMaggPmi: number = 0;
     valoreMaggRete: number = 0;
-
+    dataIstruttoria: Report;
     constructor(@Inject(MAT_DIALOG_DATA) public data: any,
     private services: IstanzeService,
     private dialog: MatDialog,
@@ -97,6 +100,8 @@ export class AdminVeicoloDialogComponent implements OnInit {
       this.alleSelected = false;
       this.isLoading = true;
       this.alleDataSelected = null;
+      this.dataIstruttoria = data.dataIstruttoria;
+      this.rendicontazione = data.rendicontazione;
       this.formVeicolo = this.initializeForEditVeicolo(this.veicolo)
 
       console.log(this.checkAllegatiStatus(), this.allegatiVeicolo.length, 'prova')
@@ -461,6 +466,20 @@ export class AdminVeicoloDialogComponent implements OnInit {
             }
 
         )
+    }
+
+    checkAllegatoIntegrazione(allegato: Allegato){
+      console.log(allegato)
+      let dataUpload = moment(Number(allegato.dataUpload))
+      console.log(this.rendicontazione.dateEnd)
+
+      if(allegato.id_Report && dataUpload.isAfter(moment(Number(this.rendicontazione.dateEnd)))){
+        if(this.dataIstruttoria.typeReport['type'] === 'integrazione'){
+          return 'Documento Integrazione'
+        }
+      }
+      return false
+
     }
 
 }

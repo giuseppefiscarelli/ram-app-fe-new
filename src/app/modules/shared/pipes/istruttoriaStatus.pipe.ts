@@ -14,6 +14,7 @@ export class IstruttoriaStatusPipe implements PipeTransform {
         case 'rend' : return 'In rendicontazione';
         case 'closed' : return 'Istruttoria Chiusa';
         case 'rendOpen' : return 'In attesa chiusura rendicontazione';
+        case 'integrazione' : return 'In richiesta di integrazione';
 
     }
   }

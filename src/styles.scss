@@ -5,3 +5,90 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .italia{
   background: #06c;
 }
+.row-custom {
+  display: flex;
+  flex-wrap: wrap;
+  // margin: -10px; /* Per gestire i margini negativi */
+}
+
+
+.col-custom {
+  flex: 1;
+  padding: 10px;
+  /* Aggiungi spaziatura tra le colonne */
+  box-sizing: border-box;
+  /* Includi il padding nello spazio disponibile */
+}
+
+/* Classi per impostare la larghezza delle colonne */
+.col-custom-1 {
+  flex-basis: 8.3333%;
+  min-width: 8.3333%;
+  max-width: 8.3333%;
+}
+
+.col-custom-2 {
+  flex-basis: 16.6667%;
+  min-width: 16.6667%;
+  max-width: 16.6667%;
+}
+
+.col-custom-3 {
+  flex-basis: 25%;
+  min-width: 25%;
+  max-width: 25%;
+}
+
+.col-custom-4 {
+  flex-basis: 33.3333%;
+  min-width: 33.3333%;
+  max-width: 33.3333%;
+}
+
+.col-custom-5 {
+  flex-basis: 41.6667%;
+  min-width: 41.6667%;
+  max-width: 41.6667%;
+}
+
+.col-custom-6 {
+  flex-basis: 50%;
+  min-width: 50%;
+  max-width: 50%;
+}
+
+.col-custom-7 {
+  flex-basis: 58.3333%;
+  min-width: 58.3333%;
+  max-width: 58.3333%;
+}
+
+.col-custom-8 {
+  flex-basis: 66.6667%;
+  min-width: 66.6667%;
+  max-width: 66.6667%;
+}
+
+.col-custom-9 {
+  flex-basis: 75%;
+  min-width: 75%;
+  max-width: 75%;
+}
+
+.col-custom-10 {
+  flex-basis: 83.3333%;
+  min-width: 83.3333%;
+  max-width: 83.3333%;
+}
+
+.col-custom-11 {
+  flex-basis: 91.6667%;
+  min-width: 91.6667%;
+  max-width: 91.6667%;
+}
+
+.col-custom-12 {
+  flex-basis: 100%;
+  min-width: 100%;
+  max-width: 100%;
+}

@@ -13,20 +13,35 @@
         <div mat-subheader>Stato Rendicontazione</div>
 
         <ng-container *ngIf="enableRendicontazione; else rendScaduta;">
-          <ng-container *ngIf="this.rendicontazione.enable; else noactiverend">
-            <mat-list-item >
-              <p matLine>Stato rendicontazione</p>
-              <p matLine>Avviata</p>
-            </mat-list-item>
-            <mat-list-item>
-              <button
-              mat-raised-button
-              style="background-color: orange; color:white"
-              (click)="onClickRend(this.rendicontazione.enable)">Chiudi Rendicontazione</button>
 
-            </mat-list-item>
+          <ng-container *ngIf="this.rendicontazione.enable; else noactiverend">
+            <ng-container *ngIf="!istruttoriaData; else istruttoria">
+              <mat-list-item >
+                <p matLine>Stato rendicontazione</p>
+                <p matLine>Avviata</p>
+              </mat-list-item>
+              <mat-list-item>
+                <button
+                mat-raised-button
+                style="background-color: orange; color:white"
+                (click)="onClickRend(this.rendicontazione.enable)">Chiudi Rendicontazione</button>
+
+              </mat-list-item>
+            </ng-container>
+
           </ng-container>
+
+          <ng-template #istruttoria>
+            <mat-list-item >
+              <p matLine>Stato istruttoria</p>
+              <span class="span-status pending" style="padding: 0 10px;" matLine>{{this.istruttoriaData.typeReport['description']}}</span>
+              <p matLine>Scadenza integrazione: <b>{{this.dataFineIstruttoria | date:'dd/MM/YYYY'}}</b></p>
+            </mat-list-item>
+
+          </ng-template>
+
           <ng-template #noactiverend>
+
             <ng-container *ngIf="this.rendicontazione.dateEnd; else closedRend">
               <mat-list-item >
                 <p matLine>Stato rendicontazione</p>
@@ -36,20 +51,27 @@
                   <p matLine>Rendicontazione chiusa il {{this.rendicontazione.dateEnd | date:"dd/MM/yyyy HH:mm"}}</p>
               </mat-list-item>
             </ng-container>
-            <ng-template #closedRend>
-              <mat-list-item >
-                <p matLine>Stato rendicontazione</p>
-                <p matLine>Non Avviata</p>
-              </mat-list-item>
-              <mat-list-item>
-                <button
-                mat-raised-button
-                style="background-color: green; color:white"
-                (click)="onClickRend(this.rendicontazione.enable)">Avvia rendicontazione</button>
-              </mat-list-item>
-            </ng-template>
+
+
           </ng-template>
         </ng-container>
+
+        <ng-template #closedRend>
+          <mat-list-item >
+            <p matLine>Stato rendicontazione</p>
+            <p matLine>Non Avviata</p>
+          </mat-list-item>
+          <mat-list-item>
+            <button
+            mat-raised-button
+            style="background-color: green; color:white"
+            (click)="onClickRend(this.rendicontazione.enable)">Avvia rendicontazione</button>
+          </mat-list-item>
+        </ng-template>
+
+
+
+
         <ng-template #rendScaduta>
           <ng-container *ngIf="this.rendicontazione.enable; else noactiverend">
             <mat-list-item >
@@ -325,7 +347,7 @@
                               aria-label="Example icon button with a vertical three dot icon"
                               matTooltip="Aggiorna Documento"
                               matTooltipPosition="above"
-                              *ngIf="(this.rendicontazione.enable && enableRendicontazione) || this.userMe.role !== 'user'"
+                              *ngIf="(this.rendicontazione.enable && enableRendicontazione) || this.userMe.role === 'superadmin'"
                               (click)="onClickEditAllegato('edit', element, alle)"
                               style="color:green;"
                               ><mat-icon>sync</mat-icon>
@@ -335,7 +357,7 @@
                               aria-label="Example icon button with a vertical three dot icon"
                               matTooltip="Elimina Documento"
                               matTooltipPosition="above"
-                              *ngIf="(this.rendicontazione.enable && enableRendicontazione)  || this.userMe.role !== 'user'"
+                              *ngIf="(this.rendicontazione.enable && enableRendicontazione)  || this.userMe.role === 'superadmin'"
                               (click)="onClickDeleteAllegato(alle)"
                               color="accent"
                               style="color:red;"
@@ -379,6 +401,7 @@
                       (newVeicoloEvent)="addVei($event)"
                       (newAllegatoEvent)="addAlle($event)"
                       [rottamazione]="this.rottamazione"
+                      [istruttoriaData]="istruttoriaData"
                       [enableRendicontazione]="enableRendicontazione"
                       ></app-content-vei>
 

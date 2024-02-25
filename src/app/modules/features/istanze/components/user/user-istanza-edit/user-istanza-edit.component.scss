@@ -31,3 +31,18 @@
  width:40%
 }
 
+.span-status{
+  padding:0px 10px;
+  border-radius: 10px;
+  text-align:center;
+  max-width: max-content;
+}
+
+.enabled,.accepted,.sent,.completed{
+  background-color: green;
+  color: white;
+}
+.closed,.pending{
+  background-color: orange;
+  color: white;
+}

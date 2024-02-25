@@ -29,7 +29,7 @@
     </ng-container>
     <ng-template #selOption>
       <ng-container *ngIf="this.listVeiFiltered.length > 0; else newVei">
-        <div fxLayout="row"  *ngIf="(this.listVeiFiltered.length < this.istanza[catlist.selectedOptions.selected[0].value.campoDb]) && this.rendicontazione.enable">
+        <div fxLayout="row"  *ngIf="(this.listVeiFiltered.length < this.istanza[catlist.selectedOptions.selected[0].value.campoDb]) && (this.rendicontazione.enable || this.enableRendicontazione)">
           <div fxFlex="auto">
             <button mat-raised-button  style="margin:15px;" (click)="onClickInsertVei('create')" color="primary">Inserisci nuovo veicolo</button>
           </div>
@@ -86,7 +86,7 @@
                           <button mat-flat-button color="primary"
                           style="float:right;background-color: green;"
                           (click)="onClickInsertVei('edit',v,index)"
-                          *ngIf="this.rendicontazione.enable || this.userMe.role === 'superadmin'"
+                          *ngIf="this.rendicontazione.enable || this.userMe.role === 'superadmin' || this.enableRendicontazione"
                           ><mat-icon>refresh</mat-icon>Aggiorna dati Veicolo</button></span>
                       </div>
 
@@ -119,7 +119,7 @@
                     <div fxFlex="100">
                       <h3>Documenti Veicolo</h3>
 
-                        <button mat-raised-button *ngIf="this.rendicontazione.enable  || this.userMe.role === 'superadmin'" (click)="newAllegato(v)" color="primary">Inserisci Documento</button>
+                        <button mat-raised-button *ngIf="this.rendicontazione.enable || this.enableRendicontazione || this.userMe.role === 'superadmin'" (click)="newAllegato(v)" color="primary">Inserisci Documento</button>
                        <!-- <div class="table" *ngIf="listAlleFiltered.length > 0">
                           <table style="width:95%;">
                               <thead>
@@ -187,7 +187,13 @@
                             <tr mat-row *matRowDef="let row; columns: ['type','date','note','action'];"></tr>
                             <ng-container matColumnDef="type">
                               <th mat-header-cell *matHeaderCellDef> Tipo Documento </th>
-                              <td mat-cell *matCellDef="let alle"> {{getTypeDocumentData(alle.typeDocument).description}} </td>
+                              <td mat-cell *matCellDef="let alle">
+
+                                 {{getTypeDocumentData(alle.typeDocument).description}}
+                                 <ng-container *ngIf="checkAllegatoIntegrazione(alle) as integrazione">
+                                  - <span class=" span-status pending">{{integrazione}}</span>
+                                 </ng-container>
+                                </td>
                             </ng-container>
                             <ng-container matColumnDef="date">
                               <th mat-header-cell *matHeaderCellDef> Data Caricamento </th>
@@ -221,7 +227,7 @@
                                         aria-label="Example icon button with a vertical three dot icon"
                                         matTooltip="Aggiorna Documento"
                                         matTooltipPosition="above"
-                                        *ngIf="this.rendicontazione.enable || this.userMe.role !== 'user'"
+                                        *ngIf="this.rendicontazione.enable || this.enableRendicontazione|| this.userMe.role !== 'user'"
                                         (click)="onClickEditAllegato('edit',v,alle,index)"
                                         style="color:green;"
                                         ><mat-icon>sync</mat-icon>
@@ -231,7 +237,7 @@
                                   aria-label="Example icon button with a vertical three dot icon"
                                   matTooltip="Elimina Documento"
                                   matTooltipPosition="above"
-                                  *ngIf="this.rendicontazione.enable || this.userMe.role !== 'user'"
+                                  *ngIf="this.rendicontazione.enable || this.enableRendicontazione|| this.userMe.role !== 'user'"
                                   (click)="onClickDeleteAllegato(alle)"
                                   color="accent"
                                   style="color:red;"
@@ -253,7 +259,7 @@
 
       </ng-container>
       <ng-template #newVei>
-        <div fxLayout="row" *ngIf="this.rendicontazione.enable">
+        <div fxLayout="row" *ngIf="this.rendicontazione.enable || enableRendicontazione">
           <div fxFlex="100" *ngIf="enableRendicontazione" >
             <button  style="margin:15px;" mat-raised-button (click)="onClickInsertVei('create')" color="primary">Inserisci nuovo veicolo</button>
           </div>

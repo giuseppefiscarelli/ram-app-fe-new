@@ -17,6 +17,8 @@ import Swal from 'sweetalert2';
 import { PdfViewerComponent } from 'ng2-pdf-viewer';
 import { FormAllegatoVeicoloComponent } from '../form-allegato-veicolo/form-allegato-veicolo.component';
 import { FormVeiComponent } from '../form-vei/form-vei.component';
+import { Report } from '@app/modules/models/report.model';
+import moment from 'moment';
 
 @Component({
   selector: 'app-content-vei',
@@ -36,6 +38,7 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
     @Output() newAllegatoEvent = new EventEmitter<Allegato>();
     @Input() rottamazione: boolean;
     @Input() enableRendicontazione: boolean;
+    @Input() istruttoriaData: Report;
 
     vei$:Subscription;
     docList: any[];
@@ -97,9 +100,15 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
       )
 
       this.docList = doc['typeDocument'];
-      console.log(this.rottamazione, this.docList)
+     //  console.log(this.rottamazione, this.docList)
+     //console.log(catData)
       if(!this.rottamazione){
           this.docList = this.docList.filter(x=> (x !== 11 && x !== 14))
+      }
+      let checkTypeVeiRottamazione = this.istanza['rott'+parseInt(catData['campoDb'].match(/\d+/)[0])];
+     // console.log(checkTypeVeiRottamazione)
+      if(checkTypeVeiRottamazione > 0){
+        this.docList.push(11,14)
       }
       this.docListVei = this.docList;
 
@@ -171,8 +180,7 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
       return res
   }
   checkAlleVei(vei: Veicolo):any{
-    //  console.log(this.listaAllegati)
-  //    console.log(this.listAlleFiltered)
+
       const unique = [...new Set(this.listaAllegati.map(item => item.typeDocument))];
 
       let res = {
@@ -183,13 +191,13 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
       const data = this.listaAllegati.filter(
           (alle) => alle.id_Veicolo === vei.id && alle.enable === true && unique.includes(alle.typeDocument)
       )
-    //  console.log(this.docList)
+
       if(vei.acquisitionType === '01'){
           this.docListVei = this.docList.filter(x=> x !== 9 )
       }else{
           this.docListVei = this.docList
       }
-      //console.log(this.docListVei)
+
       if(data.length > 0){
           return unique
       }
@@ -203,18 +211,23 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
       return  this.typeDocuments.find(x => x.id === Number(type))
 
   }
+
   getAllegatoVeicolo(v: Veicolo, doc): Allegato{
       const data =  this.listaAllegati.find(
           (alle) => alle.id_Veicolo === v.id && alle.typeDocument === doc.toString() && alle.enable === true
       )
       return data;
   }
+
   getAllegatiVeicolo(v:Veicolo):any{
+
+    //console.log(v)
       this.listAlleFiltered = this.listaAllegati.filter(
           (item) => item.typeVei === v.type && item.id_Veicolo === v.id && item.enable === true
       )
       return this.listAlleFiltered;
   }
+
   newAllegato(v: Veicolo): void{
       const data ={
           mode:'create',
@@ -353,6 +366,20 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
                   )
               }
           })
+  }
+
+
+  checkAllegatoIntegrazione(allegato: Allegato){
+   // console.log(allegato)
+    let dataUpload = moment(Number(allegato.dataUpload))
+   // console.log(this.rendicontazione.dateEnd)
+
+    if(allegato.id_Report && dataUpload.isAfter(moment(Number(this.rendicontazione.dateEnd)))){
+      if(this.istruttoriaData.typeReport['type'] === 'integrazione'){
+        return 'Documento Integrazione'
+      }
+    }
+
   }
 
 }
