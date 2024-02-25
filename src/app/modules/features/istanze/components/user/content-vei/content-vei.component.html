@@ -86,7 +86,7 @@
                           <button mat-flat-button color="primary"
                           style="float:right;background-color: green;"
                           (click)="onClickInsertVei('edit',v,index)"
-                          *ngIf="this.rendicontazione.enable || this.userMe.role === 'superadmin' !! this.enableRendicontazione"
+                          *ngIf="this.rendicontazione.enable || this.userMe.role === 'superadmin' || this.enableRendicontazione"
                           ><mat-icon>refresh</mat-icon>Aggiorna dati Veicolo</button></span>
                       </div>
 
