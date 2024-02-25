@@ -16,11 +16,17 @@ import { IstanzeService } from '../../../istanze.service';
 import Swal from 'sweetalert2';
 import { TYPE } from '@app/modules/notifications/values.constants';
 import { PdfViewerComponent } from 'ng2-pdf-viewer';
+import { ConfigService } from '@app/modules/features/config/config.service';
+import { ReportService } from '@app/modules/features/config/report.service';
+import { TypeDocument } from '@app/modules/models/typeDocument.model';
+import { TypeReport } from '@app/modules/models/typeReport.model';
+import { Report } from '@app/modules/models/report.model';
 
 @Component({
   selector: 'app-user-istanza-edit',
   templateUrl: './user-istanza-edit.component.html',
   styleUrls: ['./user-istanza-edit.component.scss'],
+  providers:[ConfigService,ReportService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserIstanzaEditComponent implements OnInit {
@@ -60,11 +66,16 @@ export class UserIstanzaEditComponent implements OnInit {
   isLoading = true;
   isExpired = false;
 
+  typeDocuments: TypeDocument[] =[];
+  typeReport: TypeReport[] = [];
+  reports: Report[] = [];
+
     constructor(  private route: ActivatedRoute,
                   private service: IstanzeService,
                   private dialog: MatDialog,
                   private changeDetectorRef: ChangeDetectorRef,
                   private store: Store<ApplicationState>,
+                  private configService: ConfigService,
                   private notifications: NotificationsComponent,) {
 
                     this.user = this.store.pipe(select('authentication'), select('user'));
@@ -85,17 +96,17 @@ export class UserIstanzaEditComponent implements OnInit {
                     this.rottamazione=false;
                     this.enableRendicontazione =true;
 
-                    this.totVeicoli = this.istanza.nv1 + 
-                    this.istanza.nv2 + 
-                    this.istanza.nv3+ 
-                    this.istanza.nv4+ 
-                    this.istanza.nv5+ 
-                    this.istanza.nv6+ 
-                    this.istanza.nv7+ 
-                    this.istanza.nv8+ 
-                    this.istanza.nv9+ 
+                    this.totVeicoli = this.istanza.nv1 +
+                    this.istanza.nv2 +
+                    this.istanza.nv3+
+                    this.istanza.nv4+
+                    this.istanza.nv5+
+                    this.istanza.nv6+
+                    this.istanza.nv7+
+                    this.istanza.nv8+
+                    this.istanza.nv9+
                     this.istanza.nv10;
-                
+
                     this.totCertEnable = 0;
                     // this.rottamazione = (
                     //   this.istanza.rim_rott_1 ||
@@ -109,12 +120,24 @@ export class UserIstanzaEditComponent implements OnInit {
                     this.vei$ = forkJoin([
                       this.service.fetchVeicoli({drop:true, id_ram: this.istanza.id_ram}),
                       this.service.fetchAllegati({drop:true,id_ram: this.istanza.id_ram, enable:true}),
-                      this.service.getTypeInstance(this.istanza.tipo_istanza)
+                      this.service.getTypeInstance(this.istanza.tipo_istanza),
+                      this.configService.fetchTypeDocuments({drop:true}),
+                      this.configService.fetchTypeReport({drop:true, typeistance:this.istanza.tipo_istanza}),
+                      this.configService.fetchReport({drop:true, enable:true, id_ram:this.istanza.id_ram})
                     ]).subscribe(
-                      ([vei,alle,ista]) => {
+                      ([vei,alle,ista, typeDocument, typeReport, reports]) => {
                           this.listaVeicoli=vei;
                           this.listaAllegati=alle;
                           this.typeIstance = ista;
+
+                          this.typeDocuments = typeDocument;
+                          this.typeReport = typeReport;
+                          //console.log(typeReport)
+                      //    console.log(reports)
+                          this.reports = reports;
+
+
+                          console.log(reports,this.typeDocuments, typeReport)
                           this.isExpired = Number(this.typeIstance.reportingEndDate) < this.today.getTime()
                           console.log('è scaduta:'+this.isExpired)
                           this.typeVeiGroupView = this.groupByKey(this.typeIstance.typeVei,'catVei');
@@ -129,7 +152,7 @@ export class UserIstanzaEditComponent implements OnInit {
                                   this.listaAllegati = this.listaAllegati.filter(x=> x.typeDocument !== campoDb)
                                   this.listaAllegatiDich = [...upList];
                                   let check = this.istanza[campoDb]??null;
-                                  if(check === 'Yes' || 
+                                  if(check === 'Yes' ||
                                   (campoDb === 'pmi' &&(this.istanza.tipo_impresa === '1' || this.istanza.tipo_impresa === '2'))||
                                    ((this.istanza.rim_nv_1 > 0 || this.istanza.rim_nv_2 > 0) && campoDb === 'ampl')){
                                       this.totCertEnable++;

@@ -112,6 +112,9 @@ export class AdminIstanzeListComponent implements OnInit , OnDestroy{
       ([x,typesReport])=> {
         this.type = x;
         this.typeReports = typesReport;
+        console.log(this.typeReports);
+        this.isLoading = false;
+        this.changeDetectorRef.markForCheck()
       })
     this.filters = new FormGroup({
           term: new FormControl(null),
@@ -139,11 +142,11 @@ export class AdminIstanzeListComponent implements OnInit , OnDestroy{
 
 
         this.route.queryParams.subscribe(params => {
-          console.log(params)
+          //console.log(params)
 
         });
         const filters = JSON.parse(localStorage.getItem('filters'));
-        console.log(filters)
+       // console.log(filters)
         if(filters){
           //this.paginator.resetFilters(filters);
           this.filters.setValue(filters)
@@ -207,12 +210,12 @@ export class AdminIstanzeListComponent implements OnInit , OnDestroy{
       this.routerSubscription$.unsubscribe()
     }
     private handleSubscriptionResponse(res: Istanza[]): void {
-      console.log(res)
+     // console.log(res)
       this.paginator.pagination.offset === 0
           ? this.dataSource = res
           : this.dataSource = this.dataSource.concat(res);
 
-      this.isLoading = false;
+      //this.isLoading = false;
       this.changeDetectorRef.markForCheck();
     }
     private handleSubscriptionError(error: Error): void {
@@ -272,20 +275,24 @@ export class AdminIstanzeListComponent implements OnInit , OnDestroy{
       )
     }
     getStatusIstruttoria(element){
-      console.log(element)
+      //console.log(element)
       let data = {
         text: 'In Rendicontazione',
         style: 'closed',
         status: 'rend'
       }
       if(element.statusreport){
-        let type = this.typeReports.find(x=> x.id === element.typereport)
-        console.log(type)
-        data = {
-          text: type.description,
-          style:  element.statusreport,
-          status: element.statusreport
-        }
+        let type = this.typeReports.find(x=> x.id === element.typereport);
+       // console.log(type, this.typeReports)
+       // console.log(type)
+
+          data = {
+            text: type.description,
+            style:  element.statusreport,
+            status: element.statusreport
+          }
+
+
       }else{
         if(element.rendstatus === 'closed'){
           if(element.istaupdated > element.istacreated){
@@ -305,7 +312,7 @@ export class AdminIstanzeListComponent implements OnInit , OnDestroy{
       }
 
 
-      console.log(data)
+      //console.log(data)
       return data
     }
 

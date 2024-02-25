@@ -50,8 +50,8 @@
     <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
       <h4>Totale Istanze: <span style="font-weight: bold;">{{totRecord}}</span></h4>
     </div>
-    <div class="table-container" (scroll)="timeoutScroll($event)">
-      <mat-table #table [dataSource]="dataSource" >
+    <div class="table-container" (scroll)="timeoutScroll($event)"  *ngIf="!this.isLoading">
+      <mat-table #table [dataSource]="dataSource">
         <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 
@@ -226,8 +226,10 @@
 
 
       </mat-table>
-    </div>
 
+
+    </div>
+    <mat-progress-bar mode="query" *ngIf="this.isLoading"></mat-progress-bar>
   </mat-card-content>
 
 </mat-card>
