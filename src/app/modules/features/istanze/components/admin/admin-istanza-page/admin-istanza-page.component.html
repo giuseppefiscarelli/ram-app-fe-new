@@ -33,7 +33,7 @@
                 <span class="status" [class]="this.statoIstruttoria">
                     {{this.statoIstruttoria | istruttoriaStatus}}
                 </span>
-
+                <div matLine *ngIf="this.dataFineIstruttoria">Scadenza integrazione: <b>{{this.dataFineIstruttoria | date:'dd/MM/YYYY'}}</b></div>
                 </div>
         </mat-list-item>
         <mat-list-item >

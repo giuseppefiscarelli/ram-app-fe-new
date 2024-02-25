@@ -17,6 +17,8 @@ import Swal from 'sweetalert2';
 import { PdfViewerComponent } from 'ng2-pdf-viewer';
 import { FormAllegatoVeicoloComponent } from '../form-allegato-veicolo/form-allegato-veicolo.component';
 import { FormVeiComponent } from '../form-vei/form-vei.component';
+import moment from 'moment';
+import { Report } from '@app/modules/models/report.model';
 
 @Component({
   selector: 'app-content-vei',
@@ -36,6 +38,8 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
     @Output() newAllegatoEvent = new EventEmitter<Allegato>();
     @Input() rottamazione: boolean;
     @Input() enableRendicontazione: boolean;
+    @Input() istruttoriaData: Report;
+
 
     vei$:Subscription;
     docList: any[];
@@ -354,5 +358,19 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
               }
           })
   }
+
+
+  checkAllegatoIntegrazione(allegato: Allegato){
+    // console.log(allegato)
+     let dataUpload = moment(Number(allegato.dataUpload))
+    // console.log(this.rendicontazione.dateEnd)
+
+     if(allegato.id_Report && dataUpload.isAfter(moment(Number(this.rendicontazione.dateEnd)))){
+       if(this.istruttoriaData.typeReport['type'] === 'integrazione'){
+         return 'Documento Integrazione'
+       }
+     }
+
+   }
 
 }

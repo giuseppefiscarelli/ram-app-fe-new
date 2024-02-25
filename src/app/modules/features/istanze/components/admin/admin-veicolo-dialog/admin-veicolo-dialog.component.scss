@@ -1,11 +1,11 @@
 .table-container-vei{
   overflow: auto;
-  max-height: 35vh;
+ // max-height: 35vh;
 
 }
 .table-container-detail{
   overflow: auto;
-  max-height: 65vh;
+  //max-height: 65vh;
 
 }
 .status-span{
@@ -57,7 +57,13 @@
   color: white;
 }
 .mat-column-stato {
-  text-align: right;
-  justify-content: flex-end;
+
   width:120px;
+}
+
+.span-status{
+  padding:0px 10px;
+  border-radius: 10px;
+  text-align:center;
+
 }

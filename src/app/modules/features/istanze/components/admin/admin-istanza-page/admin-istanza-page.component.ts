@@ -90,6 +90,10 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
   };
 
   totVeicoli:number;
+  istruttoriaRend : boolean = false;
+  istruttoriaData: Report;
+  dataFineIstruttoria: any;
+
 
     constructor(private route: ActivatedRoute,
                 private service: IstanzeService,
@@ -190,7 +194,7 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
                     this.reports = reports;
                  //   this.getCertificazioni();
                     this.initializeAllegati(this.typeIstance);
-                    this.getStatoIstruttoria();
+                    this.getStatoIstruttoria(this.reports);
                     this.getIndicatorData()
                   /*   //console.log(vei, alle,ista) */
                   this.createVeiObservable()
@@ -545,12 +549,28 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
       return data['description'];
     }
 
-    getStatoIstruttoria(){
+    getStatoIstruttoria(reports:Report[]){
       if(this.rendicontazione.status === 'closed' || this.rendicontazione.status === 'reporting'){
           this.statoIstruttoria = 'enabled';
           this.funzioniIstruttoria = true;
           if((this.istanzaCheck.updatedAt > this.istanzaCheck.createdAt) || this.listaAllegati.some(x=> x.adminState !== null)){
-            this.statoIstruttoria = 'work';
+            if(reports.length > 0){
+              const validReports = reports.filter(obj => obj.dataInvio !== null);
+              validReports.sort((a, b) => Number(b.dataInvio) - Number(a.dataInvio));
+              if(validReports.length > 0){
+                this.statoIstruttoria = validReports[0].typeReport['type'];
+                console.log(validReports[0])
+                this.istruttoriaRend = true;
+                this.istruttoriaData = validReports[0];
+                if(this.istruttoriaData.typeReport['type'] === 'integrazione'){
+                  this.dataFineIstruttoria = moment(Number(this.istruttoriaData.dataInvio)).add(15,'days')
+
+                }
+              }
+             }else{
+              this.statoIstruttoria = 'work';
+             }
+
           }
           else if(this.istanzaCheck.updatedAt === this.istanzaCheck.createdAt){
             this.statoIstruttoria = 'pending';
@@ -598,6 +618,8 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
                       typeDocuments: this.typeDocuments,
                       istanzaCheck:this.istanzaCheck,
                       istanza: this.istanza,
+                      dataIstruttoria:this.istruttoriaData,
+                      rendicontazione: this.rendicontazione,
                       info:`N° protocollo ${this.istanza.id_ram}/${this.typeIstance.year} - ${this.istanza.ragione_sociale}`
                   }
               }

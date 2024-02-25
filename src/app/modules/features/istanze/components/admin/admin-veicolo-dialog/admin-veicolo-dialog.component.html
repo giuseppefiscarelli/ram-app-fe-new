@@ -1,16 +1,16 @@
 
 
-  <h1  mat-dialog-title>{{this.dialogTitle}}
+  <h1  mat-dialog-title>{{this.dialogTitle}} - {{this.dialogSubTitle}}
     <button mat-icon-button  (click)="onClickCloseDialog()" aria-label="Chiudi" style="float:inline-end">
       <mat-icon>close</mat-icon>
     </button>
   </h1>
-  <h1  mat-dialog-title>{{this.dialogSubTitle}}</h1>
-
-
 <mat-dialog-content>
-  <div fxLayout="row" fxLayoutAlign="start start" >
-    <div fxFlex="30">
+
+  <div class=" row-custom" >
+
+    <div class=" col-custom col-custom-6" style="overflow: auto;max-height: 75vh;">
+
       <h3>Dati Veicolo</h3>
       <div class="table">
           <table class="table-sm" style="width:100%;">
@@ -23,149 +23,148 @@
               <tr><th style="text-align: left;">Acquisizione</th><td>{{veicolo.acquisitionType === '01' ? 'Acquisto': 'Leasing'}}</td></tr>
           </table>
       </div>
-    </div>
-    <div fxFlex="40">
       <h3>Dati Istruttoria</h3>
-        <ng-container *ngIf="!datiIstruttoriaShow; else datiIstruttoria">
-          <h3><mat-icon>error</mat-icon> Allegati dichiarazione, allegati veicolo e cerificazioni non validati</h3>
-        </ng-container>
-        <ng-template #datiIstruttoria>
-          <form [formGroup]="formVeicolo">
-            <div class="table">
-                <table class="table-sm" style="width:100%;">
-                    <tr>
-                        <td></td>
-                        <th>Calcolato</th>
-                        <th>Accordato</th>
-                    </tr>
-                    <tr>
-                        <td>Costo Veicolo</td>
-                        <td> {{veicolo.amount| currency: 'EUR':'symbol':'.2-2':'it' }} </td>
-                        <td>
-                            <mat-form-field>
-                            <input matInput
-                                currencyMask
-                                formControlName="costoIstr"
-                                [options]="{ prefix: '€ ', thousands: '.', decimal: ',' }"
-                            >
-                            <mat-error *ngIf="formVeicolo.get('costoIstr').invalid" [innerHTML]="formVeicolo.get('costoIstr') | errors"></mat-error>
-
-                        </mat-form-field>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Valore Contributo</td>
-                        <td> {{valoreContributo | currency: 'EUR':'symbol':'.2-2':'it' }} </td>
-                        <td>
-                            <mat-form-field>
-                            <input matInput
-                                currencyMask
-                                formControlName="valoreContributo"
-                                [options]="{ prefix: '€ ', thousands: '.', decimal: ',' }"
-                            >
-                            <mat-error *ngIf="formVeicolo.get('valoreContributo').invalid" [innerHTML]="formVeicolo.get('valoreContributo') | errors"></mat-error>
-
-                        </mat-form-field>
-                        </td>
-                    </tr>
-                    <tr >
-                      <td>Maggiorazione PMI</td>
-                      <td> {{valoreMaggPmi | currency: 'EUR':'symbol':'.2-2':'it' }} </td>
-                      <td *ngIf="this.istanza.pmi === 'Yes';else noMagg">
+      <ng-container *ngIf="!datiIstruttoriaShow; else datiIstruttoria">
+        <h3><mat-icon>error</mat-icon> Allegati dichiarazione, allegati veicolo e cerificazioni non validati</h3>
+      </ng-container>
+      <ng-template #datiIstruttoria>
+        <form [formGroup]="formVeicolo">
+          <div class="table">
+              <table class="table-sm" style="width:100%;">
+                  <tr>
+                      <td></td>
+                      <th>Calcolato</th>
+                      <th>Accordato</th>
+                  </tr>
+                  <tr>
+                      <td>Costo Veicolo</td>
+                      <td> {{veicolo.amount| currency: 'EUR':'symbol':'.2-2':'it' }} </td>
+                      <td>
                           <mat-form-field>
                           <input matInput
                               currencyMask
-                              formControlName="pmiIstr"
+                              formControlName="costoIstr"
                               [options]="{ prefix: '€ ', thousands: '.', decimal: ',' }"
                           >
-                          <mat-error *ngIf="formVeicolo.get('pmiIstr').invalid" [innerHTML]="formVeicolo.get('pmiIstr') | errors"></mat-error>
+                          <mat-error *ngIf="formVeicolo.get('costoIstr').invalid" [innerHTML]="formVeicolo.get('costoIstr') | errors"></mat-error>
+
+                      </mat-form-field>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td>Valore Contributo</td>
+                      <td> {{valoreContributo | currency: 'EUR':'symbol':'.2-2':'it' }} </td>
+                      <td>
+                          <mat-form-field>
+                          <input matInput
+                              currencyMask
+                              formControlName="valoreContributo"
+                              [options]="{ prefix: '€ ', thousands: '.', decimal: ',' }"
+                          >
+                          <mat-error *ngIf="formVeicolo.get('valoreContributo').invalid" [innerHTML]="formVeicolo.get('valoreContributo') | errors"></mat-error>
 
                       </mat-form-field>
                       </td>
                   </tr>
                   <tr >
-                    <td>Maggiorazione Rete</td>
-                    <td> {{valoreMaggRete | currency: 'EUR':'symbol':'.2-2':'it' }} </td>
-                    <td *ngIf="this.istanza.rete === 'Yes';else noMagg">
+                    <td>Maggiorazione PMI</td>
+                    <td> {{valoreMaggPmi | currency: 'EUR':'symbol':'.2-2':'it' }} </td>
+                    <td *ngIf="this.istanza.pmi === 'Yes';else noMagg">
                         <mat-form-field>
-
-                            <input matInput
-                                currencyMask
-
-                                formControlName="reteIstr"
-                                [options]="{ prefix: '€ ', thousands: '.', decimal: ',' }"
-                            >
-
-                        <mat-error *ngIf="formVeicolo.get('reteIstr').invalid" [innerHTML]="formVeicolo.get('reteIstr') | errors"></mat-error>
+                        <input matInput
+                            currencyMask
+                            formControlName="pmiIstr"
+                            [options]="{ prefix: '€ ', thousands: '.', decimal: ',' }"
+                        >
+                        <mat-error *ngIf="formVeicolo.get('pmiIstr').invalid" [innerHTML]="formVeicolo.get('pmiIstr') | errors"></mat-error>
 
                     </mat-form-field>
                     </td>
-                    <ng-template #noMagg>
-                      <td>Maggiorazione non prevista</td>
-                    </ng-template>
                 </tr>
+                <tr >
+                  <td>Maggiorazione Rete</td>
+                  <td> {{valoreMaggRete | currency: 'EUR':'symbol':'.2-2':'it' }} </td>
+                  <td *ngIf="this.istanza.rete === 'Yes';else noMagg">
+                      <mat-form-field>
+
+                          <input matInput
+                              currencyMask
+
+                              formControlName="reteIstr"
+                              [options]="{ prefix: '€ ', thousands: '.', decimal: ',' }"
+                          >
+
+                      <mat-error *ngIf="formVeicolo.get('reteIstr').invalid" [innerHTML]="formVeicolo.get('reteIstr') | errors"></mat-error>
+
+                  </mat-form-field>
+                  </td>
+                  <ng-template #noMagg>
+                    <td>Maggiorazione non prevista</td>
+                  </ng-template>
+              </tr>
 
 
-                    <tr>
-                        <td>Stato Lavorazione
-                            <br>
-                            <span class="status-span" style="padding:0 10px;" [class]="this.veicolo.adminState?this.veicolo.adminState:'toWork'"
-                            [innerText]="this.veicolo.adminState?(this.veicolo.adminState | statusCheck) : ('toWork' | statusCheck)"
+                  <tr>
+                      <td>Stato Lavorazione
+                          <br>
+                          <span class="status-span" style="padding:0 10px;" [class]="this.veicolo.adminState?this.veicolo.adminState:'toWork'"
+                          [innerText]="this.veicolo.adminState?(this.veicolo.adminState | statusCheck) : ('toWork' | statusCheck)"
 
 
-                            >
-                            </span>
-                        </td>
-                      <td></td>
-                        <td >
-                            <mat-form-field>
+                          >
+                          </span>
+                      </td>
+                    <td></td>
+                      <td >
+                          <mat-form-field>
 
-                                <mat-select formControlName="adminState">
-                                    <mat-option *ngFor="let statusCheck of filterOptionsDescriptors.statusCheck" [value]="statusCheck.value">
-                                        <span class="status-span" style="padding:0 10px;"[class]="statusCheck.value?statusCheck.value:'toWork'"
-                                        [innerText]="statusCheck.value?(statusCheck.value | statusCheck) : ('toWork' | statusCheck)"
-                                        >
-                                        </span>
-                                    </mat-option>
-                                </mat-select>
-                                <mat-error *ngIf="formVeicolo.get('adminState').invalid" [innerHTML]="formVeicolo.get('adminState') | errors"></mat-error>
-                            </mat-form-field>
-                        </td>
-                    </tr>
-                    <tr>
+                              <mat-select formControlName="adminState">
+                                  <mat-option *ngFor="let statusCheck of filterOptionsDescriptors.statusCheck" [value]="statusCheck.value">
+                                      <span class="status-span" style="padding:0 10px;"[class]="statusCheck.value?statusCheck.value:'toWork'"
+                                      [innerText]="statusCheck.value?(statusCheck.value | statusCheck) : ('toWork' | statusCheck)"
+                                      >
+                                      </span>
+                                  </mat-option>
+                              </mat-select>
+                              <mat-error *ngIf="formVeicolo.get('adminState').invalid" [innerHTML]="formVeicolo.get('adminState') | errors"></mat-error>
+                          </mat-form-field>
+                      </td>
+                  </tr>
+                  <tr>
 
+                  <td colspan="3">
+
+                      <mat-form-field style="width: 100%;">
+                          <mat-label>Note</mat-label>
+                          <textarea matInput formControlName="adminNote"></textarea>
+                      </mat-form-field>
+                  </td>
+                  </tr>
+
+                  <tr>
                     <td colspan="3">
-
-                        <mat-form-field style="width: 100%;">
-                            <mat-label>Note</mat-label>
-                            <textarea matInput formControlName="adminNote"></textarea>
-                        </mat-form-field>
+                      <button
+                      mat-raised-button color="primary"
+                      aria-label="Example icon button with a home icon"
+                      matTooltip="Aggiorna dati"
+                      matTooltipPosition="above"
+                      (click)="onSubmitBtn()"
+                      style="float:right;"
+                  >
+                      <mat-icon>edit_document</mat-icon> Aggiorna dati Istruttoria
+                  </button>
                     </td>
-                    </tr>
-                </table>
-                <button
-                        mat-raised-button color="primary"
-                        aria-label="Example icon button with a home icon"
-                        matTooltip="Aggiorna dati"
-                        matTooltipPosition="above"
-                        (click)="onSubmitBtn()"
-                        style="float:right;"
-                    >
-                        <mat-icon>edit_document</mat-icon> Aggiorna dati Istruttoria
-                    </button>
-            </div>
+                  </tr>
+              </table>
 
-        </form>
-        </ng-template>
-    </div>
-    <div fxFlex="30">
+          </div>
 
-    </div>
-  </div>
-<mat-divider style="margin:10px;"></mat-divider>
-  <div fxLayout="row" fxLayoutAlign="start start" >
+      </form>
+      </ng-template>
 
-    <div fxFlex="50" >
+
+      <h3>Allegati Veicolo</h3>
+
       <div class="table-container-vei" >
         <table #tableA mat-table [dataSource]="allegatiVeicolo"  style="width:100%;">
 
@@ -237,179 +236,167 @@
           </ng-container>
 
 
-          <tr mat-header-row *matHeaderRowDef="[
-          'tipo',
-          'note',
-          'stato',
-          'noteAdmin',
-          'action']"></tr>
-          <tr mat-row *matRowDef="let row; columns: [
-          'tipo',
-          'note',
-          'stato',
-          'noteAdmin',
-          'action'];"></tr>
+          <tr mat-header-row *matHeaderRowDef="[ 'tipo','note','stato','noteAdmin','action']"></tr>
+          <tr mat-row *matRowDef="let row; columns: ['tipo','note','stato','noteAdmin','action'];"></tr>
       </table>
       </div>
-
     </div>
 
-    <div fxFlex="50">
-      <div class="table-container-detail" >
-        <ng-container *ngIf="alleSelected; else selDoc">
-          <ng-container *ngIf="isLoading; else showfile">
-            <mat-spinner  style="margin:auto;"></mat-spinner>
-            <h2 style="text-align:center;">Caricamento allegato in corso</h2>
-          </ng-container>
-          <ng-template #showfile>
-            <h3>Dati Allegato</h3>
-            <table class="table-sm" style="width:100%;">
-              <tr>
-                  <td>Tipo</td>
-                  <td>{{getTypeDocument(alleDataSelected.typeDocument)}}</td>
-              </tr>
-              <tr *ngFor="let item of alleDataSelected.jsonData">
-                  <td>{{item.description}}</td>
-                  <ng-container *ngIf="item.type === 'date'">
-                      <td>{{item.value | date :'dd/MM/yyyy'}}</td>
-                  </ng-container>
-                  <ng-container *ngIf="item.type === 'valute'">
-                      <td>{{item.value | currency: 'EUR':'symbol':'.2-2':'it'}}</td>
-                  </ng-container>
-                  <ng-container *ngIf="item.type === 'text'">
-                      <td>{{item.value}}</td>
-                  </ng-container>
-                  <ng-container *ngIf="item.type === 'number'">
-                      <td>{{item.value}}</td>
-                  </ng-container>
+    <div class=" col-custom col-custom-6">
+
+      <ng-container *ngIf="alleSelected; else selDoc">
+        <ng-container *ngIf="isLoading; else showfile">
+          <mat-spinner  style="margin:auto;"></mat-spinner>
+          <h2 style="text-align:center;">Caricamento allegato in corso</h2>
+        </ng-container>
+        <ng-template #showfile>
+          <h3>Dati Allegato</h3>
+          <table class="table-sm" style="width:100%;">
+            <tr>
+                <td>Tipo</td>
+                <td>{{getTypeDocument(alleDataSelected.typeDocument)}}</td>
+            </tr>
+            <tr *ngFor="let item of alleDataSelected.jsonData">
+                <td>{{item.description}}</td>
+                <ng-container *ngIf="item.type === 'date'">
+                    <td>{{item.value | date :'dd/MM/yyyy'}}</td>
+                </ng-container>
+                <ng-container *ngIf="item.type === 'valute'">
+                    <td>{{item.value | currency: 'EUR':'symbol':'.2-2':'it'}}</td>
+                </ng-container>
+                <ng-container *ngIf="item.type === 'text'">
+                    <td>{{item.value}}</td>
+                </ng-container>
+                <ng-container *ngIf="item.type === 'number'">
+                    <td>{{item.value}}</td>
+                </ng-container>
 
 
-              </tr>
-              <ng-container  *ngIf=" (this.veicolo.adminState === 'accepted' || this.veicolo.adminState ==='rejected')">
-
-                  <tr>
-                      <td> Stato Lavorazione</td>
-                      <td>
-                          <span class="status-span" style="padding:0 10px;" [class]="this.form.controls.adminState.value?this.form.controls.adminState.value:'toWork'"
-                          [innerText]="this.form.controls.adminState.value?(this.form.controls.adminState.value | statusCheck) : ('toWork' | statusCheck)"
-
-
-                          >
-                          </span>
-                      </td>
-
-                  </tr>
-                <tr>
-                  <td>Note</td>
-                  <td>{{this.form.controls.adminNote.value}}</td>
-                </tr>
-              </ng-container>
-            </table>
+            </tr>
             <ng-container  *ngIf=" (this.veicolo.adminState === 'accepted' || this.veicolo.adminState ==='rejected')">
-              <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
-                <div  fxFlex="30">
+
+                <tr>
+                    <td> Stato Lavorazione</td>
+                    <td>
+                        <span class="status-span" style="padding:0 10px;" [class]="this.form.controls.adminState.value?this.form.controls.adminState.value:'toWork'"
+                        [innerText]="this.form.controls.adminState.value?(this.form.controls.adminState.value | statusCheck) : ('toWork' | statusCheck)"
+
+
+                        >
+                        </span>
+                    </td>
+
+                </tr>
+              <tr>
+                <td>Note</td>
+                <td>{{this.form.controls.adminNote.value}}</td>
+              </tr>
+            </ng-container>
+          </table>
+          <ng-container  *ngIf=" (this.veicolo.adminState === 'accepted' || this.veicolo.adminState ==='rejected')">
+            <div class="row-custom" >
+              <div class=" col-custom">
+                  <button mat-raised-button color="primary"
+                  (click)="downloadAllegato(alleDataSelected.fd)"
+
+                  >Scarica Documento</button>
+
+              </div>
+              <div class=" col-custom">
+                <button mat-raised-button color="warn"
+                (click)="viewAllegato(this.url, this.alleDataSelected.filename)"
+                >Apri in una nuova scheda</button>
+              </div>
+            </div>
+            <div class="row-custom" >
+
+
+              <pdf-viewer [src]="this.url"
+                        [render-text]="true"
+                        [original-size]="false"
+                        style="width: 100%; height:65vh;"
+                        ></pdf-viewer>
+
+            </div>
+          </ng-container>
+
+
+          <ng-container *ngIf=" (this.veicolo.adminState !== 'accepted' && this.veicolo.adminState !=='rejected')">
+
+            <form [formGroup]="form" style="padding:0 17px; width:100%">
+              <div class="row-custom">
+                <div class=" col-custom col-custom-12">
+                    <mat-form-field fxFlex style="width:100%">
+                      <mat-label>Note</mat-label>
+                      <input matInput
+                      type="note"
+                      formControlName="adminNote"
+                      >
+
+                    </mat-form-field >
+                </div>
+                <div class=" col-custom col-custom-4">
+                  <mat-form-field>
+                    <mat-label>
+                      Stato Lavorazione
+                    </mat-label>
+                    <mat-select formControlName="adminState">
+                        <mat-option *ngFor="let statusCheck of filterOptionsDescriptors.statusCheck" [value]="statusCheck.value">
+                          {{statusCheck.title | statusCheck}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="form.get('adminState').invalid" [innerHTML]="form.get('adminState') | errors"></mat-error>
+                </mat-form-field>
+                </div>
+                <div class=" col-custom col-custom-4">
+                  <button mat-raised-button color="primary" style="background-color:green;color:white;"
+                  (click)="onClickSubmitAlle()"
+                  >Aggiorna stato lavorazione</button>
+                </div>
+              </div>
+
+              <div class="row-custom">
+                <div class="col-custom">
                     <button mat-raised-button color="primary"
                     (click)="downloadAllegato(alleDataSelected.fd)"
-
                     >Scarica Documento</button>
-
                 </div>
-                <div  fxFlex="30">
+                <div class="col-custom">
                   <button mat-raised-button color="warn"
                   (click)="viewAllegato(this.url, this.alleDataSelected.filename)"
                   >Apri in una nuova scheda</button>
                 </div>
               </div>
-              <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
-
-
+            </form>
+            <div class="row-custom">
+              <div class=" col-custom col-custom-12">
                 <pdf-viewer [src]="this.url"
-                          [render-text]="true"
-                          [original-size]="false"
-                          style="width: 100%; height:65vh;"
-                          ></pdf-viewer>
-
+                [render-text]="true"
+                [original-size]="false"
+                style="width: 100%; height:65vh;"
+                ></pdf-viewer>
               </div>
-            </ng-container>
+            </div>
 
-
-            <ng-container *ngIf=" (this.veicolo.adminState !== 'accepted' && this.veicolo.adminState !=='rejected')">
-
-              <form [formGroup]="form" style="padding:0 17px; width:100%">
-                <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
-                  <mat-form-field fxFlex style="width:100%">
-                    <mat-label>Note</mat-label>
-                    <input matInput
-                    type="note"
-                    formControlName="adminNote"
-                    >
-
-                  </mat-form-field >
-                </div>
-                <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
-                  <div  fxFlex="30">
-                    <mat-form-field>
-                      <mat-label>
-                        Stato Lavorazione
-                      </mat-label>
-                      <mat-select formControlName="adminState">
-                          <mat-option *ngFor="let statusCheck of filterOptionsDescriptors.statusCheck" [value]="statusCheck.value">
-                            {{statusCheck.title | statusCheck}}
-                          </mat-option>
-                      </mat-select>
-                      <mat-error *ngIf="form.get('adminState').invalid" [innerHTML]="form.get('adminState') | errors"></mat-error>
-                  </mat-form-field>
-                  </div>
-                  <div  fxFlex="30">
-                    <button mat-raised-button color="primary" style="background-color:green;color:white;"
-                    (click)="onClickSubmitAlle()"
-                    >Aggiorna stato lavorazione</button>
-                  </div>
-                </div>
-                <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
-                  <div  fxFlex="30">
-                      <button mat-raised-button color="primary"
-                      (click)="downloadAllegato(alleDataSelected.fd)"
-
-                      >Scarica Documento</button>
-
-                  </div>
-                  <div  fxFlex="30">
-                    <button mat-raised-button color="warn"
-                    (click)="viewAllegato(this.url, this.alleDataSelected.filename)"
-                    >Apri in una nuova scheda</button>
-                  </div>
-                </div>
-
-
-
-
-              </form>
-              <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
-
-
-                <pdf-viewer [src]="this.url"
-                          [render-text]="true"
-                          [original-size]="false"
-                          style="width: 100%; height:65vh;"
-                          ></pdf-viewer>
-
-              </div>
-
-            </ng-container>
-          </ng-template>
-        </ng-container>
-        <ng-template #selDoc>
-          <h1>Clicca sull'icona <button
-            mat-icon-button color="primary"
-        >
-            <mat-icon>edit_document</mat-icon>
-        </button> per visualizzare il documento</h1>
+          </ng-container>
         </ng-template>
-      </div>
+      </ng-container>
+      <ng-template #selDoc>
+        <h1>Clicca sull'icona <button
+          mat-icon-button color="primary"
+        >
+          <mat-icon>edit_document</mat-icon>
+      </button> per visualizzare il documento</h1>
+      </ng-template>
     </div>
 
+
+
   </div>
+
+
+
+
 
 </mat-dialog-content>
 
