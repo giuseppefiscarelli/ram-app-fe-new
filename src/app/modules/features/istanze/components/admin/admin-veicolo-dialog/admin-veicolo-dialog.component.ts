@@ -394,41 +394,26 @@ export class AdminVeicoloDialogComponent implements OnInit {
     }
 
     viewAllegato(file,name): void{
-    //  console.log(file)
-   //   window.open('www.google.it');
-   //   console.log( this.alleDataSelected)
+
+        //  console.log(file)
+       //   window.open('www.google.it');
+       //   console.log( this.alleDataSelected)
+
+          window.open(this.url)
+
+            // this.services.getFile(file)
+            // .subscribe(
+            //     (res) => {
+            //         const blob = new Blob([res],{type: file.type});
+            //         const url = window.URL.createObjectURL(blob);
+            //     window.open(url);
+
+            //     },
+            //         error => console.log('Error downloading the file.')
+            //     );
 
 
-  //     const res: any = this.alleDataSelected
-  //     const blob = new Blob([res],{type: file.type});
-  //  //   console.log(blob)
-  //     const url = window.URL.createObjectURL(blob);
-  //  //   console.log(url)
-  //     window.open(url,name);
 
-        // this.services.getFile(file)
-        // .subscribe(
-        //     (res) => {
-        //         const blob = new Blob([res],{type: file.type});
-        //         const url = window.URL.createObjectURL(blob);
-        //     window.open(url,name);
-
-        //     },
-        //         error => console.log('Error downloading the file.')
-        //     );
-
-        this.services.getFile(file)
-        .subscribe(
-        (res) => {
-            const blob = new Blob([res], {type: file.type});
-            // const url = window.URL.createObjectURL(blob);
-            // window.open(url);
-            const url: string = URL.createObjectURL(blob);
-            window.open(url,file.filename);
-
-        },
-        error => console.log('Error downloading the file.')
-        );
     }
 
     downloadAllegato(file): void{
