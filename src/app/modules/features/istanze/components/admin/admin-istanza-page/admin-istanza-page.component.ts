@@ -175,7 +175,23 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
                     this.configService.fetchTypeReport({drop:true, typeistance:this.istanza.tipo_istanza}),
                     this.configService.fetchReport({drop:true, enable:true, id_ram:this.istanza.id_ram})
                 ]).subscribe(([vei, alle,ista,typeDocument, typeReport, reports]) =>{
-                    this.listaVeicoli= this.listaVeicoliFiltered = vei;
+                    console.log(this.listaVeicoli)
+                    this.listaVeicoli= this.listaVeicoliFiltered = vei.sort((a, b) => {
+                      if (a.category < b.category) {
+                        return -1;
+                      }
+                      if (a.category > b.category) {
+                        return 1;
+                      }
+                      // Se le categorie sono uguali, ordina per "type"
+                      if (a.type < b.type) {
+                        return -1;
+                      }
+                      if (a.type > b.type) {
+                        return 1;
+                      }
+                      return 0;
+                    });
                     this.listaAllegati=alle;
                     this.typeIstance = ista;
                     //console.log(ista)
@@ -225,20 +241,103 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
 
 
                   });
-                  this.listaVeicoliFiltered = this.listaVeicoli;
+                  this.listaVeicoliFiltered = this.listaVeicoli.sort((a, b) => {
+                    if (a.category < b.category) {
+                      return -1;
+                    }
+                    if (a.category > b.category) {
+                      return 1;
+                    }
+                    // Se le categorie sono uguali, ordina per "type"
+                    if (a.type < b.type) {
+                      return -1;
+                    }
+                    if (a.type > b.type) {
+                      return 1;
+                    }
+                    return 0;
+                  });
 
                   if(filters['category']){
-                    this.listaVeicoliFiltered = this.listaVeicoliFiltered.filter(x=> x['category'] === filters['category'])
+                    this.listaVeicoliFiltered = this.listaVeicoliFiltered
+                    .filter(x=> x['category'] === filters['category'])
+                    .sort((a, b) => {
+                      if (a.category < b.category) {
+                        return -1;
+                      }
+                      if (a.category > b.category) {
+                        return 1;
+                      }
+                      // Se le categorie sono uguali, ordina per "type"
+                      if (a.type < b.type) {
+                        return -1;
+                      }
+                      if (a.type > b.type) {
+                        return 1;
+                      }
+                      return 0;
+                    });
                   }
 
                   if(filters['type']){
-                    this.listaVeicoliFiltered = this.listaVeicoliFiltered.filter(x=> x['type'] === filters['type'])
+                    this.listaVeicoliFiltered = this.listaVeicoliFiltered
+                    .filter(x=> x['type'] === filters['type'])
+                    .sort((a, b) => {
+                      if (a.category < b.category) {
+                        return -1;
+                      }
+                      if (a.category > b.category) {
+                        return 1;
+                      }
+                      // Se le categorie sono uguali, ordina per "type"
+                      if (a.type < b.type) {
+                        return -1;
+                      }
+                      if (a.type > b.type) {
+                        return 1;
+                      }
+                      return 0;
+                    });
                   }
                   if(filters['licensePlate']){
-                    this.listaVeicoliFiltered = this.listaVeicoliFiltered.filter(x=> x['licensePlate'] === filters['licensePlate'])
+                    this.listaVeicoliFiltered = this.listaVeicoliFiltered
+                    .filter(x=> x['licensePlate'] === filters['licensePlate'])
+                    .sort((a, b) => {
+                      if (a.category < b.category) {
+                        return -1;
+                      }
+                      if (a.category > b.category) {
+                        return 1;
+                      }
+                      // Se le categorie sono uguali, ordina per "type"
+                      if (a.type < b.type) {
+                        return -1;
+                      }
+                      if (a.type > b.type) {
+                        return 1;
+                      }
+                      return 0;
+                    });
                   }
                   if(filters['adminState']){
-                    this.listaVeicoliFiltered = this.listaVeicoliFiltered.filter(x=> x['adminState'] === filters['adminState'])
+                    this.listaVeicoliFiltered = this.listaVeicoliFiltered
+                    .filter(x=> x['adminState'] === filters['adminState'])
+                    .sort((a, b) => {
+                      if (a.category < b.category) {
+                        return -1;
+                      }
+                      if (a.category > b.category) {
+                        return 1;
+                      }
+                      // Se le categorie sono uguali, ordina per "type"
+                      if (a.type < b.type) {
+                        return -1;
+                      }
+                      if (a.type > b.type) {
+                        return 1;
+                      }
+                      return 0;
+                    });
                   }
                  // //console.log(filters, this.listaVeicoliFiltered)
 
@@ -635,7 +734,22 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
                   if(res.veicolo){
                       const upVeicoli = [...this.listaVeicoliFiltered];
                       upVeicoli[atIndex] = res.veicolo;
-                      this.listaVeicoli = this.listaVeicoliFiltered = [...upVeicoli];
+                      this.listaVeicoli = this.listaVeicoliFiltered = [...upVeicoli.sort((a, b) => {
+                        if (a.category < b.category) {
+                          return -1;
+                        }
+                        if (a.category > b.category) {
+                          return 1;
+                        }
+                        // Se le categorie sono uguali, ordina per "type"
+                        if (a.type < b.type) {
+                          return -1;
+                        }
+                        if (a.type > b.type) {
+                          return 1;
+                        }
+                        return 0;
+                      })]
                   }
                   this.changeDetectorRef.markForCheck()
 
@@ -782,6 +896,19 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
               }
         });
       }
+
+    }
+
+    checkVeicoloIntegrazioni(veicolo){
+      console.log(this.listaAllegatiVeicoli.filter(x=> x.id_Veicolo === veicolo.id))
+
+
+      if(this.listaAllegatiVeicoli.filter(x=> x.id_Veicolo === veicolo.id).some(
+        (allegato) => moment(Number(allegato.dataUpload)).isAfter(moment(Number(this.rendicontazione.dateEnd)))
+      )){
+        return 'Documenti Integrazione'
+      }
+      return false
 
     }
 

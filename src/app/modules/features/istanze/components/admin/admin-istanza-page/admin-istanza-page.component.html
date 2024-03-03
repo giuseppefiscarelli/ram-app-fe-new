@@ -282,8 +282,8 @@
 
 
                   <ng-template matTabContent>
-                    <div [formGroup]="filtersVei" fxLayout="row"   fxLayout.xs="column">
-                      <div fxFlex="15" fxFlex.xs="100" >
+                    <div [formGroup]="filtersVei" class="row-custom">
+                      <div class="col-custom-2" >
                         <mat-form-field appearance="standard">
                             <mat-label>
                               Categoria
@@ -296,7 +296,7 @@
                           </mat-select>
                         </mat-form-field>
                       </div>
-                      <div fxFlex="15" fxFlex.xs="100" >
+                      <div class="col-custom-2" >
                         <mat-form-field appearance="standard">
                             <mat-label>
                               Tipo Veicolo
@@ -309,7 +309,7 @@
                           </mat-select>
                         </mat-form-field>
                       </div>
-                      <div fxFlex="15" fxFlex.xs="100" >
+                      <div class="col-custom-2" >
                         <mat-form-field appearance="standard">
                             <mat-label>
                               Targa veicolo
@@ -323,7 +323,7 @@
                         </mat-form-field>
                       </div>
 
-                      <div fxFlex="15" fxFlex.xs="100" >
+                      <div class="col-custom-2" >
                         <mat-form-field appearance="standard">
                             <mat-label>
                               Stato veicolo
@@ -389,12 +389,18 @@
                         <ng-container matColumnDef="stato">
                           <th mat-header-cell *matHeaderCellDef> Stato </th>
                           <td mat-cell *matCellDef="let element">
-                              <span class="status-span" [class]="element.adminState?element.adminState:'toWork'"
+                              <span class="span-status" [class]="element.adminState?element.adminState:'toWork'"
                               [innerText]="element.adminState?(element.adminState | statusCheck) : ('toWork' | statusCheck)"
 
 
                               >
+
+
                               </span>
+                              <ng-container *ngIf="checkVeicoloIntegrazioni(element) as int">
+                                <br>
+                                <span class="span-status closed" style="vertical-align: -webkit-baseline-middle">{{int}}</span>
+                               </ng-container>
                         </ng-container>
 
                         <ng-container matColumnDef="action">

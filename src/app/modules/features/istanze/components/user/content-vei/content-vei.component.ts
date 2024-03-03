@@ -373,11 +373,13 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
 
 
   checkAllegatoIntegrazione(allegato: Allegato){
-   // console.log(allegato)
+    console.log(allegato)
     let dataUpload = moment(Number(allegato.dataUpload))
    // console.log(this.rendicontazione.dateEnd)
-
-    if(allegato.id_Report && dataUpload.isAfter(moment(Number(this.rendicontazione.dateEnd)))){
+   // console.log(dataUpload)
+    //console.log(moment(Number(this.rendicontazione.dateEnd)))
+    if(dataUpload.isAfter(moment(Number(this.rendicontazione.dateEnd)))){
+      console.log('integrazione ok')
       if(this.istruttoriaData.typeReport['type'] === 'integrazione'){
         return 'Documento Integrazione'
       }

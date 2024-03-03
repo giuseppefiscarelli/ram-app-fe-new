@@ -473,7 +473,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
       let dataUpload = moment(Number(allegato.dataUpload))
       console.log(this.rendicontazione.dateEnd)
 
-      if(allegato.id_Report && dataUpload.isAfter(moment(Number(this.rendicontazione.dateEnd)))){
+      if(dataUpload.isAfter(moment(Number(this.rendicontazione.dateEnd)))){
         if(this.dataIstruttoria.typeReport['type'] === 'integrazione'){
           return 'Documento Integrazione'
         }
