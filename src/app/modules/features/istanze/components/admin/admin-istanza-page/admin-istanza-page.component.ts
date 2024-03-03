@@ -277,6 +277,24 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
                       }
                       return 0;
                     });
+                    this.listaVeicoliFiltered = this.listaVeicoliFiltered
+                    .filter(x=> x['category'] === filters['category'])
+                    .sort((a, b) => {
+                      if (a.category < b.category) {
+                        return -1;
+                      }
+                      if (a.category > b.category) {
+                        return 1;
+                      }
+                      // Se le categorie sono uguali, ordina per "type"
+                      if (a.type < b.type) {
+                        return -1;
+                      }
+                      if (a.type > b.type) {
+                        return 1;
+                      }
+                      return 0;
+                    });
                   }
 
                   if(filters['type']){
@@ -320,6 +338,24 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
                     });
                   }
                   if(filters['adminState']){
+                    this.listaVeicoliFiltered = this.listaVeicoliFiltered
+                    .filter(x=> x['adminState'] === filters['adminState'])
+                    .sort((a, b) => {
+                      if (a.category < b.category) {
+                        return -1;
+                      }
+                      if (a.category > b.category) {
+                        return 1;
+                      }
+                      // Se le categorie sono uguali, ordina per "type"
+                      if (a.type < b.type) {
+                        return -1;
+                      }
+                      if (a.type > b.type) {
+                        return 1;
+                      }
+                      return 0;
+                    });
                     this.listaVeicoliFiltered = this.listaVeicoliFiltered
                     .filter(x=> x['adminState'] === filters['adminState'])
                     .sort((a, b) => {
@@ -399,7 +435,22 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
 
           return check
          }else if(data.type === 'ammissione'){
-          let listVeicoliAccetati = this.listaVeicoli.filter(x=> x.adminState === statusAdminVei.accepted);
+          let listVeicoliAccetati = this.listaVeicoli.filter(x=> x.adminState === statusAdminVei.accepted).sort((a, b) => {
+            if (a.category < b.category) {
+              return -1;
+            }
+            if (a.category > b.category) {
+              return 1;
+            }
+            // Se le categorie sono uguali, ordina per "type"
+            if (a.type < b.type) {
+              return -1;
+            }
+            if (a.type > b.type) {
+              return 1;
+            }
+            return 0;
+          });;
       //   console.log(listVeicoliAccetati)
           let alleFiltrati = this.listaAllegati.filter(allegato => listVeicoliAccetati.map(veicolo => veicolo.id).includes(allegato.id_Veicolo));
        //   console.table(alleFiltrati)
@@ -750,6 +801,22 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
                         }
                         return 0;
                       })]
+                      this.listaVeicoli = this.listaVeicoliFiltered = [...upVeicoli.sort((a, b) => {
+                        if (a.category < b.category) {
+                          return -1;
+                        }
+                        if (a.category > b.category) {
+                          return 1;
+                        }
+                        // Se le categorie sono uguali, ordina per "type"
+                        if (a.type < b.type) {
+                          return -1;
+                        }
+                        if (a.type > b.type) {
+                          return 1;
+                        }
+                        return 0;
+                      })];
                   }
                   this.changeDetectorRef.markForCheck()
 
@@ -911,6 +978,9 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
       return false
 
     }
+
+
+
 
 
 
