@@ -382,12 +382,16 @@
                         <ng-container matColumnDef="stato">
                           <th mat-header-cell *matHeaderCellDef> Stato </th>
                           <td mat-cell *matCellDef="let element">
-                              <span class="status-span" [class]="element.adminState?element.adminState:'toWork'"
+                              <span class="span-status" [class]="element.adminState?element.adminState:'toWork'"
                               [innerText]="element.adminState?(element.adminState | statusCheck) : ('toWork' | statusCheck)"
 
 
                               >
                               </span>
+                              <ng-container *ngIf="checkVeicoloIntegrazioni(element) as int">
+                                <br>
+                                <span class="span-status closed" style="vertical-align: -webkit-baseline-middle">{{int}}</span>
+                               </ng-container>
                         </ng-container>
 
                         <ng-container matColumnDef="action">
