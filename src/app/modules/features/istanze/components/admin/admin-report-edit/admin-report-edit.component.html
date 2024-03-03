@@ -2,9 +2,9 @@
 <mat-dialog-content>
     <div class="container">
         <div class="child">
-          <div fxLayout="row">
+          <div class="row-custom">
 
-            <div fxFlex="50"  *ngIf="this.mode === 'generate'">
+            <div class="col-custom-6"  *ngIf="this.mode === 'generate'">
               <h3>Dati Documento</h3>
               <mat-list dense>
                   <div mat-subheader>Dati Azienda</div>
@@ -32,7 +32,7 @@
 
 
             </div>
-            <div fxFlex="50" *ngIf="this.mode === 'edit'">
+            <div class="col-custom-6" *ngIf="this.mode === 'edit'">
               <h3>Dati Documento</h3>
               <mat-list dense>
                   <div mat-subheader>Dati Azienda</div>
@@ -60,7 +60,7 @@
 
 
             </div>
-            <div fxFlex="100" *ngIf="this.mode === 'prepare'">
+            <div class="col-custom-12" *ngIf="this.mode === 'prepare'">
 
               <form [formGroup]="form">
 
@@ -105,7 +105,7 @@
 
             </div>
 
-            <div fxFlex="50" *ngIf="this.mode !== 'prepare' ">
+            <div class="col-custom-6" *ngIf="this.mode !== 'prepare' ">
               <ng-container  *ngIf="this.alleDich.length> 0 || this.alleVei.length > 0">
                 <ng-container  *ngIf="this.alleDich.length> 0">
                   <mat-list dense>
@@ -138,7 +138,7 @@
               </ng-container>
             </div>
           </div>
-          <div fxLayout="row" *ngIf="this.mode !== 'prepare'">
+          <div class="row-custom" *ngIf="this.mode !== 'prepare'">
             <div fxFlex="100" *ngIf="this.typeReport.type==='integrazione'">
               <form [formGroup]="form">
                   <!-- <mat-form-field >
