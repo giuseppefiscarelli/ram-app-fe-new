@@ -10,12 +10,12 @@
 </mat-toolbar>
 
 <mat-card class="container-card" >
-  <div fxLayout="row"
+  <!-- <div fxLayout="row"
     fxLayout.xs="column"
     fxLayoutAlign="start"
-    fxLayoutGap="30px">
-
-    <div fxFlex="20">
+    fxLayoutGap="30px"> -->
+  <div class="row-custom">
+    <div class=" col-custom-2">
       <mat-list dense>
         <mat-list-item >
             <div matLine>Stato Rendicontazione</div>
@@ -51,16 +51,16 @@
     </mat-list>
 
     </div>
-    <div fxFlex="80">
+    <div class=" col-custom-10">
         <mat-tab-group mat-align-tabs="center">
           <mat-tab>
 
             <ng-template mat-tab-label>
                 <mat-icon class="tab-icon">apartment</mat-icon> Dati Impresa</ng-template>
             <ng-template matTabContent>
-                <div fxLayout="row" fxLayoutAlign="start start" >
+                <div class="row-custom">
 
-                  <div fxFlex="33">
+                  <div class="col-custom-4">
                     <h3>Dati Richiedente</h3>
                     <div class="table">
                         <table >
@@ -79,10 +79,13 @@
                         </table>
                     </div>
                   </div>
-                  <div fxFlex="66">
-                    <h3>Dati Impresa</h3>
-                    <div fxLayout="row" fxLayoutAlign="space-around start" >
-                      <div class="table" fxFlex="50" >
+                  <div class="col-custom-8">
+
+
+                    <div class="row-custom">
+
+                      <div class="table"class="col-custom-6" >
+                        <h3>Dati Impresa</h3>
                         <table >
                             <tbody >
                                 <tr ><td style="font-weight: bold;" >Ragione Sociale</td><td>{{istanza.ragione_sociale}}</td></tr>
@@ -97,8 +100,9 @@
                         </table>
 
                       </div>
-                      <div class="table" fxFlex="50" >
-                        <table   >
+                      <div class="table" class="col-custom-6" >
+                        <h3> </h3>
+                        <table >
                           <tbody>
                               <tr><td style="font-weight: bold;">Codice Albo</td><td>{{istanza.codice_albo}}</td></tr>
                               <tr><td style="font-weight: bold;">Codice Ren</td><td>{{istanza.codice_ren}}</td></tr>

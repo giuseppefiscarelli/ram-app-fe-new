@@ -153,7 +153,7 @@ export class AdminReportEditComponent implements OnInit {
      // this.form =this.initializeForEdit(this.record)
       let detail = JSON.parse(data.report.detail)
       console.log(detail);
-      let test = detail.map(x=> x.text || "")
+      let test = detail.map(x=> x || "")
       console.log(test)
       this.istanza = data.istanza;
       this.typeReport = data.report.typeReport;
