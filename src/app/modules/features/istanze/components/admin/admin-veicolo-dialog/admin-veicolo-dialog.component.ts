@@ -14,7 +14,6 @@ import { TYPE } from '@app/modules/notifications/values.constants';
 import { statusCheck } from '@app/app.costants';
 import { Allegato } from '@app/modules/models/allegato.model';
 import { Istanza, Rendicontazione } from '@app/modules/models/istanza.model';
-import { Istanza, Rendicontazione } from '@app/modules/models/istanza.model';
 import { IstanzaCheck } from '@app/modules/models/istanzacheck.model';
 import { TypeIstance } from '@app/modules/models/type-istance.model';
 import { TypeDocument } from '@app/modules/models/typeDocument.model';
@@ -26,8 +25,7 @@ import { AdminDialogAllegatoComponent } from '../admin-dialog-allegato/admin-dia
 import Swal from 'sweetalert2';
 import { Report } from '@app/modules/models/report.model';
 import moment from 'moment';
-import { Report } from '@app/modules/models/report.model';
-import moment from 'moment';
+
 
 @Component({
   selector: 'app-admin-veicolo-dialog',

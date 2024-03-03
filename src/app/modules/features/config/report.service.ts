@@ -209,6 +209,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
       //    x.margin = [0, 0, 0, 10]
       //   return x
       // })
+      console.log( dataReport['detail'])
       let details = dataReport['detail'].map(
         (item) => {
           return { text: item, margin: [0, 0, 0, 5] };

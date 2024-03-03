@@ -153,7 +153,7 @@ export class AdminReportEditComponent implements OnInit {
      // this.form =this.initializeForEdit(this.record)
       let detail = JSON.parse(data.report.detail)
       console.log(detail);
-      let test = detail.map(x=> x.text || "")
+      let test = detail.map(x=> x|| "")
       console.log(test)
       this.istanza = data.istanza;
       this.typeReport = data.report.typeReport;
@@ -295,14 +295,14 @@ export class AdminReportEditComponent implements OnInit {
 
     this.form.controls.filenameUpload.setValue(this.fileAttach.name)
     //console.log(this.fileAttach)
-}
-deleteFile(): void{
-    this.fileAttach = null;
-    this.fileName = '';
-    this.form.controls.filenameUpload.setValue(null)
-    this.form.controls.attachControl.setValue(false)
-    this.fileDimControl = this.typeFileControl= false;
-}
+  }
+  deleteFile(): void{
+      this.fileAttach = null;
+      this.fileName = '';
+      this.form.controls.filenameUpload.setValue(null)
+      this.form.controls.attachControl.setValue(false)
+      this.fileDimControl = this.typeFileControl= false;
+  }
   initializeForEdit(data:Report,detail?): FormGroup{
     console.log(detail)
 
