@@ -161,37 +161,37 @@
           style="background-color: orange; color:white"
           (click)="onClickRend(true)">Chiudi rendicontazione</button>
       </mat-list-item>
-    </mat-list>
-    <mat-list fxFlex="auto">
-      <div mat-subheader>Riepilogo Rendicontazione</div>
-      <mat-list-item >
-        <p matLine>Allegati Dichiarazione</p>
-        <div matLine>
-          <section class="progress-section">
-            <mat-progress-bar
-                color="primary"
-                [mode]="mode"
-                [value]="(this.listaAllegatiDich.length / this.totCertEnable)*100">
-            </mat-progress-bar>
-                  <div style="position: absolute; padding: 10px; color: white;">  {{this.listaAllegatiDich.length }} di  {{ totCertEnable }} </div>
-          </section>
-        </div>
-      </mat-list-item>
-      <mat-list-item >
-        <p matLine>Veicoli Inseriti</p>
-        <div matLine>
-          <section class="progress-section">
-            <mat-progress-bar
-                color="accent"
-                [mode]="mode"
-                [value]="(this.listaVeicoli.length / this.totVeicoli)*100">
-            </mat-progress-bar>
-                  <div style="position: absolute; padding: 10px; color: white;">  {{this.listaVeicoli.length }} di  {{ totVeicoli }} </div>
-          </section>
+      </mat-list>
+      <mat-list fxFlex="auto">
+        <div mat-subheader>Riepilogo Rendicontazione</div>
+        <mat-list-item >
+          <p matLine>Allegati Dichiarazione</p>
+          <div matLine>
+            <section class="progress-section">
+              <mat-progress-bar
+                  color="primary"
+                  [mode]="mode"
+                  [value]="(this.listaAllegatiDich.length / this.totCertEnable)*100">
+              </mat-progress-bar>
+                    <div style="position: absolute; padding: 10px; color: white;">  {{this.listaAllegatiDich.length }} di  {{ totCertEnable }} </div>
+            </section>
+          </div>
+        </mat-list-item>
+        <mat-list-item >
+          <p matLine>Veicoli Inseriti</p>
+          <div matLine>
+            <section class="progress-section">
+              <mat-progress-bar
+                  color="accent"
+                  [mode]="mode"
+                  [value]="(this.listaVeicoli.length / this.totVeicoli)*100">
+              </mat-progress-bar>
+                    <div style="position: absolute; padding: 10px; color: white;">  {{this.listaVeicoli.length }} di  {{ totVeicoli }} </div>
+            </section>
 
-        </div>
-      </mat-list-item>
-  </mat-list>
+          </div>
+        </mat-list-item>
+      </mat-list>
     </div>
 
 

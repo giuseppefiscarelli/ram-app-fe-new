@@ -190,7 +190,7 @@ export class UserIstanzaEditComponent implements OnInit {
                           const reportingStartDate = new Date(Number(this.typeIstance.reportingStartDate));
                           const reportingEndDate = new Date(Number(this.typeIstance.reportingEndDate));
 
-                          if(this.today > reportingEndDate){
+                          if(this.today > reportingEndDate || this.today < reportingStartDate){
 
                               this.enableRendicontazione =false;
                               this.rendicontazione.enable = false;
