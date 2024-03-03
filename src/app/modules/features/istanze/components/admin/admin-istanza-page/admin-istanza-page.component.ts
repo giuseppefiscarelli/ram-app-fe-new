@@ -1,3 +1,4 @@
+import { Report } from './../../../../../models/report.model';
 import { statusAdminVei, typeReport } from './../../../../../../app.costants';
 import { DateAdapter } from '@angular/material/core';
 import { ReportsEditComponent } from './../../../../config/components/report/reports-edit/reports-edit.component';
@@ -14,7 +15,7 @@ import { ApplicationState } from '@app/app.state';
 import { Allegato } from '@app/modules/models/allegato.model';
 import { Istanza, Rendicontazione } from '@app/modules/models/istanza.model';
 import { IstanzaCheck } from '@app/modules/models/istanzacheck.model';
-import { Report } from '@app/modules/models/report.model';
+
 import { TypeIstance } from '@app/modules/models/type-istance.model';
 import { TypeDocument } from '@app/modules/models/typeDocument.model';
 import { TypeReport } from '@app/modules/models/typeReport.model';
@@ -615,6 +616,7 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
                       istanza: this.istanza,
                       dataIstruttoria:this.istruttoriaData,
                       rendicontazione: this.rendicontazione,
+
                       info:`N° protocollo ${this.istanza.id_ram}/${this.typeIstance.year} - ${this.istanza.ragione_sociale}`
                   }
               }

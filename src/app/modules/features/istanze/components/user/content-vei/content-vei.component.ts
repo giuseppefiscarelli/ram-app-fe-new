@@ -369,6 +369,9 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
   }
 
 
+
+
+
   checkAllegatoIntegrazione(allegato: Allegato){
    // console.log(allegato)
     let dataUpload = moment(Number(allegato.dataUpload))

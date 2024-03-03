@@ -14,6 +14,7 @@ import { TYPE } from '@app/modules/notifications/values.constants';
 import { statusCheck } from '@app/app.costants';
 import { Allegato } from '@app/modules/models/allegato.model';
 import { Istanza, Rendicontazione } from '@app/modules/models/istanza.model';
+import { Istanza, Rendicontazione } from '@app/modules/models/istanza.model';
 import { IstanzaCheck } from '@app/modules/models/istanzacheck.model';
 import { TypeIstance } from '@app/modules/models/type-istance.model';
 import { TypeDocument } from '@app/modules/models/typeDocument.model';
@@ -23,6 +24,8 @@ import { NotificationsComponent } from '@app/modules/notifications/notifications
 import { IstanzeService } from '../../../istanze.service';
 import { AdminDialogAllegatoComponent } from '../admin-dialog-allegato/admin-dialog-allegato.component';
 import Swal from 'sweetalert2';
+import { Report } from '@app/modules/models/report.model';
+import moment from 'moment';
 import { Report } from '@app/modules/models/report.model';
 import moment from 'moment';
 
@@ -94,6 +97,8 @@ export class AdminVeicoloDialogComponent implements OnInit {
       this.dialogSubTitle = data.info;
       this.typeDocuments = data.typeDocuments;
       this.typeIstance =data.typeIstance;
+      this.dataIstruttoria = data.dataIstruttoria;
+      this.rendicontazione = data.rendicontazione;
       this.dialogTitle = 'Scheda Veicolo';
       this.btnSubmit= 'Aggiorna informazioni e stato lavorazione';
       this.typeVeicolo = this.typeIstance.typeVei.find(x=> x['campoDb'] === this.veicolo.type);
@@ -345,8 +350,8 @@ export class AdminVeicoloDialogComponent implements OnInit {
                             this.allegatiVeicolo = [...currentRecords];
                             console.log(this.allegatiVeicolo)
                             this.alleSelected = null;
-                        //  console.log(this.allegatiVeicolo)
-                        //   console.log(this.checkDichiarazioni(), this.checkAllegatiStatus(), this.allegatiVeicolo.length)
+                          console.log(this.allegatiVeicolo)
+                          console.log(this.checkDichiarazioni(), this.checkAllegatiStatus(), this.allegatiVeicolo.length)
                             if(this.checkDichiarazioni() && (this.checkAllegatiStatus() === this.allegatiVeicolo.length)){
                                 this.datiIstruttoriaShow = true;
                                 let contributo  = this.services.calcolaContributo(this.istanza, this.istanzaCheck, this.veicolo, this.typeIstance)
@@ -398,12 +403,12 @@ export class AdminVeicoloDialogComponent implements OnInit {
    //   console.log( this.alleDataSelected)
 
 
-      const res: any = this.alleDataSelected
-      const blob = new Blob([res],{type: file.type});
-   //   console.log(blob)
-      const url = window.URL.createObjectURL(blob);
-   //   console.log(url)
-      window.open(url,name);
+  //     const res: any = this.alleDataSelected
+  //     const blob = new Blob([res],{type: file.type});
+  //  //   console.log(blob)
+  //     const url = window.URL.createObjectURL(blob);
+  //  //   console.log(url)
+  //     window.open(url,name);
 
         // this.services.getFile(file)
         // .subscribe(
@@ -415,6 +420,19 @@ export class AdminVeicoloDialogComponent implements OnInit {
         //     },
         //         error => console.log('Error downloading the file.')
         //     );
+
+        this.services.getFile(file)
+        .subscribe(
+        (res) => {
+            const blob = new Blob([res], {type: file.type});
+            // const url = window.URL.createObjectURL(blob);
+            // window.open(url);
+            const url: string = URL.createObjectURL(blob);
+            window.open(url,file.filename);
+
+        },
+        error => console.log('Error downloading the file.')
+        );
     }
 
     downloadAllegato(file): void{
@@ -447,11 +465,12 @@ export class AdminVeicoloDialogComponent implements OnInit {
     checkDichiarazioni(){
         const checkDichiarazioni = this.istanzaCheck.contratto === 'accepted' &&
         this.istanzaCheck.delega === 'accepted' &&
-        this.istanzaCheck.dimImpresa &&
+        //this.istanzaCheck.dimImpresa &&
         this.istanzaCheck.doc === 'accepted' &&
         this.istanzaCheck.firma === 'accepted' &&
         this.istanzaCheck.pec === 'accepted' ? true: false;
-    //    console.log(checkDichiarazioni)
+        console.log(checkDichiarazioni)
+        console.log(this.istanzaCheck)
         return checkDichiarazioni;
     }
 

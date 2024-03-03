@@ -30,6 +30,7 @@
     <ng-template #selOption>
       <ng-container *ngIf="this.listVeiFiltered.length > 0; else newVei">
         <div fxLayout="row"  *ngIf="(this.listVeiFiltered.length < this.istanza[catlist.selectedOptions.selected[0].value.campoDb]) && (this.rendicontazione.enable || this.enableRendicontazione)">
+        <div fxLayout="row"  *ngIf="(this.listVeiFiltered.length < this.istanza[catlist.selectedOptions.selected[0].value.campoDb]) && (this.rendicontazione.enable || this.enableRendicontazione)">
           <div fxFlex="auto">
             <button mat-raised-button  style="margin:15px;" (click)="onClickInsertVei('create')" color="primary">Inserisci nuovo veicolo</button>
           </div>
@@ -262,7 +263,7 @@
         <div fxLayout="row" *ngIf="this.rendicontazione.enable || enableRendicontazione">
           <div fxFlex="100" *ngIf="enableRendicontazione" >
             <button  style="margin:15px;" mat-raised-button (click)="onClickInsertVei('create')" color="primary">Inserisci nuovo veicolo</button>
-          </div>
+
         </div>
       </ng-template>
 

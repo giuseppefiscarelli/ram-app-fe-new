@@ -78,9 +78,9 @@ export class UserIstanzaEditComponent implements OnInit {
     constructor(  private route: ActivatedRoute,
                   private service: IstanzeService,
                   private dialog: MatDialog,
+                  private configService: ConfigService,
                   private changeDetectorRef: ChangeDetectorRef,
                   private store: Store<ApplicationState>,
-                  private configService: ConfigService,
                   private notifications: NotificationsComponent,) {
 
                     this.user = this.store.pipe(select('authentication'), select('user'));
@@ -131,17 +131,15 @@ export class UserIstanzaEditComponent implements OnInit {
                       this.configService.fetchReport({drop:true, enable:true, id_ram:this.istanza.id_ram})
                     ]).subscribe(
                       ([vei,alle,ista, typeDocument, typeReport, reports]) => {
-                          this.listaVeicoli = vei;
-                          this.listaAllegati = alle;
+                          this.listaVeicoli=vei;
+                          this.listaAllegati=alle;
                           this.typeIstance = ista;
-                          this.typeDocuments = typeDocument;
-                          this.typeReport = typeReport;
-                          this.reports = reports;
-
-
                           console.log(reports,this.typeDocuments, typeReport)
                           this.isExpired = Number(this.typeIstance.reportingEndDate) < this.today.getTime()
                           console.log('è scaduta:'+this.isExpired)
+                          this.typeDocuments = typeDocument;
+                          this.typeReport = typeReport;
+                          this.reports = reports;
                           this.typeVeiGroupView = this.groupByKey(this.typeIstance.typeVei,'catVei');
                           this.typeIstance.certAttach.map(
                               (cert) => {
@@ -585,14 +583,16 @@ export class UserIstanzaEditComponent implements OnInit {
   }
 
   getStatusIstruttoria(reports: Report[]){
-      const validReports = reports.filter(obj => obj.dataInvio !== null);
-      validReports.sort((a, b) => Number(b.dataInvio) - Number(a.dataInvio));
-      if(validReports.length > 0){
-        return validReports[0];
-      }
-      return false
+    const validReports = reports.filter(obj => obj.dataInvio !== null);
+    validReports.sort((a, b) => Number(b.dataInvio) - Number(a.dataInvio));
+    if(validReports.length > 0){
+      return validReports[0];
+    }
+    return false
 
 
-  }
+}
+
+
 
 }

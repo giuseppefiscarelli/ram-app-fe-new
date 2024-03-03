@@ -14,6 +14,7 @@
 
         <ng-container *ngIf="enableRendicontazione; else rendScaduta;">
 
+
           <ng-container *ngIf="this.rendicontazione.enable; else noactiverend">
             <ng-container *ngIf="!istruttoriaData; else istruttoria">
               <mat-list-item >
@@ -40,7 +41,22 @@
 
           </ng-template>
 
+              </mat-list-item>
+            </ng-container>
+
+          </ng-container>
+
+          <ng-template #istruttoria>
+            <mat-list-item >
+              <p matLine>Stato istruttoria</p>
+              <span class="span-status pending" style="padding: 0 10px;" matLine>{{this.istruttoriaData.typeReport['description']}}</span>
+              <p matLine>Scadenza integrazione: <b>{{this.dataFineIstruttoria | date:'dd/MM/YYYY'}}</b></p>
+            </mat-list-item>
+
+          </ng-template>
+
           <ng-template #noactiverend>
+
 
             <ng-container *ngIf="this.rendicontazione.dateEnd; else closedRend">
               <mat-list-item >
@@ -72,6 +88,27 @@
 
 
 
+
+
+          </ng-template>
+        </ng-container>
+
+        <ng-template #closedRend>
+          <mat-list-item >
+            <p matLine>Stato rendicontazione</p>
+            <p matLine>Non Avviata</p>
+          </mat-list-item>
+          <mat-list-item>
+            <button
+            mat-raised-button
+            style="background-color: green; color:white"
+            (click)="onClickRend(this.rendicontazione.enable)">Avvia rendicontazione</button>
+          </mat-list-item>
+        </ng-template>
+
+
+
+
         <ng-template #rendScaduta>
           <ng-container *ngIf="this.rendicontazione.enable; else noactiverend">
             <mat-list-item >
@@ -82,6 +119,7 @@
                 <p matLine>Termini per la rendicontazione scaduti il {{this.typeIstance.reportingEndDate | date:"dd/MM/yyyy HH:mm"}}</p>
             </mat-list-item>
           </ng-container>
+
           <ng-template #noactiverend>
             <ng-container *ngIf="this.rendicontazione.dateEnd; else closedRend">
               <mat-list-item >
@@ -156,6 +194,7 @@
       </mat-list-item>
   </mat-list>
     </div>
+
 
 
 
