@@ -789,5 +789,19 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
     }
 
 
+    checkVeicoloIntegrazioni(veicolo){
+      console.log(this.listaAllegatiVeicoli.filter(x=> x.id_Veicolo === veicolo.id))
+
+
+      if(this.listaAllegatiVeicoli.filter(x=> x.id_Veicolo === veicolo.id).some(
+        (allegato) => moment(Number(allegato.dataUpload)).isAfter(moment(Number(this.rendicontazione.dateEnd)))
+      )){
+        return 'Documenti Integrazione'
+      }
+      return false
+
+    }
+
+
 
 }
