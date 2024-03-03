@@ -182,7 +182,22 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
                     this.configService.fetchReport({drop:true, enable:true, id_ram:this.istanza.id_ram})
                 ]).subscribe(([vei, alle,ista,typeDocument, typeReport, reports]) =>{
 
-                    this.listaVeicoli= this.listaVeicoliFiltered = vei;
+                    this.listaVeicoli= this.listaVeicoliFiltered = vei.sort((a, b) => {
+                      if (a.category < b.category) {
+                        return -1;
+                      }
+                      if (a.category > b.category) {
+                        return 1;
+                      }
+                      // Se le categorie sono uguali, ordina per "type"
+                      if (a.type < b.type) {
+                        return -1;
+                      }
+                      if (a.type > b.type) {
+                        return 1;
+                      }
+                      return 0;
+                    });;
                     this.listaAllegati=alle;
 
                     this.typeIstance = ista;
@@ -237,17 +252,85 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
                   this.listaVeicoliFiltered = this.listaVeicoli;
 
                   if(filters['category']){
-                    this.listaVeicoliFiltered = this.listaVeicoliFiltered.filter(x=> x['category'] === filters['category'])
+                    this.listaVeicoliFiltered = this.listaVeicoliFiltered
+                    .filter(x=> x['category'] === filters['category'])
+                    .sort((a, b) => {
+                      if (a.category < b.category) {
+                        return -1;
+                      }
+                      if (a.category > b.category) {
+                        return 1;
+                      }
+                      // Se le categorie sono uguali, ordina per "type"
+                      if (a.type < b.type) {
+                        return -1;
+                      }
+                      if (a.type > b.type) {
+                        return 1;
+                      }
+                      return 0;
+                    });
                   }
 
                   if(filters['type']){
-                    this.listaVeicoliFiltered = this.listaVeicoliFiltered.filter(x=> x['type'] === filters['type'])
+                    this.listaVeicoliFiltered = this.listaVeicoliFiltered
+                    .filter(x=> x['type'] === filters['type'])
+                    .sort((a, b) => {
+                      if (a.category < b.category) {
+                        return -1;
+                      }
+                      if (a.category > b.category) {
+                        return 1;
+                      }
+                      // Se le categorie sono uguali, ordina per "type"
+                      if (a.type < b.type) {
+                        return -1;
+                      }
+                      if (a.type > b.type) {
+                        return 1;
+                      }
+                      return 0;
+                    });
                   }
                   if(filters['licensePlate']){
-                    this.listaVeicoliFiltered = this.listaVeicoliFiltered.filter(x=> x['licensePlate'] === filters['licensePlate'])
+                    this.listaVeicoliFiltered = this.listaVeicoliFiltered
+                    .filter(x=> x['licensePlate'] === filters['licensePlate'])
+                    .sort((a, b) => {
+                      if (a.category < b.category) {
+                        return -1;
+                      }
+                      if (a.category > b.category) {
+                        return 1;
+                      }
+                      // Se le categorie sono uguali, ordina per "type"
+                      if (a.type < b.type) {
+                        return -1;
+                      }
+                      if (a.type > b.type) {
+                        return 1;
+                      }
+                      return 0;
+                    });
                   }
                   if(filters['adminState']){
-                    this.listaVeicoliFiltered = this.listaVeicoliFiltered.filter(x=> x['adminState'] === filters['adminState'])
+                    this.listaVeicoliFiltered = this.listaVeicoliFiltered
+                    .filter(x=> x['adminState'] === filters['adminState'])
+                    .sort((a, b) => {
+                      if (a.category < b.category) {
+                        return -1;
+                      }
+                      if (a.category > b.category) {
+                        return 1;
+                      }
+                      // Se le categorie sono uguali, ordina per "type"
+                      if (a.type < b.type) {
+                        return -1;
+                      }
+                      if (a.type > b.type) {
+                        return 1;
+                      }
+                      return 0;
+                    });
                   }
                  // //console.log(filters, this.listaVeicoliFiltered)
 
@@ -309,7 +392,22 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
 
           return check
          }else if(data.type === 'ammissione'){
-          let listVeicoliAccetati = this.listaVeicoli.filter(x=> x.adminState === statusAdminVei.accepted);
+          let listVeicoliAccetati = this.listaVeicoli.filter(x=> x.adminState === statusAdminVei.accepted).sort((a, b) => {
+            if (a.category < b.category) {
+              return -1;
+            }
+            if (a.category > b.category) {
+              return 1;
+            }
+            // Se le categorie sono uguali, ordina per "type"
+            if (a.type < b.type) {
+              return -1;
+            }
+            if (a.type > b.type) {
+              return 1;
+            }
+            return 0;
+          });;
       //   console.log(listVeicoliAccetati)
           let alleFiltrati = this.listaAllegati.filter(allegato => listVeicoliAccetati.map(veicolo => veicolo.id).includes(allegato.id_Veicolo));
        //   console.table(alleFiltrati)
@@ -638,7 +736,22 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
                   if(res.veicolo){
                       const upVeicoli = [...this.listaVeicoliFiltered];
                       upVeicoli[atIndex] = res.veicolo;
-                      this.listaVeicoli = this.listaVeicoliFiltered = [...upVeicoli];
+                      this.listaVeicoli = this.listaVeicoliFiltered = [...upVeicoli.sort((a, b) => {
+                        if (a.category < b.category) {
+                          return -1;
+                        }
+                        if (a.category > b.category) {
+                          return 1;
+                        }
+                        // Se le categorie sono uguali, ordina per "type"
+                        if (a.type < b.type) {
+                          return -1;
+                        }
+                        if (a.type > b.type) {
+                          return 1;
+                        }
+                        return 0;
+                      })];
                   }
                   this.changeDetectorRef.markForCheck()
 
