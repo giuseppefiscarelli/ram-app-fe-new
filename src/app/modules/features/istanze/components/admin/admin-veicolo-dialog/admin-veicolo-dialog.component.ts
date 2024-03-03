@@ -346,8 +346,8 @@ export class AdminVeicoloDialogComponent implements OnInit {
                             this.allegatiVeicolo = [...currentRecords];
                             console.log(this.allegatiVeicolo)
                             this.alleSelected = null;
-                        //  console.log(this.allegatiVeicolo)
-                        //   console.log(this.checkDichiarazioni(), this.checkAllegatiStatus(), this.allegatiVeicolo.length)
+                          console.log(this.allegatiVeicolo)
+                          console.log(this.checkDichiarazioni(), this.checkAllegatiStatus(), this.allegatiVeicolo.length)
                             if(this.checkDichiarazioni() && (this.checkAllegatiStatus() === this.allegatiVeicolo.length)){
                                 this.datiIstruttoriaShow = true;
                                 let contributo  = this.services.calcolaContributo(this.istanza, this.istanzaCheck, this.veicolo, this.typeIstance)
@@ -399,12 +399,12 @@ export class AdminVeicoloDialogComponent implements OnInit {
    //   console.log( this.alleDataSelected)
 
 
-      const res: any = this.alleDataSelected
-      const blob = new Blob([res],{type: file.type});
-   //   console.log(blob)
-      const url = window.URL.createObjectURL(blob);
-   //   console.log(url)
-      window.open(url,name);
+  //     const res: any = this.alleDataSelected
+  //     const blob = new Blob([res],{type: file.type});
+  //  //   console.log(blob)
+  //     const url = window.URL.createObjectURL(blob);
+  //  //   console.log(url)
+  //     window.open(url,name);
 
         // this.services.getFile(file)
         // .subscribe(
@@ -416,6 +416,19 @@ export class AdminVeicoloDialogComponent implements OnInit {
         //     },
         //         error => console.log('Error downloading the file.')
         //     );
+
+        this.services.getFile(file)
+        .subscribe(
+        (res) => {
+            const blob = new Blob([res], {type: file.type});
+            // const url = window.URL.createObjectURL(blob);
+            // window.open(url);
+            const url: string = URL.createObjectURL(blob);
+            window.open(url,file.filename);
+
+        },
+        error => console.log('Error downloading the file.')
+        );
     }
 
     downloadAllegato(file): void{
@@ -448,11 +461,12 @@ export class AdminVeicoloDialogComponent implements OnInit {
     checkDichiarazioni(){
         const checkDichiarazioni = this.istanzaCheck.contratto === 'accepted' &&
         this.istanzaCheck.delega === 'accepted' &&
-        this.istanzaCheck.dimImpresa &&
+        //this.istanzaCheck.dimImpresa &&
         this.istanzaCheck.doc === 'accepted' &&
         this.istanzaCheck.firma === 'accepted' &&
         this.istanzaCheck.pec === 'accepted' ? true: false;
-    //    console.log(checkDichiarazioni)
+        console.log(checkDichiarazioni)
+        console.log(this.istanzaCheck)
         return checkDichiarazioni;
     }
 
@@ -469,9 +483,9 @@ export class AdminVeicoloDialogComponent implements OnInit {
         )
     }
     checkAllegatoIntegrazione(allegato: Allegato){
-      console.log(allegato)
+    //  console.log(allegato)
       let dataUpload = moment(Number(allegato.dataUpload))
-      console.log(this.rendicontazione.dateEnd)
+    //  console.log(this.rendicontazione.dateEnd)
 
 
       if(allegato.id_Report && dataUpload.isAfter(moment(Number(this.rendicontazione.dateEnd)))){
