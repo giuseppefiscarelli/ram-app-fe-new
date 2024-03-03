@@ -100,7 +100,6 @@ export class UserIstanzaEditComponent implements OnInit {
                     this.totAllegati=0;
                     this.rottamazione=false;
                     this.enableRendicontazione =true;
-
                     this.totVeicoli = this.istanza.nv1 +
                     this.istanza.nv2 +
                     this.istanza.nv3+
