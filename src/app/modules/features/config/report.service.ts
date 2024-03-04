@@ -205,7 +205,13 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
       let firma  = await this.getBase64ImageFromURL('../../../../assets/report/firma_fb.png');
 
       let listaRichieste =[];
-
+      console.log( dataReport['detail'])
+      let details = dataReport['detail'].map(
+        (item) => {
+          return { text: item, margin: [0, 0, 0, 5] };
+        }
+      )
+      console.log(details)
 
        header= [
 
