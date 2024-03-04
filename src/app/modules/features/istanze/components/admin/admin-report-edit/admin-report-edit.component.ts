@@ -444,7 +444,7 @@ deleteFile(): void{
 
 
     let payload = this.form.getRawValue();
-    //console.log(payload);
+    console.log(payload);
     if(this.mode ==='generate'){
 
       const data =  await this.reportService.generateReport( this.typeReport.type,payload, this.veicoli, this.alleVei,this.typeInstance , this.istanza);

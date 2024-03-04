@@ -264,7 +264,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
             { text: ' abbiamo necessità di ricevere i seguenti chiarimenti e/o documenti:'}
           ], alignment:'justify'
         },
-        {ul:dataReport['detail'], margin:[0,10], alignment:'justify', bold:true},
+        {ul:details, margin:[0,10], alignment:'justify', bold:true},
           {
             text:[
               {text: 'Pertanto, ai sensi e per gli effetti dell\'art. 10, comma 4 del D.D 12 aprile 2022 n.155, Vi invitiamo a fornirci la suddetta documentazione '},
