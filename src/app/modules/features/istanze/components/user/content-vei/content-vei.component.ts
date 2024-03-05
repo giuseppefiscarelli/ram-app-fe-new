@@ -376,13 +376,39 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
     // console.log(allegato)
      let dataUpload = moment(Number(allegato.dataUpload))
     // console.log(this.rendicontazione.dateEnd)
-
+ console.log(this.istruttoriaData)
      if(dataUpload.isAfter(moment(Number(this.rendicontazione.dateEnd)))){
        if(this.istruttoriaData.typeReport['type'] === 'integrazione'){
          return 'Documento Integrazione'
        }
      }
 
+<<<<<<< HEAD
   }
+=======
+
+   }
+>>>>>>> investimenti-8
+
+   checkAllegatoEditable(allegato: Allegato, veicolo: Veicolo){
+    console.log(veicolo)
+    let dataUpload = moment(Number(allegato.dataUpload))
+
+    if(this.istruttoriaData){
+      if(dataUpload.isAfter(moment(Number(this.rendicontazione.dateEnd)))){
+        if(this.istruttoriaData.typeReport['type'] === 'integrazione'){
+          console.log(allegato.id, ' modificabile')
+          return true
+        }
+      }
+    }
+
+    return false
+
+
+
+   }
+
+
 
 }

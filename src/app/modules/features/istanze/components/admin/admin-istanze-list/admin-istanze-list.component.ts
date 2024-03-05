@@ -148,6 +148,7 @@ export class AdminIstanzeListComponent implements OnInit , OnDestroy{
         });
         const filters = JSON.parse(localStorage.getItem('filters'));
        // console.log(filters)
+       // console.log(filters)
         if(filters){
           //this.paginator.resetFilters(filters);
           this.filters.setValue(filters)

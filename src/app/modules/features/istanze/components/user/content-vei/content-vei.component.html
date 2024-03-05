@@ -240,9 +240,23 @@
                                         *ngIf="this.rendicontazione.enable || this.enableRendicontazione|| this.userMe.role !== 'user'"
                                         (click)="onClickDeleteAllegato(alle)"
                                         color="accent"
+<<<<<<< HEAD
                                         style="color:red;"
                                       ><mat-icon>close</mat-icon>
                                       </button>
+=======
+                                        ><mat-icon>download</mat-icon>
+                                </button>
+                                <button mat-icon-button
+                                        aria-label="Example icon button with a vertical three dot icon"
+                                        matTooltip="Aggiorna Documento"
+                                        matTooltipPosition="above"
+                                        *ngIf="(this.rendicontazione.enable || this.userMe.role !== 'user' || this.enableRendicontazione) &&(checkAllegatoEditable(alle, v))"
+                                        (click)="onClickEditAllegato('edit',v,alle,index)"
+                                        style="color:green;"
+                                        ><mat-icon>sync</mat-icon>
+                                </button>
+>>>>>>> investimenti-8
 
                                   </ng-container>
                                 </table>
