@@ -181,7 +181,7 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
                     this.configService.fetchTypeReport({drop:true, typeistance:this.istanza.tipo_istanza}),
                     this.configService.fetchReport({drop:true, enable:true, id_ram:this.istanza.id_ram})
                 ]).subscribe(([vei, alle,ista,typeDocument, typeReport, reports]) =>{
-
+                    //console.log(this.listaVeicoli)
                     this.listaVeicoli= this.listaVeicoliFiltered = vei.sort((a, b) => {
                       if (a.category < b.category) {
                         return -1;
@@ -380,7 +380,7 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
     }
 
     getEnableReport(data){
-      console.log()
+     // console.log()
       const hasStatusInvioDefined = this.reports.some(record => record.statusInvio !== undefined &&  record.statusInvio !== 'pending'&& record.statusInvio !== null && record.enable);
       const enableGenerateReport = this.reports.every(obj => (obj.statusInvio === undefined || obj.statusInvio === 'completed') && obj.enable);
       if(this.rendicontazione.status !== 'opened' && (enableGenerateReport || this.reports.length ==0)){
@@ -497,6 +497,7 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
 
       typeIstance.certAttach.map(
           (cert) => {
+            //console.log(cert)
               let campoDb = cert['description'];
               if(campoDb === 'ampl' && this.rottamazione){
 
@@ -582,7 +583,7 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
       .subscribe(
         {
           next:(res) => {
-            console.log(file)
+          // console.log(file)
              const blob = new Blob([res],{type: file['type']});
              const url = window.URL.createObjectURL(blob);
              window.open(url);
@@ -652,16 +653,17 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
           this.statoIstruttoria = 'enabled';
           this.funzioniIstruttoria = true;
           if((this.istanzaCheck.updatedAt > this.istanzaCheck.createdAt) || this.listaAllegati.some(x=> x.adminState !== null)){
-            if(reports.length > 0){
-              const validReports = reports.filter(obj => obj.dataInvio !== null);
-              validReports.sort((a, b) => Number(b.dataInvio) - Number(a.dataInvio));
-              if(validReports.length > 0){
-                this.statoIstruttoria = validReports[0].typeReport['type'];
-                console.log(validReports[0])
-                this.istruttoriaRend = true;
-                this.istruttoriaData = validReports[0];
-                if(this.istruttoriaData.typeReport['type'] === 'integrazione'){
-                  this.dataFineIstruttoria = moment(Number(this.istruttoriaData.dataInvio)).add(15,'days')
+
+           if(reports.length > 0){
+            const validReports = reports.filter(obj => obj.dataInvio !== null);
+            validReports.sort((a, b) => Number(b.dataInvio) - Number(a.dataInvio));
+            if(validReports.length > 0){
+              this.statoIstruttoria = validReports[0].typeReport['type'];
+              //console.log(validReports[0])
+              this.istruttoriaRend = true;
+              this.istruttoriaData = validReports[0];
+              if(this.istruttoriaData.typeReport['type'] === 'integrazione'){
+                this.dataFineIstruttoria = moment(Number(this.istruttoriaData.dataInvio)).add(15,'days')
 
                 }
               }
@@ -725,7 +727,7 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
 
           ref.afterClosed().subscribe(
               (res) => {
-                  console.log(res)
+                 // console.log(res)
 
                   if(res.allegati){
                     let otherAlle = [...this.listaAllegatiVeicoli.filter(x=>x.id_Veicolo && (x.id_Veicolo !== res.veicolo.id))]
@@ -877,10 +879,10 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
                   statusInvio:'completed'
                 }
 
-                console.log(payloadReport)
+                //console.log(payloadReport)
                 this.configService.updateReport(payloadReport).subscribe({
                   next:(res) => {
-                    console.log(res)
+                   // console.log(res)
                     if(!!res){
                       const currentRecords = [...this.reports];
                       currentRecords[atIndex] = res;
@@ -903,7 +905,7 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
 
 
     checkVeicoloIntegrazioni(veicolo){
-      console.log(this.listaAllegatiVeicoli.filter(x=> x.id_Veicolo === veicolo.id))
+    //  console.log(this.listaAllegatiVeicoli.filter(x=> x.id_Veicolo === veicolo.id))
 
 
       if(this.listaAllegatiVeicoli.filter(x=> x.id_Veicolo === veicolo.id).some(

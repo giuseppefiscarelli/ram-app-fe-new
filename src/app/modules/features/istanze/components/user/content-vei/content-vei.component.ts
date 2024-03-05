@@ -393,6 +393,19 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
 
    }
 
+   checkVeicoloEditable(veicolo){
+    console.log(veicolo)
+    if(this.istruttoriaData){
+      if(this.istruttoriaData.typeReport['type'] === 'integrazione' && veicolo.adminState !== 'accepted'){
+        console.log(' modificabile')
+        return true
+      }else{
+        return false
+      }
+    }
+    return true
+   }
+
 
 
 }
