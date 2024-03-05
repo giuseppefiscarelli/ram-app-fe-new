@@ -138,11 +138,11 @@ export class AdminIstanzeListComponent implements OnInit , OnDestroy{
 
 
         this.route.queryParams.subscribe(params => {
-          console.log(params)
+         // console.log(params)
 
         });
         const filters = JSON.parse(localStorage.getItem('filters'));
-        console.log(filters)
+       // console.log(filters)
         if(filters){
           //this.paginator.resetFilters(filters);
           this.filters.setValue(filters)
@@ -206,7 +206,7 @@ export class AdminIstanzeListComponent implements OnInit , OnDestroy{
       this.routerSubscription$.unsubscribe()
     }
     private handleSubscriptionResponse(res: Istanza[]): void {
-      console.log(res)
+    //  console.log(res)
       this.paginator.pagination.offset === 0
           ? this.dataSource = res
           : this.dataSource = this.dataSource.concat(res);
@@ -313,7 +313,7 @@ export class AdminIstanzeListComponent implements OnInit , OnDestroy{
       }
 
 
-      console.log(data)
+     // console.log(data)
       return data
     }
 

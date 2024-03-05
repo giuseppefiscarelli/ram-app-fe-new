@@ -227,7 +227,7 @@
                                         aria-label="Example icon button with a vertical three dot icon"
                                         matTooltip="Aggiorna Documento"
                                         matTooltipPosition="above"
-                                        *ngIf="this.rendicontazione.enable || this.userMe.role !== 'user' || this.enableRendicontazione"
+                                        *ngIf="(this.rendicontazione.enable || this.userMe.role !== 'user' || this.enableRendicontazione) &&(checkAllegatoEditable(alle, v))"
                                         (click)="onClickEditAllegato('edit',v,alle,index)"
                                         style="color:green;"
                                         ><mat-icon>sync</mat-icon>
