@@ -88,7 +88,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
       this.user = this.store.pipe(select('authentication'),select('user'));
       this.user.pipe(take(1)).subscribe((userMe: User) => this.userMe = userMe);
       this.istanza = data.istanza;
-      console.log(this.istanza)
+     // console.log(this.istanza)
       this.istanzaCheck = data.istanzaCheck;
       this.veicolo = data.veicolo;
       this.allegatiVeicolo = data.allegatiVeicolo;
@@ -107,10 +107,10 @@ export class AdminVeicoloDialogComponent implements OnInit {
       this.rendicontazione = data.rendicontazione;
       this.formVeicolo = this.initializeForEditVeicolo(this.veicolo)
 
-      console.log(this.checkAllegatiStatus(), this.allegatiVeicolo.length, 'prova')
+    //  console.log(this.checkAllegatiStatus(), this.allegatiVeicolo.length, 'prova')
    //console.log(this.allegatiVeicolo)
       const checkDichiarazioni = this.checkDichiarazioni();
-      console.log(checkDichiarazioni,'cdich')
+   //   console.log(checkDichiarazioni,'cdich')
 
       if(checkDichiarazioni && (this.checkAllegatiStatus() === this.allegatiVeicolo.length)){
           this.datiIstruttoriaShow = true;
@@ -119,7 +119,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
           this.valoreMaggPmi = contributo['magg_pmi'];
           this.valoreMaggRete = contributo['magg_rete'];
 
-        console.log(this.valoreContributo,'valo contr')
+      //  console.log(this.valoreContributo,'valo contr')
         }
     //  console.log(this.valoreContributo)
       this.filterOptionsDescriptors = {
@@ -163,7 +163,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
             this.formVeicolo.get('costoIstr').updateValueAndValidity()
             this.formVeicolo.get('valoreContributo').clearValidators()
             this.formVeicolo.get('valoreContributo').updateValueAndValidity()
-            console.log(this.formVeicolo)
+           // console.log(this.formVeicolo)
               // this.formVeicolo.controls.valoreContributo.removeValidators(required)
               //  console.log(this.formVeicolo)
           }else{
@@ -174,7 +174,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
           }
        //   this.formVeicolo.clearValidators()
         //  this.formVeicolo.updateValueAndValidity()
-          console.log(this.formVeicolo)
+        //  console.log(this.formVeicolo)
         }
       )
     }
@@ -259,7 +259,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
 
         if (this.formVeicolo.valid){
             const payload = this.formVeicolo.value;
-        console.log(payload)
+      //  console.log(payload)
             Object.keys(payload).forEach(key => {
                 if (payload[key] === undefined || payload[key] === null ) {
                     delete payload[key];
@@ -342,14 +342,14 @@ export class AdminVeicoloDialogComponent implements OnInit {
                             )
                             let updateItem = this.allegatiVeicolo.find(x=> x.id === res.id);
                             let index = this.allegatiVeicolo.indexOf(updateItem);
-                            console.log(this.allegatiVeicolo)
+                          //  console.log(this.allegatiVeicolo)
                             const currentRecords = [...this.allegatiVeicolo];
                             currentRecords[index] = res;
                             this.allegatiVeicolo = [...currentRecords];
-                            console.log(this.allegatiVeicolo)
+                          //  console.log(this.allegatiVeicolo)
                             this.alleSelected = null;
-                          console.log(this.allegatiVeicolo)
-                          console.log(this.checkDichiarazioni(), this.checkAllegatiStatus(), this.allegatiVeicolo.length)
+                         // console.log(this.allegatiVeicolo)
+                        //  console.log(this.checkDichiarazioni(), this.checkAllegatiStatus(), this.allegatiVeicolo.length)
                             if(this.checkDichiarazioni() && (this.checkAllegatiStatus() === this.allegatiVeicolo.length)){
                                 this.datiIstruttoriaShow = true;
                                 let contributo  = this.services.calcolaContributo(this.istanza, this.istanzaCheck, this.veicolo, this.typeIstance)
@@ -357,7 +357,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
                                 this.valoreMaggPmi = contributo['magg_pmi'];
                                 this.valoreMaggRete = contributo['magg_rete'];
 
-                                console.log(this.valoreContributo,'valore contributo')
+                             //   console.log(this.valoreContributo,'valore contributo')
 
                                 //  this.formVeicolo.controls.valoreContributo.setValue(contributo)
                             }else{
@@ -467,8 +467,8 @@ export class AdminVeicoloDialogComponent implements OnInit {
         this.istanzaCheck.doc === 'accepted' &&
         this.istanzaCheck.firma === 'accepted' &&
         this.istanzaCheck.pec === 'accepted' ? true: false;
-        console.log(checkDichiarazioni)
-        console.log(this.istanzaCheck)
+      //  console.log(checkDichiarazioni)
+       // console.log(this.istanzaCheck)
         return checkDichiarazioni;
     }
 
@@ -486,9 +486,9 @@ export class AdminVeicoloDialogComponent implements OnInit {
     }
 
     checkAllegatoIntegrazione(allegato: Allegato){
-      console.log(allegato)
+   //   console.log(allegato)
       let dataUpload = moment(Number(allegato.dataUpload))
-      console.log(this.rendicontazione.dateEnd)
+  //    console.log(this.rendicontazione.dateEnd)
 
       if(dataUpload.isAfter(moment(Number(this.rendicontazione.dateEnd)))){
         if(this.dataIstruttoria.typeReport['type'] === 'integrazione'){
