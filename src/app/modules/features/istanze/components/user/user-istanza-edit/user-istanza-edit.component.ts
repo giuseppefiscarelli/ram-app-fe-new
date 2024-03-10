@@ -1,3 +1,4 @@
+
 import { PdfViewerSharedComponent } from './../../../../../shared/components/pdf-viewer/pdf-viewer.component';
 import { FormAllegatoComponent } from './../form-allegato/form-allegato.component';
 import { NotificationsComponent } from '@app/modules/notifications/notifications.component';
@@ -74,6 +75,12 @@ export class UserIstanzaEditComponent implements OnInit {
   istruttoriaRend : boolean = false;
   istruttoriaData: Report;
   dataFineIstruttoria: any;
+  integrazione = false;
+  catIntegrazione:string;
+  tipoVeicoloIntegrazione : string;
+  veicoliIntegrazione : Veicolo[] = [];
+  allegatiDichiarazioneIntegrazione: Allegato[] = [];
+
 
     constructor(  private route: ActivatedRoute,
                   private service: IstanzeService,
@@ -206,7 +213,7 @@ export class UserIstanzaEditComponent implements OnInit {
                             if(typeReport === 'integrazione'){
                               this.dataFineIstruttoria= moment(Number(this.istruttoriaData.dataInvio)).add(15,'days');
 
-
+                              this.integrazione = false;
                               let scadenza = moment();
                               console.log(scadenza)
                               if(this.dataFineIstruttoria.isAfter(moment())){
@@ -214,6 +221,12 @@ export class UserIstanzaEditComponent implements OnInit {
                                 this.enableRendicontazione =true;
                                 this.rendicontazione.enable = true;
                                 this.istruttoriaRend = true;
+                                this.integrazione = true;
+                                const idVeicoliFiltrati = this.listaAllegati
+                                  .filter(obj => obj.adminState !== 'accepted')
+                                  .map(obj => obj.id_Veicolo);
+                                console.log(idVeicoliFiltrati);
+                                const veicoliFiltrati = this.listaVeicoli.filter(veicolo => idVeicoliFiltrati.includes(veicolo.id));
                               }else{
                                 console.log('rendicondazione chiusaa')
 
@@ -590,6 +603,35 @@ export class UserIstanzaEditComponent implements OnInit {
     return false
 
 
+}
+
+blinkBadgeIntegrazione(type, data?){
+
+  let blink = false;
+  if(this.istruttoriaData){
+    if(type === 'alle-dichiarazione'){
+      blink = this.listaAllegatiDich.some(x=>x.adminState !=='accepted')
+
+    }else {
+      const idVeicoliFiltrati = this.listaAllegati
+      .filter(obj => obj.adminState !== 'accepted' && obj.id_Veicolo && obj.enable)
+      .map(obj => obj.id_Veicolo)
+      .filter((id, index, array) => array.indexOf(id) === index);
+      ;
+      console.log(idVeicoliFiltrati);
+      if(type ==='category'){
+
+
+        const veicoliFiltrati = this.listaVeicoli.filter(veicolo => veicolo.category === data && idVeicoliFiltrati.includes(veicolo.id));
+
+        if(veicoliFiltrati.length > 0){
+          return true
+        }
+      }
+    }
+  }
+
+  return false
 }
 
 

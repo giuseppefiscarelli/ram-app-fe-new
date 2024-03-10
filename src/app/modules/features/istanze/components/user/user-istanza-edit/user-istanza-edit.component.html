@@ -7,9 +7,9 @@
 
 <mat-card class="container-card" >
   <mat-card-content>
-    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center"  fxLayoutGap="30px">
+    <div class="row-custom">
 
-      <mat-list fxFlex="auto">
+      <mat-list class="col-custom">
         <div mat-subheader>Stato Rendicontazione</div>
 
         <ng-container *ngIf="enableRendicontazione; else rendScaduta;">
@@ -112,7 +112,7 @@
             <p matLine>{{typeIstance? typeIstance.description:''}}</p>
           </mat-list-item>
       </mat-list>
-      <mat-list fxFlex="auto"  *ngIf="this.userMe.role !== 'user'">
+      <mat-list class="col-custom"  *ngIf="this.userMe.role !== 'user'">
         <div mat-subheader>Funzioni Admin</div>
         <mat-list-item>
           <button
@@ -126,37 +126,37 @@
           style="background-color: orange; color:white"
           (click)="onClickRend(true)">Chiudi rendicontazione</button>
       </mat-list-item>
-    </mat-list>
-    <mat-list fxFlex="auto">
-      <div mat-subheader>Riepilogo Rendicontazione</div>
-      <mat-list-item >
-        <p matLine>Allegati Dichiarazione</p>
-        <div matLine>
-          <section class="progress-section">
-            <mat-progress-bar
-                color="primary"
-                [mode]="mode"
-                [value]="(this.listaAllegatiDich.length / this.totCertEnable)*100">
-            </mat-progress-bar>
-                  <div style="position: absolute; padding: 10px; color: white;">  {{this.listaAllegatiDich.length }} di  {{ totCertEnable }} </div>
-          </section>
-        </div>
-      </mat-list-item>
-      <mat-list-item >
-        <p matLine>Veicoli Inseriti</p>
-        <div matLine>
-          <section class="progress-section">
-            <mat-progress-bar
-                color="accent"
-                [mode]="mode"
-                [value]="(this.listaVeicoli.length / this.totVeicoli)*100">
-            </mat-progress-bar>
-                  <div style="position: absolute; padding: 10px; color: white;">  {{this.listaVeicoli.length }} di  {{ totVeicoli }} </div>
-          </section>
+      </mat-list>
+      <mat-list class="col-custom">
+        <div mat-subheader>Riepilogo Rendicontazione</div>
+        <mat-list-item >
+          <p matLine>Allegati Dichiarazione</p>
+          <div matLine>
+            <section class="progress-section">
+              <mat-progress-bar
+                  color="primary"
+                  [mode]="mode"
+                  [value]="(this.listaAllegatiDich.length / this.totCertEnable)*100">
+              </mat-progress-bar>
+                    <div style="position: absolute; padding: 10px; color: white;">  {{this.listaAllegatiDich.length }} di  {{ totCertEnable }} </div>
+            </section>
+          </div>
+        </mat-list-item>
+        <mat-list-item >
+          <p matLine>Veicoli Inseriti</p>
+          <div matLine>
+            <section class="progress-section">
+              <mat-progress-bar
+                  color="accent"
+                  [mode]="mode"
+                  [value]="(this.listaVeicoli.length / this.totVeicoli)*100">
+              </mat-progress-bar>
+                    <div style="position: absolute; padding: 10px; color: white;">  {{this.listaVeicoli.length }} di  {{ totVeicoli }} </div>
+            </section>
 
-        </div>
-      </mat-list-item>
-  </mat-list>
+          </div>
+        </mat-list-item>
+      </mat-list>
     </div>
 
 
@@ -297,8 +297,10 @@
             <mat-accordion  style="width:100%;margin-bottom:50px;" *ngIf="certEnable">
               <mat-expansion-panel [expanded]="true">
                   <mat-expansion-panel-header>
-                      <mat-panel-title>Allegati Dichiarazione</mat-panel-title>
-                      <mat-panel-description> </mat-panel-description>
+                      <mat-panel-title   > <div matBadge="4" >Allegati Dichiarazione</div></mat-panel-title>
+                      <mat-panel-description>
+                        <span class="span-status pending blinking" *ngIf="blinkBadgeIntegrazione('alle-dichiarazione')" >Richiesta Integrazioni</span>
+                      </mat-panel-description>
                   </mat-expansion-panel-header>
                   <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
                     <table mat-table [dataSource]="certEnable">
@@ -388,7 +390,10 @@
             <mat-accordion style="width:100%;margin-bottom:50px;">
               <mat-expansion-panel *ngFor="let cat of catEnable" [expanded]="true">
                   <mat-expansion-panel-header>
-                      <mat-panel-title>Categoria {{cat}} <br> {{getTotalForCat(cat)}}</mat-panel-title>
+                      <mat-panel-title>Categoria {{cat}} <br> {{getTotalForCat(cat)}} <span
+                        class="span-status pending blinking" style="margin-left: auto;"
+                        *ngIf="blinkBadgeIntegrazione('category',cat)"
+                        >Richiesta Integrazioni</span></mat-panel-title>
                       <mat-panel-description>{{getCatData(cat).description}}</mat-panel-description>
                   </mat-expansion-panel-header>
                   <app-content-vei

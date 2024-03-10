@@ -406,6 +406,43 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
     return true
    }
 
+   blinkBadgeIntegrazione(type, data?){
+
+    let blink = false;
+    console.log(type,data)
+    if(this.istruttoriaData){
+
+        const idVeicoliFiltrati = this.listaAllegati
+        .filter(obj => obj.adminState !== 'accepted' && obj.id_Veicolo && obj.enable)
+        .map(obj => obj.id_Veicolo)
+        .filter((id, index, array) => array.indexOf(id) === index);
+        ;
+        console.log(idVeicoliFiltrati);
+        if(type ==='category'){
+
+
+          const veicoliFiltrati = this.listVei.filter(veicolo => veicolo.category === data && idVeicoliFiltrati.includes(veicolo.id));
+
+          if(veicoliFiltrati.length > 0){
+            return true
+          }
+        }else if(type === 'type'){
+          const veicoliFiltrati = this.listVei.filter(veicolo => veicolo.type === data['campoDb'] && idVeicoliFiltrati.includes(veicolo.id));
+
+          if(veicoliFiltrati.length > 0){
+            return true
+          }
+        }
+        else if(type === 'veicolo'){
+          return idVeicoliFiltrati.includes(data['id'])
+
+        }
+
+    }
+
+    return false
+  }
+
 
 
 }
