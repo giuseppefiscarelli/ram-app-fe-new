@@ -7,9 +7,9 @@
 
 <mat-card class="container-card" >
   <mat-card-content>
-    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center"  fxLayoutGap="30px">
+    <div class="row-custom">
 
-      <mat-list fxFlex="auto">
+      <mat-list class="col-custom">
         <div mat-subheader>Stato Rendicontazione</div>
 
         <ng-container *ngIf="enableRendicontazione; else rendScaduta;">
@@ -147,7 +147,7 @@
             <p matLine>{{typeIstance? typeIstance.description:''}}</p>
           </mat-list-item>
       </mat-list>
-      <mat-list fxFlex="auto"  *ngIf="this.userMe.role !== 'user'">
+      <mat-list class="col-custom"  *ngIf="this.userMe.role !== 'user'">
         <div mat-subheader>Funzioni Admin</div>
         <mat-list-item>
           <button
@@ -162,7 +162,7 @@
           (click)="onClickRend(true)">Chiudi rendicontazione</button>
       </mat-list-item>
       </mat-list>
-      <mat-list fxFlex="auto">
+      <mat-list class="col-custom">
         <div mat-subheader>Riepilogo Rendicontazione</div>
         <mat-list-item >
           <p matLine>Allegati Dichiarazione</p>
@@ -332,8 +332,10 @@
             <mat-accordion  style="width:100%;margin-bottom:50px;" *ngIf="certEnable.length >0">
               <mat-expansion-panel [expanded]="true">
                   <mat-expansion-panel-header>
-                      <mat-panel-title>Allegati Dichiarazione</mat-panel-title>
-                      <mat-panel-description> </mat-panel-description>
+                      <mat-panel-title   > <div matBadge="4" >Allegati Dichiarazione</div></mat-panel-title>
+                      <mat-panel-description>
+                        <span class="span-status pending blinking" *ngIf="blinkBadgeIntegrazione('alle-dichiarazione')" >Richiesta Integrazioni</span>
+                      </mat-panel-description>
                   </mat-expansion-panel-header>
                   <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
                     <table mat-table [dataSource]="certEnable">
@@ -423,7 +425,10 @@
             <mat-accordion style="width:100%;margin-bottom:50px;">
               <mat-expansion-panel *ngFor="let cat of catEnable" [expanded]="true">
                   <mat-expansion-panel-header>
-                      <mat-panel-title>Categoria {{cat}} <br> {{getTotalForCat(cat)}}</mat-panel-title>
+                      <mat-panel-title>Categoria {{cat}} <br> {{getTotalForCat(cat)}} <span
+                        class="span-status pending blinking" style="margin-left: auto;"
+                        *ngIf="blinkBadgeIntegrazione('category',cat)"
+                        >Richiesta Integrazioni</span></mat-panel-title>
                       <mat-panel-description>{{getCatData(cat).description}}</mat-panel-description>
                   </mat-expansion-panel-header>
                   <app-content-vei

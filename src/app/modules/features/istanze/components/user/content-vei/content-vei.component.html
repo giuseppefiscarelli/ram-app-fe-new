@@ -1,16 +1,21 @@
-<div fxLayout="row" >
+<div class="row-custom" >
 
-  <div fxFlex="30">
+  <div class="col-custom col-custom-3">
     <mat-selection-list #catlist (selectionChange)="onSelection($event, catlist.selectedOptions)"[multiple]="false">
       <ng-container *ngFor="let v of this.typeIstance.typeVei">
           <ng-container *ngIf="v.catVei === this.category && this.istanza[v.campoDb] > 0" >
               <mat-list-option style="height:auto;padding:5px;color:#0059b3" [value]="v" role="listitem">
-                <div fxLayout="row" >
-                  <div fxFlex="70">
+                <div class="row-custom" >
+                  <div class="col-custom col-custom-8" style="padding:0">
                     {{v.longDescription}}
+
                   </div>
-                  <div fxFlex="30">
+                  <div class="col-custom col-custom-4" style="padding:0">
                     {{this.istanza[v.campoDb]}} Veicol{{this.istanza[v.campoDb]>1 ?'i':'o'}}
+                  </div>
+                  <div class="col-custom col-custom-12" style="padding:0" *ngIf="blinkBadgeIntegrazione('type',v)" >
+                    <span class="span-status pending blinking" >Richiesta Integrazioni</span>
+
                   </div>
                 </div>
               </mat-list-option>
@@ -19,23 +24,23 @@
       </ng-container>
   </mat-selection-list>
   </div>
-  <div fxFlex="70">
+  <div class="col-custom col-custom-9">
     <ng-container *ngIf="!catlist.selectedOptions.selected[0]?.value; else selOption">
-      <div fxLayout="row" >
-        <div fxFlex="auto">
+      <div class="row-custom" >
+        <div class="col-custom">
            <h4> <mat-icon>arrow_back</mat-icon>Seleziona un tipo veicolo</h4>
         </div>
       </div>
     </ng-container>
     <ng-template #selOption>
       <ng-container *ngIf="this.listVeiFiltered.length > 0; else newVei">
-        <div fxLayout="row"  *ngIf="(this.listVeiFiltered.length < this.istanza[catlist.selectedOptions.selected[0].value.campoDb]) && (this.rendicontazione.enable || this.enableRendicontazione)">
-          <div fxFlex="auto">
+        <div class="row-custom" *ngIf="(this.listVeiFiltered.length < this.istanza[catlist.selectedOptions.selected[0].value.campoDb]) && (this.rendicontazione.enable || this.enableRendicontazione)">
+          <div  class="col-custom">
             <button mat-raised-button  style="margin:15px;" (click)="onClickInsertVei('create')" color="primary">Inserisci nuovo veicolo</button>
           </div>
         </div>
-        <div fxLayout="row">
-          <div fxFlex="100">
+        <div class="row-custom">
+          <div  class="col-custom col-custom-12">
             <mat-accordion class="vei-headers-align">
 
               <mat-expansion-panel *ngFor="let v of this.listVeiFiltered; let index = index" (opened)="getAllegatiVeicolo(v)" >
@@ -52,6 +57,9 @@
                             {{checkVeiData(v).icon}}</mat-icon>
                             {{checkVeiData(v).text}}
                         </span>
+                          <span *ngIf="blinkBadgeIntegrazione('veicolo',v)" class="span-status pending blinking" >Richiesta Integrazioni</span>
+
+
                         <ng-container *ngIf="checkAlleVei(v) as checkalle; else nocheckalle">
 
                             <span>
@@ -78,8 +86,8 @@
 
                     </mat-panel-description>
                   </mat-expansion-panel-header>
-                  <div fxLayout="row">
-                    <div fxFlex="50">
+                  <div class="row-custom">
+                    <div class="col-custom col-custom-6" >
                       <div fxLayout="column">
                         <h3 fxflex>Dati Veicolo</h3>
                         <span fxflex>
@@ -102,7 +110,7 @@
                         </table>
                     </div>
                     </div>
-                    <div fxFlex="50">
+                    <div class="col-custom col-custom-6">
                       <h3>Documenti necessari</h3>
                       <mat-list dense>
                           <mat-list-item  *ngFor="let alle of docListVei;">
@@ -115,8 +123,8 @@
                       </mat-list>
                     </div>
                   </div>
-                  <div fxLayout="row">
-                    <div fxFlex="100">
+                  <div class="row-custom">
+                    <div class="col-custom col-custom-12">
                       <h3>Documenti Veicolo</h3>
 
                         <button mat-raised-button *ngIf="(this.rendicontazione.enable  || this.userMe.role === 'superadmin' || this.enableRendicontazione)  &&(checkVeicoloEditable(v))" (click)="newAllegato(v)" color="primary">Inserisci Documento</button>
