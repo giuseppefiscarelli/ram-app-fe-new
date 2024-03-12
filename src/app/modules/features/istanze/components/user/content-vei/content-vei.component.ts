@@ -178,7 +178,7 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
     //  console.log(this.listaAllegati)
   //    console.log(this.listAlleFiltered)
       const unique = [...new Set(this.listaAllegati.map(item => item.typeDocument))];
-
+      console.log(unique)
       let res = {
           text: 'Documenti non presenti',
           icon: 'close',
@@ -364,12 +364,14 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
     // console.log(allegato)
      let dataUpload = moment(Number(allegato.dataUpload))
     // console.log(this.rendicontazione.dateEnd)
- console.log(this.istruttoriaData)
-     if(dataUpload.isAfter(moment(Number(this.rendicontazione.dateEnd)))){
-       if(this.istruttoriaData.typeReport['type'] === 'integrazione'){
-         return 'Documento Integrazione'
-       }
-     }
+     console.log(this.istruttoriaData)
+      if(this.istruttoriaData){
+        if(dataUpload.isAfter(moment(Number(this.rendicontazione.dateEnd)))){
+          if(this.istruttoriaData.typeReport['type'] === 'integrazione'){
+            return 'Documento Integrazione'
+          }
+        }
+      }
 
 
    }
@@ -380,6 +382,7 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
 
     if(this.istruttoriaData){
       if(dataUpload.isAfter(moment(Number(this.rendicontazione.dateEnd)))){
+        console.log(this.istruttoriaData)
         if(this.istruttoriaData.typeReport['type'] === 'integrazione'){
           console.log(allegato.id, ' modificabile')
           return true
@@ -394,7 +397,7 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
    }
 
    checkVeicoloEditable(veicolo){
-    console.log(veicolo)
+ //   console.log(veicolo)
     if(this.istruttoriaData){
       if(this.istruttoriaData.typeReport['type'] === 'integrazione' && veicolo.adminState !== 'accepted'){
         console.log(' modificabile')
@@ -409,7 +412,7 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
    blinkBadgeIntegrazione(type, data?){
 
     let blink = false;
-    console.log(type,data)
+  //  console.log(type,data)
     if(this.istruttoriaData){
 
         const idVeicoliFiltrati = this.listaAllegati
