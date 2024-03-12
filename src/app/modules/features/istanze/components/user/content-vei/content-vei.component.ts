@@ -175,30 +175,44 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
       return res
   }
   checkAlleVei(vei: Veicolo):any{
-    //  console.log(this.listaAllegati)
-  //    console.log(this.listAlleFiltered)
-      const unique = [...new Set(this.listaAllegati.map(item => item.typeDocument))];
-      console.log(unique)
-      let res = {
-          text: 'Documenti non presenti',
-          icon: 'close',
-          color: 'red'
-      }
-      const data = this.listaAllegati.filter(
-          (alle) => alle.id_Veicolo === vei.id && alle.enable === true && unique.includes(alle.typeDocument)
-      )
-    //  console.log(this.docList)
-      if(vei.acquisitionType === '01'){
-          this.docListVei = this.docList.filter(x=> x !== 9 )
-      }else{
-          this.docListVei = this.docList
-      }
-      //console.log(this.docListVei)
-      if(data.length > 0){
-          return unique
-      }
+    //   console.log(this.listaAllegati)
+    //   console.log(this.listAlleFiltered)
+    //   const unique = [...new Set(this.listaAllegati.map(item => item.typeDocument))];
+    //   console.log()
+    //   let res = {
+    //       text: 'Documenti non presenti',
+    //       icon: 'close',
+    //       color: 'red'
+    //   }
+    //   const data = this.listaAllegati.filter(
+    //       (alle) => alle.id_Veicolo === vei.id && alle.enable === true && unique.includes(alle.typeDocument)
+    //   )
 
-      return false;
+    //   console.log( this.listaAllegati.filter(
+    //     (alle) => alle.id_Veicolo === vei.id && alle.enable === true
+    //   ))
+    //   console.log(data,vei.id)
+    // //  console.log(this.docList)
+    //   if(vei.acquisitionType === '01'){
+    //       this.docListVei = this.docList.filter(x=> x !== 9 )
+    //   }else{
+    //       this.docListVei = this.docList
+    //   }
+    //   console.log([...new Set(data.map(item => item.typeDocument))],data.length)
+    //   if(data.length > 0){
+    //       return unique
+    //   }
+
+    //   return false;
+
+
+    const filteredAllegati = this.listaAllegati.filter(allegato => allegato.id_Veicolo === vei.id && allegato.enable);
+    const uniqueTypeDocuments = new Set();
+    filteredAllegati.forEach(allegato => {
+      uniqueTypeDocuments.add(allegato.typeDocument);
+    });
+    return uniqueTypeDocuments.size;
+
 
   }
   getTypeDocumentData(type): any{
@@ -364,7 +378,7 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
     // console.log(allegato)
      let dataUpload = moment(Number(allegato.dataUpload))
     // console.log(this.rendicontazione.dateEnd)
-     console.log(this.istruttoriaData)
+  //   console.log(this.istruttoriaData)
       if(this.istruttoriaData){
         if(dataUpload.isAfter(moment(Number(this.rendicontazione.dateEnd)))){
           if(this.istruttoriaData.typeReport['type'] === 'integrazione'){
@@ -377,14 +391,14 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
    }
 
    checkAllegatoEditable(allegato: Allegato, veicolo: Veicolo){
-    console.log(veicolo)
+   // console.log(veicolo)
     let dataUpload = moment(Number(allegato.dataUpload))
 
     if(this.istruttoriaData){
       if(dataUpload.isAfter(moment(Number(this.rendicontazione.dateEnd)))){
-        console.log(this.istruttoriaData)
+        //console.log(this.istruttoriaData)
         if(this.istruttoriaData.typeReport['type'] === 'integrazione'){
-          console.log(allegato.id, ' modificabile')
+        //  console.log(allegato.id, ' modificabile')
           return true
         }
       }
@@ -400,7 +414,7 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
  //   console.log(veicolo)
     if(this.istruttoriaData){
       if(this.istruttoriaData.typeReport['type'] === 'integrazione' && veicolo.adminState !== 'accepted'){
-        console.log(' modificabile')
+       // console.log(' modificabile')
         return true
       }else{
         return false
@@ -420,7 +434,7 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
         .map(obj => obj.id_Veicolo)
         .filter((id, index, array) => array.indexOf(id) === index);
         ;
-        console.log(idVeicoliFiltrati);
+       //s console.log(idVeicoliFiltrati);
         if(type ==='category'){
 
 

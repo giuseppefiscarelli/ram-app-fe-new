@@ -65,10 +65,10 @@
                             <span>
                                 <mat-icon
 
-                                [style.color]="checkalle.length<docListVei.length? 'orange':'green'"
-                                [innerText]="checkalle.length<docListVei.length? 'refresh':'done'"
+                                [style.color]="checkalle<docListVei.length? 'orange':'green'"
+                                [innerText]="checkalle<docListVei.length? 'refresh':'done'"
                                 ></mat-icon>
-                                Caricati {{checkalle.length}} di {{docListVei.length}} documenti
+                                Caricati {{checkalle}} di {{docListVei.length}} documenti
                             </span>
 
 
