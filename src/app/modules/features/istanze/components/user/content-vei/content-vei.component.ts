@@ -211,6 +211,7 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
     filteredAllegati.forEach(allegato => {
       uniqueTypeDocuments.add(allegato.typeDocument);
     });
+  //  console.log(uniqueTypeDocuments.size)
     return uniqueTypeDocuments.size;
 
 
