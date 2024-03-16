@@ -511,7 +511,7 @@
                       <ng-container matColumnDef="totale">
                         <th mat-header-cell *matHeaderCellDef> Totale </th>
                         <td mat-cell *matCellDef="let element">
-                          {{(element.costoIstr + +element.valoreContributo + (element.pmiIstr??0) + (element.reteIstr??0) )| currency: 'EUR':'symbol':'.2-2':'it' }}
+                          {{(element.valoreContributo + (element.pmiIstr??0) + (element.reteIstr??0) )| currency: 'EUR':'symbol':'.2-2':'it' }}
                           <td mat-footer-cell *matFooterCellDef style="font-weight: bolder;"> {{getTotalCostRiepilogo('total') | currency: 'EUR':'symbol':'.2-2':'it'}}</td>
                       </ng-container>
 
