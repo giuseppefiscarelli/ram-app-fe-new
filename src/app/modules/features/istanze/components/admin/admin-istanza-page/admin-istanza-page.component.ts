@@ -388,7 +388,7 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
           return this.listaAllegati.some(x=> x.adminState === 'rejected') ||  this.listaVeicoli.filter(x=> x.adminState === statusAdminVei.rejected)
          }else if(data.type === 'integrazione'){
        //   console.log(data)
-          const check = this.listaAllegati.some(x=> x.adminState === 'rejected') || this.listaVeicoli.some(x=> x.adminState && x.adminState !== 'accepted')
+          const check = this.listaAllegati.some(x=> x.adminState === 'rejected') || this.listaVeicoli.some(x=> x.adminState && x.adminState !== 'accepted') || this.listaVeicoli.length === 0
 
           return check
          }else if(data.type === 'ammissione'){
