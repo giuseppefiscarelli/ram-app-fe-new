@@ -409,10 +409,11 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
             return 0;
           });
       //   console.log(listVeicoliAccetati)
-          let alleFiltrati = this.listaAllegati.filter(allegato => listVeicoliAccetati.map(veicolo => veicolo.id).includes(allegato.id_Veicolo));
+      //    let alleFiltrati = this.listaAllegati.filter(allegato => listVeicoliAccetati.map(veicolo => veicolo.id).includes(allegato.id_Veicolo));
        //   console.table(alleFiltrati)
         //  console.table(this.downloadrepodsas)
-          let checkAlle = [...this.listaAllegatiDich, ...alleFiltrati].every(x=> x.adminState === 'accepted')
+          let checkAlle = this.listaAllegatiDich.every(x=> x.adminState === 'accepted')
+          //let checkAlle = [...this.listaAllegatiDich, ...alleFiltrati].every(x=> x.adminState === 'accepted')
 
         //  console.log(checkAlle , listVeicoliAccetati)
           return (checkAlle && (listVeicoliAccetati.length > 0));
