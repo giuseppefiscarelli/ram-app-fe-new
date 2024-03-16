@@ -8,7 +8,8 @@
 }; */
 
 export const environment = {
-  endpoint: 'https://elevatasostenibilita.ramspa.it/api/',
+  endpoint:'http://localhost:1337',
+//  endpoint: 'https://elevatasostenibilita.ramspa.it/api/',
 //  endpoint: 'http://3.122.31.243:1337/',
   baseApi: null,
   production: false
