@@ -415,7 +415,7 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
           let checkAlle = [...this.listaAllegatiDich, ...alleFiltrati].every(x=> x.adminState === 'accepted')
 
         //  console.log(checkAlle , listVeicoliAccetati)
-          return (checkAlle && (listVeicoliAccetati.length > 0)) || this.listaVeicoli.length === 0;
+          return (checkAlle && (listVeicoliAccetati.length > 0));
          }else if(data.type === 'inammissibilita'){
           return this.reports.length > 0 &&  this.reports.find(x=> x.typeReport === data.id && x.status ==='send' && x.enable) ? true: false
          }
