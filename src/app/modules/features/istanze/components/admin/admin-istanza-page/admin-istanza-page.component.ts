@@ -470,7 +470,7 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
       if(mode === 'total'){
        return this.listaVeicoli.reduce((total, current) => {
           if (current.adminState === "accepted") {
-            let t = total + current.amount + (current.pmiIstr??0) + (current.reteIstr??0)
+            let t = total + current.costoIstr + current.valoreContributo + (current.pmiIstr??0) + (current.reteIstr??0)
               return  t;
           } else {
               return total;
