@@ -369,7 +369,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
 
       let veicoliAccettati = veicoli?.filter(x=> x.adminState === 'accepted')
     //  console.log(veicoli)
-    //  console.log(typeIstance)
+      console.log(typeIstance)
     //  console.log(istanza)
     // console.log(veicoliAccettati)
 
@@ -430,7 +430,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
       // Osservo i risultati
       groupedData$.subscribe(result =>  myGroupedData = result);
 
-    //  console.log(myGroupedData)
+      console.log(myGroupedData)
       let totaleFinanziamento = 0;
       myGroupedData.map(tot => totaleFinanziamento += tot.totalFinanziamento)
     //  console.log(totaleFinanziamento)
@@ -506,15 +506,17 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
             [
               { text:'Art.3, comma 1, lett b)', alignment:'center',margin:[0,10]},
               {text:myGroupedData.find(x=> x.artDm === '1B')?.numAccepted},
-              {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '1A')?.totalAmount ||0)},
+              {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '1B')?.totalAmount ||0)},
               {text: myGroupedData.find(x=> x.artDm === '1B')?.totalFinanziamento>0?(istanza.rete && istanza.rete === 'Yes') && (istanza.pmi && istanza.pmi === 'Yes') ? '20%' : istanza.rete === 'Yes' ||istanza.pmi === 'Yes'?'10%':null:null},
-              {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '1A')?.totalFinanziamento ||0)},
+              {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '1B')?.totalFinanziamento ||0)},
 
 
             ],
             [
-              {text:'Maggiorazione Rottamazione', colSpan:2, alignment:'center', bold:true},'',
-              {text:'%', colSpan:2, alignment:'center', bold:true},'',
+              {text:'Maggiorazione Rottamazione (€)', colSpan:4, alignment:'right', bold:true},
+              '',
+              '',
+              '',
               { text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(maggiorazioneRottamazione)},
             ],
 
@@ -524,7 +526,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
             {text:'Totale Contributo finanziabile(€)', colSpan:4, alignment:'right', bold:true},
             '',
             '',
-            '',
+
             '',
             {bold:true,text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(totaleFinanziamento +maggiorazioneRottamazione)},
 
