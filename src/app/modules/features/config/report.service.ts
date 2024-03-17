@@ -372,7 +372,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
       console.log(typeIstance)
       console.log(istanza)
       console.log(veicoliAccettati)
-
+      console.log(allegatiVeicoli)
 
 
       // veicoliAccettati.map((veicolo)=> {
@@ -450,31 +450,30 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
       {text: `${dataReport['indirizzo']}, ${dataReport['numCivico']}`,alignment:'left',margin: [ 250, 0, 0, 0 ]},
       {text: `${dataReport['cap']} - ${dataReport['citta']} ${dataReport['prov']}`,alignment:'left',margin: [ 250, 0, 0, 10 ]},
       {text:[ 'Raccomandata via pec all\'indirizzo: ', {text:dataReport['pecImpresa'], bold:true}], alignment:'left',margin: [ 0, 10 ]},
-      {text:'Oggetto: Contributi ai sensi del D.D. 12 aprile 2022 n.155 per le finalità di cui al D.M. 18 novembre 2021 n. 459 - "Incentivi agli investimenti nel settore dell\'autotrasporto. " ', bold:true, margin: [ 0, 5, 0, 0 ], alignment:'justify'},
-      {text:`Protocollo Istanza In ${dataReport['idRam']}/${dataReport['year']} Informativa ai sensi dell'art.10-bis legge 241/90`, bold:true, margin: [ 0, 0, 0, 5 ], alignment:'justify'},
+      {text:'Oggetto: Contributi ai sensi del D.D. 7 aprile 2022 n.148 per le finalità di cui al D.M. 18 novembre 2021 n. 461 - "Incentivi agli investimenti nel settore dell\'autotrasporto. " ', bold:true, margin: [ 0, 5, 0, 0 ], alignment:'justify'},
+      {text:`Protocollo Istanza ES ${dataReport['idRam']}/${dataReport['year']} Informativa ai sensi dell'art.10-bis legge 241/90`, bold:true, margin: [ 0, 0, 0, 5 ], alignment:'justify'},
 
       {text:'IL DIRETTORE GENERALE',alignment:'center',margin: [ 0,10 ], bold:true},
       {
         ul:[
           {text: `VISTA la domanda di ammissione al contributo di cui all'oggetto presentata da Codesta impresa e acquisista con protocollo n°${dataReport['idRam']}/${dataReport['year']} del ${moment(dataReport['dataIdRam']).format('DD/MM/YYYY')}`},
-          {text:`VISTO il verbale di riunione della Commissione, istituita ai sensi dell'art. 12, comma 3, D.D. 12 aprile 2022 n.155 , tenutasi il giorno ${moment(Number(dataReport['dataVerbale'])).format('DD/MM/YYYY')}`}
+          {text:`VISTO il verbale di riunione della Commissione, istituita ai sensi dell'art. 7, comma 3, D.D. 7 aprile 2022 n.148 , tenutasi il giorno ${moment(Number(dataReport['dataVerbale'])).format('DD/MM/YYYY')}`}
         ],
         alignment:'justify'
       },
       {text:'fermo restando la permanenza dei requisiti di ammissibilità richiesti dalla normativa vigente, dispone per l\'istanza di finanziamento presentata da Codesta impresa la relativa',
       alignment:'justify'},
       {text:'AMMISSIONE',alignment:'center',margin: [ 0,10 ], bold:true},
-      {text:'per gli importi di seguito ripartiti secondo le categorie e sottocategorie di investimento di cui agli artt. 2 e 5 del D.M. 18 novembre 2021 n. 459 come dichiarati in fase di prenotazione dell’incentivo, e ad esito delle verifiche effettuate presso la banca dati CED del Ministero delle Infrastrutture e dei Trasporti sulla targa del veicolo oggetto di investimento:', alignment:'justify'},
+      {text:'per gli importi di seguito ripartiti secondo la categoria e le sottocategorie di investimento di cui all’art. 3 del D.M. 18 novembre 2021 n. 461, come dichiarati in fase di prenotazione dell’incentivo, e ad esito delle verifiche effettuate presso la banca dati CED del Ministero delle Infrastrutture e dei Trasporti sulla targa del veicolo oggetto di investimento:', alignment:'justify'},
       {
         style: 'tableExample',
         table: {
           headerRows: 1,
 
-          widths:['*',100,60,70,65,70],
+          widths:['*',60,70,65,70],
           body:[
             [
               { text: 'Categoria Investimenti', bold:true, alignment:'center',margin:[0,10]},
-              { text: 'Sotto-Categoria Investimenti', bold:true, alignment:'center'},
               { text: 'Numero acquisizioni finanziabili', bold:true, alignment:'center'},
               { text: 'Importo contributi ammessi (€)', bold:true, alignment:'center'},
               { text: 'Eventuali Maggiorazioni (%)', bold:true, alignment:'center'},
@@ -482,105 +481,38 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
             ],
 
             [
-              {rowSpan:4, text:'Art.2, comma 1, lett a)', alignment:'center',margin:[0,30]},
-                {text:'Art.5, comma 1, lett a)', alignment:'left' },
-                {text:myGroupedData.find(x=> x.artDm === '1A')?.numAccepted},
-                {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '1A')?.totalAmount ||0)},
-                {text: myGroupedData.find(x=> x.artDm === '1A')?.totalFinanziamento>0 && istanza.rete && istanza.pmi && istanza.pmi === 'Yes' && istanza.rete === 'Yes'?'20%': istanza.rete === 'Yes' ||istanza.pmi === 'Yes'?'10%':null},
-                {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '1A')?.totalFinanziamento ||0)},
+              { text:'Art.3, comma 1, lett a)', alignment:'center',margin:[0,10]},
+              {text:myGroupedData.find(x=> x.artDm === '1A')?.numAccepted},
+              {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '1A')?.totalAmount ||0)},
+              {text: myGroupedData.find(x=> x.artDm === '1A')?.totalFinanziamento>0 && istanza.rete && istanza.pmi && istanza.pmi === 'Yes' && istanza.rete === 'Yes'?'20%': istanza.rete === 'Yes' ||istanza.pmi === 'Yes'?'10%':null},
+              {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '1A')?.totalFinanziamento ||0)},
 
 
             ],
-              [ '',
-                {text:'Art.5, comma 1, lett b)', alignment:'left' },
-                {text:myGroupedData.find(x=> x.artDm === '1B')?.numAccepted},
-                {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '1B')?.totalAmount||0)},
-                {text: myGroupedData.find(x=> x.artDm === '1B')?.totalFinanziamento>0 && istanza.rete && istanza.pmi && istanza.pmi === 'Yes' && istanza.rete === 'Yes'?'20%': istanza.rete === 'Yes' ||istanza.pmi === 'Yes'?'10%':null},
-                {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '1B')?.totalFinanziamento||0)},
-                  ],
-              [   '',
-                {text:'Art.5, comma 2, lett c)', alignment:'left' },
-                {text:myGroupedData.find(x=> x.artDm === '2C')?.numAccepted},
-                {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '2C')?.totalAmount||0)},
-                {text: myGroupedData.find(x=> x.artDm === '2C')?.totalFinanziamento>0 && istanza.rete && istanza.pmi && istanza.pmi === 'Yes' && istanza.rete === 'Yes'?'20%': istanza.rete === 'Yes' ||istanza.pmi === 'Yes'?'10%':null},
-                {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '2C')?.totalFinanziamento||0)},
-
-              ],
-              // [   '',
-              //   {text:'Art.3, comma 2, lett d)', alignment:'left' },
-              //   {text:dataReport['artAd']['numero']},
-              //   {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(dataReport['artAd']['importo'])},
-              //   {text:dataReport['artAd']['maggiorazione']},
-              //   {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(dataReport['artAd']['totale'])},
-
-              // ],
-              [  '',
-                {text:'Maggiorazione Rottamazione', colSpan:4, bold:true, alignment:'right'},
-                '',
-                '',
-                '',
-                {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(dataReport['totaleMaggiorazioni'])},
-
-              ],
 
             [
-              {text:'Art.2, comma 1, lett b)', alignment:'center'},
-              {text:'Art.5, comma 3', alignment:'left' },
-              {text:myGroupedData.find(x=> x.artDm === '3')?.numAccepted},
-              {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '3')?.totalAmount||0)},
-              {text: myGroupedData.find(x=> x.artDm === '3')?.totalFinanziamento>0 && istanza.rete && istanza.pmi && istanza.pmi === 'Yes' && istanza.rete === 'Yes'?'20%': istanza.rete === 'Yes' ||istanza.pmi === 'Yes'?'10%':null},
-              {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '3')?.totalFinanziamento||0)},
-
+              { text:'Art.3, comma 1, lett b)', alignment:'center',margin:[0,10]},
+              {text:myGroupedData.find(x=> x.artDm === '1B')?.numAccepted},
+              {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '1A')?.totalAmount ||0)},
+              {text: myGroupedData.find(x=> x.artDm === '1B')?.totalFinanziamento>0 && istanza.rete && istanza.pmi && istanza.pmi === 'Yes' && istanza.rete === 'Yes'?'20%': istanza.rete === 'Yes' ||istanza.pmi === 'Yes'?'10%':null},
+              {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '1A')?.totalFinanziamento ||0)},
 
 
             ],
             [
-              {text:'Art.2, comma 1, lett b)', alignment:'center'},
-              {text:'Art.5, comma 4', alignment:'left' },
-              {text:myGroupedData.find(x=> x.artDm === '4')?.numAccepted},
-              {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '4')?.totalAmount||0)},
-              {text: myGroupedData.find(x=> x.artDm === '4')?.totalFinanziamento>0 && istanza.rete && istanza.pmi && istanza.pmi === 'Yes' && istanza.rete === 'Yes'?'20%': istanza.rete === 'Yes' ||istanza.pmi === 'Yes'?'10%':null},
-              {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '4')?.totalFinanziamento||0)},
-
-
-
+              {text:'Maggiorazione Rottamazione', colSpan:2, alignment:'center', bold:true},'',
+              {text:'%', colSpan:2, alignment:'center', bold:true},'',
+              {text:'€', },
             ],
 
 
-            [
-              {rowSpan:3, text:'Art.2, comma 1, lett c)', alignment:'center', margin:[0,15]},
-              {text:'Art.5, comma 5, lett a)', alignment:'left' },
-              {text:myGroupedData.find(x=> x.artDm === '5A')?.numAccepted},
-              {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '5A')?.totalAmount||0)},
-              {text: myGroupedData.find(x=> x.artDm === '5A')?.totalFinanziamento>0 && istanza.rete && istanza.pmi && istanza.pmi === 'Yes' && istanza.rete === 'Yes'?'20%': istanza.rete === 'Yes' ||istanza.pmi === 'Yes'?'10%':null},
-              {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '5A')?.totalFinanziamento||0)},
-
-
-
-            ],
-            [ '',
-            {text:'Art.5, comma 5, lett b)', alignment:'left' },
-            {text:myGroupedData.find(x=> x.artDm === '5B')?.numAccepted},
-            {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '5B')?.totalAmount||0)},
-            {text:myGroupedData.find(x=> x.artDm === '5B')?.totalFinanziamento>0 &&  istanza.rete && istanza.pmi && istanza.pmi === 'Yes' && istanza.rete === 'Yes'?'20%': istanza.rete === 'Yes' ||istanza.pmi === 'Yes'?'10%':null},
-            {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '5B')?.totalFinanziamento||0)},
-
-          ],
-          [   '',
-            {text:'Art.5, comma 5, lett c)', alignment:'left' },
-            {text:myGroupedData.find(x=> x.artDm === '5C')?.numAccepted},
-            {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '5C')?.totalAmount||0)},
-            {text: myGroupedData.find(x=> x.artDm === '5C')?.totalFinanziamento>0 && istanza.rete && istanza.pmi && istanza.pmi === 'Yes' && istanza.rete === 'Yes'?'20%': istanza.rete === 'Yes' ||istanza.pmi === 'Yes'?'10%':null},
-            {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '5C')?.totalFinanziamento||0)},
-
-          ],
 
           [
-            {text:'Totale Contributo(€)', colSpan:5, alignment:'right', bold:true},
+            {text:'Totale Contributo finanziabile(€)', colSpan:4, alignment:'right', bold:true},
             '',
             '',
             '',
-            '',
+
             {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(totaleFinanziamento)},
 
 
@@ -601,7 +533,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
         {text:'AVVERTENZE:',bold:true},
         {text:[
           {text:'Si ricorda che a norma dell’'},
-          {text:'Art. 2 comma 6 del DM 459/2021 i mezzi oggetti di contributo non possono essere alienati, concessi in locazione o in noleggio e devono rimanere nella piena disponibilità del beneficiario del contributo entro il triennio decorrente alla data di erogazione del contributo, pena la revoca del contributo erogato.',bold:true},
+          {text:'Art. 2 comma 6 del DM 461/2021 i mezzi oggetti di contributo non possono essere alienati, concessi in locazione o in noleggio e devono rimanere nella piena disponibilità del beneficiario del contributo entro il triennio decorrente alla data di erogazione del contributo, pena la revoca del contributo erogato.',bold:true},
           {text:'Non si procede all\'erogazione del contributo anche nel caso di trasferimento della disponibilità dei beni oggetto degli incentivi nel periodo intercorrente fra la data di presentazione della domanda e la data di pagamento del beneficio.'}
 
         ], alignment:'justify'},
