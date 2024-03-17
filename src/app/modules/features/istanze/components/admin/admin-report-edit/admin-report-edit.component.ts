@@ -42,6 +42,7 @@ export class AdminReportEditComponent implements OnInit {
 
    alleDich: Allegato[] = [];
    alleVei:  Allegato[] = [];
+   listaAllegatiVeicolo : Allegato[] = [];
    veicoli: Veicolo[] = [];
    rejectedVeicoli: Veicolo[]= [];
    typesDocument: TypeDocument[] = [];
@@ -66,6 +67,8 @@ export class AdminReportEditComponent implements OnInit {
     this.alleVei = data.listaAllegatiVeicoli.filter(x=> x.adminState === 'rejected');
     this.veicoli = data.veicoli;
     this.typesDocument = data.typesDocuments;
+    this.listaAllegatiVeicolo = data.listaAllegatiVeicoli;
+    console.log(this.listaAllegatiVeicolo)
     this.rejectedVeicoli = this.veicoli.filter(x=> x.adminState === statusAdminVei.rejected)
   //  console.log(this.alleDich, this.alleVei);
     this.mode = data.mode;
@@ -447,7 +450,7 @@ deleteFile(): void{
     console.log(payload);
     if(this.mode ==='generate'){
 
-      const data =  await this.reportService.generateReport( this.typeReport.type,payload, this.veicoli, this.alleVei,this.typeInstance , this.istanza);
+      const data =  await this.reportService.generateReport( this.typeReport.type,payload, this.veicoli, this.listaAllegatiVeicolo,this.typeInstance , this.istanza);
       //console.log(data)
       data.getBlob((blob) => {
         //console.log(blob)
@@ -579,7 +582,7 @@ deleteFile(): void{
 
     const dataDoc = this.form.getRawValue();
 
-    const data =  await this.reportService.generateReport( this.typeReport.type,dataDoc, this.veicoli, this.alleVei,this.typeInstance , this.istanza);
+    const data =  await this.reportService.generateReport( this.typeReport.type,dataDoc, this.veicoli, this.listaAllegatiVeicolo,this.typeInstance , this.istanza);
     data.getDataUrl((dataUrl) => {
 
       this.preview = dataUrl;
