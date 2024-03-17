@@ -395,16 +395,18 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
               return acc;
             }
           }, null);
+      //    console.log(integrazioneConDataMassima)
           let sonoPassatiQuindiciGiorni = true;
           // Verifica se sono passati 15 giorni dalla data di invio
           if (integrazioneConDataMassima) {
             sonoPassatiQuindiciGiorni = false;
             const dataInvio = moment(parseInt(integrazioneConDataMassima.dataInvio), "x");
+         //   console.log(dataInvio)
             const dataCorrente = moment();
             const quindiciGiorni = 15;
             sonoPassatiQuindiciGiorni = dataCorrente.diff(dataInvio, 'days') > quindiciGiorni;
 
-          //  console.log(sonoPassatiQuindiciGiorni);
+           // console.log(sonoPassatiQuindiciGiorni);
           } else {
          //   console.log(false); // Se non ci sono oggetti con typeReport['type'] === 'integrazione'
           }
@@ -414,12 +416,12 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
          }else if(data.type === 'integrazione'){
        //   console.log(data)
           const check = this.listaAllegati.some(x=> x.adminState === 'rejected') || this.listaVeicoli.some(x=> x.adminState && x.adminState !== 'accepted') || this.listaVeicoli.length === 0
-          console.log('integrazione')
-          console.log(check)
-          console.log(this.listaAllegati)
-          console.log(this.listaVeicoli)
-          console.log(this.reports)
-          return check && sonoPassatiQuindiciGiorni;
+          //console.log('integrazione')
+         // console.log(check)
+       //   console.log(this.listaAllegati)
+       //   console.log(this.listaVeicoli)
+       //   console.log(this.reports)
+          return check ||(integrazioneConDataMassima &&sonoPassatiQuindiciGiorni);
          }else if(data.type === 'ammissione'){
           let listVeicoliAccetati = this.listaVeicoli.filter(x=> x.adminState === statusAdminVei.accepted).sort((a, b) => {
             if (a.category < b.category) {
