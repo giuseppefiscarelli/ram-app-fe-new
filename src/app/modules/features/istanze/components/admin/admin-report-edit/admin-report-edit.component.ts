@@ -308,7 +308,7 @@ deleteFile(): void{
 }
   initializeForEdit(data:Report,detail?): FormGroup{
     console.log(detail)
-
+    console.log(data)
    let detailArray: any[];
 
     if (detail && detail.length > 0) {
@@ -323,7 +323,7 @@ deleteFile(): void{
         id: new FormControl(data.id),
         numProt : new FormControl(data.numProt),
         dataProt: new FormControl(data.dataProt),
-        dataVerbale:new FormControl(data.dataVerbale?moment(data.dataVerbale).toISOString():null),
+        dataVerbale:new FormControl(data.dataVerbale?moment(Number(data.dataVerbale)).toISOString():null),
         ragSociale:new FormControl(data.ragSociale),
         indirizzo:new FormControl(data.indirizzo),
         numCivico:new FormControl(data.numCivico),
@@ -472,6 +472,7 @@ deleteFile(): void{
             payload.typeReport = this.typeReport.id;
             payload.dataIdRam = moment(payload.dataIdRam).format('x');
             payload.detail = JSON.stringify(payload.detail);
+            payload.dataVerbale =payload.dataVerbale ? moment(payload.dataVerbale).format('x'):null
             console.log(payload.detail)
             return this.service.createReport(payload);
           })
@@ -521,6 +522,8 @@ deleteFile(): void{
             payload.dataIdRam = moment(payload.dataIdRam).format('x');
             payload.detail = JSON.stringify(payload.detail);
             console.log(payload.detail)
+            payload.dataVerbale =payload.dataVerbale ? moment(payload.dataVerbale).format('x'):null
+
             return this.service.updateReport(payload);
           })
         ).subscribe({
@@ -559,6 +562,8 @@ deleteFile(): void{
           payload.statusInvio = 'pending';
           payload.enable = true;
           payload.dataUpload = new Date().getTime();
+          payload.dataVerbale =payload.dataVerbale ? moment(payload.dataVerbale).format('x'):null
+
           console.log(payload)
           return this.service.updateReport(payload);
         })

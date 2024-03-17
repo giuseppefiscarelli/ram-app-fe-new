@@ -395,17 +395,18 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
               return acc;
             }
           }, null);
-
+          let sonoPassatiQuindiciGiorni = true;
           // Verifica se sono passati 15 giorni dalla data di invio
           if (integrazioneConDataMassima) {
+            sonoPassatiQuindiciGiorni = false;
             const dataInvio = moment(parseInt(integrazioneConDataMassima.dataInvio), "x");
             const dataCorrente = moment();
             const quindiciGiorni = 15;
-            const sonoPassatiQuindiciGiorni = dataCorrente.diff(dataInvio, 'days') > quindiciGiorni;
+            sonoPassatiQuindiciGiorni = dataCorrente.diff(dataInvio, 'days') > quindiciGiorni;
 
-            console.log(sonoPassatiQuindiciGiorni);
+          //  console.log(sonoPassatiQuindiciGiorni);
           } else {
-            console.log(false); // Se non ci sono oggetti con typeReport['type'] === 'integrazione'
+         //   console.log(false); // Se non ci sono oggetti con typeReport['type'] === 'integrazione'
           }
       if(this.rendicontazione.status !== 'opened' && (enableGenerateReport || this.reports.length ==0)){
         if(data.type === 'rigetto'){
@@ -418,7 +419,7 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
           console.log(this.listaAllegati)
           console.log(this.listaVeicoli)
           console.log(this.reports)
-          return check
+          return check && sonoPassatiQuindiciGiorni;
          }else if(data.type === 'ammissione'){
           let listVeicoliAccetati = this.listaVeicoli.filter(x=> x.adminState === statusAdminVei.accepted).sort((a, b) => {
             if (a.category < b.category) {

@@ -125,7 +125,7 @@
                     </mat-list-item>
                   </mat-list>
                 </ng-container>
-                <ng-container  *ngIf="this.alleVei.length> 0">
+                <ng-container  *ngIf="this.alleVei.length> 0 && this.typeReport.type === 'integrazione'">
                   <mat-divider></mat-divider>
                   <mat-list dense>
                     <div mat-subheader style="padding-bottom: 0px;">Allegati veicolo non accettati</div>
