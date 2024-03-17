@@ -426,14 +426,43 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
      // console.log()
       const hasStatusInvioDefined = this.reports.some(record => record.statusInvio !== undefined &&  record.statusInvio !== 'pending'&& record.statusInvio !== null && record.enable);
       const enableGenerateReport = this.reports.every(obj => (obj.statusInvio === undefined || obj.statusInvio === 'completed') && obj.enable);
+
+          // Filtra gli oggetti con typeReport['type'] === 'integrazione'
+          const integrazioni = this.reports.filter(obj => obj.typeReport && obj.typeReport['type'] === 'integrazione' && obj.statusInvio === 'completed');
+
+          // Trova l'oggetto con la data di invio maggiore
+          const integrazioneConDataMassima = integrazioni.reduce((acc, curr) => {
+            if (!acc || moment(curr.dataInvio, "x").isAfter(moment(acc.dataInvio, "x"))) {
+              return curr;
+            } else {
+              return acc;
+            }
+          }, null);
+          let sonoPassatiQuindiciGiorni = true;
+          // Verifica se sono passati 15 giorni dalla data di invio
+          if (integrazioneConDataMassima) {
+            sonoPassatiQuindiciGiorni = false;
+            const dataInvio = moment(parseInt(integrazioneConDataMassima.dataInvio), "x");
+            const dataCorrente = moment();
+            const quindiciGiorni = 15;
+            sonoPassatiQuindiciGiorni = dataCorrente.diff(dataInvio, 'days') > quindiciGiorni;
+
+          //  console.log(sonoPassatiQuindiciGiorni);
+          } else {
+         //   console.log(false); // Se non ci sono oggetti con typeReport['type'] === 'integrazione'
+          }
       if(this.rendicontazione.status !== 'opened' && (enableGenerateReport || this.reports.length ==0)){
         if(data.type === 'rigetto'){
           return this.listaAllegati.some(x=> x.adminState === 'rejected') ||  this.listaVeicoli.filter(x=> x.adminState === statusAdminVei.rejected)
          }else if(data.type === 'integrazione'){
        //   console.log(data)
           const check = this.listaAllegati.some(x=> x.adminState === 'rejected') || this.listaVeicoli.some(x=> x.adminState && x.adminState !== 'accepted') || this.listaVeicoli.length === 0
-
-          return check
+          console.log('integrazione')
+          console.log(check)
+          console.log(this.listaAllegati)
+          console.log(this.listaVeicoli)
+          console.log(this.reports)
+          return check && sonoPassatiQuindiciGiorni;
          }else if(data.type === 'ammissione'){
           let listVeicoliAccetati = this.listaVeicoli.filter(x=> x.adminState === statusAdminVei.accepted).sort((a, b) => {
             if (a.category < b.category) {
@@ -767,6 +796,7 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
                       istanza: this.istanza,
                       dataIstruttoria:this.istruttoriaData,
                       rendicontazione: this.rendicontazione,
+                      listaAllegatiVeicoli:this.listaAllegatiVeicoli,
 
                       info:`N° protocollo ${this.istanza.id_ram}/${this.typeIstance.year} - ${this.istanza.ragione_sociale}`
                   }
@@ -883,7 +913,7 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
       )
     }
     onClickReport(mode, typeReport?:typeReport, atIndex?,report?:Allegato){
-
+      console.log(this.listaAllegatiVeicoli)
       if(mode !== 'send'){
         const ref : MatDialogRef<AdminReportEditComponent> = this.dialog.open(AdminReportEditComponent,{
           panelClass: 'dialog-responsive',

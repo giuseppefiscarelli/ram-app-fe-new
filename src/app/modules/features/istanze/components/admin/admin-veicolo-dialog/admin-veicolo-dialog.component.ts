@@ -41,6 +41,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
   userMe: User;
   typeDocuments: TypeDocument[];
   allegatiVeicolo: Allegato[];
+  listaAllegatiVeicoli: Allegato[] = [];
   veicolo: Veicolo;
   typeIstance: TypeIstance;
   istanzaCheck: IstanzaCheck;
@@ -97,6 +98,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
       this.typeIstance =data.typeIstance;
       this.dataIstruttoria = data.dataIstruttoria;
       this.rendicontazione = data.rendicontazione;
+      this.listaAllegatiVeicoli =data.listaAllegatiVeicoli;
       this.dialogTitle = 'Scheda Veicolo';
       this.btnSubmit= 'Aggiorna informazioni e stato lavorazione';
       this.typeVeicolo = this.typeIstance.typeVei.find(x=> x['campoDb'] === this.veicolo.type);
@@ -114,7 +116,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
 
       if(checkDichiarazioni && (this.checkAllegatiStatus() === this.allegatiVeicolo.length)){
           this.datiIstruttoriaShow = true;
-          let contributo  = this.services.calcolaContributo(this.istanza, this.istanzaCheck, this.veicolo, this.typeIstance)
+          let contributo  = this.services.calcolaContributo(this.istanza, this.istanzaCheck, this.veicolo, this.typeIstance,this.listaAllegatiVeicoli)
           this.valoreContributo = contributo['valoreContributo'];
           this.valoreMaggPmi = contributo['magg_pmi'];
           this.valoreMaggRete = contributo['magg_rete'];
@@ -352,7 +354,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
                         //  console.log(this.checkDichiarazioni(), this.checkAllegatiStatus(), this.allegatiVeicolo.length)
                             if(this.checkDichiarazioni() && (this.checkAllegatiStatus() === this.allegatiVeicolo.length)){
                                 this.datiIstruttoriaShow = true;
-                                let contributo  = this.services.calcolaContributo(this.istanza, this.istanzaCheck, this.veicolo, this.typeIstance)
+                                let contributo  = this.services.calcolaContributo(this.istanza, this.istanzaCheck, this.veicolo, this.typeIstance,this.listaAllegatiVeicoli)
                                 this.valoreContributo = contributo['valoreContributo'];
                                 this.valoreMaggPmi = contributo['magg_pmi'];
                                 this.valoreMaggRete = contributo['magg_rete'];

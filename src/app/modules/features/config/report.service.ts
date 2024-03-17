@@ -368,12 +368,25 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
 
 
       let veicoliAccettati = veicoli?.filter(x=> x.adminState === 'accepted')
-      console.log(veicoli)
-      console.log(typeIstance)
-      console.log(istanza)
-      console.log(veicoliAccettati)
-      console.log(allegatiVeicoli)
+    //  console.log(veicoli)
+    //  console.log(typeIstance)
+    //  console.log(istanza)
+    // console.log(veicoliAccettati)
 
+      let veicolicatA = veicoliAccettati.filter(x=>x.category === 'A')
+
+      let allegatiRottamazione = allegatiVeicoli.filter(x=> (x.typeDocument === '11' || x.typeDocument === '14') && x.adminState ==='accepted' && veicolicatA.map(veicolo => veicolo.id).includes(x.id_Veicolo));
+      const idVeicoloUnici = new Set();
+      allegatiRottamazione.forEach(obj => idVeicoloUnici.add(obj.id_Veicolo));
+      const numeroRichesteRottamazioneAccettate = idVeicoloUnici.size;
+      //const numerorichiesteRottamazioneIstanza = ist
+
+      let maggiorazioneRottamazione = 0;
+      if(numeroRichesteRottamazioneAccettate > 0){
+        maggiorazioneRottamazione = numeroRichesteRottamazioneAccettate *1000;
+
+      }
+    //  console.log(numeroRichesteRottamazioneAccettate);
 
       // veicoliAccettati.map((veicolo)=> {
 
@@ -412,15 +425,15 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
       );
 
       // Osservo i risultati
-      groupedData$.subscribe(result => console.log(result));
+     // groupedData$.subscribe(result => console.log(result));
       let myGroupedData: { type: string; typeVei: string | null; artDm: string | null; totalAmount: number; totalFinanziamento: number;numAccepted: number }[];
       // Osservo i risultati
       groupedData$.subscribe(result =>  myGroupedData = result);
 
-      console.log(myGroupedData)
+    //  console.log(myGroupedData)
       let totaleFinanziamento = 0;
       myGroupedData.map(tot => totaleFinanziamento += tot.totalFinanziamento)
-      console.log(totaleFinanziamento)
+    //  console.log(totaleFinanziamento)
       // let art5a = {
       //   totalVeicoli: veicoli.filter(x=> x.adminState === 'accepted' && )
       // }
@@ -512,8 +525,8 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
             '',
             '',
             '',
-
-            {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(totaleFinanziamento)},
+            '',
+            {bold:true,text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(totaleFinanziamento +maggiorazioneRottamazione)},
 
 
 

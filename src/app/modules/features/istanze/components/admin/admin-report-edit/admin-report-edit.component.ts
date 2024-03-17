@@ -42,6 +42,7 @@ export class AdminReportEditComponent implements OnInit {
 
    alleDich: Allegato[] = [];
    alleVei:  Allegato[] = [];
+   listaAllegatiVeicolo : Allegato[] = [];
    veicoli: Veicolo[] = [];
    rejectedVeicoli: Veicolo[]= [];
    typesDocument: TypeDocument[] = [];
@@ -66,6 +67,8 @@ export class AdminReportEditComponent implements OnInit {
     this.alleVei = data.listaAllegatiVeicoli.filter(x=> x.adminState === 'rejected');
     this.veicoli = data.veicoli;
     this.typesDocument = data.typesDocuments;
+    this.listaAllegatiVeicolo = data.listaAllegatiVeicoli;
+    console.log(this.listaAllegatiVeicolo)
     this.rejectedVeicoli = this.veicoli.filter(x=> x.adminState === statusAdminVei.rejected)
   //  console.log(this.alleDich, this.alleVei);
     this.mode = data.mode;
@@ -305,7 +308,7 @@ export class AdminReportEditComponent implements OnInit {
   }
   initializeForEdit(data:Report,detail?): FormGroup{
     console.log(detail)
-
+    console.log(data)
    let detailArray: any[];
 
     if (detail && detail.length > 0) {
@@ -320,7 +323,7 @@ export class AdminReportEditComponent implements OnInit {
         id: new FormControl(data.id),
         numProt : new FormControl(data.numProt),
         dataProt: new FormControl(data.dataProt),
-        dataVerbale:new FormControl(data.dataVerbale?moment(data.dataVerbale).toISOString():null),
+        dataVerbale:new FormControl(data.dataVerbale?moment(Number(data.dataVerbale)).toISOString():null),
         ragSociale:new FormControl(data.ragSociale),
         indirizzo:new FormControl(data.indirizzo),
         numCivico:new FormControl(data.numCivico),
@@ -447,7 +450,7 @@ export class AdminReportEditComponent implements OnInit {
     console.log(payload);
     if(this.mode ==='generate'){
 
-      const data =  await this.reportService.generateReport( this.typeReport.type,payload, this.veicoli, this.alleVei,this.typeInstance , this.istanza);
+      const data =  await this.reportService.generateReport( this.typeReport.type,payload, this.veicoli, this.listaAllegatiVeicolo,this.typeInstance , this.istanza);
       //console.log(data)
       data.getBlob((blob) => {
         //console.log(blob)
@@ -469,6 +472,7 @@ export class AdminReportEditComponent implements OnInit {
             payload.typeReport = this.typeReport.id;
             payload.dataIdRam = moment(payload.dataIdRam).format('x');
             payload.detail = JSON.stringify(payload.detail);
+            payload.dataVerbale =payload.dataVerbale ? moment(payload.dataVerbale).format('x'):null
             console.log(payload.detail)
             return this.service.createReport(payload);
           })
@@ -518,6 +522,8 @@ export class AdminReportEditComponent implements OnInit {
             payload.dataIdRam = moment(payload.dataIdRam).format('x');
             payload.detail = JSON.stringify(payload.detail);
             console.log(payload.detail)
+            payload.dataVerbale =payload.dataVerbale ? moment(payload.dataVerbale).format('x'):null
+
             return this.service.updateReport(payload);
           })
         ).subscribe({
@@ -556,6 +562,8 @@ export class AdminReportEditComponent implements OnInit {
           payload.statusInvio = 'pending';
           payload.enable = true;
           payload.dataUpload = new Date().getTime();
+          payload.dataVerbale =payload.dataVerbale ? moment(payload.dataVerbale).format('x'):null
+
           console.log(payload)
           return this.service.updateReport(payload);
         })
@@ -579,7 +587,7 @@ export class AdminReportEditComponent implements OnInit {
 
     const dataDoc = this.form.getRawValue();
 
-    const data =  await this.reportService.generateReport( this.typeReport.type,dataDoc, this.veicoli, this.alleVei,this.typeInstance , this.istanza);
+    const data =  await this.reportService.generateReport( this.typeReport.type,dataDoc, this.veicoli, this.listaAllegatiVeicolo,this.typeInstance , this.istanza);
     data.getDataUrl((dataUrl) => {
 
       this.preview = dataUrl;
