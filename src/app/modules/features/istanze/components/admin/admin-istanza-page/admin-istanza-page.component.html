@@ -139,89 +139,88 @@
             <ng-template mat-tab-label>
                 <mat-icon class="tab-icon">attach_file</mat-icon> Verifica Allegati dichiarazione e Certificazioni</ng-template>
             <ng-template matTabContent>
-                <div style="min-height: 60vh;">
-                  <div *ngIf="certEnable.length > 0" >
-                    <h3>Allegati dichiarazione</h3>
-                    <table #tableA mat-table [dataSource]="certEnable">
+                    <div class="row-custom"  *ngIf="certEnable.length > 0" style="min-height: 60vh;">
+                      <h3>Allegati dichiarazione</h3>
+                      <table #tableA mat-table [dataSource]="certEnable">
 
 
 
-                      <ng-container matColumnDef="tipo">
-                        <th mat-header-cell *matHeaderCellDef> Tipo </th>
-                        <td mat-cell *matCellDef="let element"> {{element.longDescription}} </td>
-                      </ng-container>
+                        <ng-container matColumnDef="tipo">
+                          <th mat-header-cell *matHeaderCellDef> Tipo </th>
+                          <td mat-cell *matCellDef="let element"> {{element.longDescription}} </td>
+                        </ng-container>
 
 
-                      <ng-container matColumnDef="data">
-                        <th mat-header-cell *matHeaderCellDef> Data caricamento </th>
-                        <td mat-cell *matCellDef="let element">
-                           {{getCertificazioniData(element.description,'attach').data?(getCertificazioniData(element.description,'attach').data['dataUpload'] | date:"dd/MM/yyyy") : ' '}}
-                      </td>
-                      </ng-container>
+                        <ng-container matColumnDef="data">
+                          <th mat-header-cell *matHeaderCellDef> Data caricamento </th>
+                          <td mat-cell *matCellDef="let element">
+                             {{getCertificazioniData(element.description,'attach').data?(getCertificazioniData(element.description,'attach').data['dataUpload'] | date:"dd/MM/yyyy") : ' '}}
+                        </td>
+                        </ng-container>
 
-                          <ng-container matColumnDef="stato">
-                              <th mat-header-cell *matHeaderCellDef> Stato </th>
-                              <td mat-cell *matCellDef="let element">
-                                  <span class="status-span" [class]="getCertificazioniData(element.description,'attach').status" >
-                                  {{ getCertificazioniData(element.description,'attach').status | statusCheck}}
+                            <ng-container matColumnDef="stato">
+                                <th mat-header-cell *matHeaderCellDef> Stato </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <span class="status-span" [class]="getCertificazioniData(element.description,'attach').status" >
+                                    {{ getCertificazioniData(element.description,'attach').status | statusCheck}}
 
-                                  </span>
-                              </td>
+                                    </span>
+                                </td>
+                              </ng-container>
+
+
+                        <ng-container matColumnDef="action">
+                          <th mat-header-cell *matHeaderCellDef> Action </th>
+                          <td mat-cell *matCellDef="let element">
+                            <ng-container *ngIf="getCertificazioniData(element.description,'attach').data">
+                                <button
+                                mat-icon-button color="primary"
+                                aria-label="Example icon button with a home icon"
+                                matTooltip="Visualizza e gestisci documento"
+                                matTooltipPosition="above"
+                                (click)="onClickAllegato('edit', getCertificazioniData(element.description,'attach').data)"
+                                >
+                                 <mat-icon>edit_document</mat-icon>
+                               </button>
+                               <button
+                               mat-icon-button color="warn"
+                               matTooltip="Elimina documento"
+                                matTooltipPosition="above"
+                                aria-label="Example icon button with a menu icon"
+                                (click)="onClickAllegato('delete', getCertificazioniData(element.description,'attach').data)"
+                                >
+                                 <mat-icon>delete</mat-icon>
+                               </button>
                             </ng-container>
 
-
-                      <ng-container matColumnDef="action">
-                        <th mat-header-cell *matHeaderCellDef> Action </th>
-                        <td mat-cell *matCellDef="let element">
-                          <ng-container *ngIf="getCertificazioniData(element.description,'attach').data">
-                              <button
-                              mat-icon-button color="primary"
-                              aria-label="Example icon button with a home icon"
-                              matTooltip="Visualizza e gestisci documento"
-                              matTooltipPosition="above"
-                              (click)="onClickAllegato('edit', getCertificazioniData(element.description,'attach').data)"
-                              >
-                               <mat-icon>edit_document</mat-icon>
-                             </button>
-                             <button
-                             mat-icon-button color="warn"
-                             matTooltip="Elimina documento"
-                              matTooltipPosition="above"
-                              aria-label="Example icon button with a menu icon"
-                              (click)="onClickAllegato('delete', getCertificazioniData(element.description,'attach').data)"
-                              >
-                               <mat-icon>delete</mat-icon>
-                             </button>
-                          </ng-container>
-
-                      </td>
-                      </ng-container>
+                        </td>
+                        </ng-container>
 
 
-                      <tr mat-header-row *matHeaderRowDef="['tipo','data','stato','action']"></tr>
-                      <tr mat-row *matRowDef="let row; columns: ['tipo','data','stato','action'];"></tr>
-                    </table>
+                        <tr mat-header-row *matHeaderRowDef="['tipo','data','stato','action']"></tr>
+                        <tr mat-row *matRowDef="let row; columns: ['tipo','data','stato','action'];"></tr>
+                      </table>
+                    </div>
+                    <div class="row-custom">
+                      <h3>Certificazioni</h3>
+                      <table #tableB mat-table [dataSource]="certControlStatus">
 
-                    <mat-divider style="margin-top: 20px;"></mat-divider>
-                    <h3>Certificazioni</h3>
-                    <table #tableB mat-table [dataSource]="certControlStatus">
+                        <!--- Note that these columns can be defined in any order.
+                              The actual rendered columns are set as a property on the row definition" -->
 
-                      <!--- Note that these columns can be defined in any order.
-                            The actual rendered columns are set as a property on the row definition" -->
-
-                      <!-- Position Column -->
-                      <ng-container matColumnDef="tipo">
-                        <th mat-header-cell *matHeaderCellDef> Tipo </th>
-                        <td mat-cell *matCellDef="let element"> {{element.longDescription}}  </td>
-                      </ng-container>
+                        <!-- Position Column -->
+                        <ng-container matColumnDef="tipo">
+                          <th mat-header-cell *matHeaderCellDef> Tipo </th>
+                          <td mat-cell *matCellDef="let element"> {{element.longDescription}}  </td>
+                        </ng-container>
 
                       <!-- Name Column -->
-                      <ng-container matColumnDef="note">
-                        <th mat-header-cell *matHeaderCellDef> Note </th>
-                        <td mat-cell *matCellDef="let element"> {{getCertificazioniData(element.description, 'cert').note}} </td>
-                      </ng-container>
+                        <ng-container matColumnDef="note">
+                          <th mat-header-cell *matHeaderCellDef> Note </th>
+                          <td mat-cell *matCellDef="let element"> {{getCertificazioniData(element.description, 'cert').note}} </td>
+                        </ng-container>
                           <!-- Name Column -->
-                          <ng-container matColumnDef="stato">
+                        <ng-container matColumnDef="stato">
                               <th mat-header-cell *matHeaderCellDef> Stato </th>
                               <td mat-cell *matCellDef="let element">
                                   <ng-container *ngIf="element.description === 'dimImpresa'; else statusSpan">
@@ -238,7 +237,7 @@
                                   </ng-template>
 
                                </td>
-                            </ng-container>
+                        </ng-container>
 
                       <!-- Weight Column -->
                       <ng-container matColumnDef="action">
@@ -254,15 +253,17 @@
                            <mat-icon>edit_document</mat-icon>
                          </button>
                       </td>
-                      </ng-container>
+                      </ng-container  >
 
 
                       <tr mat-header-row *matHeaderRowDef="['tipo','note','stato','action']"></tr>
                       <tr mat-row *matRowDef="let row; columns: ['tipo','note','stato','action'];"></tr>
                     </table>
-                  </div>
 
-                </div>
+
+                    </div>
+
+
             </ng-template>
           </mat-tab>
 
@@ -275,9 +276,8 @@
 
 
                   <ng-template matTabContent>
-                    <div [formGroup]="filtersVei" fxLayout="row"   fxLayout.xs="column">
-                      <div fxFlex="15" fxFlex.xs="100" >
-                        <mat-form-field appearance="standard">
+                    <div [formGroup]="filtersVei" class="row-custom">
+                        <mat-form-field appearance="standard" class="col-custom col-custom-3">
                             <mat-label>
                               Categoria
                           </mat-label>
@@ -288,9 +288,7 @@
                               </mat-option>
                           </mat-select>
                         </mat-form-field>
-                      </div>
-                      <div fxFlex="15" fxFlex.xs="100" >
-                        <mat-form-field appearance="standard">
+                        <mat-form-field appearance="standard"class="col-custom col-custom-3">
                             <mat-label>
                               Tipo Veicolo
                           </mat-label>
@@ -301,9 +299,7 @@
                               </mat-option>
                           </mat-select>
                         </mat-form-field>
-                      </div>
-                      <div fxFlex="15" fxFlex.xs="100" >
-                        <mat-form-field appearance="standard">
+                        <mat-form-field appearance="standard"class="col-custom col-custom-3">
                             <mat-label>
                               Targa veicolo
                           </mat-label>
@@ -314,10 +310,8 @@
                               </mat-option>
                           </mat-select>
                         </mat-form-field>
-                      </div>
 
-                      <div fxFlex="15" fxFlex.xs="100" >
-                        <mat-form-field appearance="standard">
+                        <mat-form-field appearance="standard"class="col-custom col-custom-3">
                             <mat-label>
                               Stato veicolo
                           </mat-label>
@@ -328,7 +322,6 @@
                               </mat-option>
                           </mat-select>
                         </mat-form-field>
-                      </div>
 
 
                     </div>
@@ -603,8 +596,8 @@
               <mat-icon class="tab-icon">mail</mat-icon> Comunicazioni
             </ng-template>
             <ng-template matTabContent>
-            <div fxLayout="row" fxLayoutAlign="start start" >
-              <div fxFlex="50">
+            <div class="row-custom">
+              <div class="col-custom col-custom-6">
 
                    <mat-list>
                     <mat-list-item  *ngFor="let type of typeReport; let index=index">
