@@ -8,6 +8,7 @@ export interface UserDescriptorInterface {
   vatNumber:string;
   note:string;
   createdAt: string;
+  rnablePec:boolean;
 }
 export interface MenuDescriptorInterface{
 
@@ -25,6 +26,7 @@ export interface AllegatoDescriptorInterface{
   createdAt: string;
   id_ram: number;
   id_Veicolo: number;
+  id_Report: number;
   typeVei: string;
   typeDocument: string;
   filenameUpload: string;
@@ -39,6 +41,7 @@ export interface AllegatoDescriptorInterface{
   adminDate: string;
   adminUser: number;
   fd:[];
+  targa:string;
 }
 export interface FileDescriptorInterface {
   id: string;
@@ -153,6 +156,8 @@ export interface IstanzeDescriptorInterface{
   user:string;
   data_agg:string;
   tipo_istanza: number;
+
+  data_invio:string;
 }
 export interface IstanzaCheckDescriptorInterface {
   id: number;
@@ -197,22 +202,61 @@ export interface ReportDerscriptorInterface{
   id:number;
   updatedAt: string;
   createdAt: string;
-  id_ram: number;
-  prot_ram: string;
-  userCreate: number | UserDescriptorInterface;
-  dataCreate: string;
-  userConversion: number | UserDescriptorInterface;
-  dataConversion: string;
-  dataSend: string;
-  userSend: number | UserDescriptorInterface;
-  filenameUpload:  string;
-  filenameStorage:  string;
-  fd: [];
-  status:  string;
-  typeReport:number;
-  enable:boolean;
-  detail:[];
+  userCreate:UserDescriptorInterface;
+  userInvio:UserDescriptorInterface;
+  dataInvio:string;
+  userUpload:UserDescriptorInterface;
+  dataUpload:string;
+  statusInvio:string;
+  enable: boolean;
+  status: string;
+  typeReport: string;
+  numProt: number ;
+  dataProt: string;
+  dataVerbale: string;
+  ragSociale: string;
+  indirizzo: string;
+  numCivico: string;
+  cap: string;
+  citta: string;
+  prov: string;
+  pecImpresa: string;
+  idRam: number ;
+  idAllegato: number;
+  dataIdRam: string;
+  year: string;
+  detail: any[];
+  artAa: any;
+  artAb: any;
+  artAc: any;
+  artAd: any;
+  artB1: any;
+  artB2: any;
+  artCa: any;
+  artCb: any;
+  artCc: any;
+  artD: any;
+  totaleMaggiorazioni: number ;
+  totaleContributo: number ;
+  protPreavvisoRigetto: string ;
+  dataPreavvisoRigetto: string ;
+  dataNotaInammissibilita: string ;
+  motivazioneInammissibilita: string;
+  body: string;
+  subject: string;
 }
+
+export interface MailConfigDescriptorInterface{
+  id:number;
+  updatedAt: string;
+  createdAt: string;
+  user: string;
+  host: string;
+  port: number;
+  password: string;
+}
+
+
 export interface TypeDocumentsDescriptorInterface {
   id: number;
   description: string;

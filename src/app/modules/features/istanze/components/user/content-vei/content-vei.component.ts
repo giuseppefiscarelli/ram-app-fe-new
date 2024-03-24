@@ -17,6 +17,8 @@ import Swal from 'sweetalert2';
 import { PdfViewerComponent } from 'ng2-pdf-viewer';
 import { FormAllegatoVeicoloComponent } from '../form-allegato-veicolo/form-allegato-veicolo.component';
 import { FormVeiComponent } from '../form-vei/form-vei.component';
+import moment from 'moment';
+import { Report } from '@app/modules/models/report.model';
 
 @Component({
   selector: 'app-content-vei',
@@ -36,6 +38,8 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
     @Output() newAllegatoEvent = new EventEmitter<Allegato>();
     @Input() rottamazione: boolean;
     @Input() enableRendicontazione: boolean;
+    @Input() istruttoriaData: Report;
+
 
     vei$:Subscription;
     docList: any[];
@@ -68,6 +72,7 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
       this.typeDoc$ = this.service.fetchTypeDocuments({drop:true}).subscribe(
           (records: TypeDocument[]) => this.typeDocuments = records,
       )
+
     }
 
     ngOnInit(): void {
@@ -96,6 +101,7 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
       )
 
       this.docList = doc['typeDocument'];
+      console.log(this.rottamazione, this.docList)
       if(!this.rottamazione){
           this.docList = this.docList.filter(x=> (x !== 11 && x !== 14))
       }
@@ -169,30 +175,44 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
       return res
   }
   checkAlleVei(vei: Veicolo):any{
-    //  console.log(this.listaAllegati)
-  //    console.log(this.listAlleFiltered)
-      const unique = [...new Set(this.listaAllegati.map(item => item.typeDocument))];
+    //   console.log(this.listaAllegati)
+    //   console.log(this.listAlleFiltered)
+    //   const unique = [...new Set(this.listaAllegati.map(item => item.typeDocument))];
+    //   console.log()
+    //   let res = {
+    //       text: 'Documenti non presenti',
+    //       icon: 'close',
+    //       color: 'red'
+    //   }
+    //   const data = this.listaAllegati.filter(
+    //       (alle) => alle.id_Veicolo === vei.id && alle.enable === true && unique.includes(alle.typeDocument)
+    //   )
 
-      let res = {
-          text: 'Documenti non presenti',
-          icon: 'close',
-          color: 'red'
-      }
-      const data = this.listaAllegati.filter(
-          (alle) => alle.id_Veicolo === vei.id && alle.enable === true && unique.includes(alle.typeDocument)
-      )
-    //  console.log(this.docList)
-      if(vei.acquisitionType === '01'){
-          this.docListVei = this.docList.filter(x=> x !== 9 )
-      }else{
-          this.docListVei = this.docList
-      }
-      //console.log(this.docListVei)
-      if(data.length > 0){
-          return unique
-      }
+    //   console.log( this.listaAllegati.filter(
+    //     (alle) => alle.id_Veicolo === vei.id && alle.enable === true
+    //   ))
+    //   console.log(data,vei.id)
+    // //  console.log(this.docList)
+    //   if(vei.acquisitionType === '01'){
+    //       this.docListVei = this.docList.filter(x=> x !== 9 )
+    //   }else{
+    //       this.docListVei = this.docList
+    //   }
+    //   console.log([...new Set(data.map(item => item.typeDocument))],data.length)
+    //   if(data.length > 0){
+    //       return unique
+    //   }
 
-      return false;
+    //   return false;
+
+
+    const filteredAllegati = this.listaAllegati.filter(allegato => allegato.id_Veicolo === vei.id && allegato.enable);
+    const uniqueTypeDocuments = new Set();
+    filteredAllegati.forEach(allegato => {
+      uniqueTypeDocuments.add(allegato.typeDocument);
+    });
+    return uniqueTypeDocuments.size;
+
 
   }
   getTypeDocumentData(type): any{
@@ -352,5 +372,94 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
               }
           })
   }
+
+
+  checkAllegatoIntegrazione(allegato: Allegato){
+    // console.log(allegato)
+     let dataUpload = moment(Number(allegato.dataUpload))
+    // console.log(this.rendicontazione.dateEnd)
+  //   console.log(this.istruttoriaData)
+      if(this.istruttoriaData){
+        if(dataUpload.isAfter(moment(Number(this.rendicontazione.dateEnd)))){
+          if(this.istruttoriaData.typeReport['type'] === 'integrazione'){
+            return 'Documento Integrazione'
+          }
+        }
+      }
+
+
+   }
+
+   checkAllegatoEditable(allegato: Allegato, veicolo: Veicolo){
+   // console.log(veicolo)
+    let dataUpload = moment(Number(allegato.dataUpload))
+
+    if(this.istruttoriaData){
+      if(dataUpload.isAfter(moment(Number(this.rendicontazione.dateEnd)))){
+        //console.log(this.istruttoriaData)
+        if(this.istruttoriaData.typeReport['type'] === 'integrazione'){
+        //  console.log(allegato.id, ' modificabile')
+          return true
+        }
+      }
+    }
+
+    return false
+
+
+
+   }
+
+   checkVeicoloEditable(veicolo){
+ //   console.log(veicolo)
+    if(this.istruttoriaData){
+      if(this.istruttoriaData.typeReport['type'] === 'integrazione' && veicolo.adminState !== 'accepted'){
+       // console.log(' modificabile')
+        return true
+      }else{
+        return false
+      }
+    }
+    return true
+   }
+
+   blinkBadgeIntegrazione(type, data?){
+
+    let blink = false;
+  //  console.log(type,data)
+    if(this.istruttoriaData){
+
+        const idVeicoliFiltrati = this.listaAllegati
+        .filter(obj => obj.adminState !== 'accepted' && obj.id_Veicolo && obj.enable)
+        .map(obj => obj.id_Veicolo)
+        .filter((id, index, array) => array.indexOf(id) === index);
+        ;
+       //s console.log(idVeicoliFiltrati);
+        if(type ==='category'){
+
+
+          const veicoliFiltrati = this.listVei.filter(veicolo => veicolo.category === data && idVeicoliFiltrati.includes(veicolo.id));
+
+          if(veicoliFiltrati.length > 0){
+            return true
+          }
+        }else if(type === 'type'){
+          const veicoliFiltrati = this.listVei.filter(veicolo => veicolo.type === data['campoDb'] && idVeicoliFiltrati.includes(veicolo.id));
+
+          if(veicoliFiltrati.length > 0){
+            return true
+          }
+        }
+        else if(type === 'veicolo'){
+          return idVeicoliFiltrati.includes(data['id'])
+
+        }
+
+    }
+
+    return false
+  }
+
+
 
 }

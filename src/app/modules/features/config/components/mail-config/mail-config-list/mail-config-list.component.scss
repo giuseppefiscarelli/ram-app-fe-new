@@ -1,0 +1,25 @@
+.container-toolbar{
+  background: #0066cc40;
+  height: 80px;
+  .container-toolbar-title{
+      margin-top: -2%;
+  }
+}
+.container-card{
+  min-height: calc(79vh);
+  margin-left: 2%;
+  margin-right: 2%;
+  top: -22px;
+}
+.table-container{
+  overflow: auto;
+  max-height: 62vh;
+
+}
+.mat-table{
+  width:100%;
+}
+.mat-column-action {
+  text-align: right;
+  justify-content: flex-end;
+}

@@ -1,1 +1,223 @@
-<p>reports-list works!</p>
+<mat-toolbar class="container-toolbar">
+  <span class="container-toolbar-title" [innerText]="'PEC Comunicazioni'"></span>
+</mat-toolbar>
+
+<mat-card class="container-card">
+  <mat-card-content>
+<mat-tab-group  (selectedTabChange)="tabChanged($event)">
+  <mat-tab >
+    <ng-template mat-tab-label>
+      <mat-icon class="example-tab-icon">attach</mat-icon>
+      Pec da convalidare
+    </ng-template>
+    <ng-template matTabContent>
+
+      <ng-container *ngTemplateOutlet="tableContainer" ></ng-container>
+
+    </ng-template>
+  </mat-tab>
+  <mat-tab>
+    <ng-template mat-tab-label >
+      <mat-icon class="example-tab-icon">edit</mat-icon>
+      Pec da inviare
+    </ng-template>
+    <ng-template matTabContent >
+
+      <ng-container *ngTemplateOutlet="tableContainer"></ng-container>
+
+    </ng-template>
+  </mat-tab>
+  <mat-tab label="Pec Inviate">
+    <ng-template mat-tab-label>
+      <mat-icon class="example-tab-icon">mail</mat-icon>
+      Pec inviate
+    </ng-template>
+    <ng-template matTabContent >
+
+      <ng-container *ngTemplateOutlet="tableContainer"></ng-container>
+
+    </ng-template>
+  </mat-tab>
+</mat-tab-group>
+  </mat-card-content>
+</mat-card>
+
+<ng-template #tableContainer>
+  <div [formGroup]="filters" fxLayout="row"  fxLayout.xs="column" fxLayoutGap="30px">
+    <div fxFlex="25" fxFlex.xs="100" >
+      <mat-form-field appearance="standard">
+          <mat-label>
+            Tipologia richiesta
+          </mat-label>
+          <mat-select  formControlName="typeReport">
+            <mat-option>Tutti</mat-option>
+              <mat-option *ngFor="let type of filterOptionsDescriptors.types" [value]="type.id">
+                  {{ type.description }}
+              </mat-option>
+          </mat-select>
+      </mat-form-field>
+    </div>
+    <div fxFlex="40" fxFlex.xs="100" >
+        <mat-form-field appearance="standard" style="width:100%">
+            <mat-label>
+              Ricerca
+            </mat-label>
+            <input matInput  formControlName="term"
+            placeholder="Ricerca per email, id RAM, Ragione sociale">
+
+      </mat-form-field>
+    </div>
+    <!-- <div  fxFlex="25" fxFlex.xs="100" >
+      <mat-form-field appearance="standard">
+        <mat-label>Edizione Istanza</mat-label>
+        <mat-select formControlName="type">
+            <mat-option>Tutte le edizioni</mat-option>
+          <mat-option *ngFor="let t of this.typesIstance" [value]="t.id">
+            {{t.description}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div> -->
+
+  </div>
+  <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
+    <h4>Totale Richieste: <span style="font-weight: bold;">{{totRecord}}</span></h4>
+  </div>
+  <div class="table-container" (scroll)="timeoutScroll($event)">
+    <table mat-table #table [dataSource]="dataSource" >
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef> Id </th>
+            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+        </ng-container>
+        <ng-container matColumnDef="type">
+          <th mat-header-cell *matHeaderCellDef> Tipo Documento </th>
+          <td mat-cell *matCellDef="let element; let index = index"> {{element.typeReport['description']}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="data">
+            <th mat-header-cell *matHeaderCellDef> Destinatario </th>
+            <td mat-cell *matCellDef="let element">
+              <table>
+                <tr><td >Rag Sociale</td><td style="font-weight: bold;"> {{element.ragSociale}}</td></tr>
+                <tr><td >Pec</td><td style="font-weight: bold;"> {{element.pecImpresa}}</td></tr>
+                <tr><td >Prot RAM</td><td style="font-weight: bold;"> {{element.idRam}}</td></tr>
+              </table>
+            <!-- {{element.pecImpresa}}<br>
+            prot RAM: {{element.idRam}} -->
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef> Stato Report </th>
+            <td mat-cell *matCellDef="let element">
+              <table>
+                <tr><td s colspan="2"><span class="statusReport" [class]="element.status">
+                  {{element.status | statusReport}}
+                </span></td></tr>
+                <tr><td>Utente</td><td style="font-weight: bold;"> {{element.status === 'generated'? element.userCreate['email']: element.userUpload['email']}}</td></tr>
+                <tr><td>Data</td><td style="font-weight: bold;"> {{element.idRam}}{{(element.status === 'generated' ?element.createdAt: element.dataUpload) | date:'dd/MM/yyyy HH:mm'}}</td></tr>
+
+              </table>
+              <!-- <span class="statusReport" [class]="element.status">
+                {{element.status | statusReport}}
+              </span><br>
+              {{element.status === 'generated'? element.userCreate['email']: element.userUpload['email']}}<br>
+              {{(element.status === 'generated' ?element.createdAt: element.dataUpload) | date:'dd/MM/yyyy HH:mm'}}
+ -->
+
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="statusInvio">
+            <th mat-header-cell *matHeaderCellDef> Stato Invio </th>
+            <td mat-cell *matCellDef="let element">
+              <span class="statusReport" [class]="element.statusInvio">{{element.statusInvio | statusReport }}</span>
+                <ng-container *ngIf="element.status === 'sent'">
+                  <br>
+                      {{element.userInvio['email']}}<br>
+                      {{element.dataInvio | date:'dd/MM/yyyy HH:mm'}}
+                </ng-container>
+            </td>
+        </ng-container>
+
+
+
+        <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef> Action </th>
+            <td mat-cell *matCellDef="let element; let index = index">
+              <button
+              mat-icon-button
+              color="primary"
+              style="color:orange;"
+              matTooltip="Modifica Documento"
+              *ngIf="!element.statusInvio"
+              (click)="onClickReport('edit', type, index, element)"
+              matTooltipPosition="above"
+              aria-label="Example icon button with a home icon"
+             > <mat-icon>edit</mat-icon>
+            </button>
+              <button
+              mat-icon-button
+              color="primary"
+              style="color:green;"
+              matTooltip="Anteprima Documento"
+              (click)="viewReport(element)"
+              *ngIf="!element.statusInvio "
+
+              matTooltipPosition="above"
+              aria-label="Example icon button with a home icon"
+             > <mat-icon>picture_as_pdf</mat-icon>
+            </button>
+            <button
+            mat-icon-button
+            color="primary"
+            (click)="downloadReport(element)"
+            matTooltip="Download Documento"
+            matTooltipPosition="above"
+            aria-label="Example icon button with a home icon"
+           > <mat-icon>file_download</mat-icon>
+          </button>
+           <button
+              mat-icon-button
+              color="primary"
+              style="color:green;"
+              *ngIf="element.statusInvio !== 'pending' && element.statusInvio !== 'completed'"
+
+              matTooltip="Componi Pec"
+              matTooltipPosition="above"
+              (click)="onClickReport('prepare', type, index, element)"
+              aria-label="Example icon button with a home icon"
+             > <mat-icon>forward_to_inbox</mat-icon>
+            </button>
+            <button
+            mat-icon-button
+            color="primary"
+            *ngIf="element.statusInvio === 'pending' && this.userMe.enablePec"
+            style="color:green;"
+            matTooltip="invia Pec"
+            matTooltipPosition="above"
+            (click)="onClickReport('send', type, index, element)"
+            aria-label="Example icon button with a home icon"
+           > <mat-icon>mail</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            color="warn"
+            *ngIf="element.statusInvio !== 'completed'"
+            matTooltip="Elimina Documento"
+            matTooltipPosition="above"
+            (click)="deleteReport(element.id)"
+            aria-label="Example icon button with a home icon"
+           > <mat-icon>cancel</mat-icon>
+          </button>
+            </td>
+        </ng-container>
+    </table>
+    <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
+</div>
+
+</ng-template>

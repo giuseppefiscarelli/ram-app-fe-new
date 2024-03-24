@@ -1,3 +1,5 @@
+import { MailConfigFactory } from './../../models/factories/mailConfig.factory';
+import { MailConfig } from './../../models/mailConfig.model';
 import { TypeIstanceFactory } from './../../models/factories/typeIstance.factory';
 import { TypeIstance } from './../../models/type-istance.model';
 
@@ -6,11 +8,12 @@ import { Report } from './../../models/report.model';
 import { TypeReportsFactory } from './../../models/factories/typeReports.factory';
 import { TypeReport } from './../../models/typeReport.model';
 import { TypeDocumentsFactory } from './../../models/factories/typeDocuments.factory';
-import { ReportDerscriptorInterface, TypeDocumentsDescriptorInterface, TypesReportDescriptorInterface, TypeIstanceDescriptorInterface } from './../../../config/network/api.descriptors';
+import { ReportDerscriptorInterface, TypeDocumentsDescriptorInterface, TypesReportDescriptorInterface, TypeIstanceDescriptorInterface, MailConfigDescriptorInterface } from './../../../config/network/api.descriptors';
 import { map, Observable } from 'rxjs';
 import { ApiService } from '@modules/network/api.service';
 import { TypeDocument } from './../../models/typeDocument.model';
 import { Injectable } from '@angular/core';
+import { HttpHeaders } from '@angular/common/http';
 
 
 @Injectable()
@@ -87,46 +90,88 @@ export class ConfigService{
             )
         );
     }
+    countReport(payload?: any): Observable<any>{
+      return this.API.Report.fetch(payload)
+
+      ;
+  }
     getReport(id: string): Observable<Report> {
         return this.API.Report.get({id})
             .pipe(
                 map((subject: ReportDerscriptorInterface) => ReportsFactory.create(subject))
             );
     }
-    updateReport(payload: TypesReportDescriptorInterface): Observable<Report> {
+    updateReport(payload: any): Observable<Report> {
         return this.API.Report.update(payload)
             .pipe(
                 map((record: ReportDerscriptorInterface) => ReportsFactory.create(record))
             );
     }
+    getFile(file: any): Observable<any> {
+      return this.API.Download.get(file, {
+          responseType: 'blob',
+          headers: new HttpHeaders().append('Content-Type', 'application/json')
+      });
 
-    //typeinstance
-    fetchTypeInstance(payload?: any): Observable<TypeIstance[]>{
-        return this.API.TypeInstance.fetch(payload)
+    }
+
+    //mailconfig
+    fetchMailConfig(payload?: any): Observable<MailConfig[]>{
+        return this.API.MailConfig.fetch(payload)
         .pipe(
-            map((records: TypeIstanceDescriptorInterface[]) =>
-            records.map((record: TypeIstanceDescriptorInterface) =>
-            TypeIstanceFactory.create(record)))
+            map((records: MailConfigDescriptorInterface[]) =>
+            records.map((record: MailConfigDescriptorInterface) =>
+            MailConfigFactory.create(record)))
         )
     }
-    createTypeInstance(payload: any): Observable<TypeIstance>{
-        return this.API.TypeInstance.create(payload)
+    createMailConfig(payload: any): Observable<MailConfig>{
+        return this.API.MailConfig.create(payload)
         .pipe(
-            map((type: TypeIstanceDescriptorInterface) =>
-            TypeIstanceFactory.create(type)
+            map((record: MailConfigDescriptorInterface) =>
+            MailConfigFactory.create(record)
             )
         )
     }
-    getTypeInstance(id: string): Observable<TypeIstance> {
-        return this.API.TypeInstance.get({id})
+    getMailConfig(id: string): Observable<MailConfig> {
+        return this.API.MailConfig.get({id})
             .pipe(
-                map((subject: TypeIstanceDescriptorInterface) => TypeIstanceFactory.create(subject))
+                map((record: MailConfigDescriptorInterface) => MailConfigFactory.create(record))
             );
     }
-    updateTypeInstance(payload: TypeIstanceDescriptorInterface): Observable<TypeIstance> {
-        return this.API.TypeInstance.update(payload)
+    updateMailConfig(payload: MailConfigDescriptorInterface): Observable<MailConfig> {
+        return this.API.MailConfig.update(payload)
             .pipe(
-                map((record: TypeIstanceDescriptorInterface) => TypeIstanceFactory.create(record))
+                map((record: MailConfigDescriptorInterface) => MailConfigFactory.create(record))
             );
     }
+
+    //typeinstance
+    fetchTypeInstance(payload?: any): Observable<TypeIstance[]>{
+      return this.API.TypeInstance.fetch(payload)
+      .pipe(
+          map((records: TypeIstanceDescriptorInterface[]) =>
+          records.map((record: TypeIstanceDescriptorInterface) =>
+          TypeIstanceFactory.create(record)))
+      )
+  }
+  createTypeInstance(payload: any): Observable<TypeIstance>{
+      return this.API.TypeInstance.create(payload)
+      .pipe(
+          map((type: TypeIstanceDescriptorInterface) =>
+          TypeIstanceFactory.create(type)
+          )
+      )
+  }
+  getTypeInstance(id: string): Observable<TypeIstance> {
+      return this.API.TypeInstance.get({id})
+          .pipe(
+              map((subject: TypeIstanceDescriptorInterface) => TypeIstanceFactory.create(subject))
+          );
+  }
+  updateTypeInstance(payload: TypeIstanceDescriptorInterface): Observable<TypeIstance> {
+      return this.API.TypeInstance.update(payload)
+          .pipe(
+              map((record: TypeIstanceDescriptorInterface) => TypeIstanceFactory.create(record))
+          );
+  }
 }

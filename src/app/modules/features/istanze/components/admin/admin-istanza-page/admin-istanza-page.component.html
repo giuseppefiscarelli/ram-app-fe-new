@@ -2,15 +2,20 @@
   <span class="container-toolbar-title">
     <b>Istanza n° {{istanza.id_ram}}/{{typeIstance?typeIstance.year:''}} </b> - <small>{{istanza.ragione_sociale}}</small>
   </span>
+  <span>
+    <button mat-raised-button color="accent" (click)="goBack()" style="position: absolute;right: 6px;top: 69px;"><mat-icon>arrow_back</mat-icon> Torna indietro</button>
+
+  </span>
+
 </mat-toolbar>
 
 <mat-card class="container-card" >
-  <div fxLayout="row"
-  fxLayout.xs="column"
-  fxLayoutAlign="start"
-  fxLayoutGap="30px">
-
-    <div fxFlex="20">
+  <!-- <div fxLayout="row"
+    fxLayout.xs="column"
+    fxLayoutAlign="start"
+    fxLayoutGap="30px"> -->
+  <div class="row-custom">
+    <div class=" col-custom-2">
       <mat-list dense>
         <mat-list-item >
             <div matLine>Stato Rendicontazione</div>
@@ -28,9 +33,13 @@
                 <span class="status" [class]="this.statoIstruttoria">
                     {{this.statoIstruttoria | istruttoriaStatus}}
                 </span>
-                {{this.statoIstruttoria}}
+                <div matLine *ngIf="this.dataFineIstruttoria">Scadenza integrazione: <b>{{this.dataFineIstruttoria | date:'dd/MM/YYYY'}}</b></div>
                 </div>
         </mat-list-item>
+        <mat-list-item >
+          <div matLine>Veicoli Richiesti</div>
+           <div matLine>{{totVeicoli}}</div>
+       </mat-list-item>
         <mat-list-item >
             <div matLine>Veicoli Inseriti</div>
              <div matLine>{{listaVeicoli.length}}</div>
@@ -42,16 +51,16 @@
     </mat-list>
 
     </div>
-    <div fxFlex="80">
+    <div class=" col-custom-10">
         <mat-tab-group mat-align-tabs="center">
           <mat-tab>
-         
+
             <ng-template mat-tab-label>
                 <mat-icon class="tab-icon">apartment</mat-icon> Dati Impresa</ng-template>
             <ng-template matTabContent>
-                <div fxLayout="row" fxLayoutAlign="start start" >
+                <div class="row-custom">
 
-                  <div fxFlex="33">
+                  <div class="col-custom-4">
                     <h3>Dati Richiedente</h3>
                     <div class="table">
                         <table >
@@ -70,10 +79,13 @@
                         </table>
                     </div>
                   </div>
-                  <div fxFlex="66">
-                    <h3>Dati Impresa</h3>
-                    <div fxLayout="row" fxLayoutAlign="space-around start" >
-                      <div class="table" fxFlex="50" >
+                  <div class="col-custom-8">
+
+
+                    <div class="row-custom">
+
+                      <div class="table"class="col-custom-6" >
+                        <h3>Dati Impresa</h3>
                         <table >
                             <tbody >
                                 <tr ><td style="font-weight: bold;" >Ragione Sociale</td><td>{{istanza.ragione_sociale}}</td></tr>
@@ -88,8 +100,9 @@
                         </table>
 
                       </div>
-                      <div class="table" fxFlex="50" >
-                        <table   >
+                      <div class="table" class="col-custom-6" >
+                        <h3> </h3>
+                        <table >
                           <tbody>
                               <tr><td style="font-weight: bold;">Codice Albo</td><td>{{istanza.codice_albo}}</td></tr>
                               <tr><td style="font-weight: bold;">Codice Ren</td><td>{{istanza.codice_ren}}</td></tr>
@@ -100,6 +113,13 @@
                               <tr ><td style="font-weight: bold;" rowspan="3">Banca</td><td>Istituto {{istanza.banca_istituto}}</td></tr>
                               <tr><td>Agenzia {{istanza.banca_agenzia}}</td></tr>
                               <tr><td>Iban {{istanza.iban_it}} {{istanza.iban_num_chk}} {{istanza.iban_cin}} {{istanza.iban_abi}} {{istanza.iban_cab}} {{istanza.iban_cc}}</td></tr>
+                              <tr><td style="font-weight: bold;" >Maggiorazione PMI </td><td>{{istanza.pmi && istanza.pmi === 'Yes'?'Presente':'Non Presente'}}</td></tr>
+                              <tr><td style="font-weight: bold;" >Maggiorazione Rete</td><td> {{istanza.rete && istanza.rete === 'Yes'?'Presente':'Non Presente'}}</td></tr>
+                              <tr><td style="font-weight: bold;" >Dimensioni Impresa</td><td>{{
+                                istanza.tipo_impresa === '1'?'Piccola':
+                                istanza.tipo_impresa === '2'?'Media':
+                                istanza.tipo_impresa === '3'?'Grande':null}}</td></tr>
+
                           </tbody>
                       </table>
                       </div>
@@ -115,93 +135,92 @@
 
 
           <mat-tab>
-            
+
             <ng-template mat-tab-label>
-                <mat-icon class="tab-icon">attach_file</mat-icon> Verifica Allagati dichiarazione e Certificazioni</ng-template>
-            <ng-template matTabContent>    
-                <div style="min-height: 60vh;">
-                  <div *ngIf="certEnable.length > 0" >
-                    <h3>Allegati dichiarazione</h3>
-                    <table #tableA mat-table [dataSource]="certEnable">
+                <mat-icon class="tab-icon">attach_file</mat-icon> Verifica Allegati dichiarazione e Certificazioni</ng-template>
+            <ng-template matTabContent>
+                    <div class="row-custom"  *ngIf="certEnable.length > 0" style="min-height: 60vh;">
+                      <h3>Allegati dichiarazione</h3>
+                      <table #tableA mat-table [dataSource]="certEnable">
 
 
 
-                      <ng-container matColumnDef="tipo">
-                        <th mat-header-cell *matHeaderCellDef> Tipo </th>
-                        <td mat-cell *matCellDef="let element"> {{element.longDescription}} </td>
-                      </ng-container>
+                        <ng-container matColumnDef="tipo">
+                          <th mat-header-cell *matHeaderCellDef> Tipo </th>
+                          <td mat-cell *matCellDef="let element"> {{element.longDescription}} </td>
+                        </ng-container>
 
 
-                      <ng-container matColumnDef="data">
-                        <th mat-header-cell *matHeaderCellDef> Data caricamento </th>
-                        <td mat-cell *matCellDef="let element">
-                           {{getCertificazioniData(element.description,'attach').data?(getCertificazioniData(element.description,'attach').data['dataUpload'] | date:"dd/MM/yyyy") : ' '}}
-                      </td>
-                      </ng-container>
+                        <ng-container matColumnDef="data">
+                          <th mat-header-cell *matHeaderCellDef> Data caricamento </th>
+                          <td mat-cell *matCellDef="let element">
+                             {{getCertificazioniData(element.description,'attach').data?(getCertificazioniData(element.description,'attach').data['dataUpload'] | date:"dd/MM/yyyy") : ' '}}
+                        </td>
+                        </ng-container>
 
-                          <ng-container matColumnDef="stato">
-                              <th mat-header-cell *matHeaderCellDef> Stato </th>
-                              <td mat-cell *matCellDef="let element">
-                                  <span class="status-span" [class]="getCertificazioniData(element.description,'attach').status" >
-                                  {{ getCertificazioniData(element.description,'attach').status | statusCheck}}
+                            <ng-container matColumnDef="stato">
+                                <th mat-header-cell *matHeaderCellDef> Stato </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <span class="status-span" [class]="getCertificazioniData(element.description,'attach').status" >
+                                    {{ getCertificazioniData(element.description,'attach').status | statusCheck}}
 
-                                  </span>
-                              </td>
+                                    </span>
+                                </td>
+                              </ng-container>
+
+
+                        <ng-container matColumnDef="action">
+                          <th mat-header-cell *matHeaderCellDef> Action </th>
+                          <td mat-cell *matCellDef="let element">
+                            <ng-container *ngIf="getCertificazioniData(element.description,'attach').data">
+                                <button
+                                mat-icon-button color="primary"
+                                aria-label="Example icon button with a home icon"
+                                matTooltip="Visualizza e gestisci documento"
+                                matTooltipPosition="above"
+                                (click)="onClickAllegato('edit', getCertificazioniData(element.description,'attach').data)"
+                                >
+                                 <mat-icon>edit_document</mat-icon>
+                               </button>
+                               <button
+                               mat-icon-button color="warn"
+                               matTooltip="Elimina documento"
+                                matTooltipPosition="above"
+                                aria-label="Example icon button with a menu icon"
+                                (click)="onClickAllegato('delete', getCertificazioniData(element.description,'attach').data)"
+                                >
+                                 <mat-icon>delete</mat-icon>
+                               </button>
                             </ng-container>
 
-
-                      <ng-container matColumnDef="action">
-                        <th mat-header-cell *matHeaderCellDef> Action </th>
-                        <td mat-cell *matCellDef="let element">
-                          <ng-container *ngIf="getCertificazioniData(element.description,'attach').data">
-                              <button
-                              mat-icon-button color="primary"
-                              aria-label="Example icon button with a home icon"
-                              matTooltip="Visualizza e gestisci documento"
-                              matTooltipPosition="above"
-                              (click)="onClickAllegato('edit', getCertificazioniData(element.description,'attach').data)"
-                              >
-                               <mat-icon>edit_document</mat-icon>
-                             </button>
-                             <button
-                             mat-icon-button color="warn"
-                             matTooltip="Elimina documento"
-                              matTooltipPosition="above"
-                              aria-label="Example icon button with a menu icon"
-                              (click)="onClickAllegato('delete', getCertificazioniData(element.description,'attach').data)"
-                              >
-                               <mat-icon>delete</mat-icon>
-                             </button>
-                          </ng-container>
-
-                      </td>
-                      </ng-container>
+                        </td>
+                        </ng-container>
 
 
-                      <tr mat-header-row *matHeaderRowDef="['tipo','data','stato','action']"></tr>
-                      <tr mat-row *matRowDef="let row; columns: ['tipo','data','stato','action'];"></tr>
-                    </table>
+                        <tr mat-header-row *matHeaderRowDef="['tipo','data','stato','action']"></tr>
+                        <tr mat-row *matRowDef="let row; columns: ['tipo','data','stato','action'];"></tr>
+                      </table>
+                    </div>
+                    <div class="row-custom">
+                      <h3>Certificazioni</h3>
+                      <table #tableB mat-table [dataSource]="certControlStatus">
 
-                    <mat-divider style="margin-top: 20px;"></mat-divider>
-                    <h3>Certificazioni</h3>
-                    <table #tableB mat-table [dataSource]="certControlStatus">
+                        <!--- Note that these columns can be defined in any order.
+                              The actual rendered columns are set as a property on the row definition" -->
 
-                      <!--- Note that these columns can be defined in any order.
-                            The actual rendered columns are set as a property on the row definition" -->
-
-                      <!-- Position Column -->
-                      <ng-container matColumnDef="tipo">
-                        <th mat-header-cell *matHeaderCellDef> Tipo </th>
-                        <td mat-cell *matCellDef="let element"> {{element.longDescription}}  </td>
-                      </ng-container>
+                        <!-- Position Column -->
+                        <ng-container matColumnDef="tipo">
+                          <th mat-header-cell *matHeaderCellDef> Tipo </th>
+                          <td mat-cell *matCellDef="let element"> {{element.longDescription}}  </td>
+                        </ng-container>
 
                       <!-- Name Column -->
-                      <ng-container matColumnDef="note">
-                        <th mat-header-cell *matHeaderCellDef> Note </th>
-                        <td mat-cell *matCellDef="let element"> {{getCertificazioniData(element.description, 'cert').note}} </td>
-                      </ng-container>
+                        <ng-container matColumnDef="note">
+                          <th mat-header-cell *matHeaderCellDef> Note </th>
+                          <td mat-cell *matCellDef="let element"> {{getCertificazioniData(element.description, 'cert').note}} </td>
+                        </ng-container>
                           <!-- Name Column -->
-                          <ng-container matColumnDef="stato">
+                        <ng-container matColumnDef="stato">
                               <th mat-header-cell *matHeaderCellDef> Stato </th>
                               <td mat-cell *matCellDef="let element">
                                   <ng-container *ngIf="element.description === 'dimImpresa'; else statusSpan">
@@ -218,7 +237,7 @@
                                   </ng-template>
 
                                </td>
-                            </ng-container>
+                        </ng-container>
 
                       <!-- Weight Column -->
                       <ng-container matColumnDef="action">
@@ -234,30 +253,31 @@
                            <mat-icon>edit_document</mat-icon>
                          </button>
                       </td>
-                      </ng-container>
+                      </ng-container  >
 
 
                       <tr mat-header-row *matHeaderRowDef="['tipo','note','stato','action']"></tr>
                       <tr mat-row *matRowDef="let row; columns: ['tipo','note','stato','action'];"></tr>
                     </table>
-                  </div>
 
-                </div>
+
+                    </div>
+
+
             </ng-template>
           </mat-tab>
 
           <!-- Veicoli -->
 
           <mat-tab>
-            
+
               <ng-template mat-tab-label>
                   <mat-icon class="tab-icon">directions_car</mat-icon> Dati Veicoli</ng-template>
 
 
                   <ng-template matTabContent>
-                    <div [formGroup]="filtersVei" fxLayout="row"   fxLayout.xs="column">
-                      <div fxFlex="15" fxFlex.xs="100" >
-                        <mat-form-field appearance="standard">
+                    <div [formGroup]="filtersVei" class="row-custom">
+                        <mat-form-field appearance="standard" class="col-custom col-custom-3">
                             <mat-label>
                               Categoria
                           </mat-label>
@@ -268,9 +288,7 @@
                               </mat-option>
                           </mat-select>
                         </mat-form-field>
-                      </div>
-                      <div fxFlex="15" fxFlex.xs="100" >
-                        <mat-form-field appearance="standard">
+                        <mat-form-field appearance="standard"class="col-custom col-custom-3">
                             <mat-label>
                               Tipo Veicolo
                           </mat-label>
@@ -281,9 +299,7 @@
                               </mat-option>
                           </mat-select>
                         </mat-form-field>
-                      </div>
-                      <div fxFlex="15" fxFlex.xs="100" >
-                        <mat-form-field appearance="standard">
+                        <mat-form-field appearance="standard"class="col-custom col-custom-3">
                             <mat-label>
                               Targa veicolo
                           </mat-label>
@@ -294,10 +310,8 @@
                               </mat-option>
                           </mat-select>
                         </mat-form-field>
-                      </div>
 
-                      <div fxFlex="15" fxFlex.xs="100" >
-                        <mat-form-field appearance="standard">
+                        <mat-form-field appearance="standard"class="col-custom col-custom-3">
                             <mat-label>
                               Stato veicolo
                           </mat-label>
@@ -308,7 +322,6 @@
                               </mat-option>
                           </mat-select>
                         </mat-form-field>
-                      </div>
 
 
                     </div>
@@ -362,12 +375,16 @@
                         <ng-container matColumnDef="stato">
                           <th mat-header-cell *matHeaderCellDef> Stato </th>
                           <td mat-cell *matCellDef="let element">
-                              <span class="status-span" [class]="element.adminState?element.adminState:'toWork'"
+                              <span class="span-status" [class]="element.adminState?element.adminState:'toWork'"
                               [innerText]="element.adminState?(element.adminState | statusCheck) : ('toWork' | statusCheck)"
 
 
                               >
                               </span>
+                              <ng-container *ngIf="checkVeicoloIntegrazioni(element) as int">
+                                <br>
+                                <span class="span-status closed" style="vertical-align: -webkit-baseline-middle">{{int}}</span>
+                               </ng-container>
                         </ng-container>
 
                         <ng-container matColumnDef="action">
@@ -400,25 +417,196 @@
                   </ng-template>
           </mat-tab>
 
+          <mat-tab>
 
+            <ng-template mat-tab-label>
+                <mat-icon class="tab-icon">account_balance_wallet</mat-icon> Riepilogo finanziamento</ng-template>
+                <h3>Riepilogo veicoli ammessi</h3>
+                <div fxLayout="row" fxLayoutAlign="start start" >
+
+
+                  <table mat-table [dataSource]="checkStatusVeicoli('accepted')" >
+                    <tr mat-header-row *matHeaderRowDef="['cat','type','prog','targa','costo','contributo','pmi','rete','totale']"></tr>
+                    <tr mat-row *matRowDef="let row; columns: ['cat','type','prog','targa','costo','contributo','pmi','rete','totale'];"></tr>
+                    <tr mat-footer-row *matFooterRowDef=" ['cat','type','prog','targa','costo','contributo','pmi','rete','totale']"></tr>
+                    <ng-container matColumnDef="cat">
+                      <th mat-header-cell *matHeaderCellDef> Categoria </th>
+                      <td mat-cell *matCellDef="let element">
+                          <span class="span-category">
+                              {{element.category}}
+                          </span>
+                          </td>
+                          <td mat-footer-cell *matFooterCellDef>  </td>
+
+                    </ng-container>
+                    <ng-container matColumnDef="type">
+                      <th mat-header-cell *matHeaderCellDef> Tipo Veicolo </th>
+                      <td mat-cell *matCellDef="let element">
+                          <span class="span-type" >{{getTipoVeicolo(element.type)}}</span> </td>
+                          <td mat-footer-cell *matFooterCellDef>  </td>
+
+                    </ng-container>
+                    <ng-container matColumnDef="prog">
+                        <th mat-header-cell *matHeaderCellDef> Prog </th>
+                        <td mat-cell *matCellDef="let element; let index = index"> {{index + 1}} </td>
+                        <td mat-footer-cell *matFooterCellDef>  </td>
+
+                      </ng-container>
+                      <ng-container matColumnDef="targa">
+                        <th mat-header-cell *matHeaderCellDef> targa </th>
+                        <td mat-cell *matCellDef="let element">
+                            <div style="font-size:smaller;">
+                                <span class="span-type" style="border-radius: 3px;padding: 2px 5px;" > <b>{{element.licensePlate}}</b></span>
+                            </div>
+
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef style="font-weight: bolder; text-align: end;padding-right: 10px;"> Totale  </td>
+
+                      </ng-container>
+
+                      <ng-container matColumnDef="costo">
+                        <th mat-header-cell *matHeaderCellDef> Costo</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{element.costoIstr| currency: 'EUR':'symbol':'.2-2':'it' }}
+
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef style="font-weight: bolder;">{{getTotalCostRiepilogo('costoIstr') | currency: 'EUR':'symbol':'.2-2':'it'}}  </td>
+
+                      </ng-container>
+                      <ng-container matColumnDef="contributo">
+                        <th mat-header-cell *matHeaderCellDef> Contributo</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{element.valoreContributo| currency: 'EUR':'symbol':'.2-2':'it' }}
+
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef style="font-weight: bolder;"> {{getTotalCostRiepilogo('valoreContributo') | currency: 'EUR':'symbol':'.2-2':'it'}} </td>
+
+                      </ng-container>
+                      <ng-container matColumnDef="pmi">
+                        <th mat-header-cell *matHeaderCellDef> Magg PMI</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{(element.pmiIstr??0)| currency: 'EUR':'symbol':'.2-2':'it' }}
+
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef style="font-weight: bolder;">{{getTotalCostRiepilogo('pmiIstr') | currency: 'EUR':'symbol':'.2-2':'it'}}  </td>
+
+                      </ng-container>
+                      <ng-container matColumnDef="rete">
+                        <th mat-header-cell *matHeaderCellDef> Magg Rete imprese</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{(element.reteIstr??0)| currency: 'EUR':'symbol':'.2-2':'it' }}
+
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef style="font-weight: bolder;"> {{getTotalCostRiepilogo('reteIstr') | currency: 'EUR':'symbol':'.2-2':'it'}} </td>
+                      </ng-container>
+
+
+                      <ng-container matColumnDef="totale">
+                        <th mat-header-cell *matHeaderCellDef> Totale </th>
+                        <td mat-cell *matCellDef="let element">
+                          {{(element.valoreContributo + (element.pmiIstr??0) + (element.reteIstr??0) )| currency: 'EUR':'symbol':'.2-2':'it' }}
+                          <td mat-footer-cell *matFooterCellDef style="font-weight: bolder;"> {{getTotalCostRiepilogo('total') | currency: 'EUR':'symbol':'.2-2':'it'}}</td>
+                      </ng-container>
+
+                  </table>
+                </div>
+                <mat-divider></mat-divider>
+
+                <h3>Riepilogo veicoli in lavorazione / non ammessi</h3>
+                <div fxLayout="row" fxLayoutAlign="start start" >
+
+                  <table mat-table [dataSource]="checkStatusVeicoli()" >
+                    <ng-container matColumnDef="progressivo">
+                        <th mat-header-cell *matHeaderCellDef> Prog </th>
+                        <td mat-cell *matCellDef="let element; let index = index"> {{index + 1}} </td>
+                      </ng-container>
+                    <ng-container matColumnDef="categoria">
+                        <th mat-header-cell *matHeaderCellDef> Categoria </th>
+                        <td mat-cell *matCellDef="let element">
+                            <span class="span-category">
+                                {{element.category}}
+                            </span>
+                            </td>
+                      </ng-container>
+
+
+                      <ng-container matColumnDef="tipoVeicolo">
+                        <th mat-header-cell *matHeaderCellDef> Tipo Veicolo </th>
+                        <td mat-cell *matCellDef="let element">
+                            <span class="span-type" >{{getTipoVeicolo(element.type)}}</span> </td>
+                      </ng-container>
+
+
+                      <ng-container matColumnDef="dativeicolo">
+                        <th mat-header-cell *matHeaderCellDef> Dati Veicolo </th>
+                        <td mat-cell *matCellDef="let element">
+                            <div style="font-size:smaller;">
+                                <p style="margin:2px ;"><span>Targa </span> <span class="span-type" style="    border-radius: 3px;
+                                    padding: 2px 5px;" > <b>{{element.licensePlate}}</b></span></p>
+                                <p style="margin:2px;"><span>Marca </span> <span> <b>{{element.brand}}</b></span></p>
+                                <p style="margin:2px;"><span>Modello </span> <span> <b>{{element.model}}</b></span></p>
+                            </div>
+
+                        </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="acquisizione">
+                        <th mat-header-cell *matHeaderCellDef> Importo <br>Acquisizione</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{element.amount| currency: 'EUR':'symbol':'.2-2':'it' }}<br>
+                        <span class="status opened">{{element.acquisitionType === '01' ? 'Acquisto': 'Leasing'}}</span>
+                        </td>
+                      </ng-container>
+
+
+                      <ng-container matColumnDef="stato">
+                        <th mat-header-cell *matHeaderCellDef> Stato </th>
+                        <td mat-cell *matCellDef="let element">
+                            <span class="status-span" [class]="element.adminState?element.adminState:'toWork'"
+                            [innerText]="element.adminState?(element.adminState | statusCheck) : ('toWork' | statusCheck)"
+
+
+                            >
+                            </span>
+                      </ng-container>
+
+                      <ng-container matColumnDef="note">
+                        <th mat-header-cell *matHeaderCellDef> note </th>
+                        <td mat-cell *matCellDef="let element; let index = index">
+                              {{element.adminNote}}
+
+                      </td>
+                      </ng-container>
+
+
+                      <tr mat-header-row *matHeaderRowDef="['progressivo','categoria', 'tipoVeicolo',  'dativeicolo', 'acquisizione','stato','note']"></tr>
+                      <tr mat-row *matRowDef="let row; columns: ['progressivo','categoria', 'tipoVeicolo',  'dativeicolo', 'acquisizione','stato','note'];"
+
+                      ></tr>
+
+
+
+                  </table>
+                </div>
+          </mat-tab>
           <!--Comunicazioni-->
-          
+
           <mat-tab>
             <ng-template mat-tab-label>
               <mat-icon class="tab-icon">mail</mat-icon> Comunicazioni
             </ng-template>
             <ng-template matTabContent>
-            <div fxLayout="row" fxLayoutAlign="start start" >
-              <div fxFlex="50">
-                
+            <div class="row-custom">
+              <div class="col-custom col-custom-6">
+
                    <mat-list>
                     <mat-list-item  *ngFor="let type of typeReport; let index=index">
 
-                
+
                       <mat-icon mat-list-icon [style.color]="getEnableReport(type)?'green':'red'" >{{getEnableReport(type)?'done':'close'}}</mat-icon>
                       <span > {{type.description}}</span>
 
-                   
+
                            <button [disabled]="!getEnableReport(type)" style=" margin-left: auto;"mat-raised-button color="primary" (click)="onClickReport('generate', type, index)">
                             {{getEnableReport(type)?'Genera':'Non disponibile'}}
                           </button>
@@ -427,14 +615,131 @@
 
                     </mat-list-item>
                    </mat-list>
-                      
-                   
-                 
-                     
-                
+
+
+
+
+
               </div>
-              
+
             </div>
+
+            <ng-container *ngIf="reports.length > 0">
+              <h4>Documenti generati</h4>
+              <table mat-table [dataSource]="reports" >
+                <tr mat-header-row *matHeaderRowDef="['id','info','type','status','statusInvio','actionReport']"></tr>
+                <tr mat-row *matRowDef="let row; columns: ['id','info','type','status','statusInvio','actionReport'];"></tr>
+
+                <ng-container matColumnDef="id">
+                  <th mat-header-cell *matHeaderCellDef> # </th>
+                  <td mat-cell *matCellDef="let element; let index = index"> {{element.id}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="info">
+                  <th mat-header-cell *matHeaderCellDef> Dati inserimento </th>
+                  <td mat-cell *matCellDef="let element; let index = index">
+                  Data: {{element.dataUpload| date:"dd/MM/yyyy HH:mm"}}<br>
+                  Utente: {{element.userCreate['email']}}
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="type">
+                  <th mat-header-cell *matHeaderCellDef> Tipo Documento </th>
+                  <td mat-cell *matCellDef="let element; let index = index"> {{element.typeReport['description']}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="status">
+                  <th mat-header-cell *matHeaderCellDef> Stato </th>
+                  <td mat-cell *matCellDef="let element; let index = index">
+
+                    <span class="statusReport" [class]="element.status">
+                      {{element.status | statusReport}}
+                    </span>
+
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="statusInvio">
+                  <th mat-header-cell *matHeaderCellDef> Stato Invio</th>
+                  <td mat-cell *matCellDef="let element; let index = index">
+
+                    <span class="statusReport" [class]="element.statusInvio">{{element.statusInvio | statusReport }}</span>
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="actionReport">
+                  <th mat-header-cell *matHeaderCellDef> Action </th>
+                  <td mat-cell *matCellDef="let element; let index = index">
+                    <button
+                    mat-icon-button
+                    color="primary"
+                    style="color:orange;"
+                    matTooltip="Modifica Documento"
+                    *ngIf="!element.statusInvio"
+                    (click)="onClickReport('edit', type, index, element)"
+                    matTooltipPosition="above"
+                    aria-label="Example icon button with a home icon"
+                   > <mat-icon>edit</mat-icon>
+                  </button>
+                    <button
+                    mat-icon-button
+                    color="primary"
+                    style="color:green;"
+                    matTooltip="Anteprima Documento"
+                    (click)="viewReport(element)"
+                    *ngIf="!element.statusInvio "
+
+                    matTooltipPosition="above"
+                    aria-label="Example icon button with a home icon"
+                   > <mat-icon>picture_as_pdf</mat-icon>
+                  </button>
+                  <button
+                  mat-icon-button
+                  color="primary"
+                  (click)="downloadReport(element)"
+                  matTooltip="Download Documento"
+                  matTooltipPosition="above"
+                  aria-label="Example icon button with a home icon"
+                 > <mat-icon>file_download</mat-icon>
+                </button>
+                 <button
+                    mat-icon-button
+                    color="primary"
+                    style="color:green;"
+                    *ngIf="element.statusInvio !== 'pending' && element.statusInvio !== 'completed'"
+
+                    matTooltip="Componi Pec"
+                    matTooltipPosition="above"
+                    (click)="onClickReport('prepare', type, index, element)"
+                    aria-label="Example icon button with a home icon"
+                   > <mat-icon>forward_to_inbox</mat-icon>
+                  </button>
+                  <button
+                  mat-icon-button
+                  color="primary"
+                  *ngIf="element.statusInvio === 'pending'"
+                  style="color:green;"
+                  matTooltip="invia Pec"
+                  matTooltipPosition="above"
+                  (click)="onClickReport('send', type, index, element)"
+                  aria-label="Example icon button with a home icon"
+                 > <mat-icon>mail</mat-icon>
+                </button>
+                <button
+                  mat-icon-button
+                  color="warn"
+                  *ngIf="element.statusInvio !== 'completed'"
+                  matTooltip="Elimina Documento"
+                  matTooltipPosition="above"
+                  (click)="deleteReport(element.id)"
+                  aria-label="Example icon button with a home icon"
+                 > <mat-icon>cancel</mat-icon>
+                </button>
+                  </td>
+                </ng-container>
+
+
+              </table>
+            </ng-container>
           </ng-template>
           </mat-tab>
         </mat-tab-group>

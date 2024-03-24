@@ -4,6 +4,7 @@ export class Allegato{
     createdAt: string;
     id_ram: number;
     id_Veicolo: number;
+    id_Report: number;
     typeVei: string;
     typeDocument: string;
     filenameUpload: string;
@@ -17,5 +18,6 @@ export class Allegato{
     adminNote: string;
     adminDate: string;
     adminUser: number;
-    fd:[]
+    fd:[];
+    targa: string;
 }

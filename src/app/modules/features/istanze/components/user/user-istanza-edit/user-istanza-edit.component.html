@@ -7,26 +7,42 @@
 
 <mat-card class="container-card" >
   <mat-card-content>
-    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center"  fxLayoutGap="30px">
+    <div class="row-custom">
 
-      <mat-list fxFlex="auto">
+      <mat-list class="col-custom">
         <div mat-subheader>Stato Rendicontazione</div>
 
         <ng-container *ngIf="enableRendicontazione; else rendScaduta;">
-          <ng-container *ngIf="this.rendicontazione.enable; else noactiverend">
-            <mat-list-item >
-              <p matLine>Stato rendicontazione</p>
-              <p matLine>Avviata</p>
-            </mat-list-item>
-            <mat-list-item>
-              <button
-              mat-raised-button
-              style="background-color: orange; color:white"
-              (click)="onClickRend(this.rendicontazione.enable)">Chiudi Rendicontazione</button>
 
-            </mat-list-item>
+          <ng-container *ngIf="this.rendicontazione.enable; else noactiverend">
+
+            <ng-container *ngIf="!istruttoriaData; else istruttoria">
+              <mat-list-item >
+                <p matLine>Stato rendicontazione</p>
+                <p matLine>Avviata</p>
+              </mat-list-item>
+              <mat-list-item>
+                <button
+                mat-raised-button
+                style="background-color: orange; color:white"
+                (click)="onClickRend(this.rendicontazione.enable)">Chiudi Rendicontazione</button>
+
+              </mat-list-item>
+            </ng-container>
+
           </ng-container>
+
+          <ng-template #istruttoria>
+            <mat-list-item >
+              <p matLine>Stato istruttoria</p>
+              <span class="span-status pending" style="padding: 0 10px;" matLine>{{this.istruttoriaData.typeReport['description']}}</span>
+              <p matLine>Scadenza integrazione: <b>{{this.dataFineIstruttoria | date:'dd/MM/YYYY'}}</b></p>
+            </mat-list-item>
+
+          </ng-template>
+
           <ng-template #noactiverend>
+
             <ng-container *ngIf="this.rendicontazione.dateEnd; else closedRend">
               <mat-list-item >
                 <p matLine>Stato rendicontazione</p>
@@ -36,20 +52,27 @@
                   <p matLine>Rendicontazione chiusa il {{this.rendicontazione.dateEnd | date:"dd/MM/yyyy HH:mm"}}</p>
               </mat-list-item>
             </ng-container>
-            <ng-template #closedRend>
-              <mat-list-item >
-                <p matLine>Stato rendicontazione</p>
-                <p matLine>Non Avviata</p>
-              </mat-list-item>
-              <mat-list-item>
-                <button
-                mat-raised-button
-                style="background-color: green; color:white"
-                (click)="onClickRend(this.rendicontazione.enable)">Avvia rendicontazione</button>
-              </mat-list-item>
-            </ng-template>
+
+
           </ng-template>
         </ng-container>
+
+        <ng-template #closedRend>
+          <mat-list-item >
+            <p matLine>Stato rendicontazione</p>
+            <p matLine>Non Avviata</p>
+          </mat-list-item>
+          <mat-list-item>
+            <button
+            mat-raised-button
+            style="background-color: green; color:white"
+            (click)="onClickRend(this.rendicontazione.enable)">Avvia rendicontazione</button>
+          </mat-list-item>
+        </ng-template>
+
+
+
+
         <ng-template #rendScaduta>
           <ng-container *ngIf="this.rendicontazione.enable; else noactiverend">
             <mat-list-item >
@@ -60,6 +83,7 @@
                 <p matLine>Termini per la rendicontazione scaduti il {{this.typeIstance.reportingEndDate | date:"dd/MM/yyyy HH:mm"}}</p>
             </mat-list-item>
           </ng-container>
+
           <ng-template #noactiverend>
             <ng-container *ngIf="this.rendicontazione.dateEnd; else closedRend">
               <mat-list-item >
@@ -88,7 +112,7 @@
             <p matLine>{{typeIstance? typeIstance.description:''}}</p>
           </mat-list-item>
       </mat-list>
-      <mat-list fxFlex="auto"  *ngIf="this.userMe.role !== 'user'">
+      <mat-list class="col-custom"  *ngIf="this.userMe.role !== 'user'">
         <div mat-subheader>Funzioni Admin</div>
         <mat-list-item>
           <button
@@ -102,38 +126,39 @@
           style="background-color: orange; color:white"
           (click)="onClickRend(true)">Chiudi rendicontazione</button>
       </mat-list-item>
-    </mat-list>
-    <mat-list fxFlex="auto">
-      <div mat-subheader>Riepilogo Rendicontazione</div>
-      <mat-list-item >
-        <p matLine>Allegati Dichiarazione</p>
-        <div matLine>
-          <section class="progress-section">
-            <mat-progress-bar
-                color="primary"
-                [mode]="mode"
-                [value]="(this.listaAllegatiDich.length / this.totCertEnable)*100">
-            </mat-progress-bar>
-                  <div style="position: absolute; padding: 10px; color: white;">  {{this.listaAllegatiDich.length }} di  {{ totCertEnable }} </div>
-          </section>
-        </div>
-      </mat-list-item>
-      <mat-list-item >
-        <p matLine>Veicoli Inseriti</p>
-        <div matLine>
-          <section class="progress-section">
-            <mat-progress-bar
-                color="accent"
-                [mode]="mode"
-                [value]="(this.listaVeicoli.length / this.totVeicoli)*100">
-            </mat-progress-bar>
-                  <div style="position: absolute; padding: 10px; color: white;">  {{this.listaVeicoli.length }} di  {{ totVeicoli }} </div>
-          </section>
+      </mat-list>
+      <mat-list class="col-custom">
+        <div mat-subheader>Riepilogo Rendicontazione</div>
+        <mat-list-item >
+          <p matLine>Allegati Dichiarazione</p>
+          <div matLine>
+            <section class="progress-section">
+              <mat-progress-bar
+                  color="primary"
+                  [mode]="mode"
+                  [value]="(this.listaAllegatiDich.length / this.totCertEnable)*100">
+              </mat-progress-bar>
+                    <div style="position: absolute; padding: 10px; color: white;">  {{this.listaAllegatiDich.length }} di  {{ totCertEnable }} </div>
+            </section>
+          </div>
+        </mat-list-item>
+        <mat-list-item >
+          <p matLine>Veicoli Inseriti</p>
+          <div matLine>
+            <section class="progress-section">
+              <mat-progress-bar
+                  color="accent"
+                  [mode]="mode"
+                  [value]="(this.listaVeicoli.length / this.totVeicoli)*100">
+              </mat-progress-bar>
+                    <div style="position: absolute; padding: 10px; color: white;">  {{this.listaVeicoli.length }} di  {{ totVeicoli }} </div>
+            </section>
 
-        </div>
-      </mat-list-item>
-  </mat-list>
+          </div>
+        </mat-list-item>
+      </mat-list>
     </div>
+
 
 
 
@@ -145,35 +170,35 @@
               <mat-list fxFlex="30">
                 <div mat-subheader>Dati Richiedente</div>
                   <mat-list-item>
-                    <p matLine>Cognome</p>
+                    <p matLine style="font-weight: bold;">Cognome</p>
                     <p matLine>{{istanza.cognome}}</p>
                   </mat-list-item>
                   <mat-list-item>
-                    <p matLine>Nome</p>
+                    <p matLine style="font-weight: bold;">Nome</p>
                     <p matLine>{{istanza.nome}}</p>
                   </mat-list-item>
                   <mat-list-item>
-                    <p matLine>Data di Nascita</p>
+                    <p matLine style="font-weight: bold;">Data di Nascita</p>
                     <p matLine>{{istanza.data_nascita| date:"dd/MM/yyyy" }}</p>
                   </mat-list-item>
                   <mat-list-item>
-                    <p matLine>Luogo di Nascita</p>
+                    <p matLine style="font-weight: bold;">Luogo di Nascita</p>
                     <p matLine>{{istanza.luogo_nascita}} ({{istanza.prov_nascita}})<</p>
                   </mat-list-item>
                   <mat-list-item>
-                    <p matLine>Indirizzo Residenza</p>
+                    <p matLine style="font-weight: bold;">Indirizzo Residenza</p>
                     <p matLine>{{istanza.indirizzo_residenza}}, {{istanza.civico_residenza}}</p>
                   </mat-list-item>
                   <mat-list-item>
-                    <p matLine>Comune Residenza</p>
+                    <p matLine style="font-weight: bold;">Comune Residenza</p>
                     <p matLine>{{istanza.cap_residenza}} - {{istanza.comune_residenza}} ({{istanza.prov_residenza}})</p>
                   </mat-list-item>
                   <mat-list-item>
-                    <p matLine>Email</p>
+                    <p matLine style="font-weight: bold;">Email</p>
                     <p matLine>{{istanza.email_richiedente}}</p>
                   </mat-list-item>
                   <mat-list-item>
-                    <p matLine>Tipo</p>
+                    <p matLine style="font-weight: bold;">Tipo</p>
                     <p matLine>{{istanza.tipo_dichiarante === '1' ?'Legale Rappresentante':''}}
                       {{istanza.tipo_dichiarante === '2' ?'Procuratore':''}}</p>
                   </mat-list-item>
@@ -181,63 +206,80 @@
               <mat-list fxFlex="30">
                 <div mat-subheader>Dati Impresa</div>
                   <mat-list-item>
-                    <p matLine>Ragione Sociale</p>
+                    <p matLine style="font-weight: bold;">Ragione Sociale</p>
                     <p matLine>{{istanza.ragione_sociale}}</p>
                   </mat-list-item>
                   <mat-list-item>
-                    <p matLine>Partita IVA</p>
+                    <p matLine style="font-weight: bold;">Partita IVA</p>
                     <p matLine>{{istanza.piva}}</p>
                   </mat-list-item>
                   <mat-list-item>
-                    <p matLine>Codice Fiscale</p>
+                    <p matLine style="font-weight: bold;">Codice Fiscale</p>
                     <p matLine>{{istanza.cf}}</p>
                   </mat-list-item>
                   <mat-list-item>
-                    <p matLine>Indirizzo Impresa</p>
+                    <p matLine style="font-weight: bold;">Indirizzo Impresa</p>
                     <p matLine>{{istanza.indirizzo_impr}}, {{istanza.civico_impr}}</p>
                   </mat-list-item>
                   <mat-list-item>
-                    <p matLine>Comune Impresa</p>
+                    <p matLine style="font-weight: bold;">Comune Impresa</p>
                     <p matLine>{{istanza.cap_impr}} - {{istanza.comune_impr}} ({{istanza.prov_impr}})</p>
                   </mat-list-item>
                   <mat-list-item>
-                    <p matLine>Email Impresa</p>
+                    <p matLine style="font-weight: bold;">Email Impresa</p>
                     <p matLine>{{istanza.email_impr}}</p>
                   </mat-list-item>
                   <mat-list-item>
-                    <p matLine>Pec Impresa</p>
+                    <p matLine style="font-weight: bold;">Pec Impresa</p>
                     <p matLine>{{istanza.pec_impr}}</p>
                   </mat-list-item>
                   <mat-list-item>
-                    <p matLine>Telefono Impresa</p>
+                    <p matLine style="font-weight: bold;">Telefono Impresa</p>
                     <p matLine>{{istanza.pref_tel_impr}} / {{istanza.num_tel_impr}}</p>
                   </mat-list-item>
               </mat-list>
               <mat-list fxFlex="30">
                 <div mat-subheader> </div>
                   <mat-list-item>
-                    <p matLine>Codice Albo</p>
+                    <p matLine style="font-weight: bold;">Codice Albo</p>
                     <p matLine>{{istanza.codice_albo}}</p>
                   </mat-list-item>
                   <mat-list-item>
-                    <p matLine>Codice Ren</p>
+                    <p matLine style="font-weight: bold;">Codice Ren</p>
                     <p matLine>{{istanza.codice_albo}}</p>
                   </mat-list-item>
                   <mat-list-item>
-                    <p matLine>CCIAA</p>
+                    <p matLine style="font-weight: bold;">CCIAA</p>
                     <p matLine>Provincia {{istanza.cciaa_prov}}</p>
                     <p matLine>Codice {{istanza.cciaa_prov}}</p>
                     <p matLine>Data {{istanza.cciaa_data | date :'dd/MM/yyyy'}}</p>
                   </mat-list-item>
                   <mat-list-item>
-                    <p matLine>Codice A.TE.CO</p>
+                    <p matLine style="font-weight: bold;">Codice A.TE.CO</p>
                     <p matLine>{{istanza.codice_ateco}}</p>
                   </mat-list-item>
                   <mat-list-item>
-                    <p matLine>Banca</p>
-                    <p matLine>Istituto {{istanza.banca_istituto}}</p>
+                    <p matLine style="font-weight: bold;">Banca</p>
+                    <p matLine >Istituto {{istanza.banca_istituto}}</p>
                     <p matLine>Agenzia {{istanza.banca_agenzia}}</p>
                     <p matLine>Iban {{istanza.iban_it}} {{istanza.iban_num_chk}} {{istanza.iban_cin}} {{istanza.iban_abi}} {{istanza.iban_cab}} {{istanza.iban_cc}}</p>
+                  </mat-list-item>
+                  <mat-list-item>
+                    <p matLine style="font-weight: bold;">Maggiorazione PMI</p>
+                    <p matLine>{{istanza.pmi && istanza.pmi === 'Yes'?'Presente':'Non presente'}}</p>
+                  </mat-list-item>
+
+                  <mat-list-item>
+                    <p matLine style="font-weight: bold;">Maggiorazione Rete</p>
+                    <p matLine>{{istanza.rete && istanza.rete === 'Yes'?'Presente':'Non presente'}}</p>
+                  </mat-list-item>
+
+                  <mat-list-item>
+                    <p matLine style="font-weight: bold;"> Dimensioni Impresa</p>
+                    <p matLine>{{
+                    istanza.tipo_impresa === '1'?'Piccola':
+                    istanza.tipo_impresa === '2'?'Media':
+                    istanza.tipo_impresa === '3'?'Grande':null}}</p>
                   </mat-list-item>
 
               </mat-list>
@@ -255,8 +297,10 @@
             <mat-accordion  style="width:100%;margin-bottom:50px;" *ngIf="certEnable">
               <mat-expansion-panel [expanded]="true">
                   <mat-expansion-panel-header>
-                      <mat-panel-title>Allegati Dichiarazione</mat-panel-title>
-                      <mat-panel-description> </mat-panel-description>
+                      <mat-panel-title   > <div matBadge="4" >Allegati Dichiarazione</div></mat-panel-title>
+                      <mat-panel-description>
+                        <span class="span-status pending blinking" *ngIf="blinkBadgeIntegrazione('alle-dichiarazione')" >Richiesta Integrazioni</span>
+                      </mat-panel-description>
                   </mat-expansion-panel-header>
                   <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
                     <table mat-table [dataSource]="certEnable">
@@ -327,7 +371,7 @@
                             </ng-container>
                             <ng-template #noalleb>
                               <button
-                              *ngIf="this.rendicontazione.enable && enableRendicontazione"
+                              *ngIf="(this.rendicontazione.enable && enableRendicontazione) || this.userMe.role === 'superadmin'"
                               mat-raised-button  (click)="onClickEditAllegato('create', element)" color="primary">Upload Documento</button>
                             </ng-template>
 
@@ -346,7 +390,10 @@
             <mat-accordion style="width:100%;margin-bottom:50px;">
               <mat-expansion-panel *ngFor="let cat of catEnable" [expanded]="true">
                   <mat-expansion-panel-header>
-                      <mat-panel-title>Categoria {{cat}} <br> {{getTotalForCat(cat)}}</mat-panel-title>
+                      <mat-panel-title>Categoria {{cat}} <br> {{getTotalForCat(cat)}} <span
+                        class="span-status pending blinking" style="margin-left: auto;"
+                        *ngIf="blinkBadgeIntegrazione('category',cat)"
+                        >Richiesta Integrazioni</span></mat-panel-title>
                       <mat-panel-description>{{getCatData(cat).description}}</mat-panel-description>
                   </mat-expansion-panel-header>
                   <app-content-vei
@@ -363,6 +410,7 @@
                       (newAllegatoEvent)="addAlle($event)"
                       [rottamazione]="this.rottamazione"
                       [enableRendicontazione]="enableRendicontazione"
+                      [istruttoriaData]="istruttoriaData"
                       ></app-content-vei>
 
               </mat-expansion-panel>

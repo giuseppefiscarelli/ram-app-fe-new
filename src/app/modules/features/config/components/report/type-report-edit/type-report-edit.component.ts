@@ -278,14 +278,16 @@ export class TypeReportEditComponent implements OnInit {
 
 
   async testDoc(type){
-    console.log(type)
+    //console.log(type)
     let dataReport = null
     this.reportData =  await this.reportService.generateReport(type,dataReport);
+   // console.log(this.reportData);
     this.reportData.getDataUrl((dataUrl) => {
+      //console.log(dataUrl)
       this.preview = dataUrl;
     })
 
-   
+
   }
 
   download(pdf){

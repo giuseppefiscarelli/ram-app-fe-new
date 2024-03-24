@@ -1,0 +1,92 @@
+<mat-toolbar class="container-toolbar">
+  <span class="container-toolbar-title" [innerText]="'Gestione Account pec'"></span>
+</mat-toolbar>
+
+
+
+<mat-card class="container-card">
+  <mat-card-content>
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
+      <div>
+        <button mat-raised-button (click)="onClickRecord('create')" color="primary">Nuova configurazione email</button>
+
+      </div>
+    </div>
+
+
+<div class="table-container" (scroll)="timeoutScroll($event)">
+
+  <mat-table #table [dataSource]="dataSource" >
+    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef> # </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{element.id}}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="user">
+      <mat-header-cell *matHeaderCellDef> Username </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{element.user}}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="host">
+      <mat-header-cell *matHeaderCellDef> Host </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{element.host}}
+
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="port">
+      <mat-header-cell *matHeaderCellDef> porta </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+
+      {{element.port}}
+      </mat-cell>
+    </ng-container>
+
+
+
+
+
+    <ng-container matColumnDef="action">
+      <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+      <mat-cell *matCellDef="let element; let index = index">
+
+        <button
+            mat-icon-button
+            color="primary"
+            style="color:green;"
+            matTooltip="Visualizzazione Configurazione"
+            matTooltipPosition="above"
+            aria-label="Example icon button with a home icon"
+            (click)="onClickRecord('edit', element, index)"
+          >
+          <mat-icon>find_in_page</mat-icon>
+        </button>
+
+
+
+
+
+
+
+
+      </mat-cell>
+    </ng-container>
+
+
+
+
+
+  </mat-table>
+</div>
+
+  </mat-card-content>
+</mat-card>
+
+

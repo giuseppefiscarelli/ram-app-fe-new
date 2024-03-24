@@ -1,6 +1,6 @@
 <mat-toolbar class="ram-navbar">
 
-  <span style="margin-left:30px;">
+  <!-- <span style="margin-left:30px;">
     <img src="/assets/images/logo.svg" alt="Home" style="max-height: 50px;margin-top:7px;">
   </span>
   <span style="margin-left: 20px;">
@@ -12,7 +12,11 @@
 
 
 
+  </span> -->
+  <span>
+    <img src="/assets/images/min.png" alt="Home" style="max-height: 60px;vertical-align: middle;">
   </span>
+
   <span class="spacer" style="margin-left:50px;">
 
     <ng-container *ngIf="this.userMe.role !== 'user'; else user">
@@ -26,9 +30,11 @@
               <button mat-menu-item [routerLink]="['/config/list']">Gestione Edizioni Istanze</button>
               <button mat-menu-item [routerLink]="['/config/create']">Nuova edizione</button>
               <button mat-menu-item [routerLink]="['/config/config']">Tabelle / Impostazioni</button>
+              <button mat-menu-item [routerLink]="['/config/mail-config']">Configurazione casella pec</button>
           </mat-menu>
 
       <button mat-button [routerLink]="['/istanze/list']"><mat-icon>list</mat-icon> Istanze</button>
+      <button mat-button [routerLink]="['/config/mail/list']"><mat-icon>mail</mat-icon> Pec Comunicazioni</button>
       <!--     <mat-menu #menuD="matMenu">
               <button mat-menu-item>Dashboard</button>
               <button mat-menu-item [routerLink]="['/istanze/list']">Istanze</button>

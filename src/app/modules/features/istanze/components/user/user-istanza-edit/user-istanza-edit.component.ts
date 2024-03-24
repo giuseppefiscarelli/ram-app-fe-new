@@ -1,3 +1,4 @@
+
 import { PdfViewerSharedComponent } from './../../../../../shared/components/pdf-viewer/pdf-viewer.component';
 import { FormAllegatoComponent } from './../form-allegato/form-allegato.component';
 import { NotificationsComponent } from '@app/modules/notifications/notifications.component';
@@ -16,11 +17,18 @@ import { IstanzeService } from '../../../istanze.service';
 import Swal from 'sweetalert2';
 import { TYPE } from '@app/modules/notifications/values.constants';
 import { PdfViewerComponent } from 'ng2-pdf-viewer';
+import { ConfigService } from '@app/modules/features/config/config.service';
+import { ReportService } from '@app/modules/features/config/report.service';
+import { TypeDocument } from '@app/modules/models/typeDocument.model';
+import { TypeReport } from '@app/modules/models/typeReport.model';
+import { Report } from '@app/modules/models/report.model';
+import moment from 'moment';
 
 @Component({
   selector: 'app-user-istanza-edit',
   templateUrl: './user-istanza-edit.component.html',
   styleUrls: ['./user-istanza-edit.component.scss'],
+  providers:[ConfigService,ReportService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserIstanzaEditComponent implements OnInit {
@@ -59,9 +67,25 @@ export class UserIstanzaEditComponent implements OnInit {
   enableRendicontazione: boolean;
   isLoading = true;
 
+  isExpired = false;
+
+  typeDocuments: TypeDocument[] =[];
+  typeReport: TypeReport[] = [];
+  reports: Report[] = [];
+  istruttoriaRend : boolean = false;
+  istruttoriaData: Report;
+  dataFineIstruttoria: any;
+  integrazione = false;
+  catIntegrazione:string;
+  tipoVeicoloIntegrazione : string;
+  veicoliIntegrazione : Veicolo[] = [];
+  allegatiDichiarazioneIntegrazione: Allegato[] = [];
+
+
     constructor(  private route: ActivatedRoute,
                   private service: IstanzeService,
                   private dialog: MatDialog,
+                  private configService: ConfigService,
                   private changeDetectorRef: ChangeDetectorRef,
                   private store: Store<ApplicationState>,
                   private notifications: NotificationsComponent,) {
@@ -114,12 +138,18 @@ export class UserIstanzaEditComponent implements OnInit {
                     this.vei$ = forkJoin([
                       this.service.fetchVeicoli({drop:true, id_ram: this.istanza.id_ram}),
                       this.service.fetchAllegati({drop:true,id_ram: this.istanza.id_ram, enable:true}),
-                      this.service.getTypeInstance(this.istanza.tipo_istanza)
+                      this.service.getTypeInstance(this.istanza.tipo_istanza),
+                      this.configService.fetchTypeDocuments({drop:true}),
+                      this.configService.fetchTypeReport({drop:true, typeistance:this.istanza.tipo_istanza}),
+                      this.configService.fetchReport({drop:true, enable:true, id_ram:this.istanza.id_ram})
                     ]).subscribe(
-                      ([vei,alle,ista]) => {
+                      ([vei,alle,ista, typeDocument, typeReport, reports]) => {
                           this.listaVeicoli=vei;
                           this.listaAllegati=alle;
                           this.typeIstance = ista;
+                          this.typeDocuments = typeDocument;
+                          this.typeReport = typeReport;
+                          this.reports = reports;
                           this.typeVeiGroupView = this.groupByKey(this.typeIstance.typeVei,'catVei');
                           this.typeIstance.certAttach.map(
                               (cert) => {
@@ -168,10 +198,40 @@ export class UserIstanzaEditComponent implements OnInit {
                           const reportingStartDate = new Date(Number(this.typeIstance.reportingStartDate));
                           const reportingEndDate = new Date(Number(this.typeIstance.reportingEndDate));
 
-                          if(this.today > reportingEndDate){
+                          if(this.today > reportingEndDate || this.today < reportingStartDate){
 
                               this.enableRendicontazione =false;
                               this.rendicontazione.enable = false;
+                          }
+                          let istruttoria = this.getStatusIstruttoria(this.reports);
+                          console.log(istruttoria)
+                          if(istruttoria){
+                            this.istruttoriaData = istruttoria;
+                            let typeReport = istruttoria.typeReport['type'];
+                            console.log(typeReport)
+
+                            if(typeReport === 'integrazione'){
+                              this.dataFineIstruttoria= moment(Number(this.istruttoriaData.dataInvio)).add(15,'days');
+
+                              this.integrazione = false;
+                              let scadenza = moment();
+                              console.log(scadenza)
+                              if(this.dataFineIstruttoria.isAfter(moment())){
+                                console.log('rendicondazione apertra')
+                                this.enableRendicontazione =true;
+                                this.rendicontazione.enable = true;
+                                this.istruttoriaRend = true;
+                                this.integrazione = true;
+                                const idVeicoliFiltrati = this.listaAllegati
+                                  .filter(obj => obj.adminState !== 'accepted')
+                                  .map(obj => obj.id_Veicolo);
+                                console.log(idVeicoliFiltrati);
+                                const veicoliFiltrati = this.listaVeicoli.filter(veicolo => idVeicoliFiltrati.includes(veicolo.id));
+                              }else{
+                                console.log('rendicondazione chiusaa')
+
+                              }
+                            }
                           }
                           this.changeDetectorRef.markForCheck()
                           this.isLoading = false;
@@ -315,14 +375,14 @@ export class UserIstanzaEditComponent implements OnInit {
           (res) => {
               const blob = new Blob([res],{type: file.type});
               const url = window.URL.createObjectURL(blob);
-           //   window.open(url);
-              const ref: MatDialogRef<PdfViewerSharedComponent> = this.dialog.open(PdfViewerSharedComponent,
-                  {
-                      data:{
-                          url: url
-                      }
-                  }
-              );
+              window.open(url);
+              // const ref: MatDialogRef<PdfViewerSharedComponent> = this.dialog.open(PdfViewerSharedComponent,
+              //     {
+              //         data:{
+              //             url: url
+              //         }
+              //     }
+              // );
           },
               error => console.log('Error downloading the file.')
           );
@@ -533,6 +593,46 @@ export class UserIstanzaEditComponent implements OnInit {
               }
           })
   }
+
+  getStatusIstruttoria(reports: Report[]){
+    const validReports = reports.filter(obj => obj.dataInvio !== null);
+    validReports.sort((a, b) => Number(b.dataInvio) - Number(a.dataInvio));
+    if(validReports.length > 0){
+      return validReports[0];
+    }
+    return false
+
+
+}
+
+blinkBadgeIntegrazione(type, data?){
+
+  let blink = false;
+  if(this.istruttoriaData){
+    if(type === 'alle-dichiarazione'){
+      blink = this.listaAllegatiDich.some(x=>x.adminState !=='accepted')
+
+    }else {
+      const idVeicoliFiltrati = this.listaAllegati
+      .filter(obj => obj.adminState !== 'accepted' && obj.id_Veicolo && obj.enable)
+      .map(obj => obj.id_Veicolo)
+      .filter((id, index, array) => array.indexOf(id) === index);
+      ;
+      console.log(idVeicoliFiltrati);
+      if(type ==='category'){
+
+
+        const veicoliFiltrati = this.listaVeicoli.filter(veicolo => veicolo.category === data && idVeicoliFiltrati.includes(veicolo.id));
+
+        if(veicoliFiltrati.length > 0){
+          return true
+        }
+      }
+    }
+  }
+
+  return false
+}
 
 
 

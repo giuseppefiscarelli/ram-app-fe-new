@@ -157,22 +157,26 @@
 
     <div fxFlex="40" >
         <form [formGroup]="form">
-          <mat-form-field>
-            <mat-label>Tipo Report</mat-label>
-            <mat-select formControlName="type">
-                <mat-option *ngFor="let type of filterOptionsDescriptors.type" [value]="type.value">
-                  {{type.title}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>Tipo Istanza</mat-label>
-          <mat-select formControlName="typeistance">
-              <mat-option *ngFor="let type of filterOptionsDescriptors.typeistance" [value]="type.value">
-                {{type.title}}
-              </mat-option>
-          </mat-select>
-        </mat-form-field>
+          <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
+            <mat-form-field fxFlex="70">
+              <mat-label>Tipo Report</mat-label>
+              <mat-select formControlName="type">
+                  <mat-option *ngFor="let type of filterOptionsDescriptors.type" [value]="type.value">
+                    {{type.title}}
+                  </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
+            <mat-form-field fxFlex="70">
+              <mat-label>Tipo Istanza</mat-label>
+              <mat-select formControlName="typeistance">
+                  <mat-option *ngFor="let type of filterOptionsDescriptors.typeistance" [value]="type.value">
+                    {{type.title}}
+                  </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
         </form>
     </div>
     <div fxFlex="60" *ngIf="this.mode ==='edit'" >

@@ -136,3 +136,23 @@
     max-height: 400px;
     overflow: auto;
   }
+  .span-status{
+    padding:0px 10px;
+    border-radius: 10px;
+    text-align:center;
+
+  }
+
+  .closed,.pending{
+    background-color: orange;
+    color: white;
+  }
+  @keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+
+  .blinking {
+    animation: blink 1s infinite;
+  }

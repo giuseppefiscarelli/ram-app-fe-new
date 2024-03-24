@@ -37,11 +37,13 @@ export class FormAllegatoComponent implements OnInit {
                   private dialogRef: MatDialogRef<FormAllegatoComponent>,
                   private notifications: NotificationsComponent,
                   ) {
+                    console.log(data)
                     this.user = this.store.pipe(select('authentication'), select('user'));
                     this.user.pipe(take(1)).subscribe((me: User) => this.userMe = me);
                     this.mode = data.mode;
                     this.istanza = data.istanza;
                     this.type = data.type;
+                    console.log(this.type['description'])
 
                   //  console.log(this.type)
 
@@ -250,26 +252,37 @@ export class FormAllegatoComponent implements OnInit {
         return;
      }
      this.fileName = this.fileAttach.name;
-     this.form.controls.filenameUpload.setValue(this.fileAttach.name)
+     this.form.controls.filenameUpload.setValue(this.fileAttach.name);
+     console.log(this.fileAttach)
      if (this.fileAttach.type === 'application/pdf' ||
         this.fileAttach.type === 'application/pkcs7-mime' ||
-        this.fileAttach.type === 'application/x-pkcs7-mime'
+        this.fileAttach.type === 'application/x-pkcs7-mime' ||
+        this.fileAttach.type === 'application/pkcs7' ||
+        this.fileAttach.type === 'application/pkcs-crl' ||
+        this.fileAttach.type === 'application/pkcs10' ||
+        this.fileAttach.type === 'application/x-pkcs10' ||
+        this.fileAttach.type === 'application/pkcs-12' ||
+        this.fileAttach.type === 'application/x-pkcs12' ||
+        this.fileAttach.type === 'application/x-pkcs7-signature' ||
+        this.fileAttach.type === 'application/x-pkcs7-certreqresp' ||
+        this.fileAttach.type === 'application/pkcs7-signature' ||
+        this.fileAttach.name.endsWith('.p7m') ||  this.fileAttach.name.endsWith('.pdf')
     ) {
         this.typeFileControl = true;
         this.form.controls.attach.setValue(false);
-      
-        if(this.fileAttach.size < 4194304){
+        let limit = this.userMe.role === 'user'?4194304:10194304
+        if(this.fileAttach.size < limit){
             this.fileDimControl = true;
             this.form.controls.attach.setValue(true)
         }
-        
+
         return
     } else {
         console.log("Tipo di file non supportato");
         this.typeFileControl = false;
         this.fileDimControl = false;
         this.form.controls.attach.setValue(false);
-    
+
         return;
     }
 

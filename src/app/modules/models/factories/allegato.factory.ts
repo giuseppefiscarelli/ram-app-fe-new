@@ -10,6 +10,7 @@ export class AllegatoFactory {
             'createdAt',
             'id_ram',
             'id_Veicolo',
+            'id_Report',
             'typeVei',
             'typeDocument',
             'filenameUpload',
@@ -23,15 +24,16 @@ export class AllegatoFactory {
             'adminNote',
             'adminDate',
             'adminUser',
-            'fd'
+            'fd',
+            'targa'
         ];
         keysToDuplicate.forEach(key => {
-            
-           
+
+
                 instance[key] = descriptor[key]
-            
-          
-        
+
+
+
         });
         return instance;
 

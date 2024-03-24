@@ -6,19 +6,19 @@
   <mat-card-content>
 
     <form [formGroup]="filters">
-         <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
+         <div class="row-custom">
 
-            <mat-form-field fxFlex="20" appearance="legacy">
+            <mat-form-field class="col-custom col-custom-3" appearance="legacy">
               <mat-label>Ricerca</mat-label>
               <input matInput  formControlName="term"[placeholder]="'Cerca per pec richiedente o ragione sociale'">
             </mat-form-field>
 
-            <mat-form-field fxFlex="10" appearance="legacy">
+            <mat-form-field class="col-custom col-custom-2"appearance="legacy">
               <mat-label>Id RAM</mat-label>
               <input matInput  formControlName="id_ram" [placeholder]="'Cerca per id RAM'">
             </mat-form-field>
 
-            <mat-form-field fxFlex="10">
+            <mat-form-field class="col-custom col-custom-2">
               <mat-label>Stato Istanza</mat-label>
               <mat-select formControlName="statoIstanza">
                 <mat-option *ngFor="let type of this.rendstatus" [value]="type.value">
@@ -26,7 +26,7 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
-            <mat-form-field fxFlex="15">
+            <mat-form-field class="col-custom col-custom-2">
               <mat-label>Edizione Istanza</mat-label>
               <mat-select formControlName="type">
                   <mat-option>Tutte le edizioni</mat-option>
@@ -35,7 +35,7 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
-
+<!--
             <mat-form-field fxFlex="15">
               <mat-label>Stato Istruttoria</mat-label>
               <mat-select  formControlName="istrActive">
@@ -43,22 +43,25 @@
                   {{item.title}}
                 </mat-option>
             </mat-select>
-            </mat-form-field>
+            </mat-form-field> -->
 
          </div>
     </form>
-    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
-      <h4>Totale Istanze: <span style="font-weight: bold;">{{totRecord}}</span></h4>
+    <div class="row-custom">
+      <h4 *ngIf="!isLoading">Totale Istanze: <span style="font-weight: bold;">{{totRecord}}</span></h4>
     </div>
     <div class="table-container" (scroll)="timeoutScroll($event)">
-      <mat-table #table [dataSource]="dataSource" >
+      <table mat-table [dataSource]="dataSource" *ngIf="!isLoading">
         <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 
         <ng-container matColumnDef="edition">
           <mat-header-cell *matHeaderCellDef> Edizione </mat-header-cell>
           <mat-cell *matCellDef="let element">
-            {{getInfoEdizione(element.tipo_istanza)}}
+            <ng-container *ngIf="type && type.length > 0">
+              {{getInfoEdizione(element.tipo_istanza)}}
+            </ng-container>
+
           </mat-cell>
         </ng-container>
 
@@ -96,7 +99,7 @@
 
             <ng-container *ngIf="getStatusRendicontazione(element) as rendStatus">
               <div class="status-container">
-                <span class="span-status" [class]="rendStatus.status" 
+                <span class="span-status" [class]="rendStatus.status"
                 [innerText]="rendStatus.status | rendStatus"></span>
                 <p>{{rendStatus.pData}} {{rendStatus.date?(rendStatus.date | date:"dd/MM/yyyy HH:mm"):null}}</p>
               </div>
@@ -104,25 +107,25 @@
 
 
             <!-- <div class="status-container">
-              <span class="span-status" [class]="element.rendstatus?element.rendstatus:'pending'" 
+              <span class="span-status" [class]="element.rendstatus?element.rendstatus:'pending'"
               [innerText]="element.rendstatus | rendStatus"></span>
 
               <ng-container *ngIf="element.rendstatus === 'closed'">
-            
+
                 <p>chiusa il: {{element.dateend | date:"dd/MM/yyyy HH:mm"}}</p>
               </ng-container>
               <ng-container *ngIf="element.rendstatus === 'opened'">
-            
+
                 <p>avviata il: {{element.daterendstart | date:"dd/MM/yyyy HH:mm"}}</p>
               </ng-container>
               <ng-container *ngIf="element.rendstatus === 'canceled'">
-            
+
                 <p>annullata il: {{element.datecanceled | date:"dd/MM/yyyy HH:mm"}}</p>
               </ng-container>
             </div> -->
-        
-           
-            
+
+
+
             <!--<ng-container *ngIf="element.rendstatus === 'canceled'">
                      <br>
                      <p>annullata da impresa</p>
@@ -135,23 +138,36 @@
           <mat-cell *matCellDef="let element">
             <div class="status-container" *ngIf="getStatusRendicontazione(element).status !== 'expired'; else expired">
               <ng-container *ngIf="getStatusIstruttoria(element) as statusIstr ">
-                <span class="span-status"
+                <ng-container *ngIf="!element.statusreport;else rep">
+                  <span class="span-status"
                   [class]="statusIstr.style"
                   [innerText]="statusIstr.status | istruttoriaStatus">
                 </span>
+                </ng-container>
+                <ng-template #rep>
+                  <span class="span-status"
+                  [class]="statusIstr.style"
+                  [innerText]="statusIstr.text">
+                </span><br>
+                <span class="span-status"
+                [class]="statusIstr.style"
+                [innerText]="statusIstr.status | statusReport">
+              </span>
+                </ng-template>
+
               </ng-container>
 
-              
+
             </div>
 
             <ng-template #expired>
               <ng-container  *ngIf="getStatusRendicontazione(element) as rendStatus">
                 <div class="status-container">
-                  <span class="span-status" [class]="rendStatus.status" 
+                  <span class="span-status" [class]="rendStatus.status"
                   [innerText]="rendStatus.status | rendStatus"></span>
                 </div>
               </ng-container>
-             
+
             </ng-template>
 
           </mat-cell>
@@ -182,7 +198,8 @@
             matTooltip="Visualizzazione Backoffice"
             matTooltipPosition="above"
             aria-label="Example icon button with a home icon"
-            [routerLink]="['/istanze','admin',element.id_ram]"
+            (click)="goToIstanza(element.id_ram)"
+
           >
           <mat-icon>admin_panel_settings</mat-icon>
         </button>
@@ -230,7 +247,9 @@
 
 
 
-      </mat-table>
+      </table>
+
+      <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
     </div>
 
   </mat-card-content>

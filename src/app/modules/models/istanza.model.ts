@@ -101,6 +101,9 @@ export class Istanza {
     data_agg:string;
     tipo_istanza: number;
 
+
+    data_invio:string;
+
 }
 
 export class Rendicontazione{

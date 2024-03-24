@@ -192,7 +192,7 @@ updateRendicontazione(payload: any): Observable<Rendicontazione> {
         );
     }
 
-    calcolaContributo(istanza, check, veicolo: Veicolo, type){
+    calcolaContributo(istanza, check, veicolo: Veicolo, type, allegatiVeicoli: Allegato[]){
 
         console.log(istanza, check,veicolo,type);
         var valoreContributo = 0;
@@ -203,8 +203,15 @@ updateRendicontazione(payload: any): Observable<Rendicontazione> {
 
         let tipoVeicolo = veicolo.type;
         console.log(tipoVeicolo);
+        console.log(allegatiVeicoli);
+        let allegatiRottamazione = allegatiVeicoli.filter(x=> (x.typeDocument === '11' || x.typeDocument === '14') && x.adminState )
+        const idVeicoloUnici = new Set();
+        allegatiRottamazione.forEach(obj => idVeicoloUnici.add(obj.id_Veicolo));
+        const numeroRichesteRottamazioneAccettate = idVeicoloUnici.size;
+        //const numerorichiesteRottamazioneIstanza = ist
 
 
+        console.log(numeroRichesteRottamazioneAccettate);
         if(tipoVeicolo.startsWith('rim_')){
             var campoRottamazione = 'rim_rott_'+ tipoVeicolo.slice(-1);
             console.log(campoRottamazione)
@@ -213,10 +220,11 @@ updateRendicontazione(payload: any): Observable<Rendicontazione> {
 
         var valore = type.typeVei.find(x=> x['campoDb']=== veicolo.type)['grantValue'];
         console.log(valore)
-        if(check.dimImpresa){
-         //  console.log('pmi okcheck')
-            if(veicolo.type !== 'rim_nv_1' && veicolo.type !== 'rim_nv_2'){
 
+        if(check.dimImpresa){
+          //console.log('pmi okcheck')
+            if(veicolo.type !== 'rim_nv_1' && veicolo.type !== 'rim_nv_2' && veicolo.type !== 'rim_nv_3'){
+                console.log('eccoci', check)
                 valoreContributo = valore;
                 if(check.pmi && istanza['pmi'] === 'Yes') {
                     magg_pmi = valoreContributo * .10;
@@ -225,23 +233,16 @@ updateRendicontazione(payload: any): Observable<Rendicontazione> {
                     magg_rete = valoreContributo * .10;
                 }
             }else{
-                if(check.dimImpresa === 3){
-                    valoreContributo = 3000;
-
-                }
-                if(check.dimImpresa === 2){
-                    valoreContributo = veicolo.amount * .10
-                }
-                if(check.dimImpresa === 1){
-                    valoreContributo = veicolo.amount * .20
-                }
+                if(check.dimImpresa === 3){ valoreContributo = 3000; }
+                else if(check.dimImpresa === 2){ valoreContributo = veicolo.amount * .10}
+                else if(check.dimImpresa === 1){ valoreContributo = veicolo.amount * .20}
                 if(valoreContributo > 5000){
                     valoreContributo = 5000;
                 }
             }
         }
-
-        if(istanza[tipoVeicolo] && istanza[campoRottamazione] > 0){
+        console.log(campoRottamazione)
+        if(istanza[tipoVeicolo] && istanza[campoRottamazione] > numeroRichesteRottamazioneAccettate){
 
             valoreContributo = 7000
             if(check.dimImpresa === 3){
@@ -249,9 +250,9 @@ updateRendicontazione(payload: any): Observable<Rendicontazione> {
             }
         }
 
-        return(valoreContributo)
+       return {valoreContributo, magg_pmi, magg_rete}
+      //  return(valoreContributo)
 
-      //  console.log(valoreContributo, magg_pmi, magg_rete)
     }
 
 
