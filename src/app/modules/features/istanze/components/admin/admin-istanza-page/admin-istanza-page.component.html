@@ -142,9 +142,9 @@
             <ng-template mat-tab-label>
                 <mat-icon class="tab-icon">attach_file</mat-icon> Verifica Allegati dichiarazione e Certificazioni</ng-template>
             <ng-template matTabContent>
-                    <div class="row-custom"  *ngIf="certEnable.length > 0" style="min-height: 60vh;">
+                    <div class="row-custom"  *ngIf="certEnable.length > 0" >
                       <h3>Allegati dichiarazione</h3>
-                      <table #tableA mat-table [dataSource]="certEnable">
+                      <table #tableA mat-table [dataSource]="certEnable" class="col-custom col-custom-12">
 
 
 
@@ -206,7 +206,7 @@
                     </div>
                     <div class="row-custom">
                       <h3>Certificazioni</h3>
-                      <table #tableB mat-table [dataSource]="certControlStatus">
+                      <table #tableB mat-table [dataSource]="certControlStatus" class="col-custom col-custom-12">
 
                         <!--- Note that these columns can be defined in any order.
                               The actual rendered columns are set as a property on the row definition" -->
