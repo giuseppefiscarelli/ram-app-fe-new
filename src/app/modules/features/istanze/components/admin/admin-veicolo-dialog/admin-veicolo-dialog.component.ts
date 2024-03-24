@@ -356,19 +356,14 @@ export class AdminVeicoloDialogComponent implements OnInit {
                                 this.valoreContributo = contributo['valoreContributo'];
                                 this.valoreMaggPmi = contributo['magg_pmi'];
                                 this.valoreMaggRete = contributo['magg_rete'];
-
-                             //   console.log(this.valoreContributo,'valore contributo')
-
-                                //  this.formVeicolo.controls.valoreContributo.setValue(contributo)
+                                //console.log(this.valoreContributo,'valore contributo')
+                                //this.formVeicolo.controls.valoreContributo.setValue(contributo)
                             }else{
                                 this.datiIstruttoriaShow = false;
                                 let payVei = this.veicolo;
                                 payVei.adminState = 'pending';
                                 this.services.updateVeicolo(payVei).subscribe(
-                                (res) => {
-                                    this.veicolo = res;
-
-                                }
+                                  (res) => {this.veicolo = res;}
                                 )
                             }
                             this.changeDetectorRef.markForCheck();
@@ -446,27 +441,29 @@ export class AdminVeicoloDialogComponent implements OnInit {
     }
 
     checkDichiarazioni(){
-        const checkDichiarazioni = this.istanzaCheck.contratto === 'accepted' &&
-        this.istanzaCheck.delega === 'accepted' &&
-        //this.istanzaCheck.dimImpresa &&
-        this.istanzaCheck.doc === 'accepted' &&
-        this.istanzaCheck.firma === 'accepted' &&
-        this.istanzaCheck.pec === 'accepted' ? true: false;
-      //  console.log(checkDichiarazioni)
-       // console.log(this.istanzaCheck)
-        return checkDichiarazioni;
+      //   const checkDichiarazioni = this.istanzaCheck.contratto === 'accepted' &&
+      //   this.istanzaCheck.delega === 'accepted' &&
+      //   //this.istanzaCheck.dimImpresa &&
+      //   this.istanzaCheck.doc === 'accepted' &&
+      //   this.istanzaCheck.firma === 'accepted' &&
+      //   this.istanzaCheck.pec === 'accepted' ? true: false;
+      //   //console.log(checkDichiarazioni)
+      //   //console.log(this.istanzaCheck)
+      // //  return checkDichiarazioni;
+              return this.istanzaCheck.dimImpresa
+
     }
 
     onClickDatiIstruttoria(){
         const veicolo = this.veicolo;
         const ref: MatDialogRef<VeiIstruttoriaDialogComponent> = this.dialog.open(
             VeiIstruttoriaDialogComponent,
-            { hasBackdrop: true,
-                data:{
+            {
+              hasBackdrop: true,
+              data:{
                     veicolo: veicolo
-                }
+              }
             }
-
         )
     }
     checkAllegatoIntegrazione(allegato: Allegato){
