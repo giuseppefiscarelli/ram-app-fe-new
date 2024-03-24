@@ -605,7 +605,7 @@
               <div class="col-custom col-custom-6">
 
                    <mat-list>
-                    <mat-list-item  *ngFor="let type of typeReport; let index=index">
+                    <!-- <mat-list-item  *ngFor="let type of typeReport; let index=index">
 
 
                       <mat-icon mat-list-icon [style.color]="getEnableReport(type)?'green':'red'" >{{getEnableReport(type)?'done':'close'}}</mat-icon>
@@ -614,6 +614,20 @@
 
                            <button [disabled]="!getEnableReport(type)" style=" margin-left: auto;"mat-raised-button color="primary" (click)="onClickReport('generate', type, index)">
                             {{getEnableReport(type)?'Genera':'Non disponibile'}}
+                          </button>
+
+
+
+                    </mat-list-item> -->
+                    <mat-list-item  *ngFor="let type of typeReport; let index=index">
+
+
+                      <mat-icon mat-list-icon [style.color]="'green'" >done</mat-icon>
+                      <span > {{type.description}}</span>
+
+
+                           <button style=" margin-left: auto;"mat-raised-button color="primary" (click)="onClickReport('generate', type, index)">
+                            Genera
                           </button>
 
 
