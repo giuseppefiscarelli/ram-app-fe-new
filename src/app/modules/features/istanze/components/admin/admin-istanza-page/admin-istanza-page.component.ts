@@ -594,7 +594,7 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
               if(!cert['upload']){
                   this.certControlStatus.push(cert)
               }
-
+              console.log(this.certControlStatus)
           }
       )
       console.log (this.certControlStatus)

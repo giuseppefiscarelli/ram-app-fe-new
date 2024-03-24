@@ -12,38 +12,40 @@ import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 export class AppComponent implements OnInit {
   title = 'ng-ram-14';
   loading: boolean = false;
+  newVersionAvailable: boolean = false;
   constructor(
     private translation: TranslateService,
     private swUpdate: SwUpdate,
     private router: Router) {
-    this.translation.setDefaultLang(currentBrowserLanguage());
-    //console.log(currentBrowserLanguage());
-  
-}
+        this.translation.setDefaultLang(currentBrowserLanguage());
+        //console.log(currentBrowserLanguage());
 
-ngOnInit() {
-  this.router.events.subscribe(event => {
-    if (event instanceof NavigationStart) {
-      this.loading = true;
-    } else if (event instanceof NavigationEnd) {
-      if (this.swUpdate.isEnabled) {
-        console.log(this.swUpdate.isEnabled)
-        this.swUpdate.versionUpdates.subscribe((event: VersionEvent) => {
-            console.log('swevent',event)
-            if(event.type ==='VERSION_READY'){
-                  if(confirm("New version available. Load New Version?")) {
-              window.location.reload();
-          }
-            }
-         });
-  
-        // Controlla se ci sono aggiornamenti disponibili
-        this.swUpdate.checkForUpdate();
-      }
-      setTimeout(() => {
-        this.loading = false;
-      }, 300); 
     }
-  });
-}
+
+    ngOnInit() {
+      this.router.events.subscribe(event => {
+        if (event instanceof NavigationStart) {
+          this.loading = true;
+        } else if (event instanceof NavigationEnd) {
+          if (this.swUpdate.isEnabled) {
+            console.log(this.swUpdate.isEnabled)
+            // Controlla se ci sono aggiornamenti disponibili
+            this.swUpdate.checkForUpdate();
+
+            this.swUpdate.versionUpdates.subscribe((event: VersionEvent) => {
+              console.log('swevent', event)
+              if (event.type === 'VERSION_READY' && !this.newVersionAvailable) {
+                if (confirm("New version available. Load New Version?")) {
+                  this.newVersionAvailable = true;
+                  window.location.reload();
+                }
+              }
+            });
+          }
+          setTimeout(() => {
+            this.loading = false;
+          }, 300);
+        }
+      });
+    }
 }
