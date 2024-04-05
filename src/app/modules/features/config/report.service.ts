@@ -463,7 +463,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
       {text: `${dataReport['indirizzo']}, ${dataReport['numCivico']}`,alignment:'left',margin: [ 250, 0, 0, 0 ]},
       {text: `${dataReport['cap']} - ${dataReport['citta']} ${dataReport['prov']}`,alignment:'left',margin: [ 250, 0, 0, 10 ]},
       {text:[ 'Raccomandata via pec all\'indirizzo: ', {text:dataReport['pecImpresa'], bold:true}], alignment:'left',margin: [ 0, 10 ]},
-      {text:'Oggetto: Contributi ai sensi del D.D. 7 aprile 2022 n.148 per le finalità di cui al D.M. 18 novembre 2021 n. 461 - "Incentivi agli investimenti nel settore dell\'autotrasporto. " ', bold:true, margin: [ 0, 5, 0, 0 ], alignment:'justify'},
+      {text:'Oggetto: Contributi ai sensi del D.D. 7 aprile 2022 n.148 per le finalità di cui al D.M. 18 novembre 2021 n. 461 - "Incentivi agli investimenti nel settore dell\'autotrasporto Elevata Sostenibilità. " ', bold:true, margin: [ 0, 5, 0, 0 ], alignment:'justify'},
       {text:`Protocollo Istanza ES ${dataReport['idRam']}/${dataReport['year']} Informativa ai sensi dell'art.10-bis legge 241/90`, bold:true, margin: [ 0, 0, 0, 5 ], alignment:'justify'},
 
       {text:'IL DIRETTORE GENERALE',alignment:'center',margin: [ 0,10 ], bold:true},
@@ -548,7 +548,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
         {text:'AVVERTENZE:',bold:true},
         {text:[
           {text:'Si ricorda che a norma dell’'},
-          {text:'Art. 2 comma 6 del DM 461/2021 i mezzi oggetti di contributo non possono essere alienati, concessi in locazione o in noleggio e devono rimanere nella piena disponibilità del beneficiario del contributo entro il triennio decorrente alla data di erogazione del contributo, pena la revoca del contributo erogato.',bold:true},
+          {text:'Art. 1 comma 4 del DM 461/2021 i mezzi oggetti di contributo non possono essere alienati, concessi in locazione o in noleggio e devono rimanere nella piena disponibilità del beneficiario del contributo entro il triennio decorrente alla data di erogazione del contributo, pena la revoca del contributo erogato.',bold:true},
           {text:'Non si procede all\'erogazione del contributo anche nel caso di trasferimento della disponibilità dei beni oggetto degli incentivi nel periodo intercorrente fra la data di presentazione della domanda e la data di pagamento del beneficio.'}
 
         ], alignment:'justify'},
@@ -559,7 +559,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
         ], alignment:'justify',margin: [0,10,0,0]},
         {text:[
           {text:'Soltanto in caso di contributo spettante di importo superiore ad euro 150.000,00',bold:true},
-          {text:' – essendo necessario acquisire l’informazione antimafia ai sensi del decreto legislativo n. 159/2011 e successive ii e mm – dovrà essere allegata, entro 15 (quindici) giorni lavorativi dal ricevimento della presente:'},
+          {text:' – essendo necessario acquisire l’informazione antimafia ai sensi del decreto legislativo n. 159/2011 e successive integrazioni e modifiche – dovrà essere allegata, entro 15 (quindici) giorni lavorativi dal ricevimento della presente:'},
 
 
         ], alignment:'justify',margin: [0,10,0,0]},
@@ -575,7 +575,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
           {text:'L’eventuale documentazione di cui sopra dovrà essere trasmessa in '},
           {text:'un unico file PDF (comprensivo del documento di identità del legale rappresentante dell’impresa)',bold:true},
           {text:', tramite posta elettronica certificata all’indirizzo '},
-          {text:'dg.ssa@pec.mit.gov.it',bold:true},
+          {text:'dg.ssa-div7@pec.mit.gov.it',bold:true},
 
 
         ], alignment:'justify',margin: [0,10,0,0]},
