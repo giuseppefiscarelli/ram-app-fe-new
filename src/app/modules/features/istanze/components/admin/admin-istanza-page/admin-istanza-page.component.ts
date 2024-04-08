@@ -201,7 +201,7 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
                     this.listaAllegati=alle;
 
                     this.typeIstance = ista;
-                 //   console.log(ista)
+                    console.log(this.typeIstance)
                     this.typeDocuments = typeDocument;
                     this.typeReport = typeReport;
                     //console.log(typeReport)
@@ -608,6 +608,14 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
           },
               error => console.log('Error downloading the file.')
           );
+    }
+
+    getInfoTipoVeicolo(campoDb){
+      if(this.typeIstance && this.typeIstance !== null ){
+        let description=  this.typeIstance.typeVei.find(x=> x['campoDb'] === campoDb)?.['description'];
+        return description
+      }
+
     }
 
     viewReport(data:Report){

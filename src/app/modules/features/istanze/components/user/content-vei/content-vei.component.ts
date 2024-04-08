@@ -93,6 +93,9 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
     }
     onSelection(event:MatSelectionListChange,data):void{
       const catData = event.source.selectedOptions.selected[0].value
+
+
+      console.log('codiceveicolo' , catData)
       this.listVeiFiltered = this.listVei.filter(
           (item) => item.category === catData.catVei && item.type === catData.campoDb
       )
@@ -100,11 +103,23 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
           x=> x['campoDb'] === catData.campoDb
       )
 
+
+
+        if(catData.catVei === 'A'){
+          let numeroRichiestaVeicoliRottamati = Number(this.istanza['rott'+catData.campoDb.match(/\d+/)]);
+          console.log(numeroRichiestaVeicoliRottamati);
+          if(numeroRichiestaVeicoliRottamati == 0){
+            this.docList = this.docList.filter(x=> (x !== 11 && x !== 14))
+          }
+        }else{
+          if(!this.rottamazione){
+            this.docList = this.docList.filter(x=> (x !== 11 && x !== 14))
+          }
+        }
+
       this.docList = doc['typeDocument'];
       console.log(this.rottamazione, this.docList)
-      if(!this.rottamazione){
-          this.docList = this.docList.filter(x=> (x !== 11 && x !== 14))
-      }
+
       this.docListVei = this.docList;
 
 

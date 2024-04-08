@@ -48,8 +48,42 @@
             <div matLine>Allegati caricati</div>
              <div matLine>{{listaAllegati.length}}</div>
          </mat-list-item>
-    </mat-list>
+      </mat-list>
+      <mat-divider></mat-divider>
+      <mat-list dense>
+        <h5>Riepilogo richiesta rottamazioni</h5>
+          <mat-list-item *ngIf="this.istanza.rott1 > 0">
+            <div matLine>{{getInfoTipoVeicolo('nv1')}} <span>{{this.istanza.rott1}}</span></div>
+          </mat-list-item>
+          <mat-list-item *ngIf="this.istanza.rott2 > 0">
+            <div matLine>{{getInfoTipoVeicolo('nv2')}} <span>{{this.istanza.rott2}}</span></div>
+          </mat-list-item>
+          <mat-list-item *ngIf="this.istanza.rott3 > 0">
+            <div matLine>{{getInfoTipoVeicolo('nv3')}} <span>{{this.istanza.rott3}}</span></div>
+          </mat-list-item>
+          <mat-list-item *ngIf="this.istanza.rott4 > 0">
+            <div matLine>{{getInfoTipoVeicolo('nv4')}} <span>{{this.istanza.rott4}}</span></div>
+          </mat-list-item>
+          <mat-list-item *ngIf="this.istanza.rott5 > 0">
+            <div matLine>{{getInfoTipoVeicolo('nv5')}} <span>{{this.istanza.rott5}}</span></div>
+          </mat-list-item>
+          <mat-list-item *ngIf="this.istanza.rott6 > 0">
+            <div matLine>{{getInfoTipoVeicolo('nv6')}} <span>{{this.istanza.rott6}}</span></div>
+          </mat-list-item>
+          <mat-list-item *ngIf="this.istanza.rott7 > 0">
+            <div matLine>{{getInfoTipoVeicolo('nv7')}} <span>{{this.istanza.rott7}}</span></div>
+          </mat-list-item>
+          <mat-list-item *ngIf="this.istanza.rott8 > 0">
+            <div matLine>{{getInfoTipoVeicolo('nv8')}} <span>{{this.istanza.rott8}}</span></div>
+          </mat-list-item>
+          <mat-list-item *ngIf="this.istanza.rott9 > 0">
+            <div matLine>{{getInfoTipoVeicolo('nv9')}} <span>{{this.istanza.rott9}}</span></div>
+          </mat-list-item>
+          <mat-list-item *ngIf="this.istanza.rott10 > 0">
+            <div matLine>{{getInfoTipoVeicolo('nv10')}} <span>{{this.istanza.rott10}}</span></div>
+          </mat-list-item>
 
+      </mat-list>
     </div>
     <div class=" col-custom-10">
         <mat-tab-group mat-align-tabs="center">
