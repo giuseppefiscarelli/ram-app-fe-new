@@ -201,7 +201,7 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
                     this.listaAllegati=alle;
 
                     this.typeIstance = ista;
-                 //   console.log(ista)
+//console.log(this.typeIstance)
                     this.typeDocuments = typeDocument;
                     this.typeReport = typeReport;
                     //console.log(typeReport)
@@ -220,6 +220,7 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
     }
+
     goBack(): void {
       this.location.back()
     }
@@ -497,6 +498,7 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
        return this.listaVeicoli.filter(x=> x.adminState !== 'accepted')
       }
     }
+
     getTotalCostRiepilogo(mode:string){
 
       if(mode === 'total'){
@@ -559,6 +561,7 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
 
     viewAllegato(allegato): void{
       const file = allegato.fd;
+      console.log(allegato)
       this.service.getFile(file)
       .subscribe(
           (res) => {
@@ -610,6 +613,14 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
           );
     }
 
+    getInfoTipoVeicolo(campoDb){
+      if(this.typeIstance && this.typeIstance !== null ){
+        let description=  this.typeIstance.typeVei.find(x=> x['campoDb'] === campoDb)?.['description'];
+        return description
+      }
+
+    }
+
     viewReport(data:Report){
       let file = data.fd;
       this.service.getFile(file)
@@ -648,6 +659,7 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
         }
       })
     }
+
     deleteReport(id){
       Swal.fire({
         title: 'Vuoi eliminare il report?',
@@ -746,6 +758,7 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
                   maxHeight:'90%',
                   data:{
                       veicolo,
+                      veicoli:this.listaVeicoli,
                       allegatiVeicolo,
                       typeIstance:this.typeIstance,
                       typeDocuments: this.typeDocuments,
@@ -853,8 +866,9 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
           }
       )
     }
+
     onClickReport(mode, typeReport?:typeReport, atIndex?,report?:Allegato){
-      console.log(this.listaAllegatiVeicoli)
+      //console.log(this.listaAllegatiVeicoli)
       if(mode !== 'send'){
         const ref : MatDialogRef<AdminReportEditComponent> = this.dialog.open(AdminReportEditComponent,{
           panelClass: 'dialog-responsive',
@@ -950,6 +964,42 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
       }
       return false
 
+    }
+
+
+    checkRottamazioniTipoVeicolo(type){
+      //console.log(this.listaAllegati)
+      const idVeicoloArray = [...new Set(this.listaAllegati.filter((x)=> x.typeVei === type && x.enable && x.adminState === 'accepted' && (x.typeDocument === '11' || x.typeDocument === '14')).map(obj => obj.id_Veicolo))];
+
+
+      var veicoliRottamati =0
+
+      idVeicoloArray.map(
+        (id_Veicolo) =>{
+          let veicoloData = this.listaVeicoli.find((x=> x.id === id_Veicolo && x.adminState === 'accepted'));
+          let allegati = [... new Set(this.listaAllegati.filter((x)=> x.id_Veicolo === id_Veicolo && x.enable && x.adminState === 'accepted' && (x.typeDocument === '11' || x.typeDocument === '14')).map(obj => obj.typeDocument))];
+       //   console.log(allegati)
+          if(allegati.length === 2 && veicoloData){
+            veicoliRottamati++
+          }
+
+        }
+      )
+
+     // console.log(veicoliRottamati,type)
+      return veicoliRottamati;
+      // console.log(this.listaAllegati.filter((x)=> x.typeVei === type && x.enable && x.adminState === 'accepted' && (x.typeDocument === '11' || x.typeDocument === '14')))
+      // const oggettiUniciPerVeicolo = this.listaAllegati.reduce((acc, obj) => {
+      //   // Verifica se l'id_Veicolo è già presente nell'array accumulatore
+      //   if (!acc.some(item => item.id_Veicolo === obj.id_Veicolo)) {
+      //     acc.push(obj); // Aggiunge l'oggetto all'array accumulatore se l'id_Veicolo non è già presente
+      //   }
+      //   return acc;
+      // }, []);
+      // console.log(oggettiUniciPerVeicolo)
+
+      // console.log(oggettiUniciPerVeicolo.filter((x)=> x.typeVei === type && x.enable && x.adminState === 'accepted' && (x.typeDocument === '11' || x.typeDocument === '14')));
+      // return idVeicoloArray.length
     }
 
 

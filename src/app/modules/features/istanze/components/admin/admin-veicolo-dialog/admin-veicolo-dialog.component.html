@@ -101,7 +101,24 @@
                   <ng-template #noMagg>
                     <td>Maggiorazione non prevista</td>
                   </ng-template>
+
+
               </tr>
+              <ng-container *ngIf="this.veicolo.type.startsWith('nv')">
+                  <ng-container *ngIf="checkEnableRottamazione(this.veicolo.type) ; else norott">
+                    <tr>
+                      <td>Maggiorazione Rottamazione</td>
+                      <td >{{1000 | currency: 'EUR':'symbol':'.2-2':'it' }}</td>
+                      <td></td>
+                    </tr>
+                  </ng-container>
+                </ng-container>
+                <ng-template #norott>
+                  <tr>
+                    <td>Maggiorazione Rottamazione</td>
+                    <td colspan="2" style="color:red" class="blinking">Superati i limiti richiesti</td>
+                  </tr>
+                </ng-template>
 
 
                   <tr>
@@ -326,7 +343,7 @@
             <form [formGroup]="form" style="padding:0 17px; width:100%">
               <div class="row-custom">
                 <div class=" col-custom col-custom-12">
-                    <mat-form-field fxFlex style="width:100%">
+                    <mat-form-field style="width:100%">
                       <mat-label>Note</mat-label>
                       <input matInput
                       type="note"

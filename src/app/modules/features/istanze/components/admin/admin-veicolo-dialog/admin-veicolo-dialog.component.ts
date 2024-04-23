@@ -42,6 +42,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
   allegatiVeicolo: Allegato[];
   listaAllegatiVeicoli: Allegato[] = [];
   veicolo: Veicolo;
+  veicoli: Veicolo[] = [];
   typeIstance: TypeIstance;
   istanzaCheck: IstanzaCheck;
   istanza: Istanza;
@@ -87,6 +88,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
 
 
       this.user = this.store.pipe(select('authentication'),select('user'));
+      this.veicoli = data.veicoli
       this.user.pipe(take(1)).subscribe((userMe: User) => this.userMe = userMe);
       this.istanza = data.istanza;
      // console.log(this.istanza)
@@ -114,7 +116,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
 
       if(checkDichiarazioni && (this.checkAllegatiStatus() === this.allegatiVeicolo.length)){
           this.datiIstruttoriaShow = true;
-          let contributo  = this.services.calcolaContributo(this.istanza, this.istanzaCheck, this.veicolo, this.typeIstance,this.listaAllegatiVeicoli)
+          let contributo  = this.services.calcolaContributo(this.istanza, this.istanzaCheck, this.veicolo, this.typeIstance,this.listaAllegatiVeicoli, this.veicoli)
           this.valoreContributo = contributo['valoreContributo'];
           this.valoreMaggPmi = contributo['magg_pmi'];
           this.valoreMaggRete = contributo['magg_rete'];
@@ -148,7 +150,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
 
       this.formVeicolo.controls.adminState.valueChanges.subscribe(
         (val) => {
-          console.log(val)
+          //console.log(val)
           if(val && (val ==='rejected' || val === 'pending')){
             const required = Validators.required
             //   this.formVeicolo.get('costoIstr').removeValidators(required)
@@ -256,8 +258,22 @@ export class AdminVeicoloDialogComponent implements OnInit {
             control.markAsDirty();
             control.markAsTouched();
         });
+        //console.log(this.formVeicolo.getRawValue())
+        let checkrottamazione = this.checkSubmitRottamazione(this.veicolo.type, this.formVeicolo.controls.adminState.value);
+       // console.log(checkrottamazione)
+        if(this.veicolo.type.startsWith('rim_nv')) checkrottamazione = true;
+        if(!checkrottamazione){
+          Swal.fire({
+              title: 'Attenzione!',
+              text: 'Superati i limiti richiesti per il contributo di rottamazione. Si prega di rigettare i documenti di rottamazione',
+              icon: 'warning',
 
-        if (this.formVeicolo.valid){
+              confirmButtonText:'OK',
+              showCancelButton: false,
+              allowOutsideClick: false
+          })
+
+        }else if (this.formVeicolo.valid){
             const payload = this.formVeicolo.value;
       //  console.log(payload)
             Object.keys(payload).forEach(key => {
@@ -290,7 +306,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
                             )}
                         }
                     )
-                    console.log('aggiorna veicolo')
+                   // console.log('aggiorna veicolo')
                     }
                 })
             }else{
@@ -352,7 +368,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
                         //  console.log(this.checkDichiarazioni(), this.checkAllegatiStatus(), this.allegatiVeicolo.length)
                             if(this.checkDichiarazioni() && (this.checkAllegatiStatus() === this.allegatiVeicolo.length)){
                                 this.datiIstruttoriaShow = true;
-                                let contributo  = this.services.calcolaContributo(this.istanza, this.istanzaCheck, this.veicolo, this.typeIstance,this.listaAllegatiVeicoli)
+                                let contributo  = this.services.calcolaContributo(this.istanza, this.istanzaCheck, this.veicolo, this.typeIstance,this.listaAllegatiVeicoli, this.veicoli)
                                 this.valoreContributo = contributo['valoreContributo'];
                                 this.valoreMaggPmi = contributo['magg_pmi'];
                                 this.valoreMaggRete = contributo['magg_rete'];
@@ -396,7 +412,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
        //   window.open('www.google.it');
        //   console.log( this.alleDataSelected)
 
-          window.open(this.url)
+        //  window.open(this.url)
 
             // this.services.getFile(file)
             // .subscribe(
@@ -479,6 +495,163 @@ export class AdminVeicoloDialogComponent implements OnInit {
       return false
 
     }
+
+    checkRottamazioniTipoVeicolo(type){
+      //console.log(this.listaAllegati)
+      const idVeicoloArray = [...new Set(this.listaAllegatiVeicoli.filter((x)=> x.typeVei === type && x.enable && x.adminState === 'accepted' && (x.typeDocument === '11' || x.typeDocument === '14')).map(obj => obj.id_Veicolo))];
+      return idVeicoloArray.length
+    }
+
+    checkPrevistaRottamazione(type){
+
+      if(type.startsWith('nv')){
+        const idVeicoloArray = [...new Set(this.listaAllegatiVeicoli.filter((x)=> x.typeVei === type && x.enable && x.adminState === 'accepted' && (x.typeDocument === '11' || x.typeDocument === '14')).map(obj => obj.id_Veicolo))];
+
+
+        var veicoliRottamati =0
+
+        idVeicoloArray.map(
+          (id_Veicolo) =>{
+            let veicoloData = this.veicoli.find((x=> x.id === id_Veicolo && x.adminState === 'accepted'));
+            let allegati = [... new Set(this.listaAllegatiVeicoli.filter((x)=> x.id_Veicolo === id_Veicolo && x.enable && x.adminState === 'accepted' && (x.typeDocument === '11' || x.typeDocument === '14')).map(obj => obj.typeDocument))];
+            //console.log(allegati)
+            if(allegati.length === 2 && veicoloData){
+              veicoliRottamati++
+            }
+
+          }
+        )
+        let allegati = [... new Set(this.listaAllegatiVeicoli.filter((x)=> x.id_Veicolo === this.veicolo.id && x.enable && x.adminState === 'accepted' && (x.typeDocument === '11' || x.typeDocument === '14')).map(obj => obj.typeDocument))];
+        //console.log(allegati)
+        if(allegati.length === 2){
+          veicoliRottamati++
+        }
+        const numberType = parseInt(type.match(/\d+$/)[0], 10);
+        //console.log(veicoliRottamati,type)
+        //console.log(Number(this.istanza['rott'+numberType]))
+        return veicoliRottamati < Number(this.istanza['rott'+numberType]);
+      }
+      return false
+    }
+    checkEnableRottamazione(type){
+     // console.log(type)
+      if(type.startsWith('nv')){
+        var veicoliRottamati =0
+        let checkAllegatiRottamazione  = [... new Set(this.listaAllegatiVeicoli.filter((x)=> x.id_Veicolo === this.veicolo.id && x.enable && x.adminState === 'accepted' && (x.typeDocument === '11' || x.typeDocument === '14')).map(obj => obj.typeDocument))];
+        const idVeicoloArray = [...new Set(this.listaAllegatiVeicoli.filter((x)=> x.typeVei === type && x.enable && x.adminState === 'accepted' && (x.typeDocument === '11' || x.typeDocument === '14')).map(obj => obj.id_Veicolo))];
+
+        let check = idVeicoloArray.filter(
+          (id_Veicolo) =>{
+            let veicoloData = this.veicoli.find((x=> x.id === id_Veicolo && x.adminState === 'accepted'));
+            let allegati = [... new Set(this.listaAllegatiVeicoli.filter((x)=> x.id_Veicolo === id_Veicolo && x.enable && x.adminState === 'accepted' && (x.typeDocument === '11' || x.typeDocument === '14')).map(obj => obj.typeDocument))];
+            // console.log(allegati)
+            // console.log(veicoloData)
+            if(allegati.length === 2 && veicoloData !== undefined){
+              veicoliRottamati++
+              return true
+            }
+
+          }
+        )
+       // console.log(check, this.veicolo.id, veicoliRottamati,checkAllegatiRottamazione)
+        if(check.includes(this.veicolo.id)){
+          return true
+        }else{
+          const numberType = parseInt(type.match(/\d+$/)[0], 10);
+          return veicoliRottamati < Number(this.istanza['rott'+numberType]);
+        }
+
+      }else if(type.startsWith('rim_nv_')){
+        var veicoliRottamati =0
+        const idVeicoloArray = [...new Set(this.listaAllegatiVeicoli.filter((x)=> x.typeVei === type && x.enable && x.adminState === 'accepted' && (x.typeDocument === '11' || x.typeDocument === '14')).map(obj => obj.id_Veicolo))];
+
+        let check = idVeicoloArray.filter(
+          (id_Veicolo) =>{
+            let veicoloData = this.veicoli.find((x=> x.id === id_Veicolo && x.adminState === 'accepted'));
+            let allegati = [... new Set(this.listaAllegatiVeicoli.filter((x)=> x.id_Veicolo === id_Veicolo && x.enable && x.adminState === 'accepted' && (x.typeDocument === '11' || x.typeDocument === '14')).map(obj => obj.typeDocument))];
+            // console.log(allegati)
+            // console.log(veicoloData)
+            if(allegati.length === 2 && veicoloData !== undefined){
+              veicoliRottamati++
+              return true
+            }
+
+          }
+        )
+
+        //console.log(check)
+        //console.log(veicoliRottamati)
+        if(check.includes(this.veicolo.id)){
+          return true
+        }else{
+          const numberType = parseInt(type.match(/\d+$/)[0], 10);
+          return veicoliRottamati < Number(this.istanza['rim_rott_'+numberType]);
+        }
+
+
+      }
+
+    }
+    checkSubmitRottamazione(type, status){
+
+      let check = this.checkEnableRottamazione(type);
+
+
+      let allegati = [... new Set(
+        this.allegatiVeicolo.filter(
+          (x)=> x.adminState === 'accepted' && (x.typeDocument === '11' || x.typeDocument === '14')).map(obj => obj.typeDocument))];
+
+         // console.log(check)
+          //console.log(allegati)
+          //console.log(status)
+      if((!check && allegati.length <2) || status !== 'accepted'){
+       return true
+      }else if(!check){
+        return false
+      }
+      // else if(allegati.length >= 2 && status === 'accepted'){
+      //   return false
+      // }
+      return true
+     // return false
+      // if(type.startsWith('nv')){
+      //   var veicoliRottamati =0
+      //   let checkAllegatiRottamazione  = [... new Set(this.listaAllegatiVeicoli.filter((x)=> x.id_Veicolo === this.veicolo.id && x.enable && x.adminState === 'accepted' && (x.typeDocument === '11' || x.typeDocument === '14')).map(obj => obj.typeDocument))];
+      //   const idVeicoloArray = [...new Set(this.listaAllegatiVeicoli.filter((x)=> x.typeVei === type && x.enable && x.adminState === 'accepted' && (x.typeDocument === '11' || x.typeDocument === '14')).map(obj => obj.id_Veicolo))];
+
+      //   let check = idVeicoloArray.filter(
+      //     (id_Veicolo) =>{
+      //       let veicoloData = this.veicoli.find((x=> x.id === id_Veicolo && x.adminState === 'accepted'));
+      //       let allegati = [... new Set(this.listaAllegatiVeicoli.filter((x)=> x.id_Veicolo === id_Veicolo && x.enable && x.adminState === 'accepted' && (x.typeDocument === '11' || x.typeDocument === '14')).map(obj => obj.typeDocument))];
+      //       // console.log(allegati)
+      //       // console.log(veicoloData)
+      //       if(allegati.length === 2 && veicoloData !== undefined){
+      //         veicoliRottamati++
+      //         return true
+      //       }
+
+      //     }
+      //   )
+      //   console.log(check, this.veicolo.id, veicoliRottamati,checkAllegatiRottamazione)
+      //   if(check.includes(this.veicolo.id)){
+      //     return true
+      //   }else
+      //  // if(checkAllegatiRottamazione.length < 2)
+      //     {
+
+
+
+
+
+      //     const numberType = parseInt(type.match(/\d+$/)[0], 10);
+      //     console.log(veicoliRottamati,type)
+      //     console.log(Number(this.istanza['rott'+numberType]))
+      //     return veicoliRottamati < Number(this.istanza['rott'+numberType]);
+      //   }
+
+      // }
+    }
+
 
 }
 
