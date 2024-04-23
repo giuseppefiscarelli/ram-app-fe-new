@@ -116,14 +116,7 @@ export class UserIstanzaEditComponent implements OnInit {
                               Number(this.istanza.nv7) +
                                 Number(this.istanza.nv8) +
                                   Number(this.istanza.nv9) +
-                                    Number(this.istanza.nv10) +
-                                      Number(this.istanza.nv11) +
-                                        Number(this.istanza.r_nv_1) +
-                                          Number(this.istanza.r_nv_2) +
-                                            Number(this.istanza.r_nv_3) +
-                                              Number(this.istanza.rim_nv_1) +
-                                                Number(this.istanza.rim_nv_2) +
-                                                  Number(this.istanza.rim_nv_3);
+                                    Number(this.istanza.nv10);
                     this.totCertEnable = 0;
                     // this.rottamazione = (
                     //   this.istanza.rim_rott_1 ||
