@@ -201,8 +201,8 @@
         <mat-tab>
           <ng-template mat-tab-label><mat-icon class="tab-icon">apartment</mat-icon> Dati della Domanda</ng-template>
           <mat-card-content>
-            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center" fxLayoutGap="30px">
-              <mat-list fxFlex="30">
+            <div class="row-custom">
+              <mat-list class="col-custom col-custom-4">
                 <div mat-subheader>Dati Richiedente</div>
                   <mat-list-item>
                     <p matLine style="font-weight: bold;">Cognome</p>
@@ -218,7 +218,7 @@
                   </mat-list-item>
                   <mat-list-item>
                     <p matLine style="font-weight: bold;">Luogo di Nascita</p>
-                    <p matLine>{{istanza.luogo_nascita}} ({{istanza.prov_nascita}})<</p>
+                    <p matLine>{{istanza.luogo_nascita}} ({{istanza.prov_nascita}})</p>
                   </mat-list-item>
                   <mat-list-item>
                     <p matLine style="font-weight: bold;">Indirizzo Residenza</p>
@@ -238,7 +238,7 @@
                       {{istanza.tipo_dichiarante === '2' ?'Procuratore':''}}</p>
                   </mat-list-item>
               </mat-list>
-              <mat-list fxFlex="30">
+              <mat-list class="col-custom col-custom-4">
                 <div mat-subheader>Dati Impresa</div>
                   <mat-list-item>
                     <p matLine style="font-weight: bold;">Ragione Sociale</p>
@@ -273,7 +273,7 @@
                     <p matLine>{{istanza.pref_tel_impr}} / {{istanza.num_tel_impr}}</p>
                   </mat-list-item>
               </mat-list>
-              <mat-list fxFlex="30">
+              <mat-list class="col-custom col-custom-4">
                 <div mat-subheader> </div>
                   <mat-list-item>
                     <p matLine style="font-weight: bold;">Codice Albo</p>
@@ -332,13 +332,13 @@
             <mat-accordion  style="width:100%;margin-bottom:50px;" *ngIf="certEnable.length >0">
               <mat-expansion-panel [expanded]="true">
                   <mat-expansion-panel-header>
-                      <mat-panel-title   > <div matBadge="4" >Allegati Dichiarazione</div></mat-panel-title>
+                      <mat-panel-title   > Allegati Dichiarazione</mat-panel-title>
                       <mat-panel-description>
                         <span class="span-status pending blinking" *ngIf="blinkBadgeIntegrazione('alle-dichiarazione')" >Richiesta Integrazioni</span>
                       </mat-panel-description>
                   </mat-expansion-panel-header>
-                  <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
-                    <table mat-table [dataSource]="certEnable">
+                  <div class="row-custom">
+                    <table mat-table [dataSource]="certEnable" class=" col-custom col-custom-12" style=" width:100%">
                       <tr mat-header-row *matHeaderRowDef="['type','date','note', 'action']"></tr>
                       <tr mat-row *matRowDef="let row; columns:['type','date','note', 'action'];"></tr>
                       <ng-container matColumnDef="type" style="width:25%">

@@ -1,10 +1,11 @@
+import { Veicolo } from './../../../../../models/veicolo.model';
 import { PdfViewerSharedComponent } from './../../../../../shared/components/pdf-viewer/pdf-viewer.component';
 import { TypeIstance } from '@app/modules/models/type-istance.model';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild, OnDestroy } from '@angular/core';
 import { MatSelectionList, MatSelectionListChange } from '@angular/material/list';
 import { Allegato } from '@app/modules/models/allegato.model';
 import { Istanza, Rendicontazione } from '@app/modules/models/istanza.model';
-import { Veicolo } from '@app/modules/models/veicolo.model';
+
 import { FormControl, FormGroup } from '@angular/forms';
 import { TypeDocument } from '@app/modules/models/typeDocument.model';
 import { User } from '@app/modules/models/user.model';
@@ -93,6 +94,9 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
     }
     onSelection(event:MatSelectionListChange,data):void{
       const catData = event.source.selectedOptions.selected[0].value
+
+
+      console.log('codiceveicolo' , catData)
       this.listVeiFiltered = this.listVei.filter(
           (item) => item.category === catData.catVei && item.type === catData.campoDb
       )
@@ -100,11 +104,23 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
           x=> x['campoDb'] === catData.campoDb
       )
 
+
+
+        if(catData.catVei === 'A'){
+          let numeroRichiestaVeicoliRottamati = Number(this.istanza['rott'+catData.campoDb.match(/\d+/)]);
+          console.log(numeroRichiestaVeicoliRottamati);
+          if(numeroRichiestaVeicoliRottamati == 0){
+            this.docList = this.docList.filter(x=> (x !== 11 && x !== 14))
+          }
+        }else{
+          if(!this.rottamazione){
+            this.docList = this.docList.filter(x=> (x !== 11 && x !== 14))
+          }
+        }
+
       this.docList = doc['typeDocument'];
       console.log(this.rottamazione, this.docList)
-      if(!this.rottamazione){
-          this.docList = this.docList.filter(x=> (x !== 11 && x !== 14))
-      }
+     // console.log(this.veicolo)
       this.docListVei = this.docList;
 
 
@@ -214,6 +230,14 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
   //  console.log(uniqueTypeDocuments.size)
     return uniqueTypeDocuments.size;
 
+
+  }
+  getListaDocumenti(veicolo:Veicolo){
+    console.log(veicolo)
+    if(veicolo.acquisitionType === '01'){
+      return this.docListVei.filter(x=> x !== 9)
+    }
+    return this.docListVei
 
   }
   getTypeDocumentData(type): any{

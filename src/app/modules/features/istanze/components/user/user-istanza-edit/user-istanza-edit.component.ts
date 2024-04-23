@@ -106,17 +106,24 @@ export class UserIstanzaEditComponent implements OnInit {
                     this.totAllegati=0;
                     this.rottamazione=false;
                     this.enableRendicontazione =true;
-                    this.totVeicoli = this.istanza.nv1 +
-                    this.istanza.nv2 +
-                    this.istanza.nv3+
-                    this.istanza.nv4+
-                    this.istanza.nv5+
-                    this.istanza.nv6+
-                    this.istanza.nv7+
-                    this.istanza.nv8+
-                    this.istanza.nv9+
-                    this.istanza.nv10;
 
+                    this.totVeicoli = Number(this.istanza.nv1) +
+                    Number(this.istanza.nv2) +
+                      Number(this.istanza.nv3) +
+                        Number(this.istanza.nv4) +
+                          Number(this.istanza.nv5) +
+                            Number(this.istanza.nv6) +
+                              Number(this.istanza.nv7) +
+                                Number(this.istanza.nv8) +
+                                  Number(this.istanza.nv9) +
+                                    Number(this.istanza.nv10) +
+                                      Number(this.istanza.nv11) +
+                                        Number(this.istanza.r_nv_1) +
+                                          Number(this.istanza.r_nv_2) +
+                                            Number(this.istanza.r_nv_3) +
+                                              Number(this.istanza.rim_nv_1) +
+                                                Number(this.istanza.rim_nv_2) +
+                                                  Number(this.istanza.rim_nv_3);
                     this.totCertEnable = 0;
                     // this.rottamazione = (
                     //   this.istanza.rim_rott_1 ||
@@ -201,20 +208,20 @@ export class UserIstanzaEditComponent implements OnInit {
                               this.rendicontazione.enable = false;
                           }
                           let istruttoria = this.getStatusIstruttoria(this.reports);
-                          console.log(istruttoria)
+                          //console.log(istruttoria)
                           if(istruttoria){
                             this.istruttoriaData = istruttoria;
                             let typeReport = istruttoria.typeReport['type'];
-                            console.log(typeReport)
+                            //console.log(typeReport)
 
                             if(typeReport === 'integrazione'){
                               this.dataFineIstruttoria= moment(Number(this.istruttoriaData.dataInvio)).add(15,'days');
 
                               this.integrazione = false;
                               let scadenza = moment();
-                              console.log(scadenza)
+                              //console.log(scadenza)
                               if(this.dataFineIstruttoria.isAfter(moment())){
-                                console.log('rendicondazione apertra')
+                                //console.log('rendicondazione apertra')
                                 this.enableRendicontazione =true;
                                 this.rendicontazione.enable = true;
                                 this.istruttoriaRend = true;
@@ -222,7 +229,7 @@ export class UserIstanzaEditComponent implements OnInit {
                                 const idVeicoliFiltrati = this.listaAllegati
                                   .filter(obj => obj.adminState !== 'accepted')
                                   .map(obj => obj.id_Veicolo);
-                                console.log(idVeicoliFiltrati);
+                                //console.log(idVeicoliFiltrati);
                                 const veicoliFiltrati = this.listaVeicoli.filter(veicolo => idVeicoliFiltrati.includes(veicolo.id));
                               }else{
                                 console.log('rendicondazione chiusaa')
@@ -273,7 +280,7 @@ export class UserIstanzaEditComponent implements OnInit {
   }
 
   newAllegato(type): void{
-      console.log(type)
+      //console.log(type)
       let data = {};
       const dataType = this.typeIstance.certAttach.find(x=> x['description'] === type)
           data={
@@ -617,7 +624,7 @@ blinkBadgeIntegrazione(type, data?){
       .map(obj => obj.id_Veicolo)
       .filter((id, index, array) => array.indexOf(id) === index);
       ;
-      console.log(idVeicoliFiltrati);
+//console.log(idVeicoliFiltrati);
       if(type ==='category'){
 
 

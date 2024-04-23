@@ -43,6 +43,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
   allegatiVeicolo: Allegato[];
   listaAllegatiVeicoli: Allegato[] = [];
   veicolo: Veicolo;
+  veicoli: Veicolo[] = [];
   typeIstance: TypeIstance;
   istanzaCheck: IstanzaCheck;
   istanza: Istanza;
@@ -87,6 +88,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
 
 
       this.user = this.store.pipe(select('authentication'),select('user'));
+      this.veicoli = data.veicoli
       this.user.pipe(take(1)).subscribe((userMe: User) => this.userMe = userMe);
       this.istanza = data.istanza;
      // console.log(this.istanza)
@@ -116,7 +118,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
 
       if(checkDichiarazioni && (this.checkAllegatiStatus() === this.allegatiVeicolo.length)){
           this.datiIstruttoriaShow = true;
-          let contributo  = this.services.calcolaContributo(this.istanza, this.istanzaCheck, this.veicolo, this.typeIstance,this.listaAllegatiVeicoli)
+          let contributo  = this.services.calcolaContributo(this.istanza, this.istanzaCheck, this.veicolo, this.typeIstance,this.listaAllegatiVeicoli, this.veicoli)
           this.valoreContributo = contributo['valoreContributo'];
           this.valoreMaggPmi = contributo['magg_pmi'];
           this.valoreMaggRete = contributo['magg_rete'];
@@ -150,7 +152,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
 
       this.formVeicolo.controls.adminState.valueChanges.subscribe(
         (val) => {
-          console.log(val)
+          //console.log(val)
           if(val && (val ==='rejected' || val === 'pending')){
             const required = Validators.required
             //   this.formVeicolo.get('costoIstr').removeValidators(required)
@@ -258,8 +260,22 @@ export class AdminVeicoloDialogComponent implements OnInit {
             control.markAsDirty();
             control.markAsTouched();
         });
+        //console.log(this.formVeicolo.getRawValue())
+        let checkrottamazione = this.checkSubmitRottamazione(this.veicolo.type, this.formVeicolo.controls.adminState.value);
+       // console.log(checkrottamazione)
+        if(this.veicolo.type.startsWith('rim_nv')) checkrottamazione = true;
+        if(!checkrottamazione){
+          Swal.fire({
+              title: 'Attenzione!',
+              text: 'Superati i limiti richiesti per il contributo di rottamazione. Si prega di rigettare i documenti di rottamazione',
+              icon: 'warning',
 
-        if (this.formVeicolo.valid){
+              confirmButtonText:'OK',
+              showCancelButton: false,
+              allowOutsideClick: false
+          })
+
+        }else if (this.formVeicolo.valid){
             const payload = this.formVeicolo.value;
       //  console.log(payload)
             Object.keys(payload).forEach(key => {
@@ -292,7 +308,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
                             )}
                         }
                     )
-                    console.log('aggiorna veicolo')
+                   // console.log('aggiorna veicolo')
                     }
                 })
             }else{
@@ -354,7 +370,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
                         //  console.log(this.checkDichiarazioni(), this.checkAllegatiStatus(), this.allegatiVeicolo.length)
                             if(this.checkDichiarazioni() && (this.checkAllegatiStatus() === this.allegatiVeicolo.length)){
                                 this.datiIstruttoriaShow = true;
-                                let contributo  = this.services.calcolaContributo(this.istanza, this.istanzaCheck, this.veicolo, this.typeIstance,this.listaAllegatiVeicoli)
+                                let contributo  = this.services.calcolaContributo(this.istanza, this.istanzaCheck, this.veicolo, this.typeIstance,this.listaAllegatiVeicoli, this.veicoli)
                                 this.valoreContributo = contributo['valoreContributo'];
                                 this.valoreMaggPmi = contributo['magg_pmi'];
                                 this.valoreMaggRete = contributo['magg_rete'];
@@ -397,6 +413,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
    //   window.open('www.google.it');
    //   console.log( this.alleDataSelected)
 
+        //  window.open(this.url)
 
   //     const res: any = this.alleDataSelected
   //     const blob = new Blob([res],{type: file.type});

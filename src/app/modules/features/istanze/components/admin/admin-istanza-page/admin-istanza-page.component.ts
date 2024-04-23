@@ -212,6 +212,7 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
     }
+
     goBack(): void {
       this.location.back()
     }
@@ -540,6 +541,7 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
        return this.listaVeicoli.filter(x=> x.adminState !== 'accepted')
       }
     }
+
     getTotalCostRiepilogo(mode:string){
 
       if(mode === 'total'){
@@ -603,6 +605,7 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
 
     viewAllegato(allegato): void{
       const file = allegato.fd;
+      console.log(allegato)
       this.service.getFile(file)
       .subscribe(
           (res) => {
@@ -654,6 +657,14 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
           );
     }
 
+    getInfoTipoVeicolo(campoDb){
+      if(this.typeIstance && this.typeIstance !== null ){
+        let description=  this.typeIstance.typeVei.find(x=> x['campoDb'] === campoDb)?.['description'];
+        return description
+      }
+
+    }
+
     viewReport(data:Report){
       let file = data.fd;
       this.service.getFile(file)
@@ -692,6 +703,7 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
         }
       })
     }
+
     deleteReport(id){
       Swal.fire({
         title: 'Vuoi eliminare il report?',
@@ -791,6 +803,7 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
                   maxHeight:'90%',
                   data:{
                       veicolo,
+                      veicoli:this.listaVeicoli,
                       allegatiVeicolo,
                       typeIstance:this.typeIstance,
                       typeDocuments: this.typeDocuments,
@@ -914,8 +927,9 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
           }
       )
     }
+
     onClickReport(mode, typeReport?:typeReport, atIndex?,report?:Allegato){
-      console.log(this.listaAllegatiVeicoli)
+      //console.log(this.listaAllegatiVeicoli)
       if(mode !== 'send'){
         const ref : MatDialogRef<AdminReportEditComponent> = this.dialog.open(AdminReportEditComponent,{
           panelClass: 'dialog-responsive',
