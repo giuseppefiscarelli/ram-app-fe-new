@@ -9,10 +9,10 @@
   </mat-list>
 
   <form [formGroup]="form" style="margin-left:17px;">
-    <div fxLayout="column" fxLayout.xs="column"  fxLayoutAlign="start start" fxLayoutGap="30px">
+    <div class="row-custom">
 
       <ng-container *ngIf="this.type.adminControl">
-        <mat-form-field fxFlex>
+        <mat-form-field class="col-custom-12">
           <mat-label> Stato Lavorazione</mat-label>
           <mat-select [formControlName]="this.type.description">
               <mat-option *ngFor="let statusCheck of filterOptionsDescriptors.statusCheck"
@@ -26,7 +26,7 @@
       </ng-container>
 
       <ng-container *ngIf="this.type.description === 'dimImpresa'">
-          <mat-form-field fxFlex>
+          <mat-form-field class="col-custom-12">
             <mat-label> Dimensione Impresa</mat-label>
             <mat-select [formControlName]="this.type.description">
                 <mat-option  disabled="{{getDataImpresa(1)}}" [value]="1">Piccola</mat-option>
@@ -42,7 +42,7 @@
 
 
       <ng-container *ngIf="this.type.adminNote">
-          <mat-form-field fxFlex>
+          <mat-form-field class="col-custom-12">
               <mat-label>Note</mat-label>
               <input matInput
               type="note"

@@ -1,9 +1,9 @@
 <h1 mat-dialog-title>{{this.dialogTitle}}</h1>
 <mat-dialog-content>
 
-  <div fxLayout="row" fxLayoutAlign="start start" >
+  <div class="row-custom" >
 
-    <div fxFlex="33">
+    <div class="col-custom col-custom-4">
       <mat-list dense>
         <mat-list-item>
            <div mat-line>Data Caricamento</div>
@@ -64,7 +64,7 @@
 
 
     </div>
-    <div fxFlex="66"*ngIf="this.file">
+    <div class="col-custom col-custom-8" *ngIf="this.file">
           <pdf-viewer [src]="this.file"
             [render-text]="true"
             [original-size]="false"

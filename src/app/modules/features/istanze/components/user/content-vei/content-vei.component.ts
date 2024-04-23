@@ -1,10 +1,11 @@
+import { Veicolo } from './../../../../../models/veicolo.model';
 import { PdfViewerSharedComponent } from './../../../../../shared/components/pdf-viewer/pdf-viewer.component';
 import { TypeIstance } from '@app/modules/models/type-istance.model';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild, OnDestroy } from '@angular/core';
 import { MatSelectionList, MatSelectionListChange } from '@angular/material/list';
 import { Allegato } from '@app/modules/models/allegato.model';
 import { Istanza, Rendicontazione } from '@app/modules/models/istanza.model';
-import { Veicolo } from '@app/modules/models/veicolo.model';
+
 import { FormControl, FormGroup } from '@angular/forms';
 import { TypeDocument } from '@app/modules/models/typeDocument.model';
 import { User } from '@app/modules/models/user.model';
@@ -119,7 +120,7 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
 
       this.docList = doc['typeDocument'];
       console.log(this.rottamazione, this.docList)
-
+     // console.log(this.veicolo)
       this.docListVei = this.docList;
 
 
@@ -228,6 +229,14 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
     });
     return uniqueTypeDocuments.size;
 
+
+  }
+  getListaDocumenti(veicolo:Veicolo){
+    console.log(veicolo)
+    if(veicolo.acquisitionType === '01'){
+      return this.docListVei.filter(x=> x !== 9)
+    }
+    return this.docListVei
 
   }
   getTypeDocumentData(type): any{

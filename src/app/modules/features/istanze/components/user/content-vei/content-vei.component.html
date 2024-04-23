@@ -61,17 +61,17 @@
 
 
                         <ng-container *ngIf="checkAlleVei(v) as checkalle; else nocheckalle">
-
+                          <ng-container *ngIf="getListaDocumenti(v) as tot">
                             <span>
                                 <mat-icon
 
-                                [style.color]="checkalle<docListVei.length? 'orange':'green'"
-                                [innerText]="checkalle<docListVei.length? 'refresh':'done'"
+                                [style.color]="checkalle<tot.length? 'orange':'green'"
+                                [innerText]="checkalle<tot.length? 'refresh':'done'"
                                 ></mat-icon>
-                                Caricati {{checkalle}} di {{docListVei.length}} documenti
+                                Caricati {{checkalle}} di {{tot.length}} documenti
                             </span>
 
-
+                          </ng-container>
                         </ng-container>
                         <ng-template #nocheckalle>
                             <span>
@@ -88,32 +88,36 @@
                   </mat-expansion-panel-header>
                   <div class="row-custom">
                     <div class="col-custom col-custom-6" >
-                      <div fxLayout="column">
-                        <h3 fxflex>Dati Veicolo</h3>
-                        <span fxflex>
+                      <h3 >Dati Veicolo</h3>
+                      <div class=" row-custom">
+                        <span >
                           <button mat-flat-button color="primary"
                           style="float:right;background-color: green;"
                           (click)="onClickInsertVei('edit',v,index)"
                           *ngIf="(this.rendicontazione.enable || this.userMe.role === 'superadmin' || this.enableRendicontazione) &&(checkVeicoloEditable(v))"
                           ><mat-icon>refresh</mat-icon>Aggiorna dati Veicolo</button></span>
+                          <div >
+                            <table style="width:100%">
+                                <tbody>
+                                    <tr><td>Targa</td><td>{{v.licensePlate}}</td></tr>
+                                    <tr><td>Marca</td><td>{{v.brand}}</td></tr>
+                                    <tr><td>Modello</td><td>{{v.model}}</td></tr>
+                                    <tr><td>Tipo Acquisizione</td><td>{{v.acquisitionType === '01' ? 'Acquisto': 'Leasing'}}</td></tr>
+                                    <tr><td>Costo</td><td>{{v.amount | currency:'EUR'}}</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
                       </div>
 
-                    <div class="table">
-                        <table style="width:100%">
-                            <tbody>
-                                <tr><td>Targa</td><td>{{v.licensePlate}}</td></tr>
-                                <tr><td>Marca</td><td>{{v.brand}}</td></tr>
-                                <tr><td>Modello</td><td>{{v.model}}</td></tr>
-                                <tr><td>Tipo Acquisizione</td><td>{{v.acquisitionType === '01' ? 'Acquisto': 'Leasing'}}</td></tr>
-                                <tr><td>Costo</td><td>{{v.amount | currency:'EUR'}}</td></tr>
-                            </tbody>
-                        </table>
+
+
                     </div>
-                    </div>
+
+
                     <div class="col-custom col-custom-6">
                       <h3>Documenti necessari</h3>
                       <mat-list dense>
-                          <mat-list-item  *ngFor="let alle of docListVei;">
+                          <mat-list-item  *ngFor="let alle of getListaDocumenti(v);">
                               <mat-icon
                               mat-list-icon
                               [style.color]="getAllegatoVeicolo(v, alle)?'green':'red'"
