@@ -15,7 +15,7 @@
     fxLayoutAlign="start"
     fxLayoutGap="30px"> -->
   <div class="row-custom">
-    <div class=" col-custom-2">
+    <div class=" col-custom-2" style="    height: 80vh;max-height: 80vh; overflow-y: auto;">
       <mat-list dense>
         <mat-list-item >
             <div matLine>Stato Rendicontazione</div>
@@ -48,10 +48,140 @@
             <div matLine>Allegati caricati</div>
              <div matLine>{{listaAllegati.length}}</div>
          </mat-list-item>
-    </mat-list>
+      </mat-list>
+      <mat-divider></mat-divider>
 
+      <!-- <mat-list dense> -->
+        <h5>Riepilogo richiesta rottamazioni</h5>
+
+        <table>
+          <tr>
+            <th>Tipologia</th>
+            <th>Richiesti</th>
+            <th>Approvati</th>
+
+          </tr>
+          <ng-container *ngFor="let type of [1,2,3,4,5,6,7,8,9,10]">
+
+            <ng-container >
+              <tr *ngIf="this.istanza['rott'+type] && this.istanza['rott'+type]>0">
+
+                <td><span class="span-type-b">{{getInfoTipoVeicolo('nv'+type)}}</span></td>
+                <td>{{this.istanza['rott'+type] | number: '1.0-0'}}</td>
+                <td>{{checkRottamazioniTipoVeicolo('nv'+type)}}</td>
+
+              </tr>
+
+            </ng-container>
+
+          </ng-container>
+          <ng-container *ngFor="let type of [1,2]">
+
+            <ng-container >
+              <tr *ngIf="this.istanza['rim_rott_'+type] && this.istanza['rim_rott_'+type]>0">
+
+                <td><span class="span-type-b">{{getInfoTipoVeicolo('rim_nv_'+type)}}</span></td>
+                <td>{{this.istanza['rim_rott_'+type] | number: '1.0-0'}}</td>
+                <td>{{checkRottamazioniTipoVeicolo('rim_nv_'+type)}}</td>
+
+              </tr>
+
+            </ng-container>
+
+          </ng-container>
+
+
+<!--
+          <tr *ngIf="this.istanza.rott1 > 0" >
+            <td><span class="span-type-b">{{getInfoTipoVeicolo('nv1')}}</span></td>
+            <td>{{this.istanza.rott1 | number: '1.0-0'}}</td>
+            <td></td>
+          </tr>
+          <tr *ngIf="this.istanza.rott2 > 0">
+            <td><span class="span-type-b">{{getInfoTipoVeicolo('nv2')}}</span></td>
+            <td>{{this.istanza.rott2 | number: '1.0-0'}}</td>
+            <td></td>
+          </tr>
+          <tr *ngIf="this.istanza.rott3 > 0">
+            <td><span class="span-type-b">{{getInfoTipoVeicolo('nv3')}}</span></td>
+            <td>{{this.istanza.rott3 | number: '1.0-0'}}</td>
+            <td></td>
+          </tr>
+          <tr *ngIf="this.istanza.rott4 > 0">
+            <td><span class="span-type-b">{{getInfoTipoVeicolo('nv4')}}</span></td>
+            <td>{{this.istanza.rott4 | number: '1.0-0'}}</td>
+            <td></td>
+          </tr>
+          <tr *ngIf="this.istanza.rott5 > 0">
+            <td><span class="span-type-b">{{getInfoTipoVeicolo('nv5')}}</span></td>
+            <td>{{this.istanza.rott5 | number: '1.0-0'}}</td>
+            <td></td>
+          </tr>
+          <tr *ngIf="this.istanza.rott6 > 0">
+            <td><span class="span-type-b">{{getInfoTipoVeicolo('nv6')}}</span></td>
+            <td>{{this.istanza.rott6 | number: '1.0-0'}}</td>
+            <td></td>
+          </tr>
+          <tr *ngIf="this.istanza.rott7 > 0">
+            <td><span class="span-type-b">{{getInfoTipoVeicolo('nv7')}}</span></td>
+            <td>{{this.istanza.rott7 | number: '1.0-0'}}</td>
+            <td></td>
+          </tr>
+          <tr *ngIf="this.istanza.rott8 > 0">
+            <td><span class="span-type-b">{{getInfoTipoVeicolo('nv8')}}</span></td>
+            <td>{{this.istanza.rott8 | number: '1.0-0'}}</td>
+            <td></td>
+          </tr>
+          <tr *ngIf="this.istanza.rott9 > 0">
+            <td><span class="span-type-b">{{getInfoTipoVeicolo('nv9')}}</span></td>
+            <td>{{this.istanza.rott9 | number: '1.0-0'}}</td>
+            <td></td>
+          </tr>
+          <tr *ngIf="this.istanza.rott10 > 0">
+            <td><span class="span-type-b">{{getInfoTipoVeicolo('nv10')}}</span></td>
+            <td>{{this.istanza.rott10 | number: '1.0-0'}}</td>
+            <td></td>
+          </tr> -->
+        </table>
+
+<!--
+
+
+          <mat-list-item *ngIf="this.istanza.rott1 > 0">
+
+              <span class="span-type" [matBadge]="this.istanza.rott1 | number: '1.0-0'" matBadgePosition="after" matBadgeColor="warn">  {{getInfoTipoVeicolo('nv1')}}</span>
+          </mat-list-item>
+          <mat-list-item *ngIf="this.istanza.rott2 > 0">
+              <span class="span-type" [matBadge]="this.istanza.rott2 | number: '1.0-0'" matBadgePosition="after" matBadgeColor="warn"> {{getInfoTipoVeicolo('nv2')}}</span>
+            </mat-list-item>
+          <mat-list-item *ngIf="this.istanza.rott3 > 0">
+              <span class="span-type" [matBadge]="this.istanza.rott3 | number: '1.0-0'" matBadgePosition="after" matBadgeColor="warn"> {{getInfoTipoVeicolo('nv3')}}</span>
+          </mat-list-item>
+          <mat-list-item *ngIf="this.istanza.rott4 > 0">
+              <span class="span-type" [matBadge]="this.istanza.rott4 | number: '1.0-0'" matBadgePosition="after" matBadgeColor="warn"> {{getInfoTipoVeicolo('nv4')}}</span>
+          </mat-list-item>
+          <mat-list-item *ngIf="this.istanza.rott5 > 0">
+              <span class="span-type"[matBadge]="this.istanza.rott5 | number: '1.0-0'" matBadgePosition="after" matBadgeColor="warn"> {{getInfoTipoVeicolo('nv5')}}</span>
+          </mat-list-item>
+          <mat-list-item *ngIf="this.istanza.rott6 > 0">
+              <span class="span-type" [matBadge]="this.istanza.rott6 | number: '1.0-0'" matBadgePosition="after" matBadgeColor="warn"> {{getInfoTipoVeicolo('nv6')}}</span>
+          </mat-list-item>
+          <mat-list-item *ngIf="this.istanza.rott7 > 0">
+              <span class="span-type" [matBadge]="this.istanza.rott7 | number: '1.0-0'" matBadgePosition="after" matBadgeColor="warn"> {{getInfoTipoVeicolo('nv7')}}</span>
+          </mat-list-item>
+          <mat-list-item *ngIf="this.istanza.rott8 > 0">
+              <span class="span-type" [matBadge]="this.istanza.rott8 | number: '1.0-0'" matBadgePosition="after" matBadgeColor="warn"> {{getInfoTipoVeicolo('nv8')}}</span>
+          </mat-list-item>
+          <mat-list-item *ngIf="this.istanza.rott9 > 0">
+              <span class="span-type" [matBadge]="this.istanza.rott9 | number: '1.0-0'" matBadgePosition="after" matBadgeColor="warn"> {{getInfoTipoVeicolo('nv9')}}</span>
+          </mat-list-item>
+          <mat-list-item *ngIf="this.istanza.rott10 > 0">
+              <span class="span-type" [matBadge]="this.istanza.rott10 | number: '1.0-0'" matBadgePosition="after" matBadgeColor="warn"> {{getInfoTipoVeicolo('nv10')}}</span>
+          </mat-list-item>
+
+      </mat-list> -->
     </div>
-    <div class=" col-custom-10">
+    <div class=" col-custom-10" style="height: 80vh;max-height: 80vh;overflow: auto;">
         <mat-tab-group mat-align-tabs="center">
           <mat-tab>
 
