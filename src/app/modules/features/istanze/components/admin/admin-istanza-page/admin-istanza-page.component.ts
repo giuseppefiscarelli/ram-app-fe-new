@@ -1026,6 +1026,42 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
 
     }
 
+    checkRottamazioniTipoVeicolo(type){
+      //console.log(this.listaAllegati)
+      const idVeicoloArray = [...new Set(this.listaAllegati.filter((x)=> x.typeVei === type && x.enable && x.adminState === 'accepted' && (x.typeDocument === '11' || x.typeDocument === '14')).map(obj => obj.id_Veicolo))];
+
+
+      var veicoliRottamati =0
+
+      idVeicoloArray.map(
+        (id_Veicolo) =>{
+          let veicoloData = this.listaVeicoli.find((x=> x.id === id_Veicolo && x.adminState === 'accepted'));
+          let allegati = [... new Set(this.listaAllegati.filter((x)=> x.id_Veicolo === id_Veicolo && x.enable && x.adminState === 'accepted' && (x.typeDocument === '11' || x.typeDocument === '14')).map(obj => obj.typeDocument))];
+       //   console.log(allegati)
+          if(allegati.length === 2 && veicoloData){
+            veicoliRottamati++
+          }
+
+        }
+      )
+
+     // console.log(veicoliRottamati,type)
+      return veicoliRottamati;
+      // console.log(this.listaAllegati.filter((x)=> x.typeVei === type && x.enable && x.adminState === 'accepted' && (x.typeDocument === '11' || x.typeDocument === '14')))
+      // const oggettiUniciPerVeicolo = this.listaAllegati.reduce((acc, obj) => {
+      //   // Verifica se l'id_Veicolo è già presente nell'array accumulatore
+      //   if (!acc.some(item => item.id_Veicolo === obj.id_Veicolo)) {
+      //     acc.push(obj); // Aggiunge l'oggetto all'array accumulatore se l'id_Veicolo non è già presente
+      //   }
+      //   return acc;
+      // }, []);
+      // console.log(oggettiUniciPerVeicolo)
+
+      // console.log(oggettiUniciPerVeicolo.filter((x)=> x.typeVei === type && x.enable && x.adminState === 'accepted' && (x.typeDocument === '11' || x.typeDocument === '14')));
+      // return idVeicoloArray.length
+    }
+
+
 
 
 

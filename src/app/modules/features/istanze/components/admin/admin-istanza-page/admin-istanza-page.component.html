@@ -55,6 +55,20 @@
       <mat-divider></mat-divider>
 
       <!-- <mat-list dense> -->
+        <ng-container *ngIf="
+          this.istanza.rott1 > 0 ||
+          this.istanza.rott2 > 0 ||
+          this.istanza.rott3 > 0 ||
+          this.istanza.rott4 > 0 ||
+          this.istanza.rott5 > 0 ||
+          this.istanza.rott6 > 0 ||
+          this.istanza.rott7 > 0 ||
+          this.istanza.rott8 > 0 ||
+          this.istanza.rott9 > 0  ||
+          this.istanza.rott10 > 0
+          ">
+
+
         <h5>Riepilogo richiesta rottamazioni</h5>
 
         <table>
@@ -146,6 +160,7 @@
             <td></td>
           </tr> -->
         </table>
+      </ng-container>
 
 <!--
 
