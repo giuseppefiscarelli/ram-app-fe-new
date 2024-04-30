@@ -260,8 +260,9 @@ export class AdminVeicoloDialogComponent implements OnInit {
         });
         //console.log(this.formVeicolo.getRawValue())
         let checkrottamazione = this.checkSubmitRottamazione(this.veicolo.type, this.formVeicolo.controls.adminState.value);
-       // console.log(checkrottamazione)
-        if(this.veicolo.type.startsWith('rim_nv')) checkrottamazione = true;
+        // console.log(checkrottamazione)
+        // console.log(this.veicolo)
+        if(this.veicolo.type.startsWith('rim_nv') || this.veicolo.type.startsWith('r_nv')) checkrottamazione = true;
         if(!checkrottamazione){
           Swal.fire({
               title: 'Attenzione!',
