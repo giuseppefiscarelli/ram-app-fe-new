@@ -230,7 +230,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
                 },
                 {
                   text: 'Direttore Operativo',
-                  margin: [0, 10],  // Aggiungi margine superiore e inferiore per spaziare il testo
+                  margin: [10, 0],  // Aggiungi margine superiore e inferiore per spaziare il testo
                   fontSize: 10,
                   alignment: 'center'  // Allinea il testo al centro
                 }
@@ -248,7 +248,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
       content.push(
         // {text: 'Prot n° '+dataReport['numProt'],margin: [ 0, 10, 0, 0 ]} ,
         // {text: 'Roma li '+dataReport['dataProt']},
-        {text: 'Spett.Le',alignment:'left',margin: [ 250, 30, 0, 0 ]},
+        {text: 'Spett.Le',alignment:'left',margin: [ 250, 20, 0, 0 ]},
         {text: dataReport['ragSociale'],alignment:'left',margin: [ 250, 0, 0, 0 ]},
         {text: `${dataReport['indirizzo']}, ${dataReport['numCivico']}`,alignment:'left',margin: [ 250, 0, 0, 0 ]},
         {text: `${dataReport['cap']} - ${dataReport['citta']} ${dataReport['prov']}`,alignment:'left',margin: [ 250, 0, 0, 10 ]},
@@ -321,7 +321,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
           defaultStyle: {
             font: 'Times'
           },
-          pageMargins: [ 40,100, 40, 80 ],
+          pageMargins: [ 40,120, 40, 80 ],
           header: function(currentPage, pageCount) {
             if (currentPage === 1) {
               return header
