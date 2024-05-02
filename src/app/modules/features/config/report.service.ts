@@ -258,7 +258,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
         ],margin: [ 0, 5, 0, 5 ]},
         {
           text:[
-           {text:'In qualità di soggetto attuatore, per conto del Ministero delle Infrastrutture e della Mobilità Sostenibili della gestione operativa del decreto in oggetto, Vi comunichiamo che a seguito di verifiche effettuate, per poter istruire la Vostra istanza prot. R.A.M. S.p.a.'}
+           {text:'In qualità di soggetto attuatore, per conto del Ministero delle Infrastrutture e dei Trasporti della gestione operativa del decreto in oggetto, Vi comunichiamo che a seguito di verifiche effettuate, per poter istruire la Vostra istanza prot. R.A.M. S.p.a.'}
             ,
             {text: ` IN ${dataReport['idRam']}/${dataReport['year']}`, bold: true},
             { text: ' abbiamo necessità di ricevere i seguenti chiarimenti e/o documenti:'}
