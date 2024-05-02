@@ -228,7 +228,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
                 },
                 {
                   text: 'Direttore Operativo',
-                  margin: [0, 10],  // Aggiungi margine superiore e inferiore per spaziare il testo
+                  margin: [10, 0],  // Aggiungi margine superiore e inferiore per spaziare il testo
                   fontSize: 10,
                   alignment: 'center'  // Allinea il testo al centro
                 }
@@ -246,21 +246,21 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
       content.push(
         // {text: 'Prot n° '+dataReport['numProt'],margin: [ 0, 10, 0, 0 ]} ,
         // {text: 'Roma li '+dataReport['dataProt']},
-        {text: 'Spett.Le',alignment:'left',margin: [ 250, 30, 0, 0 ]},
+        {text: 'Spett.Le',alignment:'left',margin: [ 250, 20, 0, 0 ]},
         {text: dataReport['ragSociale'],alignment:'left',margin: [ 250, 0, 0, 0 ]},
         {text: `${dataReport['indirizzo']}, ${dataReport['numCivico']}`,alignment:'left',margin: [ 250, 0, 0, 0 ]},
         {text: `${dataReport['cap']} - ${dataReport['citta']} ${dataReport['prov']}`,alignment:'left',margin: [ 250, 0, 0, 10 ]},
         { text:[ 'Raccomandata via pec all\'indirizzo: ', {text:dataReport['pecImpresa'], bold:true}], alignment:'left',margin: [ 0, 10 ]},
         {columns:[
           {text:'Oggetto: ',width: 'auto',bold:true},
-          {text:'Contributi ai sensi del D.D. 12 aprile 2022 n.155 per le finalità di cui al D.M. 18 novembre 2021 n. 459 - "Incentivi agli investimenti nel settore dell\'autotrasporto" ',margin: [ 5, 0, 0, 0 ], bold:true, alignment:'justify'},
+          {text:'Contributi ai sensi del D.D. 12 aprile 2022 n.155 per le finalità di cui al D.M. 18 novembre 2021 n. 459 - "Incentivi agli investimenti nel settore dell\'autotrasporto". VIII Edizione ',margin: [ 5, 0, 0, 0 ], bold:true, alignment:'justify'},
 
         ],margin: [ 0, 5, 0, 5 ]},
         {
           text:[
-           {text:'In qualità di soggetto attuatore, per conto del Ministero delle Infrastrutture e della Mobilità Sostenibili della gestione operativa del decreto in oggetto, Vi comunichiamo che a seguito di verifiche effettuate, per poter istruire la Vostra istanza '}
+           {text:'In qualità di soggetto attuatore, per conto del Ministero delle Infrastrutture e della Mobilità Sostenibili della gestione operativa del decreto in oggetto, Vi comunichiamo che a seguito di verifiche effettuate, per poter istruire la Vostra istanza prot. R.A.M. S.p.a.'}
             ,
-            {text: `prot. R.A.M. S.p.a. In ${dataReport['idRam']}/${dataReport['year']}`, bold: true},
+            {text: ` IN ${dataReport['idRam']}/${dataReport['year']}`, bold: true},
             { text: ' abbiamo necessità di ricevere i seguenti chiarimenti e/o documenti:'}
           ], alignment:'justify'
         },
@@ -280,7 +280,8 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
                 'decorso il termine perentorio suindicato, l\'istruttoria verrà conclusa sulla sola base della documentazione valida disponibile, senza che possa in alcun modo avviarsi qualsiasi, ulteriore fase di interlocuzione.'
               ], margin:[20,5], alignment:'justify'
              },
-             {text:'Per qualsiasi informazione, potrete rivolgerVi al nostro Help Desk Incentivi \n (e-mail:incentivoinvestimenti@ramspa.it).'},
+             {text:'Per qualsiasi informazione, potrete rivolgerVi al nostro Help Desk Incentivi'},
+             {text:[{text:'(e-mail: '},{text:'incentivoinvestimenti@ramspa.it', bold:true},{text:').'}]},
              {text:' Cordiali saluti'}
 
             ,
@@ -309,7 +310,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
           defaultStyle: {
             font: 'Times'
           },
-          pageMargins: [ 40,100, 40, 80 ],
+          pageMargins: [ 40,120, 40, 80 ],
           header: function(currentPage, pageCount) {
             if (currentPage === 1) {
               return header
