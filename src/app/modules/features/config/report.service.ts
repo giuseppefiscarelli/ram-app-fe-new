@@ -253,7 +253,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
         { text:[ 'Raccomandata via pec all\'indirizzo: ', {text:dataReport['pecImpresa'], bold:true}], alignment:'left',margin: [ 0, 10 ]},
         {columns:[
           {text:'Oggetto: ',width: 'auto',bold:true},
-          {text:'Contributi ai sensi del D.D. 12 aprile 2022 n.155 per le finalità di cui al D.M. 18 novembre 2021 n. 459 - "Incentivi agli investimenti nel settore dell\'autotrasporto". VIII Edizione ',margin: [ 5, 0, 0, 0 ], bold:true, alignment:'justify'},
+          {text:'Contributi ai sensi del D.D. 12 aprile 2022 n.155 per le finalità di cui al D.M. 18 novembre 2021 n. 459 - "Incentivi agli investimenti nel settore dell\'autotrasporto". X Edizione ',margin: [ 5, 0, 0, 0 ], bold:true, alignment:'justify'},
 
         ],margin: [ 0, 5, 0, 5 ]},
         {
