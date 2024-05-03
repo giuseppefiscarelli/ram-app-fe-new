@@ -201,7 +201,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
 
 
     if(type === 'integrazione'){
-      let logo  = await this.getBase64ImageFromURL('../../../../assets/report/ram_nuovo_logo.png');
+      let logo  = await this.getBase64ImageFromURL('../../../../assets/report/int_ram.png');
       let firma  = await this.getBase64ImageFromURL('../../../../assets/report/firma_fb.png');
 
       let listaRichieste =[];
@@ -258,7 +258,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
         ],margin: [ 0, 5, 0, 5 ]},
         {
           text:[
-           {text:'In qualità di soggetto attuatore, per conto del Ministero delle Infrastrutture e della Mobilità Sostenibili della gestione operativa del decreto in oggetto, Vi comunichiamo che a seguito di verifiche effettuate, per poter istruire la Vostra istanza prot. R.A.M. S.p.a.'}
+           {text:'In qualità di soggetto attuatore, per conto del Ministero delle Infrastrutture e dei Trasporti della gestione operativa del decreto in oggetto, Vi comunichiamo che a seguito di verifiche effettuate, per poter istruire la Vostra istanza prot. R.A.M. S.p.a.'}
             ,
             {text: ` IN ${dataReport['idRam']}/${dataReport['year']}`, bold: true},
             { text: ' abbiamo necessità di ricevere i seguenti chiarimenti e/o documenti:'}
@@ -448,14 +448,14 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
       {text: `${dataReport['indirizzo']}, ${dataReport['numCivico']}`,alignment:'left',margin: [ 250, 0, 0, 0 ]},
       {text: `${dataReport['cap']} - ${dataReport['citta']} ${dataReport['prov']}`,alignment:'left',margin: [ 250, 0, 0, 10 ]},
       {text:[ 'Raccomandata via pec all\'indirizzo: ', {text:dataReport['pecImpresa'], bold:true}], alignment:'left',margin: [ 0, 10 ]},
-      {text:'Oggetto: Contributi ai sensi del D.D. 12 aprile 2022 n.155 per le finalità di cui al D.M. 18 novembre 2021 n. 459 - "Incentivi agli investimenti nel settore dell\'autotrasporto. " ', bold:true, margin: [ 0, 5, 0, 0 ], alignment:'justify'},
-      {text:`Protocollo Istanza In ${dataReport['idRam']}/${dataReport['year']} Informativa ai sensi dell'art.10-bis legge 241/90`, bold:true, margin: [ 0, 0, 0, 5 ], alignment:'justify'},
+      {text:'Oggetto: Contributi ai sensi del D.D. 12 aprile 2022 n.155 per le finalità di cui al D.M. 18 novembre 2021 n. 459 - "Incentivi agli investimenti nel settore dell\'autotrasporto. " VIII Edizione', bold:true, margin: [ 0, 5, 0, 0 ], alignment:'justify'},
+      {text:`Protocollo Istanza IN ${dataReport['idRam']}/${dataReport['year']} Informativa ai sensi dell'art.10-bis legge 241/90`, bold:true, margin: [ 0, 0, 0, 5 ], alignment:'justify'},
 
       {text:'IL DIRETTORE GENERALE',alignment:'center',margin: [ 0,10 ], bold:true},
       {
         ul:[
           {text: `VISTA la domanda di ammissione al contributo di cui all'oggetto presentata da Codesta impresa e acquisista con protocollo n°${dataReport['idRam']}/${dataReport['year']} del ${moment(dataReport['dataIdRam']).format('DD/MM/YYYY')}`},
-          {text:`VISTO il verbale di riunione della Commissione, istituita ai sensi dell'art. 12, comma 3, D.D. 12 aprile 2022 n.155 , tenutasi il giorno ${moment(Number(dataReport['dataVerbale'])).format('DD/MM/YYYY')}`}
+          {text:`VISTO il verbale di riunione della Commissione, istituita ai sensi dell'art. 10, comma 3, D.D. 12 aprile 2022 n.155 , tenutasi il giorno ${moment(Number(dataReport['dataVerbale'])).format('DD/MM/YYYY')}`}
         ],
         alignment:'justify'
       },
@@ -471,16 +471,16 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
           widths:['*',100,60,70,65,70],
           body:[
             [
-              { text: 'Categoria Investimenti', bold:true, alignment:'center',margin:[0,10]},
-              { text: 'Sotto-Categoria Investimenti', bold:true, alignment:'center'},
-              { text: 'Numero acquisizioni finanziabili', bold:true, alignment:'center'},
-              { text: 'Importo contributi ammessi (€)', bold:true, alignment:'center'},
-              { text: 'Eventuali Maggiorazioni (%)', bold:true, alignment:'center'},
-              { text: 'Importo Totale Contributo (€)', bold:true, alignment:'center'}
+              { text: 'Categoria Investimenti', bold:true, alignment:'center',margin:[0,10,0,0]},
+              { text: 'Sotto-Categoria Investimenti', bold:true, alignment:'center',margin:[0,10,0,0]},
+              { text: 'Numero acquisizioni finanziabili', bold:true, alignment:'center',margin:[0,5,0,0]},
+              { text: 'Importo contributi ammessi (€)', bold:true, alignment:'center',margin:[0,5,0,0]},
+              { text: 'Eventuali Maggiorazioni (%)', bold:true, alignment:'center',margin:[0,5,0,0]},
+              { text: 'Importo Totale Contributo (€)', bold:true, alignment:'center',margin:[0,10,0,0]}
             ],
 
             [
-              {rowSpan:4, text:'Art.2, comma 1, lett a)', alignment:'center',margin:[0,30]},
+              {rowSpan:4, text:'Art.2, comma 1, lett a)', alignment:'center',margin:[0,20,0,0]},
                 {text:'Art.5, comma 1, lett a)', alignment:'left' },
                 {text:myGroupedData.find(x=> x.artDm === '1A')?.numAccepted},
                 {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '1A')?.totalAmount ||0)},
@@ -546,7 +546,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
 
 
             [
-              {rowSpan:3, text:'Art.2, comma 1, lett c)', alignment:'center', margin:[0,15]},
+              {rowSpan:3, text:'Art.2, comma 1, lett c)', alignment:'center', margin:[0,10,0,0]},
               {text:'Art.5, comma 5, lett a)', alignment:'left' },
               {text:myGroupedData.find(x=> x.artDm === '5A')?.numAccepted},
               {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '5A')?.totalAmount||0)},
@@ -599,7 +599,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
         {text:'AVVERTENZE:',bold:true},
         {text:[
           {text:'Si ricorda che a norma dell’'},
-          {text:'Art. 2 comma 6 del DM 459/2021 i mezzi oggetti di contributo non possono essere alienati, concessi in locazione o in noleggio e devono rimanere nella piena disponibilità del beneficiario del contributo entro il triennio decorrente alla data di erogazione del contributo, pena la revoca del contributo erogato.',bold:true},
+          {text:'art. 2 comma 6 del D.M. 459/2021 i mezzi oggetti di contributo non possono essere alienati, concessi in locazione o in noleggio e devono rimanere nella piena disponibilità del beneficiario del contributo entro il triennio decorrente alla data di erogazione del contributo, pena la revoca del contributo erogato.',bold:true},
           {text:'Non si procede all\'erogazione del contributo anche nel caso di trasferimento della disponibilità dei beni oggetto degli incentivi nel periodo intercorrente fra la data di presentazione della domanda e la data di pagamento del beneficio.'}
 
         ], alignment:'justify'},
@@ -626,7 +626,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
           {text:'L’eventuale documentazione di cui sopra dovrà essere trasmessa in '},
           {text:'un unico file PDF (comprensivo del documento di identità del legale rappresentante dell’impresa)',bold:true},
           {text:', tramite posta elettronica certificata all’indirizzo '},
-          {text:'dg.ssa@pec.mit.gov.it',bold:true},
+          {text:'dg.ssa-div7@pec.mit.gov.it',bold:true},
 
 
         ], alignment:'justify',margin: [0,10,0,0]},
@@ -704,8 +704,8 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
         {text: `${dataReport['indirizzo']}, ${dataReport['numCivico']}`,alignment:'left',margin: [ 250, 0, 0, 0 ]},
         {text: `${dataReport['cap']} - ${dataReport['citta']} ${dataReport['prov']}`,alignment:'left',margin: [ 250, 0, 0, 10 ]},
         { text:[ 'Raccomandata via pec all\'indirizzo: ', {text:dataReport['pecImpresa'], bold:true}], alignment:'left',margin: [ 0, 10 ]},
-        {text:'Oggetto: Contributi ai sensi del D.D. 12 aprile 2022 n.155 per le finalità di cui al D.M. 18 novembre 2021 n. 459 - "Incentivi agli investimenti nel settore dell\'autotrasporto" ', bold:true, margin: [ 0, 5, 0, 5 ], alignment:'justify'},
-        {text:`Protocollo Istanza In ${dataReport['idRam']}/${dataReport['year']} Informativa ai sensi dell'art.10-bis legge 241/90`, bold:true, margin: [ 0, 5, 0, 5 ], alignment:'justify'},
+        {text:'Oggetto: Contributi ai sensi del D.D. 12 aprile 2022 n.155 per le finalità di cui al D.M. 18 novembre 2021 n. 459 - "Incentivi agli investimenti nel settore dell\'autotrasporto", VIII Edizione ', bold:true, margin: [ 0, 5, 0, 5 ], alignment:'justify'},
+        {text:`Protocollo Istanza IN ${dataReport['idRam']}/${dataReport['year']} Informativa ai sensi dell'art.10-bis legge 241/90`, bold:true, margin: [ 0, 5, 0, 5 ], alignment:'justify'},
         {alignment:'justify',text:`In riferimento alla domanda di ammissione agli incentivi di cui al D.M. 18 novembre 2021 n. 459 acquisita in data ${moment(dataReport['dataIdRam']).format('DD/MM/YYYY')} con prot. n. ${dataReport['idRam']}/${dataReport['year']} si comunica che, sulla base delle risultanze dell'istruttoria effettuata dalla società RAM S.p.A e della valutazione di questa Commissione, l'istanza di ammissione al finanziamento degli investimenti di cui all'art. 1 del 18 novembre 2021 n.459, destinato alle imprese di autotrasporti merci, è risultata`},
         {text:'INAMMISSIBILE',alignment:'center',margin: [ 0,10 ], bold:true},
         {text:'Per la/le seguente/i motivazione/i:'},
@@ -724,7 +724,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
             stack: [
 
               {
-                text: 'Il PresidenteLa presidente della commissione',
+                text: 'La Presidente della commissione',
                 margin: [0, 5],  // Aggiungi margine superiore e inferiore per spaziare il testo
 
                 alignment: 'center'  // Allinea il testo al centro
