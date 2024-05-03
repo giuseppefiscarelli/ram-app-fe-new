@@ -471,16 +471,16 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
           widths:['*',100,60,70,65,70],
           body:[
             [
-              { text: 'Categoria Investimenti', bold:true, alignment:'center',margin:[0,10]},
-              { text: 'Sotto-Categoria Investimenti', bold:true, alignment:'center'},
-              { text: 'Numero acquisizioni finanziabili', bold:true, alignment:'center'},
-              { text: 'Importo contributi ammessi (€)', bold:true, alignment:'center'},
-              { text: 'Eventuali Maggiorazioni (%)', bold:true, alignment:'center'},
-              { text: 'Importo Totale Contributo (€)', bold:true, alignment:'center'}
+              { text: 'Categoria Investimenti', bold:true, alignment:'center',margin:[0,10,0,0]},
+              { text: 'Sotto-Categoria Investimenti', bold:true, alignment:'center',margin:[0,10,0,0]},
+              { text: 'Numero acquisizioni finanziabili', bold:true, alignment:'center',margin:[0,5,0,0]},
+              { text: 'Importo contributi ammessi (€)', bold:true, alignment:'center',margin:[0,5,0,0]},
+              { text: 'Eventuali Maggiorazioni (%)', bold:true, alignment:'center',margin:[0,5,0,0]},
+              { text: 'Importo Totale Contributo (€)', bold:true, alignment:'center',margin:[0,10,0,0]}
             ],
 
             [
-              {rowSpan:4, text:'Art.2, comma 1, lett a)', alignment:'center',margin:[0,30]},
+              {rowSpan:4, text:'Art.2, comma 1, lett a)', alignment:'center',margin:[0,20,0,0]},
                 {text:'Art.5, comma 1, lett a)', alignment:'left' },
                 {text:myGroupedData.find(x=> x.artDm === '1A')?.numAccepted},
                 {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '1A')?.totalAmount ||0)},
@@ -546,7 +546,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
 
 
             [
-              {rowSpan:3, text:'Art.2, comma 1, lett c)', alignment:'center', margin:[0,15]},
+              {rowSpan:3, text:'Art.2, comma 1, lett c)', alignment:'center', margin:[0,10,0,0]},
               {text:'Art.5, comma 5, lett a)', alignment:'left' },
               {text:myGroupedData.find(x=> x.artDm === '5A')?.numAccepted},
               {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '5A')?.totalAmount||0)},
