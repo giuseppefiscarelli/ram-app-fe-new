@@ -201,7 +201,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
 
 
     if(type === 'integrazione'){
-      let logo  = await this.getBase64ImageFromURL('../../../../assets/images/logo-ram-2024.png');
+      let logo  = await this.getBase64ImageFromURL('../../../../assets/report/int_ram.png');
       let firma  = await this.getBase64ImageFromURL('../../../../assets/report/firma_fb.png');
 
       let listaRichieste =[];
@@ -575,6 +575,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
           {text:'L’eventuale documentazione di cui sopra dovrà essere trasmessa in '},
           {text:'un unico file PDF (comprensivo del documento di identità del legale rappresentante dell’impresa)',bold:true},
           {text:', tramite posta elettronica certificata all’indirizzo '},
+          {text:'dg.ssa-div7@pec.mit.gov.it',bold:true},
           {text:'dg.ssa-div7@pec.mit.gov.it',bold:true},
 
 
