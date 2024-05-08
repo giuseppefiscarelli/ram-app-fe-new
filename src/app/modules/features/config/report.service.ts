@@ -255,12 +255,12 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
         { text:[ 'Raccomandata via pec all\'indirizzo: ', {text:dataReport['pecImpresa'], bold:true}], alignment:'left',margin: [ 0, 10 ]},
         {columns:[
           {text:'Oggetto: ',width: 'auto',bold:true},
-          {text:'Contributi ai sensi del D.D. 7 aprile 2022 n.148 per le finalità di cui al D.M. 18 novembre 2021 n. 461 - "Incentivi agli investimenti nel settore dell\'autotrasporto Elevata Sostenibilità" ',margin: [ 5, 0, 0, 0 ], bold:true, alignment:'justify'},
+          {text:'Contributi ai sensi del D.D. 7 aprile 2022 n.148 per le finalità di cui al D.M. 18 novembre 2021 n. 461 - "Incentivi agli investimenti nel settore dell\'autotrasporto Elevata Sostenibilità".',margin: [ 5, 0, 0, 0 ], bold:true, alignment:'justify'},
 
         ],margin: [ 0, 5, 0, 5 ]},
         {
           text:[
-           {text:'In qualità di soggetto attuatore, per conto del Ministero delle Infrastrutture e della Mobilità Sostenibili della gestione operativa del decreto in oggetto, Vi comunichiamo che a seguito di verifiche effettuate, per poter istruire la Vostra istanza prot. R.A.M. S.p.a. ES'}
+           {text:'In qualità di soggetto attuatore, per conto del Ministero delle Infrastrutture e dei Trasporti della gestione operativa del decreto in oggetto, Vi comunichiamo che a seguito di verifiche effettuate, per poter istruire la Vostra istanza prot. R.A.M. S.p.a. ES'}
             ,
             {text: ` ${dataReport['idRam']}/${dataReport['year']}`, bold: true},
             { text: ' abbiamo necessità di ricevere i seguenti chiarimenti e/o documenti:'}
@@ -463,7 +463,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
       {text: `${dataReport['indirizzo']}, ${dataReport['numCivico']}`,alignment:'left',margin: [ 250, 0, 0, 0 ]},
       {text: `${dataReport['cap']} - ${dataReport['citta']} ${dataReport['prov']}`,alignment:'left',margin: [ 250, 0, 0, 10 ]},
       {text:[ 'Raccomandata via pec all\'indirizzo: ', {text:dataReport['pecImpresa'], bold:true}], alignment:'left',margin: [ 0, 10 ]},
-      {text:'Oggetto: Contributi ai sensi del D.D. 7 aprile 2022 n.148 per le finalità di cui al D.M. 18 novembre 2021 n. 461 - "Incentivi agli investimenti nel settore dell\'autotrasporto Elevata Sostenibilità. " ', bold:true, margin: [ 0, 5, 0, 0 ], alignment:'justify'},
+      {text:'Oggetto: Contributi ai sensi del D.D. 7 aprile 2022 n.148 per le finalità di cui al D.M. 18 novembre 2021 n. 461 - "Incentivi agli investimenti nel settore dell\'autotrasporto Elevata Sostenibilità".', bold:true, margin: [ 0, 5, 0, 0 ], alignment:'justify'},
       {text:`Protocollo Istanza ES ${dataReport['idRam']}/${dataReport['year']} Informativa ai sensi dell'art.10-bis legge 241/90`, bold:true, margin: [ 0, 0, 0, 5 ], alignment:'justify'},
 
       {text:'IL DIRETTORE GENERALE',alignment:'center',margin: [ 0,10 ], bold:true},
@@ -548,7 +548,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
         {text:'AVVERTENZE:',bold:true},
         {text:[
           {text:'Si ricorda che a norma dell’'},
-          {text:'Art. 1 comma 4 del DM 461/2021 i mezzi oggetti di contributo non possono essere alienati, concessi in locazione o in noleggio e devono rimanere nella piena disponibilità del beneficiario del contributo entro il triennio decorrente alla data di erogazione del contributo, pena la revoca del contributo erogato.',bold:true},
+          {text:'art. 1 comma 4 del D.M. 461/2021 i mezzi oggetti di contributo non possono essere alienati, concessi in locazione o in noleggio e devono rimanere nella piena disponibilità del beneficiario del contributo entro il triennio decorrente alla data di erogazione del contributo, pena la revoca del contributo erogato. ',bold:true},
           {text:'Non si procede all\'erogazione del contributo anche nel caso di trasferimento della disponibilità dei beni oggetto degli incentivi nel periodo intercorrente fra la data di presentazione della domanda e la data di pagamento del beneficio.'}
 
         ], alignment:'justify'},
@@ -575,7 +575,6 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
           {text:'L’eventuale documentazione di cui sopra dovrà essere trasmessa in '},
           {text:'un unico file PDF (comprensivo del documento di identità del legale rappresentante dell’impresa)',bold:true},
           {text:', tramite posta elettronica certificata all’indirizzo '},
-          {text:'dg.ssa-div7@pec.mit.gov.it',bold:true},
           {text:'dg.ssa-div7@pec.mit.gov.it',bold:true},
 
 
@@ -654,7 +653,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
         {text: `${dataReport['indirizzo']}, ${dataReport['numCivico']}`,alignment:'left',margin: [ 250, 0, 0, 0 ]},
         {text: `${dataReport['cap']} - ${dataReport['citta']} ${dataReport['prov']}`,alignment:'left',margin: [ 250, 0, 0, 10 ]},
         { text:[ 'Raccomandata via pec all\'indirizzo: ', {text:dataReport['pecImpresa'], bold:true}], alignment:'left',margin: [ 0, 10 ]},
-        {text:'Oggetto: Contributi ai sensi del D.D. 7 aprile 2022 n.148 per le finalità di cui al D.M. 18 novembre 2021 n. 461 - "Incentivi agli investimenti nel settore dell\'autotrasporto Elevata Sostenibilità" ', bold:true, margin: [ 0, 5, 0, 5 ], alignment:'justify'},
+        {text:'Oggetto: Contributi ai sensi del D.D. 7 aprile 2022 n.148 per le finalità di cui al D.M. 18 novembre 2021 n. 461 - "Incentivi agli investimenti nel settore dell\'autotrasporto Elevata Sostenibilità".', bold:true, margin: [ 0, 5, 0, 5 ], alignment:'justify'},
         {text:`Protocollo Istanza In ${dataReport['idRam']}/${dataReport['year']} Informativa ai sensi dell'art.10-bis legge 241/90`, bold:true, margin: [ 0, 5, 0, 5 ], alignment:'justify'},
         {alignment:'justify',text:`In riferimento alla domanda di ammissione agli incentivi di cui al D.M. 18 novembre 2021 n. 461 acquisita in data ${moment(dataReport['dataIdRam']).format('DD/MM/YYYY')} con prot. n. ${dataReport['idRam']}/${dataReport['year']} si comunica che, sulla base delle risultanze dell'istruttoria effettuata dalla società RAM S.p.A e della valutazione di questa Commissione, l'istanza di ammissione al finanziamento degli investimenti di cui all'art. 1 del D.M. 18 novembre 2021 n.461, destinato alle imprese di autotrasporti merci, è risultata`},
         {text:'INAMMISSIBILE',alignment:'center',margin: [ 0,10 ], bold:true},
