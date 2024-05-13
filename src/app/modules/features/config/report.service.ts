@@ -654,7 +654,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
         {text: `${dataReport['cap']} - ${dataReport['citta']} ${dataReport['prov']}`,alignment:'left',margin: [ 250, 0, 0, 10 ]},
         { text:[ 'Raccomandata via pec all\'indirizzo: ', {text:dataReport['pecImpresa'], bold:true}], alignment:'left',margin: [ 0, 10 ]},
         {text:'Oggetto: Contributi ai sensi del D.D. 7 aprile 2022 n.148 per le finalità di cui al D.M. 18 novembre 2021 n. 461 - "Incentivi agli investimenti nel settore dell\'autotrasporto Elevata Sostenibilità".', bold:true, margin: [ 0, 5, 0, 5 ], alignment:'justify'},
-        {text:`Protocollo Istanza In ${dataReport['idRam']}/${dataReport['year']} Informativa ai sensi dell'art.10-bis legge 241/90`, bold:true, margin: [ 0, 5, 0, 5 ], alignment:'justify'},
+        {text:`Protocollo Istanza ES ${dataReport['idRam']}/${dataReport['year']} Informativa ai sensi dell'art.10-bis legge 241/90`, bold:true, margin: [ 0, 5, 0, 5 ], alignment:'justify'},
         {alignment:'justify',text:`In riferimento alla domanda di ammissione agli incentivi di cui al D.M. 18 novembre 2021 n. 461 acquisita in data ${moment(dataReport['dataIdRam']).format('DD/MM/YYYY')} con prot. n. ${dataReport['idRam']}/${dataReport['year']} si comunica che, sulla base delle risultanze dell'istruttoria effettuata dalla società RAM S.p.A e della valutazione di questa Commissione, l'istanza di ammissione al finanziamento degli investimenti di cui all'art. 1 del D.M. 18 novembre 2021 n.461, destinato alle imprese di autotrasporti merci, è risultata`},
         {text:'INAMMISSIBILE',alignment:'center',margin: [ 0,10 ], bold:true},
         {text:'Per la/le seguente/i motivazione/i:'},
