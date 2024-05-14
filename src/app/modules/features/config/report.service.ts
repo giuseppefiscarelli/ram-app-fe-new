@@ -426,10 +426,27 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
 
 
 
+console.log(myGroupedData)
+console.log(veicoli)
+// Utilizziamo un oggetto per tenere traccia delle somme per ogni artDm
 
+// Utilizziamo un oggetto per tenere traccia delle somme per ogni artDm
+// Utilizziamo un oggetto per tenere traccia delle somme per ogni artDm
+const sumsByArtDm = myGroupedData.reduce((acc, obj) => {
+  const { type, typeVei, artDm, totalAmount, totalFinanziamento, numAccepted } = obj;
+  if (!acc[artDm]) {
+      acc[artDm] = { artDm, type, typeVei, totalAmount: 0, totalFinanziamento: 0, numAccepted: 0 };
+  }
+  acc[artDm].totalAmount += totalAmount;
+  acc[artDm].totalFinanziamento += totalFinanziamento;
+  acc[artDm].numAccepted += numAccepted;
+  return acc;
+}, {});
 
+// Convertiamo l'oggetto risultante in un array di oggetti
+const result = Object.keys(sumsByArtDm).map(artDm => sumsByArtDm[artDm]);
 
-
+console.log(result);
 
 
 
@@ -482,26 +499,26 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
             [
               {rowSpan:4, text:'Art.2, comma 1, lett a)', alignment:'center',margin:[0,20,0,0]},
                 {text:'Art.5, comma 1, lett a)', alignment:'left' },
-                {text:myGroupedData.find(x=> x.artDm === '1A')?.numAccepted},
-                {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '1A')?.totalAmount ||0)},
-                {text: myGroupedData.find(x=> x.artDm === '1A')?.totalFinanziamento>0?(istanza.rete && istanza.rete === 'Yes') && (istanza.pmi && istanza.pmi === 'Yes') ? '20%' : istanza.rete === 'Yes' ||istanza.pmi === 'Yes'?'10%':null:null},
-                {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '1A')?.totalFinanziamento ||0)},
+                {text:result.find(x=> x.artDm === '1A')?.numAccepted},
+                {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(result.find(x=> x.artDm === '1A')?.totalAmount ||0)},
+                {text: result.find(x=> x.artDm === '1A')?.totalFinanziamento>0?(istanza.rete && istanza.rete === 'Yes') && (istanza.pmi && istanza.pmi === 'Yes') ? '20%' : istanza.rete === 'Yes' ||istanza.pmi === 'Yes'?'10%':null:null},
+                {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(result.find(x=> x.artDm === '1A')?.totalFinanziamento ||0)},
 
 
             ],
               [ '',
                 {text:'Art.5, comma 1, lett b)', alignment:'left' },
-                {text:myGroupedData.find(x=> x.artDm === '1B')?.numAccepted},
-                {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '1B')?.totalAmount||0)},
-                {text: myGroupedData.find(x=> x.artDm === '1B')?.totalFinanziamento>0? (istanza.rete && istanza.rete === 'Yes') && (istanza.pmi && istanza.pmi === 'Yes') ? '20%' : istanza.rete === 'Yes' ||istanza.pmi === 'Yes'?'10%':null:null},
-                {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '1B')?.totalFinanziamento||0)},
+                {text:result.find(x=> x.artDm === '1B')?.numAccepted},
+                {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(result.find(x=> x.artDm === '1B')?.totalAmount||0)},
+                {text: result.find(x=> x.artDm === '1B')?.totalFinanziamento>0? (istanza.rete && istanza.rete === 'Yes') && (istanza.pmi && istanza.pmi === 'Yes') ? '20%' : istanza.rete === 'Yes' ||istanza.pmi === 'Yes'?'10%':null:null},
+                {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(result.find(x=> x.artDm === '1B')?.totalFinanziamento||0)},
                   ],
               [   '',
                 {text:'Art.5, comma 2, lett c)', alignment:'left' },
                 {text:myGroupedData.find(x=> x.artDm === '2C')?.numAccepted},
-                {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '2C')?.totalAmount||0)},
+                {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(result.find(x=> x.artDm === '2C')?.totalAmount||0)},
                 {text: myGroupedData.find(x=> x.artDm === '2C')?.totalFinanziamento>0?(istanza.rete && istanza.rete === 'Yes') && (istanza.pmi && istanza.pmi === 'Yes') ? '20%' : istanza.rete === 'Yes' ||istanza.pmi === 'Yes'?'10%':null:null},
-                {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '2C')?.totalFinanziamento||0)},
+                {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(result.find(x=> x.artDm === '2C')?.totalFinanziamento||0)},
 
               ],
               // [   '',
@@ -513,7 +530,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
 
               // ],
               [  '',
-                {text:'Maggiorazione Rottamazione', colSpan:4, bold:true, alignment:'right'},
+                {text:'Maggiorazione Rottamazione (€)', colSpan:4, bold:true, alignment:'right'},
                 '',
                 '',
                 '',
@@ -524,10 +541,10 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
             [
               {text:'Art.2, comma 1, lett b)', alignment:'center'},
               {text:'Art.5, comma 3', alignment:'left' },
-              {text:myGroupedData.find(x=> x.artDm === '3')?.numAccepted},
-              {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '3')?.totalAmount||0)},
-              {text: myGroupedData.find(x=> x.artDm === '3')?.totalFinanziamento>0?(istanza.rete && istanza.rete === 'Yes') && (istanza.pmi && istanza.pmi === 'Yes') ? '20%' : istanza.rete === 'Yes' ||istanza.pmi === 'Yes'?'10%':null:null},
-              {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '3')?.totalFinanziamento||0)},
+              {text:result.find(x=> x.artDm === '3')?.numAccepted},
+              {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(result.find(x=> x.artDm === '3')?.totalAmount||0)},
+              {text: result.find(x=> x.artDm === '3')?.totalFinanziamento>0?(istanza.rete && istanza.rete === 'Yes') && (istanza.pmi && istanza.pmi === 'Yes') ? '20%' : istanza.rete === 'Yes' ||istanza.pmi === 'Yes'?'10%':null:null},
+              {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(result.find(x=> x.artDm === '3')?.totalFinanziamento||0)},
 
 
 
@@ -535,10 +552,10 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
             [
               {text:'Art.2, comma 1, lett b)', alignment:'center'},
               {text:'Art.5, comma 4', alignment:'left' },
-              {text:myGroupedData.find(x=> x.artDm === '4')?.numAccepted},
-              {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '4')?.totalAmount||0)},
-              {text: myGroupedData.find(x=> x.artDm === '4')?.totalFinanziamento>0?(istanza.rete && istanza.rete === 'Yes') && (istanza.pmi && istanza.pmi === 'Yes') ? '20%' : istanza.rete === 'Yes' ||istanza.pmi === 'Yes'?'10%':null:null},
-              {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '4')?.totalFinanziamento||0)},
+              {text:result.find(x=> x.artDm === '4')?.numAccepted},
+              {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(result.find(x=> x.artDm === '4')?.totalAmount||0)},
+              {text: result.find(x=> x.artDm === '4')?.totalFinanziamento>0?(istanza.rete && istanza.rete === 'Yes') && (istanza.pmi && istanza.pmi === 'Yes') ? '20%' : istanza.rete === 'Yes' ||istanza.pmi === 'Yes'?'10%':null:null},
+              {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(result.find(x=> x.artDm === '4')?.totalFinanziamento||0)},
 
 
 
@@ -548,28 +565,28 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
             [
               {rowSpan:3, text:'Art.2, comma 1, lett c)', alignment:'center', margin:[0,10,0,0]},
               {text:'Art.5, comma 5, lett a)', alignment:'left' },
-              {text:myGroupedData.find(x=> x.artDm === '5A')?.numAccepted},
-              {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '5A')?.totalAmount||0)},
+              {text:result.find(x=> x.artDm === '5A')?.numAccepted},
+              {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(result.find(x=> x.artDm === '5A')?.totalAmount||0)},
               '',
-              {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '5A')?.totalFinanziamento||0)},
+              {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(result.find(x=> x.artDm === '5A')?.totalFinanziamento||0)},
 
 
 
             ],
             [ '',
             {text:'Art.5, comma 5, lett b)', alignment:'left' },
-            {text:myGroupedData.find(x=> x.artDm === '5B')?.numAccepted},
-            {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '5B')?.totalAmount||0)},
+            {text:result.find(x=> x.artDm === '5B')?.numAccepted},
+            {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(result.find(x=> x.artDm === '5B')?.totalAmount||0)},
             '',
-            {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '5B')?.totalFinanziamento||0)},
+            {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(result.find(x=> x.artDm === '5B')?.totalFinanziamento||0)},
 
           ],
           [   '',
             {text:'Art.5, comma 5, lett c)', alignment:'left' },
-            {text:myGroupedData.find(x=> x.artDm === '5C')?.numAccepted},
-            {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '5C')?.totalAmount||0)},
+            {text:result.find(x=> x.artDm === '5C')?.numAccepted},
+            {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(result.find(x=> x.artDm === '5C')?.totalAmount||0)},
               '',
-            {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '5C')?.totalFinanziamento||0)},
+            {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(result.find(x=> x.artDm === '5C')?.totalFinanziamento||0)},
 
           ],
 
@@ -610,7 +627,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
         ], alignment:'justify',margin: [0,10,0,0]},
         {text:[
           {text:'Soltanto in caso di contributo spettante di importo superiore ad euro 150.000,00',bold:true},
-          {text:' – essendo necessario acquisire l’informazione antimafia ai sensi del decreto legislativo n. 159/2011 e successive ii e mm – dovrà essere allegata, entro 15 (quindici) giorni lavorativi dal ricevimento della presente:'},
+          {text:' – essendo necessario acquisire l’informazione antimafia ai sensi del decreto legislativo n. 159/2011 e successive ntegrazioni e modifiche – dovrà essere allegata, entro 15 (quindici) giorni lavorativi dal ricevimento della presente:'},
 
 
         ], alignment:'justify',margin: [0,10,0,0]},
