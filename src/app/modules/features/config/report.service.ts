@@ -437,6 +437,21 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
       // let art5a = {
       //   totalVeicoli: veicoli.filter(x=> x.adminState === 'accepted' && )
       // }
+      const sumsByArtDm = myGroupedData.reduce((acc, obj) => {
+        const { type, typeVei, artDm, totalAmount, totalFinanziamento, numAccepted } = obj;
+        if (!acc[artDm]) {
+            acc[artDm] = { artDm, type, typeVei, totalAmount: 0, totalFinanziamento: 0, numAccepted: 0 };
+        }
+        acc[artDm].totalAmount += totalAmount;
+        acc[artDm].totalFinanziamento += totalFinanziamento;
+        acc[artDm].numAccepted += numAccepted;
+        return acc;
+      }, {});
+
+      // Convertiamo l'oggetto risultante in un array di oggetti
+      const result = Object.keys(sumsByArtDm).map(artDm => sumsByArtDm[artDm]);
+
+      console.log(result);
 
 
 
@@ -495,20 +510,20 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
 
             [
               { text:'Art.3, comma 1, lett a)', alignment:'center',margin:[0,10]},
-              {text:myGroupedData.find(x=> x.artDm === '1A')?.numAccepted},
-              {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '1A')?.totalAmount ||0)},
-              {text: myGroupedData.find(x=> x.artDm === '1A')?.totalFinanziamento>0 ?(istanza.rete && istanza.rete === 'Yes') && (istanza.pmi && istanza.pmi === 'Yes') ? '20%' : istanza.rete === 'Yes' ||istanza.pmi === 'Yes'?'10%':null:null},
-              {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '1A')?.totalFinanziamento ||0)},
+              {text:result.find(x=> x.artDm === '1A')?.numAccepted},
+              {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(result.find(x=> x.artDm === '1A')?.totalAmount ||0)},
+              {text: result.find(x=> x.artDm === '1A')?.totalFinanziamento>0 ?(istanza.rete && istanza.rete === 'Yes') && (istanza.pmi && istanza.pmi === 'Yes') ? '20%' : istanza.rete === 'Yes' ||istanza.pmi === 'Yes'?'10%':null:null},
+              {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(result.find(x=> x.artDm === '1A')?.totalFinanziamento ||0)},
 
 
             ],
 
             [
               { text:'Art.3, comma 1, lett b)', alignment:'center',margin:[0,10]},
-              {text:myGroupedData.find(x=> x.artDm === '1B')?.numAccepted},
-              {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '1B')?.totalAmount ||0)},
-              {text: myGroupedData.find(x=> x.artDm === '1B')?.totalFinanziamento>0?(istanza.rete && istanza.rete === 'Yes') && (istanza.pmi && istanza.pmi === 'Yes') ? '20%' : istanza.rete === 'Yes' ||istanza.pmi === 'Yes'?'10%':null:null},
-              {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(myGroupedData.find(x=> x.artDm === '1B')?.totalFinanziamento ||0)},
+              {text:result.find(x=> x.artDm === '1B')?.numAccepted},
+              {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(result.find(x=> x.artDm === '1B')?.totalAmount ||0)},
+              {text: result.find(x=> x.artDm === '1B')?.totalFinanziamento>0?(istanza.rete && istanza.rete === 'Yes') && (istanza.pmi && istanza.pmi === 'Yes') ? '20%' : istanza.rete === 'Yes' ||istanza.pmi === 'Yes'?'10%':null:null},
+              {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(result.find(x=> x.artDm === '1B')?.totalFinanziamento ||0)},
 
 
             ],
