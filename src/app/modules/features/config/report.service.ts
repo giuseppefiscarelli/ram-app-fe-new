@@ -627,7 +627,7 @@ console.log(result);
         ], alignment:'justify',margin: [0,10,0,0]},
         {text:[
           {text:'Soltanto in caso di contributo spettante di importo superiore ad euro 150.000,00',bold:true},
-          {text:' – essendo necessario acquisire l’informazione antimafia ai sensi del decreto legislativo n. 159/2011 e successive ntegrazioni e modifiche – dovrà essere allegata, entro 15 (quindici) giorni lavorativi dal ricevimento della presente:'},
+          {text:' – essendo necessario acquisire l’informazione antimafia ai sensi del decreto legislativo n. 159/2011 e successive integrazioni e modifiche – dovrà essere allegata, entro 15 (quindici) giorni lavorativi dal ricevimento della presente:'},
 
 
         ], alignment:'justify',margin: [0,10,0,0]},
