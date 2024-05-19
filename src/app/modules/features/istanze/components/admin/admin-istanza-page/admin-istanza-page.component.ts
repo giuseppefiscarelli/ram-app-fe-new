@@ -507,6 +507,8 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
             let t = total + current.valoreContributo + (current.pmiIstr??0) + (current.reteIstr??0)
               return  t;
           } else {
+
+
               return total;
           }
       }, 0);
@@ -516,6 +518,7 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
           if (current.adminState === "accepted") {
               return total + current[mode];
           } else {
+
               return total;
           }
       }, 0);
@@ -1000,6 +1003,67 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
 
       // console.log(oggettiUniciPerVeicolo.filter((x)=> x.typeVei === type && x.enable && x.adminState === 'accepted' && (x.typeDocument === '11' || x.typeDocument === '14')));
       // return idVeicoloArray.length
+    }
+
+    checkIfPrevistaRottamazione(veicolo?:Veicolo, sum?:boolean){
+
+
+      console.log(veicolo)
+      if(sum){
+        var veicoliRottamati =0
+        let importo = 1000;
+        const idVeicoloArray = [...new Set(this.listaAllegatiVeicoli.filter((x)=> x.typeVei.startsWith('nv') && x.enable && x.adminState === 'accepted' && (x.typeDocument === '11' || x.typeDocument === '14')).map(obj => obj.id_Veicolo))];
+
+        let check = idVeicoloArray.filter(
+          (id_Veicolo) =>{
+            let veicoloData = this.listaVeicoli.find((x=> x.id === id_Veicolo && x.adminState === 'accepted'));
+            let allegati = [... new Set(this.listaAllegatiVeicoli.filter((x)=> x.id_Veicolo === id_Veicolo && x.enable && x.adminState === 'accepted' && (x.typeDocument === '11' || x.typeDocument === '14')).map(obj => obj.typeDocument))];
+            // console.log(allegati)
+            // console.log(veicoloData)
+            if(allegati.length === 2 && veicoloData !== undefined){
+              veicoliRottamati++
+              return true
+            }
+
+          }
+        )
+        console.log(check, veicoliRottamati)
+
+
+          return importo * veicoliRottamati
+
+      }
+      else if(veicolo && veicolo.type.startsWith('nv')){
+        var veicoliRottamati =0
+        let importo = 1000;
+        const idVeicoloArray = [...new Set(this.listaAllegatiVeicoli.filter((x)=> x.typeVei === veicolo.type && x.enable && x.adminState === 'accepted' && (x.typeDocument === '11' || x.typeDocument === '14')).map(obj => obj.id_Veicolo))];
+
+        let check = idVeicoloArray.filter(
+          (id_Veicolo) =>{
+            let veicoloData = this.listaVeicoli.find((x=> x.id === id_Veicolo && x.adminState === 'accepted'));
+            let allegati = [... new Set(this.listaAllegatiVeicoli.filter((x)=> x.id_Veicolo === id_Veicolo && x.enable && x.adminState === 'accepted' && (x.typeDocument === '11' || x.typeDocument === '14')).map(obj => obj.typeDocument))];
+            // console.log(allegati)
+            // console.log(veicoloData)
+            if(allegati.length === 2 && veicoloData !== undefined){
+              veicoliRottamati++
+              return true
+            }
+
+          }
+        )
+        console.log(check, veicolo.id, veicoliRottamati)
+        if(check.includes(veicolo.id)){
+
+          return importo
+        }
+        // else{
+        //   const numberType = parseInt(veicolo.type.match(/\d+$/)[0], 10);
+        //   return veicoliRottamati < Number(this.istanza['rott'+numberType]);
+        // }
+      }
+      return false
+
+
     }
 
 
