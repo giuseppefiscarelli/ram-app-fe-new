@@ -103,7 +103,21 @@
                     </ng-template>
                   </tr>
 
-
+                  <ng-container *ngIf="this.veicolo.type.startsWith('nv')">
+                    <ng-container *ngIf="checkEnableRottamazione(this.veicolo.type) ; else norott">
+                      <tr>
+                        <td>Maggiorazione Rottamazione</td>
+                        <td >{{1000 | currency: 'EUR':'symbol':'.2-2':'it' }}</td>
+                        <td></td>
+                      </tr>
+                    </ng-container>
+                </ng-container>
+                <ng-template #norott>
+                  <tr>
+                    <td>Maggiorazione Rottamazione</td>
+                    <td colspan="2" style="color:red" class="blinking">Superati i limiti richiesti</td>
+                  </tr>
+                </ng-template>
                   <tr>
                       <td>Stato Lavorazione
                           <br>
