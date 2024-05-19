@@ -437,6 +437,12 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
       // let art5a = {
       //   totalVeicoli: veicoli.filter(x=> x.adminState === 'accepted' && )
       // }
+
+
+
+
+
+
       const sumsByArtDm = myGroupedData.reduce((acc, obj) => {
         const { type, typeVei, artDm, totalAmount, totalFinanziamento, numAccepted } = obj;
         if (!acc[artDm]) {
@@ -452,12 +458,6 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
       const result = Object.keys(sumsByArtDm).map(artDm => sumsByArtDm[artDm]);
 
       console.log(result);
-
-
-
-
-
-
 
 
 
