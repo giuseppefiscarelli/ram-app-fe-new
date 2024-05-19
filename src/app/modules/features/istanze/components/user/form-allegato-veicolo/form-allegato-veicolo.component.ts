@@ -65,7 +65,11 @@ export class FormAllegatoVeicoloComponent implements OnInit {
 
 
                       if(this.mode === 'create'){
-                          this.filteredType = this.typeDocuments.filter( (x)=> this.docList.includes(x.id))
+                        if(this.veicolo.acquisitionType === '01'){
+                          this.filteredType = this.typeDocuments.filter( (x)=> this.docList.includes(x.id) && x.id !== 9);
+                        }else{
+                          this.filteredType = this.typeDocuments.filter( (x)=> this.docList.includes(x.id));
+                        }
                           this.listOfPlaceholder=[];
                           this.dialogTitle = 'Inserimento Allegato Veicolo';
                           this.btnSubmit= 'Salva Allegato';
@@ -73,7 +77,11 @@ export class FormAllegatoVeicoloComponent implements OnInit {
                       }
                       if(this.mode === 'edit'){
                           this.listOfPlaceholder=[];
-                          this.filteredType = this.typeDocuments.filter( (x)=> this.docList.includes(x.id))
+                          if(this.veicolo.acquisitionType === '01'){
+                            this.filteredType = this.typeDocuments.filter( (x)=> this.docList.includes(x.id) && x.id !== 9);
+                          }else{
+                            this.filteredType = this.typeDocuments.filter( (x)=> this.docList.includes(x.id));
+                          }
                           this.dialogTitle = 'Aggiornamento Allegato Veicolo';
                           this.btnSubmit= 'Aggiorna Allegato';
                           this.form = new FormGroup({});
