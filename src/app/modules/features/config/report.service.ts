@@ -563,7 +563,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
         {text:'AVVERTENZE:',bold:true},
         {text:[
           {text:'Si ricorda che a norma dell’'},
-          {text:'art. 1 comma 4 del D.M. 461/2021 i mezzi oggetti di contributo non possono essere alienati, concessi in locazione o in noleggio e devono rimanere nella piena disponibilità del beneficiario del contributo entro il triennio decorrente alla data di erogazione del contributo, pena la revoca del contributo erogato. ',bold:true},
+          {text:'art. 1 comma 4 del D.M. 461/2021 i mezzi oggetto di contributo non possono essere alienati, concessi in locazione o in noleggio e devono rimanere nella piena disponibilità del beneficiario del contributo entro il triennio decorrente dalla data di erogazione del contributo, pena la revoca del contributo erogato. ',bold:true},
           {text:'Non si procede all\'erogazione del contributo anche nel caso di trasferimento della disponibilità dei beni oggetto degli incentivi nel periodo intercorrente fra la data di presentazione della domanda e la data di pagamento del beneficio.'}
 
         ], alignment:'justify'},
