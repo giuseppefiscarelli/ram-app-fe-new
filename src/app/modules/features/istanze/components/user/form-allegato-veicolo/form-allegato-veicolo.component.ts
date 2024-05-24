@@ -256,9 +256,23 @@ export class FormAllegatoVeicoloComponent implements OnInit {
       this.fileAttach = event.target.files[0];
       this.fileName = this.fileAttach.name;
 
-      if(this.fileAttach.type === 'application/pdf' || this.fileAttach.type === 'application/pkcs7-mime' || this.fileAttach.type === 'application/x-pkcs7-mime'){
+      if (this.fileAttach.type === 'application/pdf' ||
+        this.fileAttach.type === 'application/pkcs7-mime' ||
+        this.fileAttach.type === 'application/x-pkcs7-mime' ||
+        this.fileAttach.type === 'application/pkcs7' ||
+        this.fileAttach.type === 'application/pkcs-crl' ||
+        this.fileAttach.type === 'application/pkcs10' ||
+        this.fileAttach.type === 'application/x-pkcs10' ||
+        this.fileAttach.type === 'application/pkcs-12' ||
+        this.fileAttach.type === 'application/x-pkcs12' ||
+        this.fileAttach.type === 'application/x-pkcs7-signature' ||
+        this.fileAttach.type === 'application/x-pkcs7-certreqresp' ||
+        this.fileAttach.type === 'application/pkcs7-signature' ||
+        this.fileAttach.name.endsWith('.p7m') ||  this.fileAttach.name.endsWith('.pdf')
+    ){
           this.typeFileControl = true;
-      }let limit = this.userMe.role === 'user'?4194304:10194304
+      }
+      let limit = this.userMe.role === 'user'?4194304:10194304
       if(this.fileAttach.size < limit){
           this.fileDimControl = true;
       }
