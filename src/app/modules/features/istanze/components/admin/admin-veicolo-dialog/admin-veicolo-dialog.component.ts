@@ -415,16 +415,16 @@ export class AdminVeicoloDialogComponent implements OnInit {
 
         //  window.open(this.url)
 
-            // this.services.getFile(file)
-            // .subscribe(
-            //     (res) => {
-            //         const blob = new Blob([res],{type: file.type});
-            //         const url = window.URL.createObjectURL(blob);
-            //     window.open(url);
+            this.services.getFile(file)
+            .subscribe(
+                (res) => {
+                    const blob = new Blob([res],{type: file.type});
+                    const url = window.URL.createObjectURL(blob);
+                window.open(url);
 
-            //     },
-            //         error => console.log('Error downloading the file.')
-            //     );
+                },
+                    error => console.log('Error downloading the file.')
+                );
 
 
 
