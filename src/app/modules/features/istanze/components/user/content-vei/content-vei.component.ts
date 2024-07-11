@@ -427,9 +427,9 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
    }
 
    checkAllegatoEditable(allegato: Allegato, veicolo: Veicolo){
-   // console.log(veicolo)
+   console.log(this.rendicontazione)
     let dataUpload = moment(Number(allegato.dataUpload))
-
+    console.log(this.istruttoriaData)
     if(this.istruttoriaData){
       if(dataUpload.isAfter(moment(Number(this.rendicontazione.dateEnd)))){
         //console.log(this.istruttoriaData)
@@ -438,6 +438,8 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
           return true
         }
       }
+    }else if(this.rendicontazione.status === 'opened'){
+      return true
     }
 
     return false
