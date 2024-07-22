@@ -599,16 +599,16 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
               if(!cert['upload']){
                   this.certControlStatus.push(cert)
               }
-              console.log(this.certControlStatus)
+          //    console.log(this.certControlStatus)
           }
       )
-      console.log (this.certControlStatus)
+    //  console.log (this.certControlStatus)
       this.changeDetectorRef.markForCheck();
     }
 
     viewAllegato(allegato): void{
       const file = allegato.fd;
-      console.log(allegato)
+     // console.log(allegato)
       this.service.getFile(file)
       .subscribe(
           (res) => {
@@ -1067,8 +1067,8 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
     checkIfPrevistaRottamazione(veicolo?:Veicolo, sum?:boolean){
 
 
-      console.log(veicolo)
-      if(sum){
+     // console.log(veicolo)
+      if(sum && this.listaAllegatiVeicoli && this.listaAllegatiVeicoli.length > 0){
         var veicoliRottamati =0
         let importo = 1000;
         const idVeicoloArray = [...new Set(this.listaAllegatiVeicoli.filter((x)=> x.typeVei.startsWith('nv') && x.enable && x.adminState === 'accepted' && (x.typeDocument === '11' || x.typeDocument === '14')).map(obj => obj.id_Veicolo))];
@@ -1086,7 +1086,7 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
 
           }
         )
-        console.log(check, veicoliRottamati)
+      //  console.log(check, veicoliRottamati)
 
 
           return importo * veicoliRottamati
@@ -1110,7 +1110,7 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
 
           }
         )
-        console.log(check, veicolo.id, veicoliRottamati)
+        //sconsole.log(check, veicolo.id, veicoliRottamati)
         if(check.includes(veicolo.id)){
 
           return importo

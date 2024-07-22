@@ -371,11 +371,13 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
     //  console.log(veicoli)
       console.log(typeIstance)
     //  console.log(istanza)
-    // console.log(veicoliAccettati)
+     console.log(veicoliAccettati)
 
       let veicolicatA = veicoliAccettati.filter(x=>x.category === 'A')
 
       let allegatiRottamazione = allegatiVeicoli.filter(x=> (x.typeDocument === '11' || x.typeDocument === '14') && x.adminState ==='accepted' && veicolicatA.map(veicolo => veicolo.id).includes(x.id_Veicolo));
+
+
       const idVeicoloUnici = new Set();
       allegatiRottamazione.forEach(obj => idVeicoloUnici.add(obj.id_Veicolo));
       const numeroRichesteRottamazioneAccettate = idVeicoloUnici.size;
@@ -386,7 +388,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
         maggiorazioneRottamazione = numeroRichesteRottamazioneAccettate *1000;
 
       }
-    //  console.log(numeroRichesteRottamazioneAccettate);
+      console.log(numeroRichesteRottamazioneAccettate);
 
       // veicoliAccettati.map((veicolo)=> {
 
@@ -512,7 +514,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
               { text:'Art.3, comma 1, lett a)', alignment:'center',margin:[0,10]},
               {text:result.find(x=> x.artDm === '1A')?.numAccepted},
               {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(result.find(x=> x.artDm === '1A')?.totalAmount ||0)},
-              {text: result.find(x=> x.artDm === '1A')?.totalFinanziamento>0 ?(istanza.rete && istanza.rete === 'Yes') && (istanza.pmi && istanza.pmi === 'Yes') ? '20%' : istanza.rete === 'Yes' ||istanza.pmi === 'Yes'?'10%':null:null},
+              {text: result.find(x=> x.artDm === '1A')?.totalFinanziamento>0 ?(istanza.rete && istanza.rete === 'Yes') && (istanza.pmi && istanza.pmi === 'Yes') ? '20%' : (istanza.rete === 'Yes' ||istanza.pmi === 'Yes') && numeroRichesteRottamazioneAccettate?'10%':null:null},
               {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(result.find(x=> x.artDm === '1A')?.totalFinanziamento ||0)},
 
 
@@ -522,7 +524,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
               { text:'Art.3, comma 1, lett b)', alignment:'center',margin:[0,10]},
               {text:result.find(x=> x.artDm === '1B')?.numAccepted},
               {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(result.find(x=> x.artDm === '1B')?.totalAmount ||0)},
-              {text: result.find(x=> x.artDm === '1B')?.totalFinanziamento>0?(istanza.rete && istanza.rete === 'Yes') && (istanza.pmi && istanza.pmi === 'Yes') ? '20%' : istanza.rete === 'Yes' ||istanza.pmi === 'Yes'?'10%':null:null},
+              {text: result.find(x=> x.artDm === '1B')?.totalFinanziamento>0?(istanza.rete && istanza.rete === 'Yes') && (istanza.pmi && istanza.pmi === 'Yes') ? '20%' : (istanza.rete === 'Yes' ||istanza.pmi === 'Yes') && numeroRichesteRottamazioneAccettate?'10%':null:null},
               {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(result.find(x=> x.artDm === '1B')?.totalFinanziamento ||0)},
 
 

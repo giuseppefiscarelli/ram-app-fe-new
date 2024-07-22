@@ -505,10 +505,10 @@ export class AdminVeicoloDialogComponent implements OnInit {
     checkAllegatoIntegrazione(allegato: Allegato){
    //   console.log(allegato)
       let dataUpload = moment(Number(allegato.dataUpload))
-  //    console.log(this.rendicontazione.dateEnd)
-
+      //console.log(this.rendicontazione.dateEnd)
+      //console.log(this.dataIstruttoria)
       if(dataUpload.isAfter(moment(Number(this.rendicontazione.dateEnd)))){
-        if(this.dataIstruttoria.typeReport['type'] === 'integrazione'){
+        if(this.dataIstruttoria && this.dataIstruttoria.typeReport['type'] === 'integrazione'){
           return 'Documento Integrazione'
         }
       }
