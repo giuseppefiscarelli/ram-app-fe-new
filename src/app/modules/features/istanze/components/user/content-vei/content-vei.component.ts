@@ -108,19 +108,22 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
 
         if(catData.catVei === 'A'){
           let numeroRichiestaVeicoliRottamati = Number(this.istanza['rott'+catData.campoDb.match(/\d+/)]);
-          console.log(numeroRichiestaVeicoliRottamati);
+          //console.log(numeroRichiestaVeicoliRottamati);
           if(numeroRichiestaVeicoliRottamati == 0){
             this.docList = this.docList.filter(x=> (x !== 11 && x !== 14))
           }
         }
         else if(catData.catVei === 'C'){
           let numeroRichiestaVeicoliRottamati = Number(this.istanza[catData.campoDb.replace('nv','rott')]);
-          console.log(numeroRichiestaVeicoliRottamati);
-          console.log(catData.campoDb.replace('nv','rott'));
+          //console.log(numeroRichiestaVeicoliRottamati);
+          //console.log(catData.campoDb.replace('nv','rott'));
           if(numeroRichiestaVeicoliRottamati == 0){
-            console.log('eeeeeeeeeeeeeeeee')
+            //console.log('eeeeeeeeeeeeeeeee')
             this.docList = this.docList.filter(x=> (x !== 11 && x !== 14))
-            console.log(this.docList)
+            //console.log(this.docList)
+          }else{
+            //console.log(this.docList)
+            //console.log(this.docListVei)
           }
         }
         else{
@@ -130,7 +133,7 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
         }
 
 
-      console.log(this.rottamazione, this.docList)
+      //console.log(this.rottamazione, this.docList)
      // console.log(this.veicolo)
       this.docListVei = this.docList;
 
