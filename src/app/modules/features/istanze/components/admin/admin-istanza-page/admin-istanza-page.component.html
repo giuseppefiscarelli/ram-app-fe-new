@@ -308,6 +308,7 @@
                                 aria-label="Example icon button with a home icon"
                                 matTooltip="Visualizza e gestisci documento"
                                 matTooltipPosition="above"
+                                [disabled]="this.userMe.role=== 'viewer'"
                                 (click)="onClickAllegato('edit', getCertificazioniData(element.description,'attach').data)"
                                 >
                                  <mat-icon>edit_document</mat-icon>
@@ -317,6 +318,7 @@
                                matTooltip="Elimina documento"
                                 matTooltipPosition="above"
                                 aria-label="Example icon button with a menu icon"
+                                [disabled]="this.userMe.role === 'viewer'"
                                 (click)="onClickAllegato('delete', getCertificazioniData(element.description,'attach').data)"
                                 >
                                  <mat-icon>delete</mat-icon>
@@ -378,6 +380,7 @@
                           aria-label="Example icon button with a home icon"
                           matTooltip="Visualizza e gestisci documento"
                           matTooltipPosition="above"
+                          [disabled]="this.userMe.role === 'viewer'"
                           (click)="onClickCert(element)"
                           >
                            <mat-icon>edit_document</mat-icon>
@@ -770,7 +773,7 @@
                       <span > {{type.description}}</span>
 
 
-                           <button style=" margin-left: auto;"mat-raised-button color="primary" (click)="onClickReport('generate', type, index)">
+                           <button style=" margin-left: auto;"mat-raised-button color="primary"   [disabled]="this.userMe.role === 'viewer'" (click)="onClickReport('generate', type, index)">
                             Genera
                           </button>
 

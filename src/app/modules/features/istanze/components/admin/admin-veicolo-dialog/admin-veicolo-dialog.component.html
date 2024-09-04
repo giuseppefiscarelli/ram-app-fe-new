@@ -40,11 +40,12 @@
                       <td>Costo Veicolo</td>
                       <td> {{veicolo.amount| currency: 'EUR':'symbol':'.2-2':'it' }} </td>
                       <td>
-                          <mat-form-field>
+                          <mat-form-field *ngIf="this.userMe.role !== 'viewer'">
                           <input matInput
                               currencyMask
                               formControlName="costoIstr"
                               [options]="{ prefix: '€ ', thousands: '.', decimal: ',' }"
+                              [disabled]="this.userMe.role === 'viewer'"
                           >
                           <mat-error *ngIf="formVeicolo.get('costoIstr').invalid" [innerHTML]="formVeicolo.get('costoIstr') | errors"></mat-error>
 
@@ -55,7 +56,7 @@
                       <td>Valore Contributo</td>
                       <td> {{valoreContributo | currency: 'EUR':'symbol':'.2-2':'it' }} </td>
                       <td>
-                          <mat-form-field>
+                          <mat-form-field  *ngIf="this.userMe.role !== 'viewer'">
                           <input matInput
                               currencyMask
                               formControlName="valoreContributo"
@@ -70,7 +71,7 @@
                     <td>Maggiorazione PMI</td>
                     <td> {{valoreMaggPmi | currency: 'EUR':'symbol':'.2-2':'it' }} </td>
                     <td *ngIf="this.istanza.pmi === 'Yes';else noMagg">
-                        <mat-form-field>
+                        <mat-form-field  *ngIf="this.userMe.role !== 'viewer'">
                         <input matInput
                             currencyMask
                             formControlName="pmiIstr"
@@ -85,7 +86,7 @@
                   <td>Maggiorazione Rete</td>
                   <td> {{valoreMaggRete | currency: 'EUR':'symbol':'.2-2':'it' }} </td>
                   <td *ngIf="this.istanza.rete === 'Yes';else noMagg">
-                      <mat-form-field>
+                      <mat-form-field  *ngIf="this.userMe.role !== 'viewer'">
 
                           <input matInput
                               currencyMask
@@ -133,9 +134,9 @@
                       </td>
                     <td></td>
                       <td >
-                          <mat-form-field>
+                          <mat-form-field  *ngIf="this.userMe.role !== 'viewer'">
 
-                              <mat-select formControlName="adminState">
+                              <mat-select formControlName="adminState" >
                                   <mat-option *ngFor="let statusCheck of filterOptionsDescriptors.statusCheck" [value]="statusCheck.value">
                                       <span class="status-span" style="padding:0 10px;"[class]="statusCheck.value?statusCheck.value:'toWork'"
                                       [innerText]="statusCheck.value?(statusCheck.value | statusCheck) : ('toWork' | statusCheck)"
@@ -153,7 +154,7 @@
 
                       <mat-form-field style="width: 100%;">
                           <mat-label>Note</mat-label>
-                          <textarea matInput formControlName="adminNote"></textarea>
+                          <textarea [readonly]="this.userMe.role === 'viewer'" matInput formControlName="adminNote"></textarea>
                       </mat-form-field>
                   </td>
                   </tr>
@@ -165,6 +166,7 @@
                       aria-label="Example icon button with a home icon"
                       matTooltip="Aggiorna dati"
                       matTooltipPosition="above"
+                      [disabled]="this.userMe.role === 'viewer'"
                       (click)="onSubmitBtn()"
                       style="float:right;"
                   >
@@ -346,6 +348,8 @@
                     <mat-form-field style="width:100%">
                       <mat-label>Note</mat-label>
                       <input matInput
+                      [readonly]="this.userMe.role === 'viewer'"
+
                       type="note"
                       formControlName="adminNote"
                       >
@@ -353,7 +357,8 @@
                     </mat-form-field >
                 </div>
                 <div class=" col-custom col-custom-4">
-                  <mat-form-field>
+                  <mat-form-field                      *ngIf="this.userMe.role !== 'viewer'"
+                  >
                     <mat-label>
                       Stato Lavorazione
                     </mat-label>
@@ -367,6 +372,8 @@
                 </div>
                 <div class=" col-custom col-custom-4">
                   <button mat-raised-button color="primary" style="background-color:green;color:white;"
+                  [disabled]="this.userMe.role === 'viewer'"
+
                   (click)="onClickSubmitAlle()"
                   >Aggiorna stato lavorazione</button>
                 </div>

@@ -31,6 +31,7 @@
                   <mat-label>Note</mat-label>
                   <input matInput
                   type="note"
+                  [disabled]="this.userMe.role=== 'viewer'"
                   formControlName="adminNote"
                   >
 
@@ -39,7 +40,7 @@
                       <mat-label>
                         Stato Lavorazione
                       </mat-label>
-                      <mat-select formControlName="adminState">
+                      <mat-select formControlName="adminState"   [disabled]="this.userMe.role=== 'viewer'">
                           <mat-option *ngFor="let statusCheck of filterOptionsDescriptors.statusCheck" [value]="statusCheck.value">
                             {{statusCheck.title | statusCheck}}
                           </mat-option>
@@ -76,5 +77,5 @@
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-raised-button color="warn" mat-dialog-close>Chiudi </button>
-  <button mat-raised-button color="primary" (click)="onSubmitBtn()">{{btnSubmit}}</button>
+  <button mat-raised-button color="primary" *ngIf="this.userMe.role !== 'viewer'"(click)="onSubmitBtn()">{{btnSubmit}}</button>
 </mat-dialog-actions>

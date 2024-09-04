@@ -112,7 +112,7 @@
             <p matLine>{{typeIstance? typeIstance.description:''}}</p>
           </mat-list-item>
       </mat-list>
-      <mat-list class="col-custom"  *ngIf="this.userMe.role !== 'user'">
+      <mat-list class="col-custom"  *ngIf="this.userMe.role !== 'user' && this.userMe.role !== 'viewer'">
         <div mat-subheader>Funzioni Admin</div>
         <mat-list-item>
           <button

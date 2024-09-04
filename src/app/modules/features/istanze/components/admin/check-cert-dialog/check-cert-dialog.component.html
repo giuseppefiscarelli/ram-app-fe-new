@@ -14,7 +14,7 @@
       <ng-container *ngIf="this.type.adminControl">
         <mat-form-field class="col-custom-12">
           <mat-label> Stato Lavorazione</mat-label>
-          <mat-select [formControlName]="this.type.description">
+          <mat-select [formControlName]="this.type.description"     [disabled]="this.userMe.role=== 'viewer'">
               <mat-option *ngFor="let statusCheck of filterOptionsDescriptors.statusCheck"
               [value]="statusCheck.value"
 
@@ -28,7 +28,7 @@
       <ng-container *ngIf="this.type.description === 'dimImpresa'">
           <mat-form-field class="col-custom-12">
             <mat-label> Dimensione Impresa</mat-label>
-            <mat-select [formControlName]="this.type.description">
+            <mat-select [formControlName]="this.type.description"     [disabled]="this.userMe.role=== 'viewer'">
                 <mat-option  disabled="{{getDataImpresa(1)}}" [value]="1">Piccola</mat-option>
                 <mat-option  disabled="{{getDataImpresa(2)}}" [value]="2">Media</mat-option>
                 <mat-option  disabled="{{getDataImpresa(3)}}" [value]="3">Grande</mat-option>
@@ -46,6 +46,7 @@
               <mat-label>Note</mat-label>
               <input matInput
               type="note"
+              [disabled]="this.userMe.role=== 'viewer'"
               [formControlName]="capitalizeNote(this.type.description)"
               >
               <mat-error *ngIf="form.get('noteDimImpresa').invalid" [innerHTML]="form.get('noteDimImpresa') | errors"></mat-error>
