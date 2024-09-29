@@ -211,7 +211,7 @@ export class UserIstanzaEditComponent implements OnInit {
                             //console.log(typeReport)
 
                             if(typeReport === 'integrazione'){
-                              this.dataFineIstruttoria= moment(Number(this.istruttoriaData.dataInvio)).add(15,'days');
+                              this.dataFineIstruttoria= moment(Number(this.istruttoriaData.dataInvio)).endOf('day').add(15,'days');
 
                               this.integrazione = false;
                               let scadenza = moment();
