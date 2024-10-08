@@ -194,7 +194,7 @@ updateRendicontazione(payload: any): Observable<Rendicontazione> {
 
     calcolaContributo(istanza, check, veicolo: Veicolo, type, allegatiVeicoli: Allegato[], veicoli:Veicolo[]){
 
-        //console.log(istanza, check,veicolo,type);
+        console.log(istanza, check,veicolo,type);
         var valoreContributo = 0;
         var magg_pmi = 0;
         var magg_rete = 0;
@@ -220,17 +220,17 @@ updateRendicontazione(payload: any): Observable<Rendicontazione> {
 
         var valore = type.typeVei.find(x=> x['campoDb']=== veicolo.type)['grantValue'];
         //console.log(valore)
-
+        console.log(check.dimImpresa,'check.dimImpresa')
         if(check.dimImpresa){
           //console.log('pmi okcheck')
             if(veicolo.type !== 'rim_nv_1' && veicolo.type !== 'rim_nv_2' && veicolo.type !== 'rim_nv_3'){
 
                 console.log('eccoci', check)
                 valoreContributo = valore;
-                if(check.pmi && istanza['pmi'] === 'Yes') {
+                if(check.pmi && check.pmi === 'accepted' && istanza['pmi'] === 'Yes') {
                     magg_pmi = valoreContributo * .10;
                 }
-                if(check.rete){
+                if(check.rete && check.rete === 'accepted'){
                     magg_rete = valoreContributo * .10;
                 }
             }else{

@@ -151,16 +151,16 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
                   this.typeIstance = null;
 
                   this.filtersVei = new FormGroup({
-                    category: new FormControl(null),
-                    type: new FormControl(null),
-                    licensePlate: new FormControl(null),
-                    adminState: new FormControl(null)
-                });
+                      category: new FormControl(null),
+                      type: new FormControl(null),
+                      licensePlate: new FormControl(null),
+                      adminState: new FormControl(null)
+                  });
                 this.filterVeiOptionsDescriptors = {
-                  adminState: [
-                      {title: 'all', value: null}
-                  ]
-              };
+                    adminState: [
+                        {title: 'all', value: null}
+                    ]
+                };
                 Object.keys(statusAdminVei)
                 .map((status: string) => (
                     this.filterVeiOptionsDescriptors.adminState.push(
@@ -173,7 +173,7 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
 
 
 
-                  this.data$ = forkJoin([
+                this.data$ = forkJoin([
                     this.service.fetchVeicoli({drop:true, id_ram: this.istanza.id_ram}),
                     this.service.fetchAllegati({drop:true,id_ram: this.istanza.id_ram, enable:true}),
                     this.service.getTypeInstance(this.istanza.tipo_istanza),
@@ -201,22 +201,22 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
                     this.listaAllegati=alle;
 
                     this.typeIstance = ista;
-//console.log(this.typeIstance)
+                    //console.log(this.typeIstance)
                     this.typeDocuments = typeDocument;
                     this.typeReport = typeReport;
                     //console.log(typeReport)
-                //    console.log(reports)
+                    //    console.log(reports)
                     this.reports = reports;
-                 //   this.getCertificazioni();
+                    //   this.getCertificazioni();
                     this.initializeAllegati(this.typeIstance);
                     this.getStatoIstruttoria(this.reports);
                     this.getIndicatorData()
-                  /*   //console.log(vei, alle,ista) */
+                    /*   //console.log(vei, alle,ista) */
                   this.createVeiObservable()
                   this.changeDetectorRef.markForCheck()
 
                 })
-                 }
+    }
 
     ngOnInit() {
     }
@@ -478,7 +478,6 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
                   note: this.istanzaCheck['note']
               }
               return  {status,data:alleData};
-
       }
 
 
@@ -503,30 +502,24 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
 
       if(mode === 'total'){
        return this.listaVeicoli.reduce((total, current) => {
-          if (current.adminState === "accepted") {
-            let t = total + current.valoreContributo + (current.pmiIstr??0) + (current.reteIstr??0)
-              return  t;
-          } else {
-
-
-              return total;
-          }
-      }, 0);
+            if (current.adminState === "accepted") {
+              let t = total + current.valoreContributo + (current.pmiIstr??0) + (current.reteIstr??0)
+                return  t;
+            } else {
+                return total;
+            }
+        }, 0);
 
       }else{
-      return this.listaVeicoli.reduce((total, current) => {
-          if (current.adminState === "accepted") {
-              return total + current[mode];
-          } else {
+        return this.listaVeicoli.reduce((total, current) => {
+            if (current.adminState === "accepted") {
+                return total + current[mode];
+            } else {
 
-              return total;
-          }
-      }, 0);
-    }
-
-
-
-
+                return total;
+            }
+        }, 0);
+      }
     }
 
     initializeAllegati(typeIstance:TypeIstance){
@@ -556,21 +549,68 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
               if(!cert['upload']){
                   this.certControlStatus.push(cert)
               }
-              console.log(this.certControlStatus)
+             // console.log(this.certControlStatus)
           }
       )
       this.changeDetectorRef.markForCheck();
     }
 
+  //   viewAllegato(allegato): void{
+  //     const file = allegato.fd;
+  //     console.log(allegato)
+  //     this.service.getFile(file)
+  //     .subscribe(
+  //       (res) => {
+  //         console.log(res)
+  //             const blob = new Blob([res],{type: file.type});
+  //             const url = window.URL.createObjectURL(blob);
+  //                   const ref : MatDialogRef<AdminDialogAllegatoComponent> = this.dialog.open(AdminDialogAllegatoComponent,{
+  //                     panelClass: 'dialog-responsive',
+  //                     //disableClose: true,
+  //                     width:'90%',
+
+  //                     maxWidth:'90%',
+  //                     maxHeight:'90%',
+  //                     data: {
+  //                         url,
+  //                         allegato,
+  //                     }
+  //                 })
+  //                 ref.afterClosed().subscribe(
+  //                     (res: Allegato)=>{
+  //                         //console.log(res)
+  //                         if(!!res){
+  //                             const currentRecordsA = [...this.listaAllegati];
+  //                             const currentRecordsB = [...this.listaAllegatiDich];
+  //                             currentRecordsA[this.listaAllegati.findIndex(x=> x.id === res.id)] = res;
+  //                             currentRecordsB[this.listaAllegatiDich.findIndex(x=> x.id === res.id)] = res;
+  //                             this.listaAllegati = [...currentRecordsA];
+  //                             this.listaAllegatiDich = [...currentRecordsB];
+
+
+  //                             if(res.typeDocument && res.typeDocument === 'pmi'){
+  //                                 this.istanzaCheck.pmi = res.adminState
+  //                             }
+
+  //                             if(res.typeDocument && res.typeDocument === 'rete'){
+  //                                 this.istanzaCheck.rete = res.adminState
+  //                             }
+  //                             this.service.updateIstanzaCheck(this.istanzaCheck).subscribe(
+  //                                 {
+  //                                     next:(res: IstanzaCheck) => this.istanzaCheck = res,
+  //                                     complete:()=> this.changeDetectorRef.markForCheck()
+
+  //                                 }
+  //                             )
+  //                         }
+  //                     }
+  //                 )
+  //         },
+  //             error => console.log('Error downloading the file.')
+  //         );
+  // }
     viewAllegato(allegato): void{
-      const file = allegato.fd;
-      console.log(allegato)
-      this.service.getFile(file)
-      .subscribe(
-          (res) => {
-              const blob = new Blob([res],{type: file.type});
-              const url = window.URL.createObjectURL(blob);
-                    const ref : MatDialogRef<AdminDialogAllegatoComponent> = this.dialog.open(AdminDialogAllegatoComponent,{
+       const ref : MatDialogRef<AdminDialogAllegatoComponent> = this.dialog.open(AdminDialogAllegatoComponent,{
                       panelClass: 'dialog-responsive',
                       //disableClose: true,
                       width:'90%',
@@ -578,7 +618,7 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
                       maxWidth:'90%',
                       maxHeight:'90%',
                       data: {
-                          url,
+
                           allegato,
                       }
                   })
@@ -611,9 +651,6 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
                           }
                       }
                   )
-          },
-              error => console.log('Error downloading the file.')
-          );
     }
 
     getInfoTipoVeicolo(campoDb){
@@ -955,7 +992,6 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
 
     }
 
-
     checkVeicoloIntegrazioni(veicolo){
     //  console.log(this.listaAllegatiVeicoli.filter(x=> x.id_Veicolo === veicolo.id))
 
@@ -968,7 +1004,6 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
       return false
 
     }
-
 
     checkRottamazioniTipoVeicolo(type){
       //console.log(this.listaAllegati)
@@ -1008,32 +1043,33 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
     checkIfPrevistaRottamazione(veicolo?:Veicolo, sum?:boolean){
 
 
-      console.log(veicolo)
-      if(sum){
-        var veicoliRottamati =0
-        let importo = 1000;
-        const idVeicoloArray = [...new Set(this.listaAllegatiVeicoli.filter((x)=> x.typeVei.startsWith('nv') && x.enable && x.adminState === 'accepted' && (x.typeDocument === '11' || x.typeDocument === '14')).map(obj => obj.id_Veicolo))];
+      //console.log(this.listaAllegatiVeicoli)
+      if (this.listaAllegatiVeicoli!) {
+        if(sum){
+          var veicoliRottamati =0
+          let importo = 1000;
+          const idVeicoloArray = [...new Set(this.listaAllegatiVeicoli.filter((x)=> x.typeVei.startsWith('nv') && x.enable && x.adminState === 'accepted' && (x.typeDocument === '11' || x.typeDocument === '14')).map(obj => obj.id_Veicolo))];
 
-        let check = idVeicoloArray.filter(
-          (id_Veicolo) =>{
-            let veicoloData = this.listaVeicoli.find((x=> x.id === id_Veicolo && x.adminState === 'accepted'));
-            let allegati = [... new Set(this.listaAllegatiVeicoli.filter((x)=> x.id_Veicolo === id_Veicolo && x.enable && x.adminState === 'accepted' && (x.typeDocument === '11' || x.typeDocument === '14')).map(obj => obj.typeDocument))];
-            // console.log(allegati)
-            // console.log(veicoloData)
-            if(allegati.length === 2 && veicoloData !== undefined){
-              veicoliRottamati++
-              return true
+          let check = idVeicoloArray.filter(
+            (id_Veicolo) =>{
+              let veicoloData = this.listaVeicoli.find((x=> x.id === id_Veicolo && x.adminState === 'accepted'));
+              let allegati = [... new Set(this.listaAllegatiVeicoli.filter((x)=> x.id_Veicolo === id_Veicolo && x.enable && x.adminState === 'accepted' && (x.typeDocument === '11' || x.typeDocument === '14')).map(obj => obj.typeDocument))];
+              // console.log(allegati)
+              // console.log(veicoloData)
+              if(allegati.length === 2 && veicoloData !== undefined){
+                veicoliRottamati++
+                return true
+              }
+
             }
-
-          }
-        )
-        console.log(check, veicoliRottamati)
+          )
+        // console.log(check, veicoliRottamati)
 
 
-          return importo * veicoliRottamati
+            return importo * veicoliRottamati
 
-      }
-      else if(veicolo && veicolo.type.startsWith('nv')){
+        }
+        else if(veicolo && veicolo.type.startsWith('nv')){
         var veicoliRottamati =0
         let importo = 1000;
         const idVeicoloArray = [...new Set(this.listaAllegatiVeicoli.filter((x)=> x.typeVei === veicolo.type && x.enable && x.adminState === 'accepted' && (x.typeDocument === '11' || x.typeDocument === '14')).map(obj => obj.id_Veicolo))];
@@ -1051,7 +1087,7 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
 
           }
         )
-        console.log(check, veicolo.id, veicoliRottamati)
+       // console.log(check, veicolo.id, veicoliRottamati)
         if(check.includes(veicolo.id)){
 
           return importo
@@ -1060,12 +1096,11 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
         //   const numberType = parseInt(veicolo.type.match(/\d+$/)[0], 10);
         //   return veicoliRottamati < Number(this.istanza['rott'+numberType]);
         // }
+        }
       }
       return false
 
 
     }
-
-
 
 }

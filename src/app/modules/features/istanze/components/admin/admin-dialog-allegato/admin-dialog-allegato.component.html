@@ -65,13 +65,19 @@
 
 
     </div>
-    <div class="col-custom col-custom-8" *ngIf="this.file">
+    <div class="col-custom col-custom-8" *ngIf="this.file; else nofile">
           <pdf-viewer [src]="this.file"
             [render-text]="true"
             [original-size]="false"
             style="width: 100%; height:65vh;"
             ></pdf-viewer>
     </div>
+    <ng-template #nofile>
+      <div class="col-custom col-custom-8">
+          <h4>Anteprima non disponibile</h4>
+      </div>
+    </ng-template>
+
   </div>
 
 </mat-dialog-content>

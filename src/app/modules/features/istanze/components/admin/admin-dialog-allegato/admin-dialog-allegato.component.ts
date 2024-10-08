@@ -59,7 +59,8 @@ export class AdminDialogAllegatoComponent implements OnInit {
         ]
     };
     this.file = null;
-    this.services.getFile(this.allegato.fd)
+    if (this.allegato.filenameStorage.endsWith(".pdf")) {
+  this.services.getFile(this.allegato.fd)
     .subscribe(
         (res) => {
           const blob = new Blob([res],{type: this.allegato.fd['type']});
@@ -75,6 +76,8 @@ export class AdminDialogAllegatoComponent implements OnInit {
         },
             error => console.log('Error downloading the file.')
         );
+    }
+
 
     Object.keys(statusCheck)
     .filter(x => x === 'ACCEPTED' || x === 'PENDING' || x === 'REJECTED')
@@ -92,9 +95,9 @@ export class AdminDialogAllegatoComponent implements OnInit {
         this.btnSubmit= 'Aggiorna informazioni e stato lavorazione';
         this.type='vehicle';
     }
-   
+
     this.url = data.url
-    
+
     this.user = this.store.pipe(select('authentication'), select('user'));
     this.user.pipe(take(1)).subscribe((me: User) => this.userMe = me);
 
@@ -145,7 +148,7 @@ onSubmitBtn(){
 
 viewAllegato(file): void{
     window.open(this.file,'_blank');
-    
+
 }
 
 downloadAllegato(file): void{
@@ -156,7 +159,7 @@ downloadAllegato(file): void{
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(this.file);
-    
+
 }
 
 }
