@@ -610,7 +610,7 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
   //         );
   // }
   viewAllegato(allegato): void{
-      console.log(allegato)
+    //  console.log(allegato)
        const ref : MatDialogRef<AdminDialogAllegatoComponent> = this.dialog.open(AdminDialogAllegatoComponent,{
                       panelClass: 'dialog-responsive',
                       //disableClose: true,

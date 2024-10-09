@@ -53,7 +53,7 @@ export class IstanzaHomeComponent implements OnInit {
                 this.serviceConf.fetchTypeInstance().subscribe(
                     (res)=> {
                         this.type = res;
-                       console.log(this.type)
+                      // console.log(this.type)
         this.isLoading = false;
                         this.changeDetectorRef.markForCheck();
                     }
@@ -74,7 +74,7 @@ export class IstanzaHomeComponent implements OnInit {
                     ]
                  ).subscribe(
                      ([type,istanze])=>{
-                      console.log(istanze)
+                    //  console.log(istanze)
                          this.type = type;
 
 
@@ -102,7 +102,7 @@ export class IstanzaHomeComponent implements OnInit {
   }
   getRendActive():any{
     const data = this.rendTotal.filter(x=> x.enable === true);
-    console.log(data)
+   // console.log(data)
     return data.length;
   }
   initializeDataForWidget(): void{

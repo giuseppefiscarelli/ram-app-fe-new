@@ -253,7 +253,7 @@
                                   aria-label="Example icon button with a vertical three dot icon"
                                   matTooltip="Elimina Documento"
                                   matTooltipPosition="above"
-                                  *ngIf="this.rendicontazione.enable || this.userMe.role !== 'user' || this.enableRendicontazione"
+                                  *ngIf="(this.rendicontazione.enable ||  this.enableRendicontazione) &&(checkAllegatoEditable(alle, v))"
                                   [disabled]="this.userMe.role === 'viewer'"
                                   (click)="onClickDeleteAllegato(alle)"
                                   color="accent"
