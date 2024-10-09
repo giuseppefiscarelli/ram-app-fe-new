@@ -243,7 +243,7 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
 
   }
   getListaDocumenti(veicolo:Veicolo){
-    console.log(veicolo)
+    //console.log(veicolo)
     if(veicolo.acquisitionType === '01'){
       return this.docListVei.filter(x=> x !== 9)
     }
@@ -446,10 +446,10 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
    }
 
    checkVeicoloEditable(veicolo){
- //   console.log(veicolo)
+    console.log(veicolo)
     if(this.istruttoriaData){
       if(this.istruttoriaData.typeReport['type'] === 'integrazione' && veicolo.adminState !== 'accepted'){
-       // console.log(' modificabile')
+        console.log(' modificabile')
         return true
       }else{
         return false

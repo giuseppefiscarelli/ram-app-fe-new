@@ -59,24 +59,21 @@ export class AdminDialogAllegatoComponent implements OnInit {
         ]
     };
     this.file = null;
-    if (this.allegato.filenameStorage.endsWith(".pdf")) {
-  this.services.getFile(this.allegato.fd)
-    .subscribe(
-        (res) => {
-          const blob = new Blob([res],{type: this.allegato.fd['type']});
-          this.file = window.URL.createObjectURL(blob).toString();
-           console.log(this.file)
+    console.log(this.allegato)
+    this.services.getFile(this.allegato.fd)
+      .subscribe({
+        next:(res) => {
 
-           //let pdfBlobUrl = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob)).toString();
-           // const url = window.URL.createObjectURL(blob);
-          // window.open(url);
-         // const objectUrl: string = URL.createObjectURL(blob);
-        //   window.open(objectUrl,'_blank');
+          const blob = new Blob([res],{type: this.allegato.fd['type']});
+           this.file = window.URL.createObjectURL(blob).toString();
+
 
         },
-            error => console.log('Error downloading the file.')
+        error:(error) => console.log(error)
+      }
+
         );
-    }
+
 
 
     Object.keys(statusCheck)

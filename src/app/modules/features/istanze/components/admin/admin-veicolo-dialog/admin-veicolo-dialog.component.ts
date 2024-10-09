@@ -221,7 +221,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
     }
 
     onClickAlle(mode,data){
-     //   console.log(mode,data)
+        console.log(mode,data)
         this.isLoading = true;
         this.alleDataSelected = null;
         if(mode === 'view'){

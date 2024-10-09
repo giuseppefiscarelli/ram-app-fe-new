@@ -609,7 +609,8 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
   //             error => console.log('Error downloading the file.')
   //         );
   // }
-    viewAllegato(allegato): void{
+  viewAllegato(allegato): void{
+      console.log(allegato)
        const ref : MatDialogRef<AdminDialogAllegatoComponent> = this.dialog.open(AdminDialogAllegatoComponent,{
                       panelClass: 'dialog-responsive',
                       //disableClose: true,
