@@ -293,7 +293,7 @@
 
             </tr>
 
-          <ng-container  *ngIf="allegatoModificabile(alleDataSelected)">
+          <ng-container  *ngIf="!allegatoModificabile(alleDataSelected)">
 
                 <tr>
                     <td> Stato Lavorazione</td>
@@ -313,7 +313,7 @@
               </tr>
           </ng-container>
           </table>
-          <ng-container  *ngIf="allegatoModificabile(alleDataSelected); else checkForm">
+          <ng-container  *ngIf="!allegatoModificabile(alleDataSelected); else checkForm">
             <div class="row-custom" >
               <div class=" col-custom">
                   <button mat-raised-button color="primary"
@@ -340,7 +340,7 @@
             </div>
           </ng-container>
 
-          <ng-tempate #checkForm>
+          <ng-template #checkForm>
             <ng-container>
 
               <form [formGroup]="form" style="padding:0 17px; width:100%">
@@ -404,7 +404,7 @@
               </div>
 
             </ng-container>
-          </ng-tempate>
+          </ng-template>
 
         </ng-template>
       </ng-container>
