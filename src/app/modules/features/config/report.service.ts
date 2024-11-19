@@ -48,11 +48,11 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
 
 
    async generateReport(type,dataReport, veicoli?:Veicolo[], allegatiVeicoli?:Allegato[],typeIstance?: TypeIstance, istanza?:Istanza){
-    console.log(dataReport);
-    console.log(type)
-    console.log(istanza)
+   // console.log(dataReport);
+   // console.log(type)
+   // console.log(istanza)
 //    return true
-      console.log(pdfFonts.fonts)
+     // console.log(pdfFonts.fonts)
     var header = [];
     let content = [];
     let footer ={};
@@ -196,8 +196,8 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
 
       }
     }
-    console.log(dataReport
-      )
+    //console.log(dataReport
+   //   )
 
 
     if(type === 'integrazione'){
@@ -205,13 +205,13 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
       let firma  = await this.getBase64ImageFromURL('../../../../assets/report/firma_fb.png');
 
       let listaRichieste =[];
-      console.log( dataReport['detail'])
+   //   console.log( dataReport['detail'])
       let details = dataReport['detail'].map(
         (item) => {
           return { text: item, margin: [0, 0, 0, 5] };
         }
       )
-      console.log(details)
+     // console.log(details)
 
        header= [
 
@@ -426,8 +426,8 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
 
 
 
-console.log(myGroupedData)
-console.log(veicoli)
+//console.log(myGroupedData)
+//console.log(veicoli)
 // Utilizziamo un oggetto per tenere traccia delle somme per ogni artDm
 
 // Utilizziamo un oggetto per tenere traccia delle somme per ogni artDm
@@ -446,7 +446,7 @@ const sumsByArtDm = myGroupedData.reduce((acc, obj) => {
 // Convertiamo l'oggetto risultante in un array di oggetti
 const result = Object.keys(sumsByArtDm).map(artDm => sumsByArtDm[artDm]);
 
-console.log(result);
+//console.log(result);
 
 
 
@@ -766,7 +766,7 @@ console.log(result);
 
        )
 
-       console.log(content)
+      // console.log(content)
 
     var docDefinitionc = {
       pageSize: 'A4',

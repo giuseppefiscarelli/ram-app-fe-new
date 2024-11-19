@@ -108,11 +108,13 @@ export class AdminVeicoloDialogComponent implements OnInit {
       this.isLoading = true;
       this.alleDataSelected = null;
       this.formVeicolo = this.initializeForEditVeicolo(this.veicolo)
-
-    //  console.log(this.checkAllegatiStatus(), this.allegatiVeicolo.length, 'prova')
+      console.log(this.veicolo)
+   //   console.log(this.checkAllegatiStatus(), this.allegatiVeicolo.length, 'prova')
    //console.log(this.allegatiVeicolo)
       const checkDichiarazioni = this.checkDichiarazioni();
    //   console.log(checkDichiarazioni,'cdich')
+ //  console.log(this.rendicontazione)
+  // console.table(this.allegatiVeicolo)
 
       if(checkDichiarazioni && (this.checkAllegatiStatus() === this.allegatiVeicolo.length)){
           this.datiIstruttoriaShow = true;
@@ -219,9 +221,34 @@ export class AdminVeicoloDialogComponent implements OnInit {
     // console.log(data)
         return data['description'];
     }
+    allegatoModificabile(data){
+
+      console.log(moment(data.dataUpload).isAfter(moment(this.rendicontazione.dateEnd)))
+
+
+      console.log(Number(data.dataUpload) > Number(this.rendicontazione.dateEnd))
+//console.log(moment(date.dateUpload))
+     // console.log(this.veicolo)
+     console.log(data)
+      let check = false;
+      console.log(this.checkAllegatoIntegrazione(data))
+      if(
+        this.veicolo.adminState === 'pending' && (Number(data.dataUpload) < Number(this.rendicontazione.dateEnd) )
+      ){
+        return true
+      }
+
+      // if(
+      //   data.dataUpload > this.rendicontazione.dateEnd
+      // ){
+      //   check = true
+      // }
+      console.log(check)
+      return check
+    }
 
     onClickAlle(mode,data){
-       // console.log(mode,data)
+        console.log(mode,data)
         this.isLoading = true;
         this.alleDataSelected = null;
         if(mode === 'view'){
@@ -242,6 +269,8 @@ export class AdminVeicoloDialogComponent implements OnInit {
 
                 },
                 complete:()=>{
+                  console.log(this.alleDataSelected);
+                  console.log (this.rendicontazione)
                     this.isLoading = false;
                     this.changeDetectorRef.markForCheck()
                 }

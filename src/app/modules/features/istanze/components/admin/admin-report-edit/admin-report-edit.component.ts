@@ -60,7 +60,7 @@ export class AdminReportEditComponent implements OnInit {
     private notifications: NotificationsComponent,
 
   ) {
-   // console.log(data)
+  //  console.log(data.istanza.civico_impr || 'ciao')
 
     this.typeInstance = data.typeInstance;
     this.alleDich = data.listaAllegatiDich.filter(x=> x.adminState === 'rejected');
@@ -85,7 +85,7 @@ export class AdminReportEditComponent implements OnInit {
       this.form.patchValue({
         ragSociale:this.istanza.ragione_sociale,
         indirizzo:this.istanza.indirizzo_impr,
-        numCivico:this.istanza.civico_impr,
+        numCivico:this.istanza.civico_impr || ' ',
         cap:this.istanza.cap_impr,
         citta:this.istanza.comune_impr,
         prov:this.istanza.prov_impr,
@@ -447,7 +447,7 @@ deleteFile(): void{
 
 
     let payload = this.form.getRawValue();
-    console.log(payload);
+    //console.log(payload);
     if(this.mode ==='generate'){
 
       const data =  await this.reportService.generateReport( this.typeReport.type,payload, this.veicoli, this.listaAllegatiVeicolo,this.typeInstance , this.istanza);

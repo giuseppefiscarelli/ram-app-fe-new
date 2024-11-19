@@ -292,7 +292,8 @@
 
 
             </tr>
-            <ng-container  *ngIf=" (this.veicolo.adminState === 'accepted' || this.veicolo.adminState ==='rejected')">
+
+          <ng-container  *ngIf="allegatoModificabile(alleDataSelected)">
 
                 <tr>
                     <td> Stato Lavorazione</td>
@@ -310,9 +311,9 @@
                 <td>Note</td>
                 <td>{{this.form.controls.adminNote.value}}</td>
               </tr>
-            </ng-container>
+          </ng-container>
           </table>
-          <ng-container  *ngIf=" (this.veicolo.adminState === 'accepted' || this.veicolo.adminState ==='rejected')">
+          <ng-container  *ngIf="allegatoModificabile(alleDataSelected); else checkForm">
             <div class="row-custom" >
               <div class=" col-custom">
                   <button mat-raised-button color="primary"
@@ -339,70 +340,72 @@
             </div>
           </ng-container>
 
+          <ng-tempate #checkForm>
+            <ng-container>
 
-          <ng-container *ngIf=" (this.veicolo.adminState !== 'accepted' && this.veicolo.adminState !=='rejected')">
+              <form [formGroup]="form" style="padding:0 17px; width:100%">
+                <div class="row-custom">
+                  <div class=" col-custom col-custom-12">
+                      <mat-form-field style="width:100%">
+                        <mat-label>Note</mat-label>
+                        <input matInput
+                        [readonly]="this.userMe.role === 'viewer'"
 
-            <form [formGroup]="form" style="padding:0 17px; width:100%">
+                        type="note"
+                        formControlName="adminNote"
+                        >
+
+                      </mat-form-field >
+                  </div>
+                  <div class=" col-custom col-custom-4">
+                    <mat-form-field                      *ngIf="this.userMe.role !== 'viewer'"
+                    >
+                      <mat-label>
+                        Stato Lavorazione
+                      </mat-label>
+                      <mat-select formControlName="adminState">
+                          <mat-option *ngFor="let statusCheck of filterOptionsDescriptors.statusCheck" [value]="statusCheck.value">
+                            {{statusCheck.title | statusCheck}}
+                          </mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="form.get('adminState').invalid" [innerHTML]="form.get('adminState') | errors"></mat-error>
+                  </mat-form-field>
+                  </div>
+                  <div class=" col-custom col-custom-4">
+                    <button mat-raised-button color="primary" style="background-color:green;color:white;"
+                    [disabled]="this.userMe.role === 'viewer'"
+
+                    (click)="onClickSubmitAlle()"
+                    >Aggiorna stato lavorazione</button>
+                  </div>
+                </div>
+
+                <div class="row-custom">
+                  <div class="col-custom">
+                      <button mat-raised-button color="primary"
+                      (click)="downloadAllegato(alleDataSelected.fd)"
+                      >Scarica Documento</button>
+                  </div>
+                  <div class="col-custom">
+                    <button mat-raised-button color="warn"
+                    (click)="viewAllegato(this.url, this.alleDataSelected.filename)"
+                    >Apri in una nuova scheda</button>
+                  </div>
+                </div>
+              </form>
               <div class="row-custom">
                 <div class=" col-custom col-custom-12">
-                    <mat-form-field style="width:100%">
-                      <mat-label>Note</mat-label>
-                      <input matInput
-                      [readonly]="this.userMe.role === 'viewer'"
-
-                      type="note"
-                      formControlName="adminNote"
-                      >
-
-                    </mat-form-field >
-                </div>
-                <div class=" col-custom col-custom-4">
-                  <mat-form-field                      *ngIf="this.userMe.role !== 'viewer'"
-                  >
-                    <mat-label>
-                      Stato Lavorazione
-                    </mat-label>
-                    <mat-select formControlName="adminState">
-                        <mat-option *ngFor="let statusCheck of filterOptionsDescriptors.statusCheck" [value]="statusCheck.value">
-                          {{statusCheck.title | statusCheck}}
-                        </mat-option>
-                    </mat-select>
-                    <mat-error *ngIf="form.get('adminState').invalid" [innerHTML]="form.get('adminState') | errors"></mat-error>
-                </mat-form-field>
-                </div>
-                <div class=" col-custom col-custom-4">
-                  <button mat-raised-button color="primary" style="background-color:green;color:white;"
-                  [disabled]="this.userMe.role === 'viewer'"
-
-                  (click)="onClickSubmitAlle()"
-                  >Aggiorna stato lavorazione</button>
+                  <pdf-viewer [src]="this.url"
+                  [render-text]="true"
+                  [original-size]="false"
+                  style="width: 100%; height:65vh;"
+                  ></pdf-viewer>
                 </div>
               </div>
 
-              <div class="row-custom">
-                <div class="col-custom">
-                    <button mat-raised-button color="primary"
-                    (click)="downloadAllegato(alleDataSelected.fd)"
-                    >Scarica Documento</button>
-                </div>
-                <div class="col-custom">
-                  <button mat-raised-button color="warn"
-                  (click)="viewAllegato(this.url, this.alleDataSelected.filename)"
-                  >Apri in una nuova scheda</button>
-                </div>
-              </div>
-            </form>
-            <div class="row-custom">
-              <div class=" col-custom col-custom-12">
-                <pdf-viewer [src]="this.url"
-                [render-text]="true"
-                [original-size]="false"
-                style="width: 100%; height:65vh;"
-                ></pdf-viewer>
-              </div>
-            </div>
+            </ng-container>
+          </ng-tempate>
 
-          </ng-container>
         </ng-template>
       </ng-container>
       <ng-template #selDoc>
