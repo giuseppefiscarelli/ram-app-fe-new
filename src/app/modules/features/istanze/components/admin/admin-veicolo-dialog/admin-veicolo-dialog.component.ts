@@ -224,16 +224,25 @@ export class AdminVeicoloDialogComponent implements OnInit {
     allegatoModificabile(data){
     //  let dataUpload = moment(Number(data.dataUpload))
 
-    //  console.log(this.dataIstruttoria.typeReport['type'])
+      console.log(this.dataIstruttoria)
+      let typeIstruttoria = this.dataIstruttoria ? this.dataIstruttoria.typeReport['type'] : undefined ;
+      console.log(typeIstruttoria)
 
       if(
         this.veicolo.adminState !== 'acceped' && this.checkAllegatoIntegrazione(data)
       ){
         return true
       }
-      if( this.veicolo.adminState === 'pending' &&this.dataIstruttoria.typeReport['type'] !== 'integrazione'){
-        return true
+      if(!!typeIstruttoria && typeIstruttoria !== 'integrazione'){
+        if( this.veicolo.adminState === 'pending'){
+          return true
+        }
+      }else{
+        if( this.veicolo.adminState === 'pending'){
+          return true
+        }
       }
+
       return false
     }
 
