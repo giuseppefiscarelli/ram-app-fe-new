@@ -224,10 +224,14 @@ export class AdminVeicoloDialogComponent implements OnInit {
     allegatoModificabile(data){
     //  let dataUpload = moment(Number(data.dataUpload))
 
-      console.log(this.dataIstruttoria)
+      //console.log(this.dataIstruttoria)
       let typeIstruttoria = this.dataIstruttoria ? this.dataIstruttoria.typeReport['type'] : undefined ;
-      console.log(typeIstruttoria)
+      //console.log(typeIstruttoria)
+      //console.log(this.veicolo)
 
+      //console.log('1', this.veicolo.adminState !== 'acceped' && this.checkAllegatoIntegrazione(data))
+      //console.log('2',!!typeIstruttoria && typeIstruttoria !== 'integrazione')
+      //console.log('3')
       if(
         this.veicolo.adminState !== 'acceped' && this.checkAllegatoIntegrazione(data)
       ){
@@ -242,7 +246,10 @@ export class AdminVeicoloDialogComponent implements OnInit {
           return true
         }
       }
-
+      if(!this.veicolo.adminState){
+        return true
+      }
+      //console.log('da verificare')
       return false
     }
 
