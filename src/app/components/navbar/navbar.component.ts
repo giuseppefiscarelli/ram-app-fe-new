@@ -10,6 +10,8 @@ import { AuthenticationSignout } from '@app/modules/store/actions/authentication
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, take } from 'rxjs';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MyProfileComponent } from '../../modules/features/users/components/my-profile/my-profile.component';
 
 @Component({
   selector: 'app-navbar',
@@ -26,6 +28,7 @@ export class NavbarComponent implements OnInit {
                 private translation: TranslateService,
                 private storage: StorageService,
                 private router: Router,
+                  private dialog: MatDialog,
     ) {
     this.user = this.store.pipe(
       select('authentication'),
@@ -58,6 +61,17 @@ export class NavbarComponent implements OnInit {
     this.store.dispatch(AuthenticationSignout());
 
     this.router.navigate(['/auth/signin']);
+}
+
+onClickMyProfile(){
+  const refCreate: MatDialogRef<MyProfileComponent> = this.dialog.open(
+    MyProfileComponent, {disableClose: true,minWidth:'50%',data:{user:this.userMe}}
+              );
+              refCreate.afterClosed().subscribe(
+                (user: User) => {
+
+                }
+              );
 }
 
 
