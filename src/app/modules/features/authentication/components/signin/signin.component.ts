@@ -12,9 +12,11 @@ import { ApplicationState } from '@app/app.state';
 import { select, Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { QRCodeModule } from 'angularx-qrcode';
 
 @Component({
   selector: 'app-signin',
+
   templateUrl: './signin.component.html',
   styleUrls: ['./signin.component.scss']
 })
@@ -24,6 +26,16 @@ export class SigninComponent implements OnInit {
   userMe: User;
   user: Observable<User>;
     form: FormGroup;
+
+    loginForm = true;
+    mfaCode = false;
+    mfaAuthForm = false;
+
+    urlCode = '';
+    mfaSecret = '';
+    otp = new FormControl(null, Validators.minLength(6));
+
+
     constructor(private authentication: AuthenticationService,
                 private store: Store<ApplicationState>,
                 private changeDetectorRef: ChangeDetectorRef,
@@ -45,22 +57,64 @@ export class SigninComponent implements OnInit {
     ngOnInit(): void {
     }
 
+    mfaNext(){
+      this.mfaCode = false;
+      this.mfaAuthForm = true;
+      this.changeDetectorRef.markForCheck();
+    }
+
+    mfaAuth(){
+      const token = this.otp.value;
+      const payload ={
+        userSecret: this.mfaSecret,
+         token: token,
+         user:this.userMe
+        }
+      this.authentication.validateMfa(payload).subscribe({
+        next:(res) => {
+          console.log(res)
+          if(res){
+            this.router.navigate(['/'])
+          }
+
+        }
+      })
+    }
+
     onSubmitClick(): void {
       if (!this.form.valid ) {
           return;
       }
       this.authentication
           .signin(this.form.value.email, this.form.value.password)
-          .pipe(
-              finalize(() => {
-                  this.changeDetectorRef.detectChanges();
-              })
-          )
+          // .pipe(
+          //     finalize(() => {
+          //         this.changeDetectorRef.detectChanges();
+          //     })
+          // )
           .subscribe({
-             next: () => {
-              this.notification.toast(TYPE.SUCCESS,'Login Corretto')
+             next: (res) => {
+              this.userMe = res.user;
+             // this.notification.toast(TYPE.SUCCESS,'Login Corretto4')
+              this.loginForm = false;
+              console.log(res)
+              if(res.user && !res.user.mfaEnable){
+                this.urlCode = res.mfaSecret.otpauth_url;
+                this.mfaSecret = res.mfaSecret.base32;
+                this.mfaCode = true
+              }else if(res.user && res.user.mfaEnable){
+                  this.mfaCode = false;
+                  this.mfaAuthForm = true;
+                  this.mfaSecret = res.user.mfaSecret;
+              }
 
-              this.router.navigate(['/'])},
+
+
+              this.notification.toast(TYPE.SUCCESS,'Login Corretto')
+              this.changeDetectorRef.markForCheck()
+             // this.router.navigate(['/'])
+
+            },
              error: (error) =>this.notification.toast(TYPE.ERROR,'Credenziali Errate')
           });
   }
