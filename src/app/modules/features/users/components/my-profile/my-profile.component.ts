@@ -65,7 +65,7 @@ export class MyProfileComponent implements OnInit {
 
     if(this.userMe.mfaEnable){
 
-      this.qrdata = 'otpauth://totp/RAM S.p.a:Investimenti VIII ('+this.userMe.email+') ?secret='+this.userMe.mfaSecret
+      this.qrdata = 'otpauth://totp/RAM Spa:Investimenti VIII ('+this.userMe.email+') ?secret='+this.userMe.mfaSecret
 
 
     }
