@@ -80,6 +80,24 @@
            fxFlexAlign="center"
             mat-raised-button color="primary"  class="login-btn" >Avanti</button>
         </div>
+
+        <mat-divider></mat-divider>
+
+        <p>
+          Scarica e installa un'app autenticatrice sul tuo smartphone (se non ne hai già una).
+          Scansiona il codice QR che ti verrà mostrato durante la configurazione.
+          Inserisci il codice generato dall'app per completare l’impostazione.
+          Una volta configurato, ogni volta che accedi all’applicazione ti sarà richiesto di inserire il codice di verifica generato.
+
+        </p>
+        <div fxLayout="column" style="margin-top:10px;">
+          <button fxFlex="40"
+          (click)="openMfaInfo()"
+           fxFlexAlign="center"
+            mat-button color="accent"  class="login-btn" >Clicca qui per maggiori informazioni</button>
+        </div>
+
+
       </ng-container>
 
       <ng-container  *ngIf="mfaAuthForm">

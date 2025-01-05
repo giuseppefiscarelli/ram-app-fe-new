@@ -13,6 +13,8 @@ import { select, Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { QRCodeModule } from 'angularx-qrcode';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MfaInfoComponent } from '../mfa-info/mfa-info.component';
 
 @Component({
   selector: 'app-signin',
@@ -38,6 +40,7 @@ export class SigninComponent implements OnInit {
 
     constructor(private authentication: AuthenticationService,
                 private store: Store<ApplicationState>,
+                 private dialog: MatDialog,
                 private changeDetectorRef: ChangeDetectorRef,
                 private router: Router,
                 private snackbar: MatSnackBar,
@@ -55,6 +58,10 @@ export class SigninComponent implements OnInit {
                  }
 
     ngOnInit(): void {
+
+      this.otp.valueChanges.subscribe({
+        next:(res)=> console.log(res)
+      })
     }
 
     mfaNext(){
@@ -77,8 +84,22 @@ export class SigninComponent implements OnInit {
             this.router.navigate(['/'])
           }
 
+        },
+
+        error:(err)=> {
+          this.notification.toast(TYPE.ERROR,'Codice OTP Errato')
+          this.otp.setValue(null)
+          this.otp.reset()
+          this.changeDetectorRef.markForCheck();
         }
       })
+    }
+    openMfaInfo(){
+
+      const ref: MatDialogRef<MfaInfoComponent> = this.dialog.open(
+        MfaInfoComponent, {}
+      );
+
     }
 
     onSubmitClick(): void {
@@ -97,7 +118,7 @@ export class SigninComponent implements OnInit {
               this.userMe = res.user;
              // this.notification.toast(TYPE.SUCCESS,'Login Corretto4')
               this.loginForm = false;
-              console.log(res)
+              //console.log(res)
               if(res.user && !res.user.mfaEnable){
                 this.urlCode = res.mfaSecret.otpauth_url;
                 this.mfaSecret = res.mfaSecret.base32;
@@ -120,3 +141,5 @@ export class SigninComponent implements OnInit {
   }
 
 }
+
+
