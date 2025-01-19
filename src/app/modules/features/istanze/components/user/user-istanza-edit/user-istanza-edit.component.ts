@@ -93,6 +93,7 @@ export class UserIstanzaEditComponent implements OnInit {
                     this.user = this.store.pipe(select('authentication'), select('user'));
                     this.user.pipe(take(1)).subscribe((me: User) => this.userMe = me);
      // this.userMe.role = 'user';
+     console.log(this.userMe)
                     this.istanza = this.route.snapshot.data.istanza;
                     this.rendicontazione = this.route.snapshot.data.rendicontazione;
                     //console.log(this.rendicontazione)

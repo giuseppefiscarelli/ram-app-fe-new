@@ -15,6 +15,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { QRCodeModule } from 'angularx-qrcode';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MfaInfoComponent } from '../mfa-info/mfa-info.component';
+import { environment } from '../../../../../../environments/environment.prod';
 
 @Component({
   selector: 'app-signin',
@@ -32,7 +33,7 @@ export class SigninComponent implements OnInit {
     loginForm = true;
     mfaCode = false;
     mfaAuthForm = false;
-
+  mfaEnvironment: boolean = environment.mfa;
     urlCode = '';
     mfaSecret = '';
     otp = new FormControl(null, Validators.minLength(6));
@@ -115,25 +116,30 @@ export class SigninComponent implements OnInit {
           // )
           .subscribe({
              next: (res) => {
-              this.userMe = res.user;
-             // this.notification.toast(TYPE.SUCCESS,'Login Corretto4')
-              this.loginForm = false;
-              //console.log(res)
-              if(res.user && !res.user.mfaEnable){
-                this.urlCode = res.mfaSecret.otpauth_url;
-                this.mfaSecret = res.mfaSecret.base32;
-                this.mfaCode = true
-              }else if(res.user && res.user.mfaEnable){
-                  this.mfaCode = false;
-                  this.mfaAuthForm = true;
-                  this.mfaSecret = res.user.mfaSecret;
+              if(this.mfaEnvironment){
+                this.userMe = res.user;
+                // this.notification.toast(TYPE.SUCCESS,'Login Corretto4')
+                 this.loginForm = false;
+                 //console.log(res)
+                 if(res.user && !res.user.mfaEnable){
+                   this.urlCode = res.mfaSecret.otpauth_url;
+                   this.mfaSecret = res.mfaSecret.base32;
+                   this.mfaCode = true
+                 }else if(res.user && res.user.mfaEnable){
+                     this.mfaCode = false;
+                     this.mfaAuthForm = true;
+                     this.mfaSecret = res.user.mfaSecret;
+                 }
+              }else{
+                this.router.navigate(['/'])
               }
+
 
 
 
               this.notification.toast(TYPE.SUCCESS,'Login Corretto')
               this.changeDetectorRef.markForCheck()
-             // this.router.navigate(['/'])
+             //
 
             },
              error: (error) =>this.notification.toast(TYPE.ERROR,'Credenziali Errate')
