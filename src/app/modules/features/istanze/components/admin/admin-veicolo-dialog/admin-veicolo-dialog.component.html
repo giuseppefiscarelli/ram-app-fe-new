@@ -50,6 +50,9 @@
                           <mat-error *ngIf="formVeicolo.get('costoIstr').invalid" [innerHTML]="formVeicolo.get('costoIstr') | errors"></mat-error>
 
                       </mat-form-field>
+                      <ng-container *ngIf="this.userMe.role === 'viewer'">
+                        {{formVeicolo.get('costoIstr').value | currency: 'EUR':'symbol':'.2-2':'it' }}
+                     </ng-container>
                       </td>
                   </tr>
                   <tr>
@@ -65,6 +68,9 @@
                           <mat-error *ngIf="formVeicolo.get('valoreContributo').invalid" [innerHTML]="formVeicolo.get('valoreContributo') | errors"></mat-error>
 
                       </mat-form-field>
+                      <ng-container *ngIf="this.userMe.role === 'viewer'">
+                        {{formVeicolo.get('valoreContributo').value | currency: 'EUR':'symbol':'.2-2':'it' }}
+                     </ng-container>
                       </td>
                   </tr>
                   <tr >
@@ -80,6 +86,9 @@
                         <mat-error *ngIf="formVeicolo.get('pmiIstr').invalid" [innerHTML]="formVeicolo.get('pmiIstr') | errors"></mat-error>
 
                     </mat-form-field>
+                    <ng-container *ngIf="this.userMe.role === 'viewer'">
+                       {{formVeicolo.get('pmiIstr').value | currency: 'EUR':'symbol':'.2-2':'it' }}
+                    </ng-container>
                     </td>
                 </tr>
                 <tr >
@@ -98,6 +107,9 @@
                       <mat-error *ngIf="formVeicolo.get('reteIstr').invalid" [innerHTML]="formVeicolo.get('reteIstr') | errors"></mat-error>
 
                   </mat-form-field>
+                  <ng-container *ngIf="this.userMe.role === 'viewer'">
+                    {{formVeicolo.get('reteIstr').value | currency: 'EUR':'symbol':'.2-2':'it' }}
+                 </ng-container>
                   </td>
                   <ng-template #noMagg>
                     <td>Maggiorazione non prevista</td>
