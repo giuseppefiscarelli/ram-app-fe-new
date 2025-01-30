@@ -33,7 +33,7 @@ export class SigninComponent implements OnInit {
     loginForm = true;
     mfaCode = false;
     mfaAuthForm = false;
-  mfaEnvironment: boolean = environment.mfa;
+    mfaEnvironment: boolean = environment.mfa;
     urlCode = '';
     mfaSecret = '';
     otp = new FormControl(null, Validators.minLength(6));
@@ -59,7 +59,7 @@ export class SigninComponent implements OnInit {
                  }
 
     ngOnInit(): void {
-
+      console.log(this.mfaEnvironment)
       this.otp.valueChanges.subscribe({
         next:(res)=> console.log(res)
       })
