@@ -114,7 +114,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
     //  console.log(this.checkAllegatiStatus(), this.allegatiVeicolo.length, 'prova')
    //console.log(this.allegatiVeicolo)
       const checkDichiarazioni = this.checkDichiarazioni();
-   //   console.log(checkDichiarazioni,'cdich')
+      console.log(checkDichiarazioni,'cdich')
 
       if(checkDichiarazioni && (this.checkAllegatiStatus() === this.allegatiVeicolo.length)){
           this.datiIstruttoriaShow = true;
@@ -366,7 +366,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
                             currentRecords[index] = res;
                             this.allegatiVeicolo = [...currentRecords];
                           //  console.log(this.allegatiVeicolo)
-                            this.alleSelected = null;
+                            this.alleSelected = false;
                          // console.log(this.allegatiVeicolo)
                         //  console.log(this.checkDichiarazioni(), this.checkAllegatiStatus(), this.allegatiVeicolo.length)
                             if(this.checkDichiarazioni() && (this.checkAllegatiStatus() === this.allegatiVeicolo.length)){
@@ -477,15 +477,16 @@ export class AdminVeicoloDialogComponent implements OnInit {
 
     checkDichiarazioni(){
       //   const checkDichiarazioni = this.istanzaCheck.contratto === 'accepted' &&
-      //   this.istanzaCheck.delega === 'accepted' &&
-      //   //this.istanzaCheck.dimImpresa &&
-      //   this.istanzaCheck.doc === 'accepted' &&
-      //   this.istanzaCheck.firma === 'accepted' &&
-      //   this.istanzaCheck.pec === 'accepted' ? true: false;
+     // console.log(this.istanzaCheck)
+      return   this.istanzaCheck.delega === 'accepted' &&
+
+         this.istanzaCheck.doc === 'accepted' &&
+         this.istanzaCheck.firma === 'accepted' &&
+         this.istanzaCheck.pec === 'accepted' ;
       //   //console.log(checkDichiarazioni)
-      //   //console.log(this.istanzaCheck)
-      // //  return checkDichiarazioni;
-              return this.istanzaCheck.dimImpresa
+      // console.log(this.istanzaCheck)
+      // // //  return checkDichiarazioni;
+      //         return this.istanzaCheck.dimImpresa
 
     }
 
