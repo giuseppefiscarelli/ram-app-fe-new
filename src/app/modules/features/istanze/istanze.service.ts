@@ -202,18 +202,18 @@ updateRendicontazione(payload: any): Observable<Rendicontazione> {
 
 
         let tipoVeicolo = veicolo.type;
-        //console.log(tipoVeicolo);
+       //console.log(tipoVeicolo);
         //console.log(allegatiVeicoli);
         let allegatiRottamazione = allegatiVeicoli.filter(x=> (x.typeDocument === '11' || x.typeDocument === '14') && x.adminState )
         const idVeicoloUnici = new Set();
         allegatiRottamazione.forEach(obj => idVeicoloUnici.add(obj.id_Veicolo));
         const numeroRichesteRottamazioneAccettate = idVeicoloUnici.size;
         //const numerorichiesteRottamazioneIstanza = ist
+        var campoRottamazione
 
-
-        //console.log(numeroRichesteRottamazioneAccettate);
+       // console.log(numeroRichesteRottamazioneAccettate);
         if(tipoVeicolo.startsWith('rim_')){
-            var campoRottamazione = 'rim_rott_'+ tipoVeicolo.slice(-1);
+            campoRottamazione = 'rim_rott_'+ tipoVeicolo.slice(-1);
             //console.log(campoRottamazione)
         }
 
@@ -225,7 +225,7 @@ updateRendicontazione(payload: any): Observable<Rendicontazione> {
           //console.log('pmi okcheck')
             if(veicolo.type !== 'rim_nv_1' && veicolo.type !== 'rim_nv_2' && veicolo.type !== 'rim_nv_3'){
 
-                console.log('eccoci', check)
+              //  console.log('eccoci', check)
                 valoreContributo = valore;
                 if(check.pmi && istanza['pmi'] === 'Yes') {
                     magg_pmi = valoreContributo * .10;
@@ -285,6 +285,7 @@ updateRendicontazione(payload: any): Observable<Rendicontazione> {
                 }
             }
         }
+       // console.log(istanza[tipoVeicolo], istanza[campoRottamazione])
         if(istanza[tipoVeicolo] && istanza[campoRottamazione] > numeroRichesteRottamazioneAccettate){
 
             valoreContributo = 7000

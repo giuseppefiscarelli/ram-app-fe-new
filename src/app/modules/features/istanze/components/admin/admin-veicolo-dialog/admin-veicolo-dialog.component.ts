@@ -114,7 +114,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
     //  console.log(this.checkAllegatiStatus(), this.allegatiVeicolo.length, 'prova')
    //console.log(this.allegatiVeicolo)
       const checkDichiarazioni = this.checkDichiarazioni();
-      console.log(checkDichiarazioni,'cdich')
+      //console.log(checkDichiarazioni,'cdich')
 
       if(checkDichiarazioni && (this.checkAllegatiStatus() === this.allegatiVeicolo.length)){
           this.datiIstruttoriaShow = true;
@@ -123,9 +123,9 @@ export class AdminVeicoloDialogComponent implements OnInit {
           this.valoreMaggPmi = contributo['magg_pmi'];
           this.valoreMaggRete = contributo['magg_rete'];
 
-      //  console.log(this.valoreContributo,'valo contr')
+       // console.log(this.valoreContributo,'valo contr')
         }
-    //  console.log(this.valoreContributo)
+     // console.log(this.valoreContributo)
       this.filterOptionsDescriptors = {
           statusCheck: [
 
@@ -375,7 +375,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
                                 this.valoreContributo = contributo['valoreContributo'];
                                 this.valoreMaggPmi = contributo['magg_pmi'];
                                 this.valoreMaggRete = contributo['magg_rete'];
-                                //console.log(this.valoreContributo,'valore contributo')
+                               // console.log(this.valoreContributo,'valore contributo')
                                 //this.formVeicolo.controls.valoreContributo.setValue(contributo)
                             }else{
                                 this.datiIstruttoriaShow = false;
@@ -479,7 +479,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
       //   const checkDichiarazioni = this.istanzaCheck.contratto === 'accepted' &&
      // console.log(this.istanzaCheck)
       return   this.istanzaCheck.delega === 'accepted' &&
-
+      this.istanzaCheck.dimImpresa &&
          this.istanzaCheck.doc === 'accepted' &&
          this.istanzaCheck.firma === 'accepted' &&
          this.istanzaCheck.pec === 'accepted' ;

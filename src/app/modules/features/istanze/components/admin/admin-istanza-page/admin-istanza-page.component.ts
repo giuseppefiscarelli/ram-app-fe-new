@@ -175,7 +175,7 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
                     this.configService.fetchTypeReport({drop:true, typeistance:this.istanza.tipo_istanza}),
                     this.configService.fetchReport({drop:true, enable:true, id_ram:this.istanza.id_ram})
                 ]).subscribe(([vei, alle,ista,typeDocument, typeReport, reports]) =>{
-                    //console.log(this.listaVeicoli)
+                    //(typeReport)
                     this.listaVeicoli= this.listaVeicoliFiltered = vei.sort((a, b) => {
                       if (a.category < b.category) {
                         return -1;
@@ -393,7 +393,7 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
     }
 
     getCertificazioni(){
-   console.log(this.typeIstance.certAttach)
+  // console.log(this.typeIstance.certAttach)
      const type = this.typeIstance.certAttach;
 
      type.map(
@@ -574,7 +574,7 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
 
     initializeAllegati(typeIstance:TypeIstance){
       this.listaAllegatiVeicoli = this.listaAllegati.filter(x=> x.typeDocument !== 'ampl' && x.typeDocument !== 'pmi' && x.typeDocument !== 'rete');
-
+      //console.log(typeIstance)
       typeIstance.certAttach.map(
           (cert) => {
             //console.log(cert)
@@ -599,7 +599,7 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
               if(!cert['upload']){
                   this.certControlStatus.push(cert)
               }
-          //    console.log(this.certControlStatus)
+            //  console.log(this.certControlStatus)
           }
       )
     //  console.log (this.certControlStatus)
