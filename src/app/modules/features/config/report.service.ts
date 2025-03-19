@@ -48,11 +48,11 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
 
 
    async generateReport(type,dataReport, veicoli?:Veicolo[], allegatiVeicoli?:Allegato[],typeIstance?: TypeIstance, istanza?:Istanza){
-    console.log(dataReport);
-    console.log(type)
-    console.log(istanza)
+   // console.log(dataReport);
+   // console.log(type)
+  //  console.log(istanza)
 //    return true
-      console.log(pdfFonts.fonts)
+  //    console.log(pdfFonts.fonts)
     var header = [];
     let content = [];
     let footer ={};
@@ -196,8 +196,8 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
 
       }
     }
-    console.log(dataReport
-      )
+  //  console.log(dataReport
+  //    )
 
 
     if(type === 'integrazione'){
@@ -209,13 +209,13 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
       //    x.margin = [0, 0, 0, 10]
       //   return x
       // })
-      console.log( dataReport['detail'])
+    //  console.log( dataReport['detail'])
       let details = dataReport['detail'].map(
         (item) => {
           return { text: item, margin: [0, 0, 0, 5] };
         }
       )
-      console.log(details)
+     // console.log(details)
 
        header= [
         {
@@ -369,9 +369,9 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
 
       let veicoliAccettati = veicoli?.filter(x=> x.adminState === 'accepted')
     //  console.log(veicoli)
-      console.log(typeIstance)
+   //   console.log(typeIstance)
     //  console.log(istanza)
-     console.log(veicoliAccettati)
+    // console.log(veicoliAccettati)
 
       let veicolicatA = veicoliAccettati.filter(x=>x.category === 'A')
 
@@ -388,7 +388,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
         maggiorazioneRottamazione = numeroRichesteRottamazioneAccettate *1000;
 
       }
-      console.log(numeroRichesteRottamazioneAccettate);
+    //  console.log(numeroRichesteRottamazioneAccettate);
 
       // veicoliAccettati.map((veicolo)=> {
 
@@ -432,7 +432,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
       // Osservo i risultati
       groupedData$.subscribe(result =>  myGroupedData = result);
 
-      console.log(myGroupedData)
+    //  console.log(myGroupedData)
       let totaleFinanziamento = 0;
       myGroupedData.map(tot => totaleFinanziamento += tot.totalFinanziamento)
     //  console.log(totaleFinanziamento)
@@ -459,10 +459,11 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
       // Convertiamo l'oggetto risultante in un array di oggetti
       const result = Object.keys(sumsByArtDm).map(artDm => sumsByArtDm[artDm]);
 
-      console.log(result);
+   //   console.log(result);
 
 
 
+    //  console.log('data report',dataReport)
 
 
 
@@ -487,7 +488,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
       {
         ul:[
           {text: `VISTA la domanda di ammissione al contributo di cui all'oggetto presentata da Codesta impresa e acquisista con protocollo n°${dataReport['idRam']}/${dataReport['year']} del ${moment(dataReport['dataIdRam']).format('DD/MM/YYYY')}`},
-          {text:`VISTO il verbale di riunione della Commissione, istituita ai sensi dell'art. 7, comma 3, D.D. 7 aprile 2022 n.148 , tenutasi il giorno ${moment(Number(dataReport['dataVerbale'])).format('DD/MM/YYYY')}`}
+          {text:`VISTO il verbale di riunione della Commissione, istituita ai sensi dell'art. 7, comma 3, D.D. 7 aprile 2022 n.148 , tenutasi il giorno ${ dataReport['dataVerbale'] ? moment(Number(dataReport['dataVerbale'])).format('DD/MM/YYYY'): ''}`}
         ],
         alignment:'justify'
       },
@@ -514,7 +515,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
               { text:'Art.3, comma 1, lett a)', alignment:'center',margin:[0,10]},
               {text:result.find(x=> x.artDm === '1A')?.numAccepted},
               {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(result.find(x=> x.artDm === '1A')?.totalAmount ||0)},
-              {text: result.find(x=> x.artDm === '1A')?.totalFinanziamento>0 ?(istanza.rete && istanza.rete === 'Yes') && (istanza.pmi && istanza.pmi === 'Yes') ? '20%' : (istanza.rete === 'Yes' ||istanza.pmi === 'Yes') && numeroRichesteRottamazioneAccettate?'10%':null:null},
+              {text: result.find(x=> x.artDm === '1A')?.totalFinanziamento>0 ?(istanza.rete && istanza.rete === 'Yes') && (istanza.pmi && istanza.pmi === 'Yes') ? '20%' : (istanza.rete === 'Yes' ||istanza.pmi === 'Yes') || numeroRichesteRottamazioneAccettate?'10%':null:null},
               {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(result.find(x=> x.artDm === '1A')?.totalFinanziamento ||0)},
 
 
@@ -524,7 +525,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
               { text:'Art.3, comma 1, lett b)', alignment:'center',margin:[0,10]},
               {text:result.find(x=> x.artDm === '1B')?.numAccepted},
               {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(result.find(x=> x.artDm === '1B')?.totalAmount ||0)},
-              {text: result.find(x=> x.artDm === '1B')?.totalFinanziamento>0?(istanza.rete && istanza.rete === 'Yes') && (istanza.pmi && istanza.pmi === 'Yes') ? '20%' : (istanza.rete === 'Yes' ||istanza.pmi === 'Yes') && numeroRichesteRottamazioneAccettate?'10%':null:null},
+              {text: result.find(x=> x.artDm === '1B')?.totalFinanziamento>0?(istanza.rete && istanza.rete === 'Yes') && (istanza.pmi && istanza.pmi === 'Yes') ? '20%' : (istanza.rete === 'Yes' ||istanza.pmi === 'Yes') || numeroRichesteRottamazioneAccettate?'10%':null:null},
               {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(result.find(x=> x.artDm === '1B')?.totalFinanziamento ||0)},
 
 
@@ -715,7 +716,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
 
        )
 
-       console.log(content)
+      // console.log(content)
 
     var docDefinitionc = {
       pageSize: 'A4',
