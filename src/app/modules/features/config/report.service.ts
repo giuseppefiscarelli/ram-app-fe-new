@@ -48,11 +48,11 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
 
 
    async generateReport(type,dataReport, veicoli?:Veicolo[], allegatiVeicoli?:Allegato[],typeIstance?: TypeIstance, istanza?:Istanza){
-    console.log(dataReport);
-    console.log(type)
-    console.log(istanza)
+   // console.log(dataReport);
+   // console.log(type)
+   // console.log(istanza)
 //    return true
-      console.log(pdfFonts.fonts)
+     // console.log(pdfFonts.fonts)
     var header = [];
     let content = [];
     let footer ={};
@@ -196,22 +196,23 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
 
       }
     }
-    console.log(dataReport
-      )
+    //console.log(dataReport
+   //   )
 
 
     if(type === 'integrazione'){
       let logo  = await this.getBase64ImageFromURL('../../../../assets/report/int_ram.png');
-      let firma  = await this.getBase64ImageFromURL('../../../../assets/report/firma_fb.png');
+      let firma  = await this.getBase64ImageFromURL('../../../../assets/report/firma_lucilla.png');
+      let firmaRivelli  = await this.getBase64ImageFromURL('../../../../assets/report/firma_rivelli.png');
 
       let listaRichieste =[];
-      console.log( dataReport['detail'])
+   //   console.log( dataReport['detail'])
       let details = dataReport['detail'].map(
         (item) => {
           return { text: item, margin: [0, 0, 0, 5] };
         }
       )
-      console.log(details)
+     // console.log(details)
 
        header= [
 
@@ -227,7 +228,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
                   alignment: 'center'  // Posiziona l'immagine al centro
                 },
                 {
-                  text: 'Direttore Operativo',
+                  text: 'AREA INCENTIVI, AGEVOLAZIONI \n E MISURE PER LE IMPRESE',
                   margin: [10, 0],  // Aggiungi margine superiore e inferiore per spaziare il testo
                   fontSize: 10,
                   alignment: 'center'  // Allinea il testo al centro
@@ -285,11 +286,32 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
              {text:' Cordiali saluti'}
 
             ,
-              {
-                image: firma,
-                alignment:'right',
-                width: 130, margin: [40,0, 0, 10]
-              }
+            {
+              stack:[
+                {
+                  text:'Il Dirigente \n Lucilla Mattei',
+                  alignment:'center',
+                  width: 130, margin: [290,20, 0, 0]
+                },
+                {
+                  image: firma,
+                  alignment:'right',
+                  width: 150, margin: [40,-20, 0, 0]
+                },
+                {
+                  text:'Marina Rivelli',
+                  alignment:'left',
+                  width: 130, margin: [0,0, 0, 0]
+                },
+                {
+                  image: firmaRivelli,
+                  alignment:'left',
+                  width: 100, margin: [0,-10, 0, 0]
+                },
+
+              ],
+
+            }
 
 
 
@@ -426,8 +448,8 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
 
 
 
-console.log(myGroupedData)
-console.log(veicoli)
+//console.log(myGroupedData)
+//console.log(veicoli)
 // Utilizziamo un oggetto per tenere traccia delle somme per ogni artDm
 
 // Utilizziamo un oggetto per tenere traccia delle somme per ogni artDm
@@ -446,13 +468,13 @@ const sumsByArtDm = myGroupedData.reduce((acc, obj) => {
 // Convertiamo l'oggetto risultante in un array di oggetti
 const result = Object.keys(sumsByArtDm).map(artDm => sumsByArtDm[artDm]);
 
-console.log(result);
+//console.log(result);
 
 
 
 
 
-      let logo  = await this.getBase64ImageFromURL('../../../../assets/report/int_ammb.png');
+      let logo  = await this.getBase64ImageFromURL('../../../../assets/report/mit3.png');
       let firma  = await this.getBase64ImageFromURL('../../../../assets/report/firma_disanto.png');
 
       header= [{image: logo,width: 240, margin: [60,40]}]
@@ -709,7 +731,7 @@ console.log(result);
     }
 
     if(type === 'rigetto'){
-      let logo  = await this.getBase64ImageFromURL('../../../../assets/report/int_ammb.png');
+      let logo  = await this.getBase64ImageFromURL('../../../../assets/report/mit3.png');
       let firma  = await this.getBase64ImageFromURL('../../../../assets/report/firma_disanto.png');
       header= [{image: logo,width: 240, margin: [40,20, 0, 0]}];
 
@@ -766,7 +788,7 @@ console.log(result);
 
        )
 
-       console.log(content)
+      // console.log(content)
 
     var docDefinitionc = {
       pageSize: 'A4',
@@ -813,7 +835,7 @@ console.log(result);
     }
 
     if(type === 'inammissibilita'){
-      let logo  = await this.getBase64ImageFromURL('../../../../assets/report/int_ammb.png');
+      let logo  = await this.getBase64ImageFromURL('../../../../assets/report/mit3.png');
       let firma  = await this.getBase64ImageFromURL('../../../../assets/report/firma_resp.png');
 
 

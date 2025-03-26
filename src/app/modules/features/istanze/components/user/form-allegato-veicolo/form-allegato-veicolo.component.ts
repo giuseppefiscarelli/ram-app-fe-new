@@ -275,7 +275,8 @@ export class FormAllegatoVeicoloComponent implements OnInit {
         this.fileAttach.name.endsWith('.p7m') ||  this.fileAttach.name.endsWith('.pdf')
     ){
           this.typeFileControl = true;
-      }let limit = this.userMe.role === 'user'?4194304:10194304
+      }
+      let limit = this.userMe.role === 'user'?4194304:10194304
       if(this.fileAttach.size < limit){
           this.fileDimControl = true;
       }

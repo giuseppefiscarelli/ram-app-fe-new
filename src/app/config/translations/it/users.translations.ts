@@ -8,7 +8,7 @@ export const UsersLanguagePartialDefinition = {
         dpo: 'Resp. Privacy',
         user: 'User',
         admin: 'Admin',
-        administrativeEmployee: 'Amministrazione',
+        viewer: 'Viewer',
         wharehouseWorker: 'Magazzino',
     },
     rolesAms: {
@@ -46,6 +46,7 @@ export const UsersLanguagePartialDefinition = {
                         user: 'Utente',
                         superadmin: 'Super Admin',
                         all: 'Tutti',
+                        viewer: 'Viewer',
                     }
                 },
                 hint: 'Cerca per nome, cognome o email...',

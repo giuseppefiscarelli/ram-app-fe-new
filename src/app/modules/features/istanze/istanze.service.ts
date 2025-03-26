@@ -32,6 +32,7 @@ export class IstanzeService {
                     this.http = new HttpClient(handler);
                     this.getIPAddress();
     }
+
     public getIPAddress(){
         this.http.get<{ip: string}>('https://jsonip.com')
         .subscribe( data => {
@@ -39,6 +40,7 @@ export class IstanzeService {
             return this.ipAddress
         });
     }
+
     fetchIstanze(payload?:any): Observable<any[]>{
         return this.API.Istanza.fetch(payload)
         /* .pipe(
@@ -47,6 +49,7 @@ export class IstanzeService {
             istanzaFactory.create(record)))
         );*/
     }
+
     countIstanze(payload?:any): Observable<any>{
         return this.API.Istanza.fetch(payload)
         /* .pipe(
@@ -55,6 +58,7 @@ export class IstanzeService {
             istanzaFactory.create(record)))
         );*/
     }
+
     getIstanza(id: string): Observable<Istanza> {
       //  console.log(id)
         return this.API.Istanza.get({id})
@@ -62,12 +66,14 @@ export class IstanzeService {
                 map((subject: IstanzeDescriptorInterface) => istanzaFactory.create(subject))
             );
     }
+
     getTypeInstance(id): Observable<TypeIstance> {
         return this.API.TypeInstance.get({id})
             .pipe(
                 map((subject: TypeIstanceDescriptorInterface) => TypeIstanceFactory.create(subject))
             );
     }
+
     //istanzacheck
     getIstanzaCheck(id_ram: string): Observable<IstanzaCheck> {
         return this.API.IstanzaCheck.get({id_ram})
@@ -75,12 +81,14 @@ export class IstanzeService {
                 map((subject: IstanzaCheckDescriptorInterface) => IstanzaCheckFactory.create(subject))
             );
     }
+
     updateIstanzaCheck(payload: IstanzaCheckDescriptorInterface): Observable<IstanzaCheck> {
         return this.API.IstanzaCheck.update(payload)
             .pipe(
                 map((record: IstanzaCheckDescriptorInterface) => IstanzaCheckFactory.create(record))
             );
     }
+
     //veicoli
     fetchVeicoli(payload?:any): Observable<Veicolo[]> {
         return this.API.Veicolo.fetch(payload)
@@ -91,6 +99,7 @@ export class IstanzeService {
             )
         );
     }
+
     getVeicolo(id): Observable<Veicolo> {
         return this.API.Veicolo.get({id})
         .pipe(
@@ -98,6 +107,7 @@ export class IstanzeService {
             VeicoloFactory.create(record))
         );
     }
+
     createVeicolo(payload: any): Observable<Veicolo> {
         return this.API.Veicolo.create(payload)
             .pipe(
@@ -122,6 +132,7 @@ export class IstanzeService {
             )
         );
     }
+
     getAllegato(id): Observable<Veicolo> {
         return this.API.Allegato.get({id})
         .pipe(
@@ -129,12 +140,14 @@ export class IstanzeService {
             AllegatoFactory.create(record))
         );
     }
+
     createAllegato(payload: any): Observable<Allegato> {
         return this.API.Allegato.create(payload)
             .pipe(
                 map((record: AllegatoDescriptorInterface) => AllegatoFactory.create(record))
             );
     }
+
     uploadAllegato(file:File): Observable<any> {
         const formData: FormData = new FormData();
         formData.append('file', file);
@@ -150,38 +163,42 @@ export class IstanzeService {
                 map((record: AllegatoDescriptorInterface) => AllegatoFactory.create(record))
             );
     }
+
     getFile(file: any): Observable<any> {
         return this.API.Download.get(file, {
             responseType: 'blob',
             headers: new HttpHeaders().append('Content-Type', 'application/json')
         });
 
-      }
-//rendicontazione
-fetchRendicontazione(payload?:any): Observable<Rendicontazione[]>{
-    return this.API.Rendicontazione.fetch(payload)
-    .pipe(
-        map((types: RendicontazioneDescriptorInterface[]) =>
-            types.map((type: RendicontazioneDescriptorInterface)=>
-            RendicontazioneFactory.create(type))
-        )
-    );
-}
-getRendicontazione(id_ram: string): Observable<Rendicontazione> {
-    return this.API.Rendicontazione.get({id_ram})
+    }
+    //rendicontazione
+    fetchRendicontazione(payload?:any): Observable<Rendicontazione[]>{
+        return this.API.Rendicontazione.fetch(payload)
         .pipe(
-            map((subject: RendicontazioneDescriptorInterface) => RendicontazioneFactory.create(subject))
+            map((types: RendicontazioneDescriptorInterface[]) =>
+                types.map((type: RendicontazioneDescriptorInterface)=>
+                RendicontazioneFactory.create(type))
+            )
         );
-}
-updateRendicontazione(payload: any): Observable<Rendicontazione> {
-    payload.ip = this.ipAddress;
-   // console.log(payload)
-    return this.API.Rendicontazione.update(payload)
-        .pipe(
-            map((subject: RendicontazioneDescriptorInterface) => RendicontazioneFactory.create(subject))
-        );
-}
-///////
+    }
+
+    getRendicontazione(id_ram: string): Observable<Rendicontazione> {
+        return this.API.Rendicontazione.get({id_ram})
+            .pipe(
+                map((subject: RendicontazioneDescriptorInterface) => RendicontazioneFactory.create(subject))
+            );
+    }
+
+    updateRendicontazione(payload: any): Observable<Rendicontazione> {
+        payload.ip = this.ipAddress;
+    // console.log(payload)
+        return this.API.Rendicontazione.update(payload)
+            .pipe(
+                map((subject: RendicontazioneDescriptorInterface) => RendicontazioneFactory.create(subject))
+            );
+    }
+    ///////
+
     fetchTypeDocuments(payload?: any): Observable<TypeDocument[]>{
         return this.API.TypeDocument.fetch(payload)
         .pipe(
@@ -194,7 +211,7 @@ updateRendicontazione(payload: any): Observable<Rendicontazione> {
 
     calcolaContributo(istanza, check, veicolo: Veicolo, type, allegatiVeicoli: Allegato[], veicoli:Veicolo[]){
 
-        //console.log(istanza, check,veicolo,type);
+        // console.log(istanza, check,veicolo,type);
         var valoreContributo = 0;
         var magg_pmi = 0;
         var magg_rete = 0;
@@ -203,15 +220,16 @@ updateRendicontazione(payload: any): Observable<Rendicontazione> {
 
         let tipoVeicolo = veicolo.type;
         //console.log(tipoVeicolo);
-        //console.log(allegatiVeicoli);
-        let allegatiRottamazione = allegatiVeicoli.filter(x=> (x.typeDocument === '11' || x.typeDocument === '14') && x.adminState )
+        //    console.log(allegatiVeicoli);
+        let allegatiRottamazione = allegatiVeicoli.filter(x=> (x.typeDocument === '11' || x.typeDocument === '14') && x.adminState );
+        //    console.log(allegatiRottamazione)
         const idVeicoloUnici = new Set();
         allegatiRottamazione.forEach(obj => idVeicoloUnici.add(obj.id_Veicolo));
         const numeroRichesteRottamazioneAccettate = idVeicoloUnici.size;
         //const numerorichiesteRottamazioneIstanza = ist
 
 
-        //console.log(numeroRichesteRottamazioneAccettate);
+        //    console.log(idVeicoloUnici.size);
         if(tipoVeicolo.startsWith('rim_')){
             var campoRottamazione = 'rim_rott_'+ tipoVeicolo.slice(-1);
             //console.log(campoRottamazione)
@@ -219,29 +237,29 @@ updateRendicontazione(payload: any): Observable<Rendicontazione> {
 
 
         var valore = type.typeVei.find(x=> x['campoDb']=== veicolo.type)['grantValue'];
-        //console.log(valore)
-
+        console.log(veicolo.type)
+        console.log(check.dimImpresa,'check.dimImpresa')
         if(check.dimImpresa){
           //console.log('pmi okcheck')
             if(veicolo.type !== 'rim_nv_1' && veicolo.type !== 'rim_nv_2' && veicolo.type !== 'rim_nv_3'){
-
-                console.log('eccoci', check)
+               // console.log('eccoci', check)
                 valoreContributo = valore;
-                if(check.pmi && istanza['pmi'] === 'Yes') {
+                if(check.pmi && check.pmi === 'accepted' && istanza['pmi'] === 'Yes' && check.dimImpresa !== 3) {
                     magg_pmi = valoreContributo * .10;
                 }
-                if(check.rete){
+                if(check.rete && check.rete === 'accepted'){
                     magg_rete = valoreContributo * .10;
                 }
+
             }else{
               const numberType = parseInt(veicolo.type.match(/\d+$/)[0], 10);
 
               let numeroRimorchiRichiestaRottamazione = istanza['rim_rott_'+numberType];
-            //  console.log('veicoli richiesta', numeroRimorchiRichiestaRottamazione);
+                //  console.log('veicoli richiesta', numeroRimorchiRichiestaRottamazione);
               const idVeicoloArray = [...new Set(allegatiVeicoli.filter((x)=> x.typeVei === veicolo.type && x.enable && x.adminState === 'accepted' && (x.typeDocument === '11' || x.typeDocument === '14')).map(obj => obj.id_Veicolo))];
               var veicoliRottamati =0;
 
-            //  console.log(idVeicoloArray)
+                //  console.log(idVeicoloArray)
 
               let checkRottamazione = idVeicoloArray.filter(
                 (id_Veicolo) =>{
@@ -256,36 +274,44 @@ updateRendicontazione(payload: any): Observable<Rendicontazione> {
 
                 }
               )
-
+              console.log(check)
                 if(check.dimImpresa === 3){
                    valoreContributo = 3000;
-
-                   if(checkRottamazione.includes(veicolo.id) || veicoliRottamati<istanza['rim_rott_'+parseInt(veicolo.type.match(/\d+$/)[0], 10)] ){
+                    //    console.log(checkRottamazione.includes(veicolo.id))
+                  if(checkRottamazione.includes(veicolo.id) && veicoliRottamati<istanza['rim_rott_'+parseInt(veicolo.type.match(/\d+$/)[0], 10)] ){
                     valoreContributo = 5000;
                   }
 
-                  }
+                }
                 else if(check.dimImpresa === 2){
-                   valoreContributo = veicolo.amount * .10;
-                   if(valoreContributo > 5000){
-                      valoreContributo = 5000;
-                  }
-                   if(checkRottamazione.includes(veicolo.id) || veicoliRottamati<istanza['rim_rott_'+parseInt(veicolo.type.match(/\d+$/)[0], 10)] ){
-                      valoreContributo = 7000;
-                   }
-                  }
+                    valoreContributo = veicolo.amount * .10;
+                    if(valoreContributo > 5000){
+                        valoreContributo = 5000;
+                    }
+                    if(checkRottamazione.includes(veicolo.id) || veicoliRottamati<istanza['rim_rott_'+parseInt(veicolo.type.match(/\d+$/)[0], 10)] ){
+                        valoreContributo = 7000;
+                    }
+                }
                 else if(check.dimImpresa === 1){
                   valoreContributo = veicolo.amount * .20
-                  if(valoreContributo > 5000){
-                    valoreContributo = 5000;
-                  }
-                  if(checkRottamazione.includes(veicolo.id) || veicoliRottamati<istanza['rim_rott_'+parseInt(veicolo.type.match(/\d+$/)[0], 10)] ){
-                    valoreContributo = 7000;
+                    if(valoreContributo > 5000){
+                        valoreContributo = 5000;
+                    }
+                    if(checkRottamazione.includes(veicolo.id) || veicoliRottamati<istanza['rim_rott_'+parseInt(veicolo.type.match(/\d+$/)[0], 10)] ){
+                        valoreContributo = 7000;
+                    }
                 }
+                if(check.rete && check.rete === 'accepted'){
+                    magg_rete = valoreContributo * .10;
                 }
             }
         }
-        if(istanza[tipoVeicolo] && istanza[campoRottamazione] > numeroRichesteRottamazioneAccettate){
+        //console.log(istanza,tipoVeicolo,campoRottamazione)
+       // console.log(istanza[tipoVeicolo] , istanza[campoRottamazione])
+        console.log(valoreContributo, magg_pmi, magg_rete)
+        if(
+          (istanza[tipoVeicolo]>0) &&
+          istanza[campoRottamazione] > numeroRichesteRottamazioneAccettate  && allegatiRottamazione.length>0){
 
             valoreContributo = 7000
             if(check.dimImpresa === 3){
@@ -294,17 +320,11 @@ updateRendicontazione(payload: any): Observable<Rendicontazione> {
         }
 
 
-
+      //  console.log(valoreContributo, magg_pmi, magg_rete)
 
        return {valoreContributo, magg_pmi, magg_rete}
       //  return(valoreContributo)
 
     }
-
-
-
-
-    ///////////////function shared
-
 
 }

@@ -12,7 +12,8 @@ export const environment = {
 //  endpoint: 'https://elevatasostenibilita.ramspa.it/api/',
 //  endpoint: 'http://3.122.31.243:1337/',
   baseApi: null,
-  production: false
+  production: false,
+  mfa:false
 };
 
 import 'zone.js/dist/zone-error';  // Included with Angular CLI for easier debug

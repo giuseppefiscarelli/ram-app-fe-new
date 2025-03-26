@@ -1,0 +1,15 @@
+1:
+ula rifiutata e rete rifiutata non deve applicare maggiorazione (10% piu 10%)
+
+se grande imp (checkistanza) non deve applicare maggiorazione pmi anche in presenza e accetazione documento
+
+
+2:
+verificare i 15 giorni
+
+
+3:
+verificare user e backoffice (allegati - documenti)
+
+
+

@@ -112,7 +112,7 @@
             <p matLine>{{typeIstance? typeIstance.description:''}}</p>
           </mat-list-item>
       </mat-list>
-      <mat-list class="col-custom"  *ngIf="this.userMe.role !== 'user'">
+      <mat-list class="col-custom"  *ngIf="this.userMe.role !== 'user' && this.userMe.role !== 'viewer'">
         <div mat-subheader>Funzioni Admin</div>
         <mat-list-item>
           <button
@@ -352,20 +352,23 @@
                               aria-label="Example icon button with a vertical three dot icon"
                               matTooltip="Aggiorna Documento"
                               matTooltipPosition="above"
+                              [disabled]="this.userMe.role === 'viewer'"
                               *ngIf="(this.rendicontazione.enable && enableRendicontazione) || this.userMe.role !== 'user'"
                               (click)="onClickEditAllegato('edit', element, alle)"
-                              style="color:green;"
+                              [style.color.green]="this.userMe.role !== 'viewer'"
                               ><mat-icon>sync</mat-icon>
                           </button>
 
                           <button mat-icon-button
                               aria-label="Example icon button with a vertical three dot icon"
                               matTooltip="Elimina Documento"
+                              [disabled]="this.userMe.role=== 'viewer'"
                               matTooltipPosition="above"
                               *ngIf="(this.rendicontazione.enable && enableRendicontazione)  || this.userMe.role !== 'user'"
                               (click)="onClickDeleteAllegato(alle)"
                               color="accent"
-                              style="color:red;"
+                              [style.color.red]="this.userMe.role !== 'viewer'"
+
                               ><mat-icon>close</mat-icon>
                           </button>
                             </ng-container>
