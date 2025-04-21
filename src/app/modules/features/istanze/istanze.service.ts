@@ -211,7 +211,7 @@ export class IstanzeService {
 
     calcolaContributo(istanza, check, veicolo: Veicolo, type, allegatiVeicoli: Allegato[], veicoli:Veicolo[]){
 
-        // console.log(istanza, check,veicolo,type);
+       console.log(istanza, check,veicolo,type);
         var valoreContributo = 0;
         var magg_pmi = 0;
         var magg_rete = 0;
@@ -237,7 +237,7 @@ export class IstanzeService {
 
 
         var valore = type.typeVei.find(x=> x['campoDb']=== veicolo.type)['grantValue'];
-        console.log(veicolo.type)
+        console.log(veicolo.id)
         console.log(check.dimImpresa,'check.dimImpresa')
         if(check.dimImpresa){
           //console.log('pmi okcheck')
@@ -263,10 +263,12 @@ export class IstanzeService {
 
               let checkRottamazione = idVeicoloArray.filter(
                 (id_Veicolo) =>{
-                  let veicoloData = veicoli.find((x=> x.id === id_Veicolo && x.adminState === 'accepted'));
+                  console.log(id_Veicolo)
+                  let veicoloData = veicoli.find((x=> x.id === id_Veicolo && (x.adminState === 'accepted' || x.id === veicolo.id)));
                   let allegati = [... new Set(allegatiVeicoli.filter((x)=> x.id_Veicolo === id_Veicolo && x.enable && x.adminState === 'accepted' && (x.typeDocument === '11' || x.typeDocument === '14')).map(obj => obj.typeDocument))];
-                  // console.log(allegati)
-                  // console.log(veicoloData)
+                   console.log(allegati)
+                   console.log(veicoli)
+                   console.log(veicoloData)
                   if(allegati.length === 2 && veicoloData !== undefined){
                     veicoliRottamati++
                     return true
@@ -277,7 +279,8 @@ export class IstanzeService {
               console.log(check)
                 if(check.dimImpresa === 3){
                    valoreContributo = 3000;
-                    //    console.log(checkRottamazione.includes(veicolo.id))
+                   console.log(checkRottamazione)
+                        console.log(checkRottamazione.includes(veicolo.id))
                   if(checkRottamazione.includes(veicolo.id) && veicoliRottamati<istanza['rim_rott_'+parseInt(veicolo.type.match(/\d+$/)[0], 10)] ){
                     valoreContributo = 5000;
                   }
@@ -306,8 +309,8 @@ export class IstanzeService {
                 }
             }
         }
-        //console.log(istanza,tipoVeicolo,campoRottamazione)
-       // console.log(istanza[tipoVeicolo] , istanza[campoRottamazione])
+        console.log(istanza,tipoVeicolo,campoRottamazione)
+        console.log(istanza[tipoVeicolo] , istanza[campoRottamazione])
         console.log(valoreContributo, magg_pmi, magg_rete)
         if(
           (istanza[tipoVeicolo]>0) &&

@@ -216,9 +216,9 @@ export class UserIstanzaEditComponent implements OnInit {
 
                               this.integrazione = false;
                               let scadenza = moment();
-                             //console.log(scadenza)
+                             console.log(this.dataFineIstruttoria)
                               if(this.dataFineIstruttoria.isAfter(moment())){
-                               // console.log('rendicondazione apertra')
+                                console.log('rendicondazione apertra')
                                 this.enableRendicontazione =true;
                                 this.rendicontazione.enable = true;
                                 this.istruttoriaRend = true;
@@ -229,7 +229,7 @@ export class UserIstanzaEditComponent implements OnInit {
                                 //console.log(idVeicoliFiltrati);
                                 const veicoliFiltrati = this.listaVeicoli.filter(veicolo => idVeicoliFiltrati.includes(veicolo.id));
                               }else{
-                             //   console.log('rendicondazione chiusaa')
+                                console.log('rendicondazione chiusaa')
 
                               }
                             }
