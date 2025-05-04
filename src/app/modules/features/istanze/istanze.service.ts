@@ -232,7 +232,7 @@ export class IstanzeService {
         //    console.log(idVeicoloUnici.size);
         if(tipoVeicolo.startsWith('rim_')){
             var campoRottamazione = 'rim_rott_'+ tipoVeicolo.slice(-1);
-            //console.log(campoRottamazione)
+            console.log(campoRottamazione)
         }
 
 
@@ -306,8 +306,8 @@ export class IstanzeService {
                 }
             }
         }
-        //console.log(istanza,tipoVeicolo,campoRottamazione)
-       // console.log(istanza[tipoVeicolo] , istanza[campoRottamazione])
+        console.log(istanza,tipoVeicolo,campoRottamazione)
+        console.log(istanza[tipoVeicolo] , istanza[campoRottamazione])
         console.log(valoreContributo, magg_pmi, magg_rete)
         if(
           (istanza[tipoVeicolo]>0) &&

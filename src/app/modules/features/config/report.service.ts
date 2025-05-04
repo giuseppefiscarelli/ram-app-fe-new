@@ -254,7 +254,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
         { text:[ 'Raccomandata via pec all\'indirizzo: ', {text:dataReport['pecImpresa'], bold:true}], alignment:'left',margin: [ 0, 10 ]},
         {columns:[
           {text:'Oggetto: ',width: 'auto',bold:true},
-          {text:'Contributi ai sensi del D.D. 12 aprile 2022 n.155 per le finalità di cui al D.M. 18 novembre 2021 n. 459 - "Incentivi agli investimenti nel settore dell\'autotrasporto". IX Edizione ',margin: [ 5, 0, 0, 0 ], bold:true, alignment:'justify'},
+          {text:'Contributi ai sensi del D.D. 08 giugno 2023 n.242 per le finalità di cui al D.M. 12 aprile 2023 n. 97 - "Incentivi agli investimenti nel settore dell\'autotrasporto". IX Edizione ',margin: [ 5, 0, 0, 0 ], bold:true, alignment:'justify'},
 
         ],margin: [ 0, 5, 0, 5 ]},
         {
@@ -268,7 +268,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
         {ul:details, margin:[0,10], alignment:'justify', bold:true},
           {
             text:[
-              {text: 'Pertanto, ai sensi e per gli effetti dell\'art. 10, comma 4 del D.D 12 aprile 2022 n.155, Vi invitiamo a fornirci la suddetta documentazione '},
+              {text: 'Pertanto, ai sensi e per gli effetti dell\'art. 10, comma 4 del D.D. 08 giugno 2023 n.242, Vi invitiamo a fornirci la suddetta documentazione '},
               {text:'entro e non oltre il termine perentorio di quindici giorni ', bold:true},
               {text:'decorrenti dalla data di ricezione della presente, accedendo al gestionale dedicato sul Portale, già utilizzato per la rendicontazione della domanda. Il Portale sarà abilitato alla modifica dei dati e, all\'interno della Sezione "Richieste integrazioni", al caricamento dei documenti contenenti le integrazioni richieste.'}
             ], alignment:'justify',  margin:[0,0]
@@ -487,21 +487,21 @@ const result = Object.keys(sumsByArtDm).map(artDm => sumsByArtDm[artDm]);
       {text: `${dataReport['indirizzo']}, ${dataReport['numCivico']}`,alignment:'left',margin: [ 250, 0, 0, 0 ]},
       {text: `${dataReport['cap']} - ${dataReport['citta']} ${dataReport['prov']}`,alignment:'left',margin: [ 250, 0, 0, 10 ]},
       {text:[ 'Raccomandata via pec all\'indirizzo: ', {text:dataReport['pecImpresa'], bold:true}], alignment:'left',margin: [ 0, 10 ]},
-      {text:'Oggetto: Contributi ai sensi del D.D. 12 aprile 2022 n.155 per le finalità di cui al D.M. 18 novembre 2021 n. 459 - "Incentivi agli investimenti nel settore dell\'autotrasporto". IX Edizione', bold:true, margin: [ 0, 5, 0, 0 ], alignment:'justify'},
+      {text:'Oggetto: Contributi ai sensi del D.D. 08 giugno 2023 n.242 per le finalità di cui al D.M. 12 aprile 2023 n.97 - "Incentivi agli investimenti nel settore dell\'autotrasporto". IX Edizione', bold:true, margin: [ 0, 5, 0, 0 ], alignment:'justify'},
       {text:`Protocollo Istanza IN ${dataReport['idRam']}/${dataReport['year']} Informativa ai sensi dell'art.10-bis legge 241/90`, bold:true, margin: [ 0, 0, 0, 5 ], alignment:'justify'},
 
       {text:'IL DIRETTORE GENERALE',alignment:'center',margin: [ 0,10 ], bold:true},
       {
         ul:[
           {text: `VISTA la domanda di ammissione al contributo di cui all'oggetto presentata da Codesta impresa e acquisista con protocollo n°${dataReport['idRam']}/${dataReport['year']} del ${moment(dataReport['dataIdRam']).format('DD/MM/YYYY')}`},
-          {text:`VISTO il verbale di riunione della Commissione, istituita ai sensi dell'art. 10, comma 3, D.D. 12 aprile 2022 n.155 , tenutasi il giorno ${moment(Number(dataReport['dataVerbale'])).format('DD/MM/YYYY')}`}
+          {text:`VISTO il verbale di riunione della Commissione, istituita ai sensi dell'art. 10, comma 3, D.D. 08 giugno 2023 n.242 , tenutasi il giorno ${moment(Number(dataReport['dataVerbale'])).format('DD/MM/YYYY')}`}
         ],
         alignment:'justify'
       },
       {text:'fermo restando la permanenza dei requisiti di ammissibilità richiesti dalla normativa vigente, dispone per l\'istanza di finanziamento presentata da Codesta impresa la relativa',
       alignment:'justify'},
       {text:'AMMISSIONE',alignment:'center',margin: [ 0,10 ], bold:true},
-      {text:'per gli importi di seguito ripartiti secondo le categorie e sottocategorie di investimento di cui agli artt. 2 e 5 del D.M. 18 novembre 2021 n. 459 come dichiarati in fase di prenotazione dell’incentivo, e ad esito delle verifiche effettuate presso la banca dati CED del Ministero delle Infrastrutture e dei Trasporti sulla targa del veicolo oggetto di investimento:', alignment:'justify'},
+      {text:'per gli importi di seguito ripartiti secondo le categorie e sottocategorie di investimento di cui agli artt. 2 e 5 del D.M. 12 aprile 2023 n.97 come dichiarati in fase di prenotazione dell’incentivo, e ad esito delle verifiche effettuate presso la banca dati CED del Ministero delle Infrastrutture e dei Trasporti sulla targa del veicolo oggetto di investimento:', alignment:'justify'},
       {
         style: 'tableExample',
         table: {
@@ -536,7 +536,7 @@ const result = Object.keys(sumsByArtDm).map(artDm => sumsByArtDm[artDm]);
                 {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(result.find(x=> x.artDm === '1B')?.totalFinanziamento||0)},
                   ],
               [   '',
-                {text:'Art.5, comma 2, lett c)', alignment:'left' },
+                {text:'Art.5, comma 1, lett c)', alignment:'left' },
                 {text:myGroupedData.find(x=> x.artDm === '2C')?.numAccepted},
                 {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(result.find(x=> x.artDm === '2C')?.totalAmount||0)},
                 {text: myGroupedData.find(x=> x.artDm === '2C')?.totalFinanziamento>0?(istanza.rete && istanza.rete === 'Yes') && (istanza.pmi && istanza.pmi === 'Yes') ? '20%' : istanza.rete === 'Yes' ||istanza.pmi === 'Yes'?'10%':null:null},
@@ -638,7 +638,7 @@ const result = Object.keys(sumsByArtDm).map(artDm => sumsByArtDm[artDm]);
         {text:'AVVERTENZE:',bold:true},
         {text:[
           {text:'Si ricorda che a norma dell’'},
-          {text:'art. 2 comma 6 del D.M. 459/2021 i mezzi oggetto di contributo non possono essere alienati, concessi in locazione o in noleggio e devono rimanere nella piena disponibilità del beneficiario del contributo entro il triennio decorrente dalla data di erogazione del contributo, pena la revoca del contributo erogato. ',bold:true},
+          {text:'art. 2 comma 6 del D.M. 97/2023 i mezzi oggetto di contributo non possono essere alienati, concessi in locazione o in noleggio e devono rimanere nella piena disponibilità del beneficiario del contributo fino a tutto il 31 dicembre 2026, pena la revoca del contributo erogato. ',bold:true},
           {text:'Non si procede all\'erogazione del contributo anche nel caso di trasferimento della disponibilità dei beni oggetto degli incentivi nel periodo intercorrente fra la data di presentazione della domanda e la data di pagamento del beneficio.'}
 
         ], alignment:'justify'},
@@ -743,9 +743,9 @@ const result = Object.keys(sumsByArtDm).map(artDm => sumsByArtDm[artDm]);
         {text: `${dataReport['indirizzo']}, ${dataReport['numCivico']}`,alignment:'left',margin: [ 250, 0, 0, 0 ]},
         {text: `${dataReport['cap']} - ${dataReport['citta']} ${dataReport['prov']}`,alignment:'left',margin: [ 250, 0, 0, 10 ]},
         { text:[ 'Raccomandata via pec all\'indirizzo: ', {text:dataReport['pecImpresa'], bold:true}], alignment:'left',margin: [ 0, 10 ]},
-        {text:'Oggetto: Contributi ai sensi del D.D. 12 aprile 2022 n.155 per le finalità di cui al D.M. 18 novembre 2021 n. 459 - "Incentivi agli investimenti nel settore dell\'autotrasporto". IX Edizione ', bold:true, margin: [ 0, 5, 0, 5 ], alignment:'justify'},
+        {text:'Oggetto: Contributi ai sensi del D.D. 08 giugno 2023 n.242 per le finalità di cui al D.M. 12 aprile 2023 n. 97 - "Incentivi agli investimenti nel settore dell\'autotrasporto". IX Edizione ', bold:true, margin: [ 0, 5, 0, 5 ], alignment:'justify'},
         {text:`Protocollo Istanza IN ${dataReport['idRam']}/${dataReport['year']} Informativa ai sensi dell'art.10-bis legge 241/90`, bold:true, margin: [ 0, 5, 0, 5 ], alignment:'justify'},
-        {alignment:'justify',text:`In riferimento alla domanda di ammissione agli incentivi di cui al D.M. 18 novembre 2021 n. 459 acquisita in data ${moment(dataReport['dataIdRam']).format('DD/MM/YYYY')} con prot. n. ${dataReport['idRam']}/${dataReport['year']} si comunica che, sulla base delle risultanze dell'istruttoria effettuata dalla società RAM S.p.A e della valutazione di questa Commissione, l'istanza di ammissione al finanziamento degli investimenti di cui all'art. 1 del 18 novembre 2021 n.459, destinato alle imprese di autotrasporti merci, è risultata`},
+        {alignment:'justify',text:`In riferimento alla domanda di ammissione agli incentivi di cui al D.M. 12 aprile 2023 n. 97  acquisita in data ${moment(dataReport['dataIdRam']).format('DD/MM/YYYY')} con prot. n. ${dataReport['idRam']}/${dataReport['year']} si comunica che, sulla base delle risultanze dell'istruttoria effettuata dalla società RAM S.p.A e della valutazione di questa Commissione, l'istanza di ammissione al finanziamento degli investimenti di cui all'art. 1 del D.M. 12 aprile 2023 n. 97 , destinato alle imprese di autotrasporti merci, è risultata`},
         {text:'INAMMISSIBILE',alignment:'center',margin: [ 0,10 ], bold:true},
         {text:'Per la/le seguente/i motivazione/i:'},
         {
@@ -754,7 +754,7 @@ const result = Object.keys(sumsByArtDm).map(artDm => sumsByArtDm[artDm]);
         {
           text:[
             {text:'Si comunica che, ai sensi dell\'art. 10-bis, comma 1, della legge n. 241/1990, l\'impresa in indirizzo ha tempo 10 giorni dalla ricezione della presente per produrre per iscritto le proprie eventuali osservazioni, corredate se del caso, da idonea documentazione che ',margin:[0,10]},
-            {bold:true, decoration: 'underline' ,text:'dovrà essere inviata alla RAM S.p.A., esclusivamente presso il seguente indirizzo di posta elettronica certificata: ram.investimenti2022@legalmail.it'},
+            {bold:true, decoration: 'underline' ,text:'dovrà essere inviata alla RAM S.p.A., esclusivamente presso il seguente indirizzo di posta elettronica certificata: ram.investimenti2023@legalmail.it'},
 
           ],alignment:'justify'
         },
@@ -849,7 +849,7 @@ const result = Object.keys(sumsByArtDm).map(artDm => sumsByArtDm[artDm]);
         {text: `${dataReport['indirizzo']}, ${dataReport['numCivico']}`,alignment:'right',margin: [ 0, 0, 0, 0 ]},
         {text: `${dataReport['cap']} - ${dataReport['citta']} ${dataReport['prov']}`,alignment:'right',margin: [ 0, 0, 0, 0 ]},
         { text:[ 'Raccomandata via pec all\'indirizzo: ', {text:dataReport['pecImpresa'], bold:true}],margin: [ 0, 10 ]},
-        {text:'Oggetto: Contributi ai sensi del D.D. 12 aprile 2022 n.155 per le finalità di cui al D.M. 18 novembre 2021 n. 459 - "Incentivi agli investimenti nel settore dell\'autotrasporto" ', bold:true, margin: [ 0, 5, 0, 5 ], alignment:'justify'},
+        {text:'Oggetto: Contributi ai sensi del D.D. 08 giugno 2023 n.242 per le finalità di cui al D.M. 12 aprile 2023 n. 97 - "Incentivi agli investimenti nel settore dell\'autotrasporto" ', bold:true, margin: [ 0, 5, 0, 5 ], alignment:'justify'},
         {text:'IL DIRETTORE GENERALE',alignment:'center',margin: [ 0,10 ], bold:true},
         {
           ul:[
