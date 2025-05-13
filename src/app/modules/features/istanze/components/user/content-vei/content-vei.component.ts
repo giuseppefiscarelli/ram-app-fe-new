@@ -131,7 +131,7 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
         }
 
 
-     // console.log(this.rottamazione, this.docList)
+     //// console.log(this.rottamazione, this.docList)
      // console.log(this.veicolo)
       this.docListVei = this.docList;
 
