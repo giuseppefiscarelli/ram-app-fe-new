@@ -93,7 +93,7 @@ export class UserIstanzaEditComponent implements OnInit {
                     this.user = this.store.pipe(select('authentication'), select('user'));
                     this.user.pipe(take(1)).subscribe((me: User) => this.userMe = me);
      // this.userMe.role = 'user';
-     console.log(this.userMe)
+   //  console.log(this.userMe)
                     this.istanza = this.route.snapshot.data.istanza;
                     this.rendicontazione = this.route.snapshot.data.rendicontazione;
                     //console.log(this.rendicontazione)
@@ -205,7 +205,7 @@ export class UserIstanzaEditComponent implements OnInit {
                               this.rendicontazione.enable = false;
                           }
                           let istruttoria = this.getStatusIstruttoria(this.reports);
-                          //console.log(this.enableRendicontazione)
+                        //  console.log(this.enableRendicontazione)
                           if(istruttoria){
                             this.istruttoriaData = istruttoria;
                             let typeReport = istruttoria.typeReport['type'];
@@ -216,9 +216,9 @@ export class UserIstanzaEditComponent implements OnInit {
 
                               this.integrazione = false;
                               let scadenza = moment();
-                             console.log(this.dataFineIstruttoria)
+                         //    console.log(this.dataFineIstruttoria)
                               if(this.dataFineIstruttoria.isAfter(moment())){
-                                console.log('rendicondazione apertra')
+                          //      console.log('rendicondazione apertra')
                                 this.enableRendicontazione =true;
                                 this.rendicontazione.enable = true;
                                 this.istruttoriaRend = true;
@@ -229,8 +229,8 @@ export class UserIstanzaEditComponent implements OnInit {
                                 //console.log(idVeicoliFiltrati);
                                 const veicoliFiltrati = this.listaVeicoli.filter(veicolo => idVeicoliFiltrati.includes(veicolo.id));
                               }else{
-                                console.log('rendicondazione chiusaa')
-
+                            //    console.log('rendicondazione chiusaa')
+//
                               }
                             }
                           }
@@ -609,7 +609,7 @@ export class UserIstanzaEditComponent implements OnInit {
 blinkBadgeIntegrazione(type, data?){
 
   let blink = false;
-  if(this.istruttoriaData){
+  if(this.istruttoriaData   && this.istruttoriaData.typeReport['type'] === 'integrazione'){
     if(type === 'alle-dichiarazione'){
       blink = this.listaAllegatiDich.some(x=>x.adminState !=='accepted')
 
