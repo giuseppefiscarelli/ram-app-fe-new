@@ -77,6 +77,7 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+   //   console.log(this.enableRendicontazione)
       this.filters$ = this.filters.valueChanges
       .pipe(debounceTime(400))
       .subscribe(
@@ -130,7 +131,7 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
         }
 
 
-     // console.log(this.rottamazione, this.docList)
+     //// console.log(this.rottamazione, this.docList)
      // console.log(this.veicolo)
       this.docListVei = this.docList;
 
@@ -446,10 +447,11 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
    }
 
    checkVeicoloEditable(veicolo){
-   // console.log(veicolo)
+    //console.log(veicolo)
+    //console.log(this.istruttoriaData)
     if(this.istruttoriaData){
       if(this.istruttoriaData.typeReport['type'] === 'integrazione' && veicolo.adminState !== 'accepted'){
-       // console.log(' modificabile')
+        console.log(' modificabile')
         return true
       }else{
         return false
@@ -461,8 +463,9 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
    blinkBadgeIntegrazione(type, data?){
 
     let blink = false;
-  //  console.log(type,data)
-    if(this.istruttoriaData){
+  //  console.log(type,data);
+  //  console.log(this.istruttoriaData , this.istruttoriaData.typeReport['type'] === 'integrazione')
+    if(this.istruttoriaData && this.istruttoriaData.typeReport['type'] === 'integrazione'){
 
         const idVeicoliFiltrati = this.listaAllegati
         .filter(obj => obj.adminState !== 'accepted' && obj.id_Veicolo && obj.enable)
