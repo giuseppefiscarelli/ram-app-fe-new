@@ -2,7 +2,8 @@ export enum UserRole {
   ADMINISTRATOR = 'admin',
   SUPERADMIN = 'superadmin',
   ADMINISTRATIVE = 'administrative',
-  USER = 'user'
+  USER = 'user',
+   VIEWER = 'viewer'
 }
 export const StorageKeys = {
   STORAGE_PREFIX: 'app.backoffice',

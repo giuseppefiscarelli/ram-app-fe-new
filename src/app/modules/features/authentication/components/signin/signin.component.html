@@ -35,29 +35,101 @@
       Piattaforma per la rendicontazione delle domande presentate nell' ambito del DM 317 del 1 dicembre 2023 secondo le modalità di cui all'art. 3 comma 7 del D.D. 28 del 31 gennaio 2024</mat-card>
   <mat-card  fxFlex="25" fxFlex.xs="100" style=" min-height: 50vh;">
     <mat-card-content>
-      <h1 class="center" style="color: #0059b3;text-align: center;">Accedi all'area riservata</h1>
-      <mat-divider></mat-divider>
+
      <form [formGroup]="form"  fxLayout="column" fxLayoutAlign="center center"  style="margin-top: 10px;">
-      <mat-form-field style="width:80%" >
-        <mat-icon matPrefix style="margin-right:10px;">email</mat-icon>
-        <mat-label style="color:#06c;">Indirizzo email</mat-label>
-        <input matInput placeholder="Inserire Email" type="email" formControlName="email">
-        <mat-error *ngIf="form.get('email').invalid">Campo Non Valido</mat-error>
-    </mat-form-field>
 
-    <mat-form-field  style="width:80%">
-      <mat-icon matPrefix style="margin-right:10px;">lock_outline</mat-icon>
-      <mat-label style="color:#06c;">Password</mat-label>
-      <input matInput placeholder="Inserire Password" minlength="8" type="password" formControlName="password">
-  </mat-form-field>
+      <ng-container *ngIf="loginForm">
+        <h1 class="center" style="color: #0059b3;text-align: center;">Accedi all'area riservata</h1>
+        <mat-divider></mat-divider>
+        <mat-form-field style="width:80%" >
+          <mat-icon matPrefix style="margin-right:10px;">email</mat-icon>
+          <mat-label style="color:#06c;">Indirizzo email</mat-label>
+          <input matInput placeholder="Inserire Email" type="email" formControlName="email">
+          <mat-error *ngIf="form.get('email').invalid">Campo Non Valido</mat-error>
+        </mat-form-field>
+
+        <mat-form-field  style="width:80%">
+            <mat-icon matPrefix style="margin-right:10px;">lock_outline</mat-icon>
+            <mat-label style="color:#06c;">Password</mat-label>
+            <input matInput placeholder="Inserire Password" minlength="8" type="password" formControlName="password">
+        </mat-form-field>
+
+            <mat-divider></mat-divider>
+
+
+        <div fxLayout="column" style="margin-top:10px;">
+          <button fxFlex="40" (click)="onSubmitClick()"  fxFlexAlign="center" mat-raised-button color="primary"  class="login-btn" >Accedi</button>
+        </div>
+      </ng-container>
+
+      <ng-container  *ngIf="mfaCode">
+        <h1 class="center" style="color: #0059b3;text-align: center;">Attivazione autenticazione Multifattore</h1>
+        <mat-divider></mat-divider>
+
+              <qrcode
+              [qrdata]=" this.urlCode"
+              [width]="256"
+              [errorCorrectionLevel]="'M'"
+              style="text-align:center"
+          ></qrcode>
+        <mat-divider></mat-divider>
+        <div fxLayout="column" style="margin-top:10px;">
+          <button fxFlex="40"
+          (click)="mfaNext()"
+           fxFlexAlign="center"
+            mat-raised-button color="primary"  class="login-btn" >Avanti</button>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <p>
+          Scarica e installa un'app autenticatrice sul tuo smartphone (se non ne hai già una).
+          Scansiona il codice QR che ti verrà mostrato durante la configurazione.
+          Inserisci il codice generato dall'app per completare l’impostazione.
+          Una volta configurato, ogni volta che accedi all’applicazione ti sarà richiesto di inserire il codice di verifica generato.
+
+        </p>
+        <div fxLayout="column" style="margin-top:10px;">
+          <button fxFlex="40"
+          (click)="openMfaInfo()"
+           fxFlexAlign="center"
+            mat-button color="accent"  class="login-btn" >Clicca qui per maggiori informazioni</button>
+        </div>
+
+
+      </ng-container>
+
+      <ng-container  *ngIf="mfaAuthForm">
+        <h1 class="center" style="color: #0059b3;text-align: center;">Inserisci codice OTP</h1>
+        <mat-divider></mat-divider>
+        <ng-otp-input
+        [formCtrl]="otp"
+        style="display: block;width: max-content;margin: 0 auto;"
+        [config]="{length:6,allowNumbersOnly: true}"></ng-otp-input>
+        <mat-error
+            style="color:red;display: block;width: max-content;margin: 0 auto;"
+            *ngIf="otp?.invalid" [innerHTML]="otp.errors | errors">
+        </mat-error>
+
+        <mat-divider></mat-divider>
+        <div fxLayout="column" style="margin-top:10px;">
+          <button fxFlex="40"
+          (click)="mfaAuth()"
+          [disabled]="otp.invalid"
+           fxFlexAlign="center"
+            mat-raised-button color="primary"  class="login-btn" >Avanti</button>
+        </div>
+      </ng-container>
+
+
+
+
      </form>
-     <mat-divider></mat-divider>
-     <div fxLayout="column" style="margin-top:10px;">
-      <button fxFlex="40" (click)="onSubmitClick()"  fxFlexAlign="center" mat-raised-button color="primary"  class="login-btn" >Accedi</button>
 
-     </div>
+
+
     </mat-card-content>
 
   </mat-card>
 </div>
-<section class="auto-grid">
+

@@ -77,6 +77,7 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+   //   console.log(this.enableRendicontazione)
       this.filters$ = this.filters.valueChanges
       .pipe(debounceTime(400))
       .subscribe(
@@ -96,7 +97,7 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
       const catData = event.source.selectedOptions.selected[0].value
 
 
-      console.log('codiceveicolo' , catData)
+     // console.log('codiceveicolo' , catData)
       this.listVeiFiltered = this.listVei.filter(
           (item) => item.category === catData.catVei && item.type === catData.campoDb
       )
@@ -108,6 +109,7 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
 
         if(catData.catVei === 'A'){
           let numeroRichiestaVeicoliRottamati = Number(this.istanza['rott'+catData.campoDb.match(/\d+/)]);
+         // console.log(numeroRichiestaVeicoliRottamati);
           //console.log(numeroRichiestaVeicoliRottamati);
           if(numeroRichiestaVeicoliRottamati == 0){
             this.docList = this.docList.filter(x=> (x !== 11 && x !== 14))
@@ -115,11 +117,15 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
         }
         else if(catData.catVei === 'C'){
           let numeroRichiestaVeicoliRottamati = Number(this.istanza[catData.campoDb.replace('nv','rott')]);
+        //  console.log(numeroRichiestaVeicoliRottamati);
+        //  console.log(catData.campoDb.replace('nv','rott'));
           //console.log(numeroRichiestaVeicoliRottamati);
           //console.log(catData.campoDb.replace('nv','rott'));
           if(numeroRichiestaVeicoliRottamati == 0){
+          //  console.log('eeeeeeeeeeeeeeeee')
             //console.log('eeeeeeeeeeeeeeeee')
             this.docList = this.docList.filter(x=> (x !== 11 && x !== 14))
+          //  console.log(this.docList)
             //console.log(this.docList)
           }else{
             //console.log(this.docList)
@@ -133,6 +139,7 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
         }
 
 
+     //// console.log(this.rottamazione, this.docList)
       //console.log(this.rottamazione, this.docList)
      // console.log(this.veicolo)
       this.docListVei = this.docList;
@@ -246,7 +253,7 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
 
   }
   getListaDocumenti(veicolo:Veicolo){
-    console.log(veicolo)
+    //console.log(veicolo)
     if(veicolo.acquisitionType === '01'){
       return this.docListVei.filter(x=> x !== 9)
     }
@@ -431,12 +438,12 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
    checkAllegatoEditable(allegato: Allegato, veicolo: Veicolo){
    // console.log(veicolo)
     let dataUpload = moment(Number(allegato.dataUpload))
-
+  //  console.log(this.rendicontazione)
     if(this.istruttoriaData){
       if(dataUpload.isAfter(moment(Number(this.rendicontazione.dateEnd)))){
-        //console.log(this.istruttoriaData)
+       // console.log(this.istruttoriaData)
         if(this.istruttoriaData.typeReport['type'] === 'integrazione'){
-        //  console.log(allegato.id, ' modificabile')
+          //console.log(allegato.id, ' modificabile')
           return true
         }
       }
@@ -449,10 +456,11 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
    }
 
    checkVeicoloEditable(veicolo){
- //   console.log(veicolo)
+    //console.log(veicolo)
+    //console.log(this.istruttoriaData)
     if(this.istruttoriaData){
       if(this.istruttoriaData.typeReport['type'] === 'integrazione' && veicolo.adminState !== 'accepted'){
-       // console.log(' modificabile')
+        console.log(' modificabile')
         return true
       }else{
         return false
@@ -464,8 +472,9 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
    blinkBadgeIntegrazione(type, data?){
 
     let blink = false;
-  //  console.log(type,data)
-    if(this.istruttoriaData){
+  //  console.log(type,data);
+  //  console.log(this.istruttoriaData , this.istruttoriaData.typeReport['type'] === 'integrazione')
+    if(this.istruttoriaData && this.istruttoriaData.typeReport['type'] === 'integrazione'){
 
         const idVeicoliFiltrati = this.listaAllegati
         .filter(obj => obj.adminState !== 'accepted' && obj.id_Veicolo && obj.enable)

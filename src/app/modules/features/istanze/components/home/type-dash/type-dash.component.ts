@@ -29,7 +29,7 @@ export class TypeDashComponent implements OnInit, OnChanges {
 
     ngOnInit() {
 
-      
+
 
     }
     ngOnDestroy(): void {
@@ -37,11 +37,11 @@ export class TypeDashComponent implements OnInit, OnChanges {
 
    }
    ngOnChanges(changes: SimpleChanges): void {
-       console.log(changes)
+      // console.log(changes)
        if(changes['type'] && changes['type'].currentValue){
         this.type = changes['type'].currentValue
         this.today = new Date();
-        console.log(this.today)
+     //   console.log(this.today)
        // console.log('oggi:'+this.today.getTime().toString(), this.type.reportingEndDate)
         if(this.today.getTime().toString() > this.type.reportingEndDate){
           this.expired =true;
@@ -62,7 +62,7 @@ export class TypeDashComponent implements OnInit, OnChanges {
             this.rendClosed = rendClosed;
             this.rendCanceled = rendCanceled;
             this.rendExpired = this.expired?rendExpired:0;
-           
+
             this.changeDetectorRef.markForCheck();
         }
     )

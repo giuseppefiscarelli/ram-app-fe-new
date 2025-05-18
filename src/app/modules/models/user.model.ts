@@ -8,8 +8,8 @@ export class User {
     note:string;
     createdAt: string;
     enablePec:boolean;
-
-
+    mfaEnable?: boolean;
+    mfaSecret?: string;
     constructor() {
 
     }

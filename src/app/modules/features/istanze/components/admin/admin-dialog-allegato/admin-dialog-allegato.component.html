@@ -31,6 +31,7 @@
                   <mat-label>Note</mat-label>
                   <input matInput
                   type="note"
+                  [disabled]="this.userMe.role=== 'viewer'"
                   formControlName="adminNote"
                   >
 
@@ -39,7 +40,7 @@
                       <mat-label>
                         Stato Lavorazione
                       </mat-label>
-                      <mat-select formControlName="adminState">
+                      <mat-select formControlName="adminState"   [disabled]="this.userMe.role=== 'viewer'">
                           <mat-option *ngFor="let statusCheck of filterOptionsDescriptors.statusCheck" [value]="statusCheck.value">
                             {{statusCheck.title | statusCheck}}
                           </mat-option>
@@ -64,17 +65,23 @@
 
 
     </div>
-    <div class="col-custom col-custom-8" *ngIf="this.file">
+    <div class="col-custom col-custom-8" *ngIf="this.file; else nofile">
           <pdf-viewer [src]="this.file"
             [render-text]="true"
             [original-size]="false"
             style="width: 100%; height:65vh;"
             ></pdf-viewer>
     </div>
+    <ng-template #nofile>
+      <div class="col-custom col-custom-8">
+          <h4>Anteprima non disponibile</h4>
+      </div>
+    </ng-template>
+
   </div>
 
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-raised-button color="warn" mat-dialog-close>Chiudi </button>
-  <button mat-raised-button color="primary" (click)="onSubmitBtn()">{{btnSubmit}}</button>
+  <button mat-raised-button color="primary" *ngIf="this.userMe.role !== 'viewer'"(click)="onSubmitBtn()">{{btnSubmit}}</button>
 </mat-dialog-actions>

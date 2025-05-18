@@ -8,6 +8,8 @@ import { EditComponent } from './components/edit/edit.component';
 import { SharedModule } from '@app/modules/shared/shared.module';
 import { RouterModule } from '@angular/router';
 import { PaginatorService } from '@app/modules/services/paginator.service';
+import { MyProfileComponent } from './components/my-profile/my-profile.component';
+import { QRCodeModule } from 'angularx-qrcode';
 
 
 
@@ -15,12 +17,13 @@ import { PaginatorService } from '@app/modules/services/paginator.service';
 @NgModule({
   declarations: [
     ListComponent,
-    EditComponent
+    EditComponent,
+    MyProfileComponent
   ],
   imports: [
     CommonModule,
     SharedModule,
-
+QRCodeModule,
     //MomentModule,
     TranslationsModule.forChild(),
     RouterModule.forChild(UsersRoutes),

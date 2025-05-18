@@ -1,5 +1,6 @@
 export const environment = {
   production: true,
   endpoint: null,
-  baseApi: '/api/'
+  baseApi: '/api/',
+  mfa:false
 };
