@@ -40,7 +40,7 @@ export class CheckCertDialogComponent implements OnInit {
                 private route: ActivatedRoute,
                 private router: Router
     ) {
-     console.log(data)
+    // console.log(data)
       this.type = data.data;
       this.allegati = data.allegati;
       this.istanzaCheck = data.istanzaCheck

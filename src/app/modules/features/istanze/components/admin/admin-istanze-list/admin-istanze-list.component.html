@@ -210,6 +210,7 @@
             color="warn"
             matTooltip="Annullamento"
             matTooltipPosition="above"
+            [disabled]="this.userMe.role === 'viewer'"
             aria-label="Example icon button with a home icon"
             (click)="onClickCancelIstanza(element, index,'edit')"
           >

@@ -60,7 +60,7 @@ export class AdminReportEditComponent implements OnInit {
     private notifications: NotificationsComponent,
 
   ) {
-    console.log(data)
+  //  console.log(data.istanza.civico_impr || 'ciao')
 
     this.typeInstance = data.typeInstance;
     this.alleDich = data.listaAllegatiDich.filter(x=> x.adminState === 'rejected');
@@ -68,7 +68,7 @@ export class AdminReportEditComponent implements OnInit {
     this.veicoli = data.veicoli;
     this.typesDocument = data.typesDocuments;
     this.listaAllegatiVeicolo = data.listaAllegatiVeicoli;
-    console.log(this.listaAllegatiVeicolo)
+ //   console.log(this.listaAllegatiVeicolo)
     this.rejectedVeicoli = this.veicoli.filter(x=> x.adminState === statusAdminVei.rejected)
   //  console.log(this.alleDich, this.alleVei);
     this.mode = data.mode;
@@ -85,7 +85,7 @@ export class AdminReportEditComponent implements OnInit {
       this.form.patchValue({
         ragSociale:this.istanza.ragione_sociale,
         indirizzo:this.istanza.indirizzo_impr,
-        numCivico:this.istanza.civico_impr,
+        numCivico:this.istanza.civico_impr || ' ',
         cap:this.istanza.cap_impr,
         citta:this.istanza.comune_impr,
         prov:this.istanza.prov_impr,
@@ -100,17 +100,17 @@ export class AdminReportEditComponent implements OnInit {
             let campo = vei['campoDb']
 
             let veicoli = this.veicoli.filter(x=> x.type === campo && x.adminState === statusAdminVei.accepted)
-            console.log(campo,veicoli)
+           // console.log(campo,veicoli)
             if(veicoli.length>0){
               veicoli.map((x) => {
                 let totaleArt = 0;
                 if(vei['artDm'] === '2A'){
                   let formArt = this.form.controls['artAa'] as FormGroup;
 
-                  console.log(formArt.controls['numero']);
-                  console.log(formArt.controls['importo']);
-                  console.log(formArt.controls['maggiorazioni']);
-                  console.log(formArt.controls['totale']);
+                //  console.log(formArt.controls['numero']);
+                //  console.log(formArt.controls['importo']);
+                //  console.log(formArt.controls['maggiorazioni']);
+                //  console.log(formArt.controls['totale']);
 
 
                 }else if(vei['artDm'] === '2B'){
@@ -155,9 +155,9 @@ export class AdminReportEditComponent implements OnInit {
       this.record = data.report;
      // this.form =this.initializeForEdit(this.record)
       let detail = JSON.parse(data.report.detail)
-      console.log(detail);
-      let test = detail.map(x=> x|| "")
-      console.log(test)
+     // console.log(detail);
+      let test = detail.map(x=> x || "")
+     // console.log(test)
       this.istanza = data.istanza;
       this.typeReport = data.report.typeReport;
       this.form = this.initializeForEdit(this.record,test )
@@ -307,8 +307,8 @@ export class AdminReportEditComponent implements OnInit {
       this.fileDimControl = this.typeFileControl= false;
   }
   initializeForEdit(data:Report,detail?): FormGroup{
-    console.log(detail)
-    console.log(data)
+   // console.log(detail)
+   // console.log(data)
    let detailArray: any[];
 
     if (detail && detail.length > 0) {
@@ -447,7 +447,7 @@ export class AdminReportEditComponent implements OnInit {
 
 
     let payload = this.form.getRawValue();
-    console.log(payload);
+    //console.log(payload);
     if(this.mode ==='generate'){
 
       const data =  await this.reportService.generateReport( this.typeReport.type,payload, this.veicoli, this.listaAllegatiVeicolo,this.typeInstance , this.istanza);
@@ -473,7 +473,7 @@ export class AdminReportEditComponent implements OnInit {
             payload.dataIdRam = moment(payload.dataIdRam).format('x');
             payload.detail = JSON.stringify(payload.detail);
             payload.dataVerbale =payload.dataVerbale ? moment(payload.dataVerbale).format('x'):null
-            console.log(payload.detail)
+           // console.log(payload.detail)
             return this.service.createReport(payload);
           })
         ).subscribe({
@@ -521,7 +521,7 @@ export class AdminReportEditComponent implements OnInit {
             payload.typeReport = this.typeReport.id;
             payload.dataIdRam = moment(payload.dataIdRam).format('x');
             payload.detail = JSON.stringify(payload.detail);
-            console.log(payload.detail)
+           // console.log(payload.detail)
             payload.dataVerbale =payload.dataVerbale ? moment(payload.dataVerbale).format('x'):null
 
             return this.service.updateReport(payload);
@@ -543,7 +543,7 @@ export class AdminReportEditComponent implements OnInit {
 
       });
     }else if(this.mode ==='prepare'){
-      console.log(this.form.valid, this.fileAttach)
+     // console.log(this.form.valid, this.fileAttach)
 
       // let filePayload : any= {...this.fileAttach, filename:this.fileAttach.name};
       // console.log(filePayload)
@@ -564,7 +564,7 @@ export class AdminReportEditComponent implements OnInit {
           payload.dataUpload = new Date().getTime();
           payload.dataVerbale =payload.dataVerbale ? moment(payload.dataVerbale).format('x'):null
 
-          console.log(payload)
+          //console.log(payload)
           return this.service.updateReport(payload);
         })
       ).subscribe({

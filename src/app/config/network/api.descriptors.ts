@@ -8,7 +8,9 @@ export interface UserDescriptorInterface {
   vatNumber:string;
   note:string;
   createdAt: string;
-  rnablePec:boolean;
+  enablePec:boolean;
+  mfaEnable?:boolean;
+  mfaSecret?:string;
 }
 export interface MenuDescriptorInterface{
 
@@ -460,6 +462,7 @@ export interface AuthDescriptorInterface {
     tokenType: string;
     expiresIn: string;
     accessToken: string;
+    mfaSecret:any;
 }
 
 

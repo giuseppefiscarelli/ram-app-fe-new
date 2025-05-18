@@ -16,7 +16,9 @@ export class UsersFactory {
             'businessName',
             'vatNumber',
             'note',
-            'enablePec'
+            'enablePec',
+             'mfaEnable',
+            'mfaSecret'
 
         ];
 

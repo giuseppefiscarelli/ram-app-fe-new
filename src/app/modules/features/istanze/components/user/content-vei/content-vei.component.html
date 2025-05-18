@@ -197,6 +197,7 @@
                           <table mat-table [dataSource]="listAlleFiltered">
                             <tr mat-header-row *matHeaderRowDef="['type','date','note','action']"></tr>
                             <tr mat-row *matRowDef="let row; columns: ['type','date','note','action'];"></tr>
+
                             <ng-container matColumnDef="type">
                               <th mat-header-cell *matHeaderCellDef> Tipo Documento </th>
                               <td mat-cell *matCellDef="let alle"> {{getTypeDocumentData(alle.typeDocument).description}}
@@ -207,14 +208,17 @@
 
                               </td>
                             </ng-container>
+
                             <ng-container matColumnDef="date">
                               <th mat-header-cell *matHeaderCellDef> Data Caricamento </th>
                               <td mat-cell *matCellDef="let alle"> {{alle.createdAt | date:'dd/MM/yyyy HH:mm'}} </td>
                             </ng-container>
+
                             <ng-container matColumnDef="note">
                               <th mat-header-cell *matHeaderCellDef> Note </th>
                               <td mat-cell *matCellDef="let alle"> {{alle.note}} </td>
                             </ng-container>
+
                             <ng-container matColumnDef="action">
                               <th mat-header-cell *matHeaderCellDef> Action </th>
                               <td mat-cell *matCellDef="let alle;let index = index">
@@ -249,10 +253,11 @@
                                   aria-label="Example icon button with a vertical three dot icon"
                                   matTooltip="Elimina Documento"
                                   matTooltipPosition="above"
-                                  *ngIf="(this.rendicontazione.enable || this.userMe.role !== 'user' || this.enableRendicontazione) &&(checkAllegatoEditable(alle,v))"
+                                  *ngIf="(this.rendicontazione.enable ||  this.enableRendicontazione) &&(checkAllegatoEditable(alle, v))"
+                                  [disabled]="this.userMe.role === 'viewer'"
                                   (click)="onClickDeleteAllegato(alle)"
                                   color="accent"
-                                  style="color:red;"
+
                                 ><mat-icon>close</mat-icon>
                                 </button>
 

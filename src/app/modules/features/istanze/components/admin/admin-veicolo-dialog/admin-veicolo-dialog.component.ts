@@ -110,8 +110,8 @@ export class AdminVeicoloDialogComponent implements OnInit {
       this.dataIstruttoria = data.dataIstruttoria;
       this.rendicontazione = data.rendicontazione;
       this.formVeicolo = this.initializeForEditVeicolo(this.veicolo)
-
-    //  console.log(this.checkAllegatiStatus(), this.allegatiVeicolo.length, 'prova')
+      console.log(data)
+   //   console.log(this.checkAllegatiStatus(), this.allegatiVeicolo.length, 'prova')
    //console.log(this.allegatiVeicolo)
       const checkDichiarazioni = this.checkDichiarazioni();
       //console.log(checkDichiarazioni,'cdich')
@@ -221,9 +221,40 @@ export class AdminVeicoloDialogComponent implements OnInit {
     // console.log(data)
         return data['description'];
     }
+    allegatoModificabile(data){
+    //  let dataUpload = moment(Number(data.dataUpload))
+
+      //console.log(this.dataIstruttoria)
+      let typeIstruttoria = this.dataIstruttoria ? this.dataIstruttoria.typeReport['type'] : undefined ;
+      //console.log(typeIstruttoria)
+      //console.log(this.veicolo)
+
+      //console.log('1', this.veicolo.adminState !== 'acceped' && this.checkAllegatoIntegrazione(data))
+      //console.log('2',!!typeIstruttoria && typeIstruttoria !== 'integrazione')
+      //console.log('3')
+      if(
+        this.veicolo.adminState !== 'acceped' && this.checkAllegatoIntegrazione(data)
+      ){
+        return true
+      }
+      if(!!typeIstruttoria && typeIstruttoria !== 'integrazione'){
+        if( this.veicolo.adminState === 'pending'){
+          return true
+        }
+      }else{
+        if( this.veicolo.adminState === 'pending'){
+          return true
+        }
+      }
+      if(!this.veicolo.adminState){
+        return true
+      }
+      //console.log('da verificare')
+      return false
+    }
 
     onClickAlle(mode,data){
-     //   console.log(mode,data)
+       // console.log(mode,data)
         this.isLoading = true;
         this.alleDataSelected = null;
         if(mode === 'view'){
@@ -244,6 +275,8 @@ export class AdminVeicoloDialogComponent implements OnInit {
 
                 },
                 complete:()=>{
+                //  console.log(this.alleDataSelected);
+                //  console.log (this.rendicontazione)
                     this.isLoading = false;
                     this.changeDetectorRef.markForCheck()
                 }
@@ -430,9 +463,9 @@ export class AdminVeicoloDialogComponent implements OnInit {
         //         const url = window.URL.createObjectURL(blob);
         //     window.open(url,name);
 
-            //     },
-            //         error => console.log('Error downloading the file.')
-            //     );
+              //     },
+              //         error => console.log('Error downloading the file.')
+              //     );
 
         this.services.getFile(file)
         .subscribe(

@@ -11,12 +11,16 @@ import {SharedModule} from '../../shared/shared.module';
 import {SigninComponent} from './components/signin/signin.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { QRCodeModule } from 'angularx-qrcode';
+import { NgOtpInputModule } from 'ng-otp-input';
 @NgModule({
     declarations: [
         SigninComponent,
 
     ],
     imports: [
+      NgOtpInputModule,
+      QRCodeModule,
         SharedModule,
         RouterModule.forChild(AuthenticationRoutes),
         ReactiveFormsModule,

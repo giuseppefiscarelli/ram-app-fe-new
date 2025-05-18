@@ -19,11 +19,13 @@ import { AuthenticationSignin } from '@app/modules/store/actions/authentication.
 import { StorageService } from '@app/modules/services/storage.service';
 import { UsersFactory } from './../../models/factories/users.factory';
 import { HttpBackend, HttpClient } from '@angular/common/http';
+import { environment } from '../../../../environments/environment.prod';
 
 @Injectable()
 export class AuthenticationService {
   ipAddress: any;
     urlAddress: string;
+    mfaEnvironment : boolean;
     constructor(private API: ApiService,
       private http: HttpClient,
       private handler: HttpBackend,
@@ -31,8 +33,8 @@ export class AuthenticationService {
                 private storage: StorageService) {
 
                   this.http = new HttpClient(handler);
-                  this.urlAddress ='https://jsonip.com'
-                //  this.getIPAddress();
+                  this.urlAddress ='https://jsonip.com';
+                  this.mfaEnvironment = environment.mfa;                //  this.getIPAddress();
     }
     public getIPAddress(){
       this.http.get<{ip: string}>('https://jsonip.com')
@@ -41,19 +43,38 @@ export class AuthenticationService {
           return this.ipAddress
       });
   }
-    signin(email, password): Observable<User> {
+    signin(email, password): Observable<{user:User, mfaSecret:any}>{
         return this.API.Authentication
         .signin({username: email, password, ip: this.ipAddress})
             .pipe(
                 map((response: SigninResponseInterface) => {
                     const descriptor: UserDescriptorInterface = response.user;
-
                     const user: User = UsersFactory.create(descriptor);
+                    if(this.mfaEnvironment){
+                      return {user, mfaSecret: response.auth.mfaSecret}
+                    }else{
+                      this.storage.set(StorageKeys.AUTH_LOGGED_USER, user);
+                      this.store.dispatch(AuthenticationSignin({ payload: user }));
+                      return user
+                    }
 
-                    this.storage.set(StorageKeys.AUTH_LOGGED_USER, user);
-                    this.store.dispatch(AuthenticationSignin({ payload: user }));
+                    // this.storage.set(StorageKeys.AUTH_LOGGED_USER, user);
+                    // this.store.dispatch(AuthenticationSignin({ payload: user }));
                 })
             );
+    }
+
+    validateMfa(payload:any){
+      return this.API.Authentication.validateMfa(payload).pipe(
+        map((response: SigninResponseInterface) => {
+            console.log(response)
+            const descriptor: UserDescriptorInterface = response.user;
+            const user: User = UsersFactory.create(descriptor);
+            this.storage.set(StorageKeys.AUTH_LOGGED_USER, user);
+            this.store.dispatch(AuthenticationSignin({ payload: user }));
+            return user
+          })
+    )
     }
 
 }
