@@ -204,8 +204,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
       let logo  = await this.getBase64ImageFromURL('../../../../assets/report/int_ram.png');
       let firma  = await this.getBase64ImageFromURL('../../../../assets/report/firma_lucilla.png');
       let firmaRivelli  = await this.getBase64ImageFromURL('../../../../assets/report/firma_rivelli.png');
-      let firma  = await this.getBase64ImageFromURL('../../../../assets/report/firma_lucilla.png');
-      let firmaRivelli  = await this.getBase64ImageFromURL('../../../../assets/report/firma_rivelli.png');
+
 
       let listaRichieste =[];
       // let details = dataReport['detail'].map(x=> {
@@ -233,7 +232,6 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
                   alignment: 'center'  // Posiziona l'immagine al centro
                 },
                 {
-                  text: 'AREA INCENTIVI, AGEVOLAZIONI \n E MISURE PER LE IMPRESE',
                   text: 'AREA INCENTIVI, AGEVOLAZIONI \n E MISURE PER LE IMPRESE',
                   margin: [10, 0],  // Aggiungi margine superiore e inferiore per spaziare il testo
                   fontSize: 10,
@@ -686,7 +684,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
 
     if(type === 'rigetto'){
       let logo  = await this.getBase64ImageFromURL('../../../../assets/report/mit3.png');
-      let logo  = await this.getBase64ImageFromURL('../../../../assets/report/mit3.png');
+
       let firma  = await this.getBase64ImageFromURL('../../../../assets/report/firma_disanto.png');
       header= [{image: logo,width: 240, margin: [40,20, 0, 0]}];
 

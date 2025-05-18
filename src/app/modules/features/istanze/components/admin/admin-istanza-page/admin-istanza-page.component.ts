@@ -648,6 +648,8 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
                           }
                       }
                   )
+                }
+              )
     }
 
     getInfoTipoVeicolo(campoDb){
