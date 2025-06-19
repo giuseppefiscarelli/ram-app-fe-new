@@ -13,25 +13,48 @@
               <input matInput  formControlName="term"[placeholder]="'Cerca per pec richiedente o ragione sociale'">
             </mat-form-field>
 
-            <mat-form-field class="col-custom col-custom-2"appearance="legacy">
+            <mat-form-field class="col-custom col-custom-1"appearance="legacy">
               <mat-label>Id RAM</mat-label>
               <input matInput  formControlName="id_ram" [placeholder]="'Cerca per id RAM'">
             </mat-form-field>
 
             <mat-form-field class="col-custom col-custom-2">
+              <mat-label>Edizione Istanza</mat-label>
+              <mat-select
+
+              panelClass="large-panel"
+              formControlName="type">
+                  <mat-option>Tutte le edizioni</mat-option>
+                <mat-option *ngFor="let t of this.type" [value]="t.id">
+                  {{t.description}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="col-custom col-custom-2">
               <mat-label>Stato Istanza</mat-label>
               <mat-select formControlName="statoIstanza">
+                <mat-option>Tutti gli stati</mat-option>
                 <mat-option *ngFor="let type of this.rendstatus" [value]="type.value">
                   {{type.view}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
             <mat-form-field class="col-custom col-custom-2">
-              <mat-label>Edizione Istanza</mat-label>
-              <mat-select formControlName="type">
-                  <mat-option>Tutte le edizioni</mat-option>
-                <mat-option *ngFor="let t of this.type" [value]="t.id">
-                  {{t.description}}
+              <mat-label>Stato Istruttoria</mat-label>
+              <mat-select formControlName="statoIstruttoria">
+                 <mat-option>Tutti gli stati</mat-option>
+                <mat-option *ngFor="let type of this.istruttoriastatus" [value]="type.type">
+                  {{type.description}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+             <mat-form-field class="col-custom col-custom-2">
+              <mat-label>Stato Pec</mat-label>
+              <mat-select formControlName="statoPec">
+
+                <mat-option *ngFor="let type of this.pecstatus" [value]="type.value">
+                  {{type.view}}
                 </mat-option>
               </mat-select>
             </mat-form-field>

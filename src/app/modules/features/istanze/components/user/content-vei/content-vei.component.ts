@@ -77,7 +77,9 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-   //   console.log(this.enableRendicontazione)
+   console.log(this.enableRendicontazione)
+   console.log(this.rendicontazione.enable)
+   console.log(this.listVeiFiltered)
       this.filters$ = this.filters.valueChanges
       .pipe(debounceTime(400))
       .subscribe(
@@ -411,14 +413,16 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
 
 
   checkAllegatoIntegrazione(allegato: Allegato){
-    // console.log(allegato)
+     console.log(allegato)
      let dataUpload = moment(Number(allegato.dataUpload))
-    // console.log(this.rendicontazione.dateEnd)
-  //   console.log(this.istruttoriaData)
+     console.log(this.rendicontazione.dateEnd)
+     console.log(this.istruttoriaData)
       if(this.istruttoriaData){
         if(dataUpload.isAfter(moment(Number(this.rendicontazione.dateEnd)))){
           if(this.istruttoriaData.typeReport['type'] === 'integrazione'){
             return 'Documento Integrazione'
+          }else if(this.istruttoriaData.typeReport['type'] === 'rigetto'){
+            return 'Documento Integrazione Preavviso Rigetto'
           }
         }
       }
@@ -449,9 +453,12 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
    checkVeicoloEditable(veicolo){
     //console.log(veicolo)
     //console.log(this.istruttoriaData)
-    if(this.istruttoriaData){
-      if(this.istruttoriaData.typeReport['type'] === 'integrazione' && veicolo.adminState !== 'accepted'){
-        console.log(' modificabile')
+    if(this.istruttoriaData && this.enableRendicontazione){
+      if((this.istruttoriaData.typeReport['type'] === 'integrazione' ||
+        this.istruttoriaData.typeReport['type'] === 'rigetto'
+      )
+         && veicolo.adminState !== 'accepted'){
+      // console.log(' modificabile')
         return true
       }else{
         return false
@@ -494,6 +501,36 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
         }
 
     }
+    // else
+    // if(this.istruttoriaData && this.istruttoriaData.typeReport['type'] === 'rigetto'){
+
+    //     const idVeicoliFiltrati = this.listaAllegati
+    //     .filter(obj => obj.adminState !== 'accepted' && obj.id_Veicolo && obj.enable)
+    //     .map(obj => obj.id_Veicolo)
+    //     .filter((id, index, array) => array.indexOf(id) === index);
+    //     ;
+    //    //s console.log(idVeicoliFiltrati);
+    //     if(type ==='category'){
+
+
+    //       const veicoliFiltrati = this.listVei.filter(veicolo => veicolo.category === data && idVeicoliFiltrati.includes(veicolo.id));
+
+    //       if(veicoliFiltrati.length > 0){
+    //         return true
+    //       }
+    //     }else if(type === 'type'){
+    //       const veicoliFiltrati = this.listVei.filter(veicolo => veicolo.type === data['campoDb'] && idVeicoliFiltrati.includes(veicolo.id));
+
+    //       if(veicoliFiltrati.length > 0){
+    //         return true
+    //       }
+    //     }
+    //     else if(type === 'veicolo'){
+    //       return idVeicoliFiltrati.includes(data['id'])
+
+    //     }
+
+    // }
 
     return false
   }

@@ -144,7 +144,7 @@ export class UserIstanzaEditComponent implements OnInit {
                       this.configService.fetchTypeReport({drop:true, typeistance:this.istanza.tipo_istanza}),
                       this.configService.fetchReport({drop:true, enable:true, id_ram:this.istanza.id_ram})
                     ]).subscribe(
-                      ([vei,alle,ista, typeDocument, typeReport, reports]) => {
+                      ([vei, alle,ista, typeDocument, typeReport, reports]) => {
                           this.listaVeicoli=vei;
                           this.listaAllegati=alle;
                           this.typeIstance = ista;
@@ -205,17 +205,19 @@ export class UserIstanzaEditComponent implements OnInit {
                               this.rendicontazione.enable = false;
                           }
                           let istruttoria = this.getStatusIstruttoria(this.reports);
+                          console.log(istruttoria)
                         //  console.log(this.enableRendicontazione)
                           if(istruttoria){
                             this.istruttoriaData = istruttoria;
                             let typeReport = istruttoria.typeReport['type'];
-                            //console.log(typeReport)
-
+                            console.log(typeReport)
+ let veicoliFiltrati;
                             if(typeReport === 'integrazione'){
                               this.dataFineIstruttoria= moment(Number(this.istruttoriaData.dataInvio)).endOf('day').add(15,'days');
 
                               this.integrazione = false;
                               let scadenza = moment();
+
                          //    console.log(this.dataFineIstruttoria)
                               if(this.dataFineIstruttoria.isAfter(moment())){
                           //      console.log('rendicondazione apertra')
@@ -227,11 +229,32 @@ export class UserIstanzaEditComponent implements OnInit {
                                   .filter(obj => obj.adminState !== 'accepted')
                                   .map(obj => obj.id_Veicolo);
                                 //console.log(idVeicoliFiltrati);
-                                const veicoliFiltrati = this.listaVeicoli.filter(veicolo => idVeicoliFiltrati.includes(veicolo.id));
-                              }else{
+                                 veicoliFiltrati = this.listaVeicoli.filter(veicolo => idVeicoliFiltrati.includes(veicolo.id));
+                              }
+
+                              else{
                             //    console.log('rendicondazione chiusaa')
 //
                               }
+                            }
+                            else if(typeReport === 'rigetto'){
+                              this.dataFineIstruttoria= moment(Number(this.istruttoriaData.dataInvio)).endOf('day').add(10,'days');
+                             // console.log('eccolo fiu fiu')
+
+
+                                  //console.log(idVeicoliFiltrati);
+                              if(this.dataFineIstruttoria.isAfter(moment())){
+                                this.enableRendicontazione =true;
+                                this.rendicontazione.enable = true;
+                                this.istruttoriaRend = true;
+                                this.integrazione = true;
+                                const idVeicoliFiltrati = this.listaAllegati
+                                  .filter(obj => obj.adminState !== 'accepted')
+                                  .map(obj => obj.id_Veicolo);
+                                veicoliFiltrati = this.listaVeicoli.filter(veicolo => idVeicoliFiltrati.includes(veicolo.id));
+                               }else{
+                                console.log('termine scaduto il ',this.dataFineIstruttoria)
+                               }
                             }
                           }
                           this.changeDetectorRef.markForCheck()
