@@ -57,7 +57,9 @@
                             {{checkVeiData(v).icon}}</mat-icon>
                             {{checkVeiData(v).text}}
                         </span>
-                          <span *ngIf="blinkBadgeIntegrazione('veicolo',v)" class="span-status pending blinking" >Richiesta Integrazioni</span>
+                        <span *ngIf="blinkBadgeIntegrazione('veicolo',v)"
+                        class="span-status pending blinking" >
+                        Richiesta Integrazioni</span>
 
 
                         <ng-container *ngIf="checkAlleVei(v) as checkalle; else nocheckalle">
@@ -131,7 +133,13 @@
                     <div class="col-custom col-custom-12">
                       <h3>Documenti Veicolo</h3>
 
-                        <button mat-raised-button *ngIf="(this.rendicontazione.enable  || this.userMe.role === 'superadmin' || this.enableRendicontazione)  &&(checkVeicoloEditable(v))" (click)="newAllegato(v)" color="primary">Inserisci Documento</button>
+                        <button mat-raised-button *ngIf="(
+                          this.rendicontazione.enable  ||
+                          this.userMe.role === 'superadmin' ||
+                          this.enableRendicontazione)  &&
+                          (checkVeicoloEditable(v))"
+                          (click)="newAllegato(v)"
+                          color="primary">Inserisci Documento</button>
                        <!-- <div class="table" *ngIf="listAlleFiltered.length > 0">
                           <table style="width:95%;">
                               <thead>
@@ -211,7 +219,10 @@
 
                             <ng-container matColumnDef="date">
                               <th mat-header-cell *matHeaderCellDef> Data Caricamento </th>
-                              <td mat-cell *matCellDef="let alle"> {{alle.createdAt | date:'dd/MM/yyyy HH:mm'}} </td>
+                              <td mat-cell *matCellDef="let alle">
+                                {{alle.createdAt | date:'dd/MM/yyyy HH:mm'}}
+
+                               </td>
                             </ng-container>
 
                             <ng-container matColumnDef="note">
@@ -253,7 +264,7 @@
                                   aria-label="Example icon button with a vertical three dot icon"
                                   matTooltip="Elimina Documento"
                                   matTooltipPosition="above"
-                                  *ngIf="(this.rendicontazione.enable ||  this.enableRendicontazione) &&(checkAllegatoEditable(alle, v))"
+                                  *ngIf="(this.rendicontazione.enable ||  this.enableRendicontazione || this.userMe.role === 'superadmin') &&(checkAllegatoEditable(alle, v))"
                                   [disabled]="this.userMe.role === 'viewer'"
                                   (click)="onClickDeleteAllegato(alle)"
                                   color="accent"

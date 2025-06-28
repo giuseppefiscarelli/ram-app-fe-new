@@ -1,7 +1,7 @@
 import { CancelDialogComponent } from '../cancel-dialog/cancel-dialog.component';
 import { PaginatorService } from './../../../../../services/paginator.service';
 import { IstanzeService } from './../../../istanze.service';
-import { Component, OnInit, ChangeDetectorRef, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ChangeDetectionStrategy, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Istanza, Rendicontazione } from '@app/modules/models/istanza.model';
 import { TypeIstance } from '@app/modules/models/type-istance.model';
@@ -22,8 +22,8 @@ import moment from 'moment';
   templateUrl: './admin-istanze-list.component.html',
   styleUrls: ['./admin-istanze-list.component.scss'],
   providers:[PaginatorService,ConfigService],
-  changeDetection: ChangeDetectionStrategy.OnPush
-
+  changeDetection: ChangeDetectionStrategy.OnPush,
+encapsulation: ViewEncapsulation.None,
 })
 export class AdminIstanzeListComponent implements OnInit , OnDestroy{
   user: Observable<User>;
@@ -33,10 +33,12 @@ export class AdminIstanzeListComponent implements OnInit , OnDestroy{
   filters: FormGroup;
   filters$: Subscription;
 
-  type:TypeIstance[];
+  type:TypeIstance[] = [];
   typeReports: TypeReport[]=[];
   type$: Subscription;
   rendstatus:any[];
+  istruttoriastatus:any[];
+  pecstatus:any[];
   totRecord: number;
 
   paginator$: Subscription;
@@ -89,6 +91,24 @@ export class AdminIstanzeListComponent implements OnInit , OnDestroy{
 
 
       ];
+       this.istruttoriastatus = [
+        {value: null, view:'Tutti gli stati'},
+        {value: 'enable', view:'Chiusura del procedimento con ammissione al finanziamento'},
+        {value: 'canceled', view:'Preavviso al Rigetto'},
+        {value: 'rend', view:'In Rendicontazione'},
+        {value: 'closed', view:'Rendicontazione Chiusa'},
+        {value: 'expired', view:'Scaduta'},
+
+
+      ];
+       this.pecstatus = [
+        {value: null, view:'Tutti gli stati'},
+        {value: 'sent', view:'Pec Inviata'},
+        {value: 'generated', view:'Documento Generato'},
+        {value: 'prepared', view:'Pec Convalidata'}
+
+
+      ];
       this.filterOptionsDescriptors = {
         statusIstance: [
             {title: 'Tutti', value: null},
@@ -96,7 +116,7 @@ export class AdminIstanzeListComponent implements OnInit , OnDestroy{
         ]
     };
     this.routerSubscription$ = this.router.events.pipe(
-      filter((event: RouterEvent) => event instanceof NavigationStart)
+      filter((event: RouterEvent): event is NavigationStart => event instanceof NavigationStart)
     ).subscribe((event: NavigationStart) => {
 
       const targetRoute = event.url;
@@ -108,11 +128,16 @@ export class AdminIstanzeListComponent implements OnInit , OnDestroy{
       this.serviceConf.fetchTypeInstance({drop:true}),
       this.serviceConf.fetchTypeReport({drop:true})
     ]).subscribe(
-      ([x,typesReport])=> {
-        this.type = x;
-        this.typeReports = typesReport;
+            (result: any) => {
+              const [types, typesReport] = result;
+              this.type = types;
+              this.typeReports = typesReport;
+              this.istruttoriastatus = typesReport.filter((obj, index, self) =>
+                index === self.findIndex(t => t.type === obj.type)
+              );
+              console.log(this.istruttoriastatus)
       })
-    this.filters = new FormGroup({
+      this.filters = new FormGroup({
           term: new FormControl(null),
           type: new FormControl(null),
           list: new FormControl('true'),
@@ -120,13 +145,13 @@ export class AdminIstanzeListComponent implements OnInit , OnDestroy{
           istrActive :new FormControl(null),
           active: new FormControl(null),
           id_ram: new FormControl(null),
-          statoIstanza: new FormControl(null)
+          statoIstanza: new FormControl(null),
+          statoIstruttoria: new FormControl(null),
+          statoPec: new FormControl(null)
       });
 
 
-     }
-
-    ngOnInit(): void {
+     }    ngOnInit(): void {
 
         this.service.countIstanze({total:'true'}).subscribe(
             (total) =>{
