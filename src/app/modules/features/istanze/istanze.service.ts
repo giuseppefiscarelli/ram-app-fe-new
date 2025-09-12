@@ -211,15 +211,16 @@ export class IstanzeService {
 
     calcolaContributo(istanza, check, veicolo: Veicolo, type, allegatiVeicoli: Allegato[], veicoli:Veicolo[]){
 
-       console.log(istanza, check,veicolo,type);
+      // console.log(istanza, check,veicolo,type);
         var valoreContributo = 0;
         var magg_pmi = 0;
         var magg_rete = 0;
         var pmi = check.pmi;
+        var checkRottamazione;
 
 
         let tipoVeicolo = veicolo.type;
-        //console.log(tipoVeicolo);
+     //   console.log(tipoVeicolo);
         //    console.log(allegatiVeicoli);
         let allegatiRottamazione = allegatiVeicoli.filter(x=> (x.typeDocument === '11' || x.typeDocument === '14') && x.adminState );
         //    console.log(allegatiRottamazione)
@@ -232,18 +233,20 @@ export class IstanzeService {
         //    console.log(idVeicoloUnici.size);
         if(tipoVeicolo.startsWith('rim_')){
             var campoRottamazione = 'rim_rott_'+ tipoVeicolo.slice(-1);
-            console.log(campoRottamazione)
+       //     console.log(campoRottamazione)
         }
 
 
         var valore = type.typeVei.find(x=> x['campoDb']=== veicolo.type)['grantValue'];
-        console.log(veicolo.id)
-        console.log(check.dimImpresa,'check.dimImpresa')
+        // console.log(veicolo.id)
+        // console.log(check.dimImpresa,'check.dimImpresa')
+        // console.log(veicolo.type)
         if(check.dimImpresa){
           //console.log('pmi okcheck')
             if(veicolo.type !== 'rim_nv_1' && veicolo.type !== 'rim_nv_2' && veicolo.type !== 'rim_nv_3'){
                // console.log('eccoci', check)
                 valoreContributo = valore;
+              //  console.log(valore)
                 if(check.pmi && check.pmi === 'accepted' && istanza['pmi'] === 'Yes' && check.dimImpresa !== 3) {
                     magg_pmi = valoreContributo * .10;
                 }
@@ -261,14 +264,14 @@ export class IstanzeService {
 
                 //  console.log(idVeicoloArray)
 
-              let checkRottamazione = idVeicoloArray.filter(
+              checkRottamazione = idVeicoloArray.filter(
                 (id_Veicolo) =>{
-                  console.log(id_Veicolo)
+                 // console.log(id_Veicolo)
                   let veicoloData = veicoli.find((x=> x.id === id_Veicolo && (x.adminState === 'accepted' || x.id === veicolo.id)));
                   let allegati = [... new Set(allegatiVeicoli.filter((x)=> x.id_Veicolo === id_Veicolo && x.enable && x.adminState === 'accepted' && (x.typeDocument === '11' || x.typeDocument === '14')).map(obj => obj.typeDocument))];
-                   console.log(allegati)
-                   console.log(veicoli)
-                   console.log(veicoloData)
+                //    console.log(allegati)
+                //    console.log(veicoli)
+                //    console.log(veicoloData)
                   if(allegati.length === 2 && veicoloData !== undefined){
                     veicoliRottamati++
                     return true
@@ -276,45 +279,54 @@ export class IstanzeService {
 
                 }
               )
-              console.log(check)
-                if(check.dimImpresa === 3){
-                   valoreContributo = 3000;
-                   console.log(checkRottamazione)
-                        console.log(checkRottamazione.includes(veicolo.id))
-                  if(checkRottamazione.includes(veicolo.id) && veicoliRottamati<istanza['rim_rott_'+parseInt(veicolo.type.match(/\d+$/)[0], 10)] ){
-                    valoreContributo = 5000;
-                  }
+              // console.log(check)
+              // console.log(checkRottamazione)
+              // console.log(check.dimImpresa)
+              // console.log(veicolo.type)
+              if(check.dimImpresa === 3){
+                  valoreContributo = 3000;
+                //  console.log(checkRottamazione)
+                //       console.log(checkRottamazione.includes(veicolo.id))
+                if(checkRottamazione.includes(veicolo.id) && veicoliRottamati<istanza['rim_rott_'+parseInt(veicolo.type.match(/\d+$/)[0], 10)] ){
+                  valoreContributo = 5000;
+                }
 
-                }
-                else if(check.dimImpresa === 2){
-                    valoreContributo = veicolo.amount * .10;
-                    if(valoreContributo > 5000){
-                        valoreContributo = 5000;
-                    }
-                    if(checkRottamazione.includes(veicolo.id) || veicoliRottamati<istanza['rim_rott_'+parseInt(veicolo.type.match(/\d+$/)[0], 10)] ){
-                        valoreContributo = 7000;
-                    }
-                }
-                else if(check.dimImpresa === 1){
-                  valoreContributo = veicolo.amount * .20
-                    if(valoreContributo > 5000){
-                        valoreContributo = 5000;
-                    }
-                    if(checkRottamazione.includes(veicolo.id) || veicoliRottamati<istanza['rim_rott_'+parseInt(veicolo.type.match(/\d+$/)[0], 10)] ){
-                        valoreContributo = 7000;
-                    }
-                }
-                if(check.rete && check.rete === 'accepted'){
-                    magg_rete = valoreContributo * .10;
-                }
+              }
+              else if(check.dimImpresa === 2){
+                  valoreContributo = veicolo.amount * .10;
+                  if(valoreContributo > 5000){
+                      valoreContributo = 5000;
+                  }
+                  if(checkRottamazione.includes(veicolo.id) || veicoliRottamati<istanza['rim_rott_'+parseInt(veicolo.type.match(/\d+$/)[0], 10)] ){
+                      valoreContributo = 7000;
+                  }
+              }
+              else if(check.dimImpresa === 1){
+                valoreContributo = veicolo.amount * .20
+
+                  if(valoreContributo > 5000){
+                      valoreContributo = 5000;
+                  }
+                  if(checkRottamazione.includes(veicolo.id) || (checkRottamazione.includes(veicolo.id) &&
+                  veicoliRottamati<istanza['rim_rott_'+parseInt(veicolo.type.match(/\d+$/)[0], 10)]) ){
+                      valoreContributo = 7000;
+                  }
+                //  console.log(valoreContributo)
+              }
+              if(check.rete && check.rete === 'accepted'){
+                  magg_rete = valoreContributo * .10;
+              }
             }
         }
-        console.log(istanza,tipoVeicolo,campoRottamazione)
-        console.log(istanza[tipoVeicolo] , istanza[campoRottamazione])
-        console.log(valoreContributo, magg_pmi, magg_rete)
+        // console.log(istanza,tipoVeicolo,campoRottamazione)
+        // console.log(istanza[tipoVeicolo] , istanza[campoRottamazione])
+        // console.log(valoreContributo, magg_pmi, magg_rete)
         if(
           (istanza[tipoVeicolo]>0) &&
-          istanza[campoRottamazione] > numeroRichesteRottamazioneAccettate  && allegatiRottamazione.length>0){
+          istanza[campoRottamazione] > numeroRichesteRottamazioneAccettate  &&
+          allegatiRottamazione.length>0 && checkRottamazione.includes(veicolo.id)
+
+        ){
 
             valoreContributo = 7000
             if(check.dimImpresa === 3){

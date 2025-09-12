@@ -394,21 +394,29 @@ export class AdminVeicoloDialogComponent implements OnInit {
                             )
                             let updateItem = this.allegatiVeicolo.find(x=> x.id === res.id);
                             let index = this.allegatiVeicolo.indexOf(updateItem);
+                            let updateItem2 = this.listaAllegatiVeicoli.find(x=> x.id === res.id);
+
+                            let index2 = this.listaAllegatiVeicoli.indexOf(updateItem2)
                           //  console.log(this.allegatiVeicolo)
+                           // console.log(this.listaAllegatiVeicoli)
                             const currentRecords = [...this.allegatiVeicolo];
+                             const currentRecords2 = [...this.listaAllegatiVeicoli];
                             currentRecords[index] = res;
+                            currentRecords2[index2] = res;
                             this.allegatiVeicolo = [...currentRecords];
+                              this.listaAllegatiVeicoli = [...currentRecords2];
                           //  console.log(this.allegatiVeicolo)
                             this.alleSelected = null;
                          // console.log(this.allegatiVeicolo)
-                        //  console.log(this.checkDichiarazioni(), this.checkAllegatiStatus(), this.allegatiVeicolo.length)
+                          //console.log(this.checkDichiarazioni(), this.checkAllegatiStatus(), this.allegatiVeicolo.length)
                             if(this.checkDichiarazioni() && (this.checkAllegatiStatus() === this.allegatiVeicolo.length)){
                                 this.datiIstruttoriaShow = true;
                                 let contributo  = this.services.calcolaContributo(this.istanza, this.istanzaCheck, this.veicolo, this.typeIstance,this.listaAllegatiVeicoli, this.veicoli)
+
                                 this.valoreContributo = contributo['valoreContributo'];
                                 this.valoreMaggPmi = contributo['magg_pmi'];
                                 this.valoreMaggRete = contributo['magg_rete'];
-                                //console.log(this.valoreContributo,'valore contributo')
+                              //  console.log(this.valoreContributo,'valore contributo')
                                 //this.formVeicolo.controls.valoreContributo.setValue(contributo)
                             }else{
                                 this.datiIstruttoriaShow = false;
