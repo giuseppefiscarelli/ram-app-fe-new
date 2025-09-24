@@ -493,7 +493,8 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
 
 
       let logo  = await this.getBase64ImageFromURL('../../../../assets/report/mit3.png');
-      let firma  = await this.getBase64ImageFromURL('../../../../assets/report/firma_disanto.png');
+      //let firma  = await this.getBase64ImageFromURL('../../../../assets/report/firma_disanto.png');
+      let firma  = await this.getBase64ImageFromURL('../../../../assets/report/firma_fedele.jpg');
 
       header= [{image: logo,width: 240, margin: [60,40]}]
 
@@ -629,11 +630,19 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
 
 
         ], alignment:'justify',margin: [0,10,0,0]},
+ {text:[
+          {text:'Il Direttore Generale \n'},
+          {text:'dr. ing. Fausto Fedele'},
+
+        ], alignment:'right',margin: [40,20,60,10], width: 140},
+
         {
           image: firma,
           alignment:'right',
           width: 140, margin: [40,0, 0, 10]
         }
+
+
 
       )
 
@@ -790,7 +799,8 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
 
     if(type === 'inammissibilita'){
       let logo  = await this.getBase64ImageFromURL('../../../../assets/report/mit3.png');
-      let firma  = await this.getBase64ImageFromURL('../../../../assets/report/firma_disanto.png');
+      // firma  = await this.getBase64ImageFromURL('../../../../assets/report/firma_disanto.png');
+      let firma  = await this.getBase64ImageFromURL('../../../../assets/report/firma_fedele.jpg');
 
 
       header= [{image: logo,width: 240, margin: [20,0, 0, 0]}];
@@ -823,11 +833,19 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
         {text:'a Codesta impresa che il procedimanto amministartivo avviato con l\'istanza di ammissione al contributo si è concluso con il', alignment:'justify'},
         {text:'RIGETTO DELLA DOMANDA',alignment:'center',margin: [ 0,10 ], bold:true},
         {text:'Si comunica altresì che, ai sensi dell\'art. 3, comma 4, della legge 7 agosto 1990 n. 241, avverso il presente atto è ammesso ricorso giurisdizionale avantio al competente Tribunale Amministrativo Regionale oppure, in alternativa, ricorso straordinario al Presidente della Republica, rispettivamente entro sessanta e centoventi giorni dal ricevimento dello stesso.', alignment:'justify'},
+   {text:[
+          {text:'Il Direttore Generale \n'},
+          {text:'dr. ing. Fausto Fedele'},
+
+        ], alignment:'right',margin: [40,20,60,10], width: 140},
+
         {
           image: firma,
           alignment:'right',
-          width: 100, margin: [40,0, 0, 10]
+          width: 140, margin: [40,0, 0, 10]
         }
+
+
 
 
 
