@@ -488,7 +488,7 @@ const result = Object.keys(sumsByArtDm).map(artDm => sumsByArtDm[artDm]);
       {text: `${dataReport['indirizzo']}, ${dataReport['numCivico']}`,alignment:'left',margin: [ 250, 0, 0, 0 ]},
       {text: `${dataReport['cap']} - ${dataReport['citta']} ${dataReport['prov']}`,alignment:'left',margin: [ 250, 0, 0, 10 ]},
       {text:[ 'Raccomandata via pec all\'indirizzo: ', {text:dataReport['pecImpresa'], bold:true}], alignment:'left',margin: [ 0, 10 ]},
-      {text:'Oggetto: Contributi ai sensi del D.D. 31 gennaio 2024 n.28 per le finalità di cui al D.M. 01 dicembre 2023 n. 317 - "Incentivi agli investimenti nel settore dell\'autotrasporto". VIII Edizione', bold:true, margin: [ 0, 5, 0, 0 ], alignment:'justify'},
+      {text:'Oggetto: Contributi ai sensi del D.D. 31 gennaio 2024 n.28 per le finalità di cui al D.M. 01 dicembre 2023 n. 317 - "Incentivi agli investimenti nel settore dell\'autotrasporto". X Edizione', bold:true, margin: [ 0, 5, 0, 0 ], alignment:'justify'},
       {text:`Protocollo Istanza IN ${dataReport['idRam']}/${dataReport['year']} Informativa ai sensi dell'art.10-bis legge 241/90`, bold:true, margin: [ 0, 0, 0, 5 ], alignment:'justify'},
 
       {text:'IL DIRETTORE GENERALE',alignment:'center',margin: [ 0,10 ], bold:true},
@@ -751,7 +751,7 @@ const result = Object.keys(sumsByArtDm).map(artDm => sumsByArtDm[artDm]);
         {text: `${dataReport['indirizzo']}, ${dataReport['numCivico']}`,alignment:'left',margin: [ 250, 0, 0, 0 ]},
         {text: `${dataReport['cap']} - ${dataReport['citta']} ${dataReport['prov']}`,alignment:'left',margin: [ 250, 0, 0, 10 ]},
         { text:[ 'Raccomandata via pec all\'indirizzo: ', {text:dataReport['pecImpresa'], bold:true}], alignment:'left',margin: [ 0, 10 ]},
-        {text:'Oggetto: Contributi ai sensi del D.D. 31 gennaio 2024 n.28 per le finalità di cui al D.M. 01 dicembre 2023 n. 317 - "Incentivi agli investimenti nel settore dell\'autotrasporto". VIII Edizione ', bold:true, margin: [ 0, 5, 0, 5 ], alignment:'justify'},
+        {text:'Oggetto: Contributi ai sensi del D.D. 31 gennaio 2024 n.28 per le finalità di cui al D.M. 01 dicembre 2023 n. 317 - "Incentivi agli investimenti nel settore dell\'autotrasporto". X Edizione ', bold:true, margin: [ 0, 5, 0, 5 ], alignment:'justify'},
         {text:`Protocollo Istanza IN ${dataReport['idRam']}/${dataReport['year']} Informativa ai sensi dell'art.10-bis legge 241/90`, bold:true, margin: [ 0, 5, 0, 5 ], alignment:'justify'},
         {alignment:'justify',text:`In riferimento alla domanda di ammissione agli incentivi di cui al D.M. 01 dicembre 2023 n. 317 acquisita in data ${moment(dataReport['dataIdRam']).format('DD/MM/YYYY')} con prot. n. ${dataReport['idRam']}/${dataReport['year']} si comunica che, sulla base delle risultanze dell'istruttoria effettuata dalla società RAM S.p.A e della valutazione di questa Commissione, l'istanza di ammissione al finanziamento degli investimenti di cui all'art. 1 del 18 novembre 2021 n.459, destinato alle imprese di autotrasporti merci, è risultata`},
         {text:'INAMMISSIBILE',alignment:'center',margin: [ 0,10 ], bold:true},
