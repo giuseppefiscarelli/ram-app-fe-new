@@ -177,6 +177,7 @@ export class AdminReportEditComponent implements OnInit {
         numProt : new FormControl(null),
         dataProt: new FormControl(null),
         dataVerbale:new FormControl(null),
+        dataVerbaleDeduzioni:new FormControl(null),
         ragSociale:new FormControl(null),
         indirizzo:new FormControl(null),
         numCivico:new FormControl(null),
@@ -298,14 +299,14 @@ export class AdminReportEditComponent implements OnInit {
 
     this.form.controls.filenameUpload.setValue(this.fileAttach.name)
     //console.log(this.fileAttach)
-}
-deleteFile(): void{
-    this.fileAttach = null;
-    this.fileName = '';
-    this.form.controls.filenameUpload.setValue(null)
-    this.form.controls.attachControl.setValue(false)
-    this.fileDimControl = this.typeFileControl= false;
-}
+  }
+  deleteFile(): void{
+      this.fileAttach = null;
+      this.fileName = '';
+      this.form.controls.filenameUpload.setValue(null)
+      this.form.controls.attachControl.setValue(false)
+      this.fileDimControl = this.typeFileControl= false;
+  }
   initializeForEdit(data:Report,detail?): FormGroup{
    // console.log(detail)
    // console.log(data)
@@ -324,6 +325,7 @@ deleteFile(): void{
         numProt : new FormControl(data.numProt),
         dataProt: new FormControl(data.dataProt),
         dataVerbale:new FormControl(data.dataVerbale?moment(Number(data.dataVerbale)).toISOString():null),
+        dataVerbaleDeduzioni:new FormControl(data.dataVerbale?moment(Number(data.dataVerbaleDeduzioni)).toISOString():null),
         ragSociale:new FormControl(data.ragSociale),
         indirizzo:new FormControl(data.indirizzo),
         numCivico:new FormControl(data.numCivico),
@@ -472,7 +474,8 @@ deleteFile(): void{
             payload.typeReport = this.typeReport.id;
             payload.dataIdRam = moment(payload.dataIdRam).format('x');
             payload.detail = JSON.stringify(payload.detail);
-            payload.dataVerbale =payload.dataVerbale ? moment(payload.dataVerbale).format('x'):null
+            payload.dataVerbale =payload.dataVerbale ? moment(payload.dataVerbale).format('x'):null;
+            payload.dataVerbaleDeduzioni =payload.dataVerbaleDeduzioni ? moment(payload.dataVerbaleDeduzioni).format('x'):null
            // console.log(payload.detail)
             return this.service.createReport(payload);
           })
