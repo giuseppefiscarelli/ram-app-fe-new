@@ -325,7 +325,7 @@ export class AdminReportEditComponent implements OnInit {
         numProt : new FormControl(data.numProt),
         dataProt: new FormControl(data.dataProt),
         dataVerbale:new FormControl(data.dataVerbale?moment(Number(data.dataVerbale)).toISOString():null),
-        dataVerbaleDeduzioni:new FormControl(data.dataVerbale?moment(Number(data.dataVerbaleDeduzioni)).toISOString():null),
+        dataVerbaleDeduzioni:new FormControl(data.dataVerbaleDeduzioni?moment(Number(data.dataVerbaleDeduzioni)).toISOString():null),
         ragSociale:new FormControl(data.ragSociale),
         indirizzo:new FormControl(data.indirizzo),
         numCivico:new FormControl(data.numCivico),
@@ -401,10 +401,10 @@ export class AdminReportEditComponent implements OnInit {
         }),
         totaleMaggiorazioni:new FormControl(null),
         totaleContributo:new FormControl(null),
-        protPreavvisoRigetto:new FormControl(null),
-        dataPreavvisoRigetto:new FormControl(null),
-        dataNotaInammissibilita:new FormControl(null),
-        motivazioneInammissibilita:new FormControl(null),
+        protPreavvisoRigetto:new FormControl(data.protPreavvisoRigetto),
+        dataPreavvisoRigetto:new FormControl(data.dataPreavvisoRigetto?moment(Number(data.dataPreavvisoRigetto)).toISOString():null),
+        dataNotaInammissibilita:new FormControl(data.dataNotaInammissibilita?moment(Number(data.dataNotaInammissibilita)).toISOString():null),
+        motivazioneInammissibilita:new FormControl(data.motivazioneInammissibilita),
 
       }
     )
@@ -474,9 +474,13 @@ export class AdminReportEditComponent implements OnInit {
             payload.typeReport = this.typeReport.id;
             payload.dataIdRam = moment(payload.dataIdRam).format('x');
             payload.detail = JSON.stringify(payload.detail);
+
             payload.dataVerbale =payload.dataVerbale ? moment(payload.dataVerbale).format('x'):null;
             payload.dataVerbaleDeduzioni =payload.dataVerbaleDeduzioni ? moment(payload.dataVerbaleDeduzioni).format('x'):null
-           // console.log(payload.detail)
+            payload.dataNotaInammissibilita=payload.dataNotaInammissibilita ? moment(payload.dataNotaInammissibilita).format('x'):null
+            payload.dataPreavvisoRigetto=payload.dataPreavvisoRigetto ? moment(payload.dataPreavvisoRigetto).format('x'):null
+
+            // console.log(payload.detail)
             return this.service.createReport(payload);
           })
         ).subscribe({
