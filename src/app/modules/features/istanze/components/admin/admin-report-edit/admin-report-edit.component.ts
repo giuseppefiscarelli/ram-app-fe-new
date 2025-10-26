@@ -476,9 +476,9 @@ export class AdminReportEditComponent implements OnInit {
             payload.detail = JSON.stringify(payload.detail);
 
             payload.dataVerbale =payload.dataVerbale ? moment(payload.dataVerbale).format('x'):null;
-            payload.dataVerbaleDeduzioni =payload.dataVerbaleDeduzioni ? moment(payload.dataVerbaleDeduzioni).format('x'):null
-            payload.dataNotaInammissibilita=payload.dataNotaInammissibilita ? moment(payload.dataNotaInammissibilita).format('x'):null
-            payload.dataPreavvisoRigetto=payload.dataPreavvisoRigetto ? moment(payload.dataPreavvisoRigetto).format('x'):null
+            payload.dataVerbaleDeduzioni =payload.dataVerbaleDeduzioni ? moment(payload.dataVerbaleDeduzioni).format('x'):null;
+            payload.dataNotaInammissibilita=payload.dataNotaInammissibilita ? moment(payload.dataNotaInammissibilita).format('x'):null;
+            payload.dataPreavvisoRigetto=payload.dataPreavvisoRigetto ? moment(payload.dataPreavvisoRigetto).format('x'):null;
 
             // console.log(payload.detail)
             return this.service.createReport(payload);
@@ -529,7 +529,10 @@ export class AdminReportEditComponent implements OnInit {
             payload.dataIdRam = moment(payload.dataIdRam).format('x');
             payload.detail = JSON.stringify(payload.detail);
            // console.log(payload.detail)
-            payload.dataVerbale =payload.dataVerbale ? moment(payload.dataVerbale).format('x'):null
+            payload.dataVerbale =payload.dataVerbale ? moment(payload.dataVerbale).format('x'):null;
+               payload.dataVerbaleDeduzioni =payload.dataVerbaleDeduzioni ? moment(payload.dataVerbaleDeduzioni).format('x'):null;
+            payload.dataNotaInammissibilita=payload.dataNotaInammissibilita ? moment(payload.dataNotaInammissibilita).format('x'):null;
+            payload.dataPreavvisoRigetto=payload.dataPreavvisoRigetto ? moment(payload.dataPreavvisoRigetto).format('x'):null;
 
             return this.service.updateReport(payload);
           })
@@ -569,7 +572,10 @@ export class AdminReportEditComponent implements OnInit {
           payload.statusInvio = 'pending';
           payload.enable = true;
           payload.dataUpload = new Date().getTime();
-          payload.dataVerbale =payload.dataVerbale ? moment(payload.dataVerbale).format('x'):null
+          payload.dataVerbale =payload.dataVerbale ? moment(payload.dataVerbale).format('x'):null;
+             payload.dataVerbaleDeduzioni =payload.dataVerbaleDeduzioni ? moment(payload.dataVerbaleDeduzioni).format('x'):null;
+            payload.dataNotaInammissibilita=payload.dataNotaInammissibilita ? moment(payload.dataNotaInammissibilita).format('x'):null;
+            payload.dataPreavvisoRigetto=payload.dataPreavvisoRigetto ? moment(payload.dataPreavvisoRigetto).format('x'):null;
 
           //console.log(payload)
           return this.service.updateReport(payload);
