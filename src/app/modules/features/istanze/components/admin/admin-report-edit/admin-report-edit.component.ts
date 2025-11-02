@@ -262,7 +262,7 @@ export class AdminReportEditComponent implements OnInit {
   }
   initializeForGenerate(data:Report): FormGroup{
 
-    let subject = 'D.M. 18 novembre 2021 n. 459 - Comunicazioni Pratica In '+this.istanza.id_ram+'/'+this.typeInstance.year;
+    let subject = 'D.M. 12 aprile 2023 n. 97 - Comunicazioni Pratica In '+this.istanza.id_ram+'/'+this.typeInstance.year;
     //console.log(subject)
     let body = `
     Spett.Le ${data.ragSociale}, \n
