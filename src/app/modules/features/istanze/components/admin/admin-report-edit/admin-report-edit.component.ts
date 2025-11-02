@@ -171,6 +171,20 @@ export class AdminReportEditComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    if(this.typeReport.type==='nodeduzioni' || this.typeReport.type==='deduzioni'){
+      this.form.controls.dataVerbale.addValidators([Validators.required]);
+      this.form.controls.dataPreavvisoRigetto.addValidators([Validators.required]);
+        this.form.controls.protPreavvisoRigetto.addValidators([Validators.required]);
+      this.form.controls.dataNotaInammissibilita.addValidators([Validators.required]);
+      this.form.controls.dataVerbaleDeduzioni.addValidators([Validators.required]);
+      this.form.controls.motivazioneInammissibilita.addValidators([Validators.required]);
+
+    }else  if(this.typeReport.type==='ammissione'){
+      this.form.controls.dataVerbale.addValidators([Validators.required]);
+
+
+    }
+    this.form.updateValueAndValidity()
   }
   initializeForCreate(): FormGroup{
     return new FormGroup({
@@ -422,7 +436,7 @@ export class AdminReportEditComponent implements OnInit {
     (this.form.get('detail') as FormArray).removeAt(index);
   }
 
-  getAlleDichDescription(type){
+  getAlleDichDescription(type:any){
     let certType = this.typeInstance.certAttach.find(x=> x['description'] === type)
 
     //console.log(certType)
@@ -449,69 +463,110 @@ export class AdminReportEditComponent implements OnInit {
 
 
     let payload = this.form.getRawValue();
-    //console.log(payload);
-    if(this.mode ==='generate'){
+    if(this.form.valid){
+ //console.log(payload);
+      if(this.mode ==='generate'){
 
-      const data =  await this.reportService.generateReport( this.typeReport.type,payload, this.veicoli, this.listaAllegatiVeicolo,this.typeInstance , this.istanza);
-      //console.log(data)
-      data.getBlob((blob) => {
-        //console.log(blob)
-        blob.filename = `${payload.idRam}_${this.typeReport.type}_${new Date().getTime()}.pdf`;
-        this.reportService.uploadAllegatoFile(blob).pipe(
-          switchMap((res: any) => {
-            const filenameS: string = res.file[0].fd.substring(res.file[0].fd.lastIndexOf('/') + 1);
-            payload.filenameStorage = filenameS;
-            payload.fd = {
-                fd:  res.file[0].fd,
-                filename: res.file[0].filename,
-                type: res.file[0].type,
-                filenameStorage: filenameS
+        const data =  await this.reportService.generateReport( this.typeReport.type,payload, this.veicoli, this.listaAllegatiVeicolo,this.typeInstance , this.istanza);
+        //console.log(data)
+        data.getBlob((blob) => {
+          //console.log(blob)
+          blob.filename = `${payload.idRam}_${this.typeReport.type}_${new Date().getTime()}.pdf`;
+          this.reportService.uploadAllegatoFile(blob).pipe(
+            switchMap((res: any) => {
+              const filenameS: string = res.file[0].fd.substring(res.file[0].fd.lastIndexOf('/') + 1);
+              payload.filenameStorage = filenameS;
+              payload.fd = {
+                  fd:  res.file[0].fd,
+                  filename: res.file[0].filename,
+                  type: res.file[0].type,
+                  filenameStorage: filenameS
+              }
+              payload.userUpload = payload.userCreate =  this.userMe.id;
+              payload.status = 'generated';
+              payload.enable = true;
+              payload.dataUpload = new Date().getTime();
+              payload.typeReport = this.typeReport.id;
+              payload.dataIdRam = moment(payload.dataIdRam).format('x');
+              payload.detail = JSON.stringify(payload.detail);
+
+              payload.dataVerbale =payload.dataVerbale ? moment(payload.dataVerbale).format('x'):null;
+              payload.dataVerbaleDeduzioni =payload.dataVerbaleDeduzioni ? moment(payload.dataVerbaleDeduzioni).format('x'):null;
+              payload.dataNotaInammissibilita=payload.dataNotaInammissibilita ? moment(payload.dataNotaInammissibilita).format('x'):null;
+              payload.dataPreavvisoRigetto=payload.dataPreavvisoRigetto ? moment(payload.dataPreavvisoRigetto).format('x'):null;
+
+              // console.log(payload.detail)
+              return this.service.createReport(payload);
+            })
+          ).subscribe({
+            next: (res) => {
+              this.notifications.toast(
+                TYPE.SUCCESS,
+                  'Operazione Completata','Documento Inserito con Successo'
+              )
+              this.dialogRef.close(res)
+
             }
-            payload.userUpload = payload.userCreate =  this.userMe.id;
-            payload.status = 'generated';
-            payload.enable = true;
-            payload.dataUpload = new Date().getTime();
-            payload.typeReport = this.typeReport.id;
-            payload.dataIdRam = moment(payload.dataIdRam).format('x');
-            payload.detail = JSON.stringify(payload.detail);
-
-            payload.dataVerbale =payload.dataVerbale ? moment(payload.dataVerbale).format('x'):null;
-            payload.dataVerbaleDeduzioni =payload.dataVerbaleDeduzioni ? moment(payload.dataVerbaleDeduzioni).format('x'):null;
-            payload.dataNotaInammissibilita=payload.dataNotaInammissibilita ? moment(payload.dataNotaInammissibilita).format('x'):null;
-            payload.dataPreavvisoRigetto=payload.dataPreavvisoRigetto ? moment(payload.dataPreavvisoRigetto).format('x'):null;
-
-            // console.log(payload.detail)
-            return this.service.createReport(payload);
-          })
-        ).subscribe({
-          next: (res) => {
-            this.notifications.toast(
-              TYPE.SUCCESS,
-                'Operazione Completata','Documento Inserito con Successo'
-            )
-            this.dialogRef.close(res)
-
-          }
+          });
         });
 
+        // this.service.createReport(payload).subscribe({
+        //   next:(res)=>{
+        //     //console.log(res)
+        //   }
+        // })
+      }else if(this.mode === 'edit'){
+        const data =  await this.reportService.generateReport( this.typeReport.type,payload, this.veicoli, this.alleVei,this.typeInstance , this.istanza);
+        //console.log(data)
+        data.getBlob((blob) => {
+          //console.log(blob)
+          blob.filename = `${payload.idRam}_${this.typeReport.type}_${new Date().getTime()}.pdf`;
+          this.reportService.uploadAllegatoFile(blob).pipe(
+            switchMap((res: any) => {
+              const filenameS: string = res.file[0].fd.substring(res.file[0].fd.lastIndexOf('/') + 1);
+              payload.filenameStorage = filenameS;
+              payload.fd = {
+                  fd:  res.file[0].fd,
+                  filename: res.file[0].filename,
+                  type: res.file[0].type,
+                  filenameStorage: filenameS
+              }
+              payload.userUpload = payload.userCreate =  this.userMe.id;
+              payload.status = 'generated';
+              payload.enable = true;
+              payload.dataUpload = new Date().getTime();
+              payload.typeReport = this.typeReport.id;
+              payload.dataIdRam = moment(payload.dataIdRam).format('x');
+              payload.detail = JSON.stringify(payload.detail);
+            // console.log(payload.detail)
+              payload.dataVerbale =payload.dataVerbale ? moment(payload.dataVerbale).format('x'):null;
+                payload.dataVerbaleDeduzioni =payload.dataVerbaleDeduzioni ? moment(payload.dataVerbaleDeduzioni).format('x'):null;
+              payload.dataNotaInammissibilita=payload.dataNotaInammissibilita ? moment(payload.dataNotaInammissibilita).format('x'):null;
+              payload.dataPreavvisoRigetto=payload.dataPreavvisoRigetto ? moment(payload.dataPreavvisoRigetto).format('x'):null;
+
+              return this.service.updateReport(payload);
+            })
+          ).subscribe({
+            next: (res) => {
+              this.notifications.toast(
+                TYPE.SUCCESS,
+                  'Operazione Completata','Documento Inserito con Successo'
+              )
+              this.dialogRef.close(res)
+
+            }
+          });
 
 
 
 
-      });
 
-      // this.service.createReport(payload).subscribe({
-      //   next:(res)=>{
-      //     //console.log(res)
-      //   }
-      // })
-    }else if(this.mode === 'edit'){
-      const data =  await this.reportService.generateReport( this.typeReport.type,payload, this.veicoli, this.alleVei,this.typeInstance , this.istanza);
-      //console.log(data)
-      data.getBlob((blob) => {
-        //console.log(blob)
-        blob.filename = `${payload.idRam}_${this.typeReport.type}_${new Date().getTime()}.pdf`;
-        this.reportService.uploadAllegatoFile(blob).pipe(
+        });
+      }else if(this.mode ==='prepare'){
+        // console.log(this.form.valid, this.fileAttach)
+        // let filePayload : any= {...this.fileAttach, filename:this.fileAttach.name};
+        // console.log(filePayload)
+        this.reportService.uploadAllegato(this.fileAttach).pipe(
           switchMap((res: any) => {
             const filenameS: string = res.file[0].fd.substring(res.file[0].fd.lastIndexOf('/') + 1);
             payload.filenameStorage = filenameS;
@@ -521,19 +576,17 @@ export class AdminReportEditComponent implements OnInit {
                 type: res.file[0].type,
                 filenameStorage: filenameS
             }
-            payload.userUpload = payload.userCreate =  this.userMe.id;
-            payload.status = 'generated';
+            payload.userUpload =  this.userMe.id;
+            payload.status = 'prepared';
+            payload.statusInvio = 'pending';
             payload.enable = true;
             payload.dataUpload = new Date().getTime();
-            payload.typeReport = this.typeReport.id;
-            payload.dataIdRam = moment(payload.dataIdRam).format('x');
-            payload.detail = JSON.stringify(payload.detail);
-           // console.log(payload.detail)
             payload.dataVerbale =payload.dataVerbale ? moment(payload.dataVerbale).format('x'):null;
-               payload.dataVerbaleDeduzioni =payload.dataVerbaleDeduzioni ? moment(payload.dataVerbaleDeduzioni).format('x'):null;
-            payload.dataNotaInammissibilita=payload.dataNotaInammissibilita ? moment(payload.dataNotaInammissibilita).format('x'):null;
-            payload.dataPreavvisoRigetto=payload.dataPreavvisoRigetto ? moment(payload.dataPreavvisoRigetto).format('x'):null;
+              payload.dataVerbaleDeduzioni =payload.dataVerbaleDeduzioni ? moment(payload.dataVerbaleDeduzioni).format('x'):null;
+              payload.dataNotaInammissibilita=payload.dataNotaInammissibilita ? moment(payload.dataNotaInammissibilita).format('x'):null;
+              payload.dataPreavvisoRigetto=payload.dataPreavvisoRigetto ? moment(payload.dataPreavvisoRigetto).format('x'):null;
 
+            //console.log(payload)
             return this.service.updateReport(payload);
           })
         ).subscribe({
@@ -550,51 +603,9 @@ export class AdminReportEditComponent implements OnInit {
 
 
 
-
-      });
-    }else if(this.mode ==='prepare'){
-     // console.log(this.form.valid, this.fileAttach)
-
-      // let filePayload : any= {...this.fileAttach, filename:this.fileAttach.name};
-      // console.log(filePayload)
-      this.reportService.uploadAllegato(this.fileAttach).pipe(
-        switchMap((res: any) => {
-          const filenameS: string = res.file[0].fd.substring(res.file[0].fd.lastIndexOf('/') + 1);
-          payload.filenameStorage = filenameS;
-          payload.fd = {
-              fd:  res.file[0].fd,
-              filename: res.file[0].filename,
-              type: res.file[0].type,
-              filenameStorage: filenameS
-          }
-          payload.userUpload =  this.userMe.id;
-          payload.status = 'prepared';
-          payload.statusInvio = 'pending';
-          payload.enable = true;
-          payload.dataUpload = new Date().getTime();
-          payload.dataVerbale =payload.dataVerbale ? moment(payload.dataVerbale).format('x'):null;
-             payload.dataVerbaleDeduzioni =payload.dataVerbaleDeduzioni ? moment(payload.dataVerbaleDeduzioni).format('x'):null;
-            payload.dataNotaInammissibilita=payload.dataNotaInammissibilita ? moment(payload.dataNotaInammissibilita).format('x'):null;
-            payload.dataPreavvisoRigetto=payload.dataPreavvisoRigetto ? moment(payload.dataPreavvisoRigetto).format('x'):null;
-
-          //console.log(payload)
-          return this.service.updateReport(payload);
-        })
-      ).subscribe({
-        next: (res) => {
-          this.notifications.toast(
-            TYPE.SUCCESS,
-              'Operazione Completata','Documento Inserito con Successo'
-          )
-          this.dialogRef.close(res)
-
-        }
-      });
-
-
-
-
+      }
     }
+
   }
   async previewDoc(){
 
