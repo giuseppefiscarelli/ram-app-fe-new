@@ -949,11 +949,11 @@ const result = Object.keys(sumsByArtDm).map(artDm => sumsByArtDm[artDm]);
       content.push(
         // {text: 'Prot n° '+dataReport['numProt'], margin: [0,25, 0, 0]} ,
         // {text: 'Roma li '+moment(Number(dataReport['dataProt'])).format('DD/MM/YYYY')},
-          {text: 'Spett.Le',alignment:'left',margin: [ 250, 0, 0, 10 ]},
+          {text: 'Spett.Le',alignment:'left',margin: [ 250, 20, 0, 0 ]},
           {text: dataReport['ragSociale'],alignment:'left',margin: [ 250, 0, 0, 0 ]},
           {text: `${dataReport['indirizzo']}, ${dataReport['numCivico']}`,alignment:'left',margin: [ 250, 0, 0, 0 ]},
-          {text: `${dataReport['cap']} - ${dataReport['citta']} ${dataReport['prov']}`,alignment:'left',margin: [ 250, 0, 0, 10 ]},
-          { text:[ 'Raccomandata via pec all\'indirizzo: ', {text:dataReport['pecImpresa'], bold:true}], alignment:'left',margin: [ 0, 10 ]},
+          {text: `${dataReport['cap']} - ${dataReport['citta']} ${dataReport['prov']}`,alignment:'left',margin: [ 250, 0, 0, 5 ]},
+          { text:[ 'Raccomandata via pec all\'indirizzo: ', {text:dataReport['pecImpresa'], bold:true}], alignment:'left',margin: [ 0, 5 ]},
           {text:'Oggetto: Contributi ai sensi del D.D. 12 aprile 2022 n.155 per le finalità di cui al D.M. 18 novembre 2021 n. 459 - "Incentivi agli investimenti nel settore dell\'autotrasporto". VIII Edizione ', bold:true, margin: [ 0, 5, 0, 5 ], alignment:'justify'},
           {text:`Protocollo Istanza IN ${dataReport['idRam']}/${dataReport['year']} `, bold:true, margin: [ 0, 5, 0, 5 ], alignment:'justify'},
           {text:'IL DIRETTORE GENERALE',alignment:'center',margin: [ 0,10 ], bold:true},
@@ -965,21 +965,31 @@ const result = Object.keys(sumsByArtDm).map(artDm => sumsByArtDm[artDm]);
           {text:'COMUNICA',alignment:'center',margin: [ 0,10 ], bold:true},
           {alignment:'justify', margin: [ 0, 5, 0, 5 ],text:`che il procedimento amministrativo avviato con l’istanza di ammissione al contributo si è concluso con il`},
           {text:'RIGETTO DELLA DOMANDA',alignment:'center',margin: [ 0,10 ], bold:true},
-          {alignment:'justify', margin: [ 0, 5, 0, 5 ],text:`${dataReport['motivazioneInammissibilita']}`},
+          {alignment:'justify', margin: [ 0, 5, 0, 5 ],text:`\n${dataReport['motivazioneInammissibilita']}`},
 
-
-          {alignment:'justify', margin: [ 0, 15, 0, 5 ],  fontSize: 10,text:`Si comunica altresì che, ai sensi dell'art. 3, comma 4, della legge 7 agosto 1990 n. 241, avverso il presente atto è ammesso ricorso giurisdizionale avanti al competente Tribunale Amministrativo Regionale oppure, in alterativa, ricorso straordinario al Presidente della Repubblica, rispettivamente entro sessanta e centoventi giorni dal ricevimento dello stesso.`},
-          {text:[
-          {text:'Il Direttore Generale \n'},
-            {text:'dr. ing. Fausto Fedele'},
-
-          ], alignment:'right',margin: [40,0,60,0], width: 140},
 
           {
-            image: firma,
-            alignment:'right',
-            width: 140, margin: [40,0, 0, 10]
+            stack: [
+
+
+                  {
+                    alignment:'justify',
+                    margin: [ 0, 15, 0, 5 ],
+                    text:`Si comunica altresì che, ai sensi dell'art. 3, comma 4, della legge 7 agosto 1990 n. 241, avverso il presente atto è ammesso ricorso giurisdizionale avanti al competente Tribunale Amministrativo Regionale oppure, in alterativa, ricorso straordinario al Presidente della Repubblica, rispettivamente entro sessanta e centoventi giorni dal ricevimento dello stesso.`},
+                  {text:'Il Direttore Generale \n', alignment:'right', margin: [0,0,60,0]},
+                  {text:'dr. ing. Fausto Fedele', alignment:'right', margin: [0,0,60,0]},
+
+
+              ,
+              {
+                image: firma,
+                alignment:'right',
+                width: 120, margin: [40,0, 10, 10]
+              }
+            ],
+            unbreakable: true
           }
+
 
 
 
@@ -1036,11 +1046,11 @@ const result = Object.keys(sumsByArtDm).map(artDm => sumsByArtDm[artDm]);
       content.push(
         // {text: 'Prot n° '+dataReport['numProt'], margin: [0,25, 0, 0]} ,
         // {text: 'Roma li '+moment(Number(dataReport['dataProt'])).format('DD/MM/YYYY')},
-          {text: 'Spett.Le',alignment:'left',margin: [ 250, 0, 0, 10 ]},
+          {text: 'Spett.Le',alignment:'left',margin: [ 250, 20, 0, 10 ]},
           {text: dataReport['ragSociale'],alignment:'left',margin: [ 250, 0, 0, 0 ]},
           {text: `${dataReport['indirizzo']}, ${dataReport['numCivico']}`,alignment:'left',margin: [ 250, 0, 0, 0 ]},
-          {text: `${dataReport['cap']} - ${dataReport['citta']} ${dataReport['prov']}`,alignment:'left',margin: [ 250, 0, 0, 10 ]},
-          { text:[ 'Raccomandata via pec all\'indirizzo: ', {text:dataReport['pecImpresa'], bold:true}], alignment:'left',margin: [ 0, 10 ]},
+          {text: `${dataReport['cap']} - ${dataReport['citta']} ${dataReport['prov']}`,alignment:'left',margin: [ 250, 0, 0, 5 ]},
+          { text:[ 'Raccomandata via pec all\'indirizzo: ', {text:dataReport['pecImpresa'], bold:true}], alignment:'left',margin: [ 0, 5 ]},
           {text:'Oggetto: Contributi ai sensi del D.D. 12 aprile 2022 n.155 per le finalità di cui al D.M. 18 novembre 2021 n. 459 - "Incentivi agli investimenti nel settore dell\'autotrasporto". VIII Edizione ', bold:true, margin: [ 0, 5, 0, 5 ], alignment:'justify'},
           {text:`Protocollo Istanza IN ${dataReport['idRam']}/${dataReport['year']} `, bold:true, margin: [ 0, 5, 0, 5 ], alignment:'justify'},
           {text:'IL DIRETTORE GENERALE',alignment:'center',margin: [ 0,10 ], bold:true},
@@ -1055,17 +1065,27 @@ const result = Object.keys(sumsByArtDm).map(artDm => sumsByArtDm[artDm]);
           {alignment:'justify', margin: [ 0, 5, 0, 5 ],text:`Permane la seguente motivazione di inammissibilità: ${dataReport['motivazioneInammissibilita']}`},
 
 
-          {alignment:'justify', margin: [ 0, 15, 0, 5 ],  fontSize: 10,text:`Si comunica altresì che, ai sensi dell'art. 3, comma 4, della legge 7 agosto 1990 n. 241, avverso il presente atto è ammesso ricorso giurisdizionale avanti al competente Tribunale Amministrativo Regionale oppure, in alterativa, ricorso straordinario al Presidente della Repubblica, rispettivamente entro sessanta e centoventi giorni dal ricevimento dello stesso.`},
-          {text:[
-          {text:'Il Direttore Generale \n'},
-            {text:'dr. ing. Fausto Fedele'},
-
-          ], alignment:'right',margin: [40,0,60,0], width: 140},
 
           {
-            image: firma,
-            alignment:'right',
-            width: 140, margin: [40,0, 0, 10]
+            stack: [
+
+
+                  {
+                    alignment:'justify',
+                    margin: [ 0, 15, 0, 5 ],
+                    text:`Si comunica altresì che, ai sensi dell'art. 3, comma 4, della legge 7 agosto 1990 n. 241, avverso il presente atto è ammesso ricorso giurisdizionale avanti al competente Tribunale Amministrativo Regionale oppure, in alterativa, ricorso straordinario al Presidente della Repubblica, rispettivamente entro sessanta e centoventi giorni dal ricevimento dello stesso.`},
+                  {text:'Il Direttore Generale \n', alignment:'right', margin: [0,0,60,0]},
+                  {text:'dr. ing. Fausto Fedele', alignment:'right', margin: [0,0,60,0]},
+
+
+              ,
+              {
+                image: firma,
+                alignment:'right',
+                width: 120, margin: [40,0, 10, 10]
+              }
+            ],
+            unbreakable: true
           }
 
 
@@ -1153,3 +1173,4 @@ const result = Object.keys(sumsByArtDm).map(artDm => sumsByArtDm[artDm]);
 
 
 }
+
