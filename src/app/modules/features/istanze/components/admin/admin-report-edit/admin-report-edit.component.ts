@@ -31,7 +31,7 @@ export class AdminReportEditComponent implements OnInit {
   user: Observable<User>;
   userMe: User;
   istanza: Istanza;
-  dialogTitle: string;
+   dialogTitle: string;
    btnSubmit: string;
    btnClose: string;
    mode:string;
@@ -171,6 +171,20 @@ export class AdminReportEditComponent implements OnInit {
    }
 
   ngOnInit(): void {
+     if(this.typeReport.type==='nodeduzioni' || this.typeReport.type==='deduzioni'){
+      this.form.controls.dataVerbale.addValidators([Validators.required]);
+      this.form.controls.dataPreavvisoRigetto.addValidators([Validators.required]);
+        this.form.controls.protPreavvisoRigetto.addValidators([Validators.required]);
+      this.form.controls.dataNotaInammissibilita.addValidators([Validators.required]);
+      this.form.controls.dataVerbaleDeduzioni.addValidators([Validators.required]);
+      this.form.controls.motivazioneInammissibilita.addValidators([Validators.required]);
+
+    }else  if(this.typeReport.type==='ammissione'){
+      this.form.controls.dataVerbale.addValidators([Validators.required]);
+
+
+    }
+    this.form.updateValueAndValidity()
   }
   initializeForCreate(): FormGroup{
     return new FormGroup({
@@ -472,7 +486,10 @@ export class AdminReportEditComponent implements OnInit {
             payload.typeReport = this.typeReport.id;
             payload.dataIdRam = moment(payload.dataIdRam).format('x');
             payload.detail = JSON.stringify(payload.detail);
-            payload.dataVerbale =payload.dataVerbale ? moment(payload.dataVerbale).format('x'):null
+              payload.dataVerbale =payload.dataVerbale ? moment(payload.dataVerbale).format('x'):null;
+              payload.dataVerbaleDeduzioni =payload.dataVerbaleDeduzioni ? moment(payload.dataVerbaleDeduzioni).format('x'):null;
+              payload.dataNotaInammissibilita=payload.dataNotaInammissibilita ? moment(payload.dataNotaInammissibilita).format('x'):null;
+              payload.dataPreavvisoRigetto=payload.dataPreavvisoRigetto ? moment(payload.dataPreavvisoRigetto).format('x'):null;
            // console.log(payload.detail)
             return this.service.createReport(payload);
           })
@@ -522,7 +539,10 @@ export class AdminReportEditComponent implements OnInit {
             payload.dataIdRam = moment(payload.dataIdRam).format('x');
             payload.detail = JSON.stringify(payload.detail);
            // console.log(payload.detail)
-            payload.dataVerbale =payload.dataVerbale ? moment(payload.dataVerbale).format('x'):null
+              payload.dataVerbale =payload.dataVerbale ? moment(payload.dataVerbale).format('x'):null;
+              payload.dataVerbaleDeduzioni =payload.dataVerbaleDeduzioni ? moment(payload.dataVerbaleDeduzioni).format('x'):null;
+              payload.dataNotaInammissibilita=payload.dataNotaInammissibilita ? moment(payload.dataNotaInammissibilita).format('x'):null;
+              payload.dataPreavvisoRigetto=payload.dataPreavvisoRigetto ? moment(payload.dataPreavvisoRigetto).format('x'):null;
 
             return this.service.updateReport(payload);
           })
@@ -562,7 +582,10 @@ export class AdminReportEditComponent implements OnInit {
           payload.statusInvio = 'pending';
           payload.enable = true;
           payload.dataUpload = new Date().getTime();
-          payload.dataVerbale =payload.dataVerbale ? moment(payload.dataVerbale).format('x'):null
+              payload.dataVerbale =payload.dataVerbale ? moment(payload.dataVerbale).format('x'):null;
+              payload.dataVerbaleDeduzioni =payload.dataVerbaleDeduzioni ? moment(payload.dataVerbaleDeduzioni).format('x'):null;
+              payload.dataNotaInammissibilita=payload.dataNotaInammissibilita ? moment(payload.dataNotaInammissibilita).format('x'):null;
+              payload.dataPreavvisoRigetto=payload.dataPreavvisoRigetto ? moment(payload.dataPreavvisoRigetto).format('x'):null;
 
           //console.log(payload)
           return this.service.updateReport(payload);

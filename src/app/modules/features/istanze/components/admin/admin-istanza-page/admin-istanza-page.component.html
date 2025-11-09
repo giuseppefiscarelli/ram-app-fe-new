@@ -793,12 +793,12 @@
                       <span > {{type.description}}</span>
 
 
-                           <button style=" margin-left: auto;"mat-raised-button color="primary"   [disabled]="this.userMe.role === 'viewer'" (click)="onClickReport('generate', type, index)">
+                           <button style=" margin-left: auto;"
+                           mat-raised-button color="primary"
+                           [disabled]="this.userMe.role === 'viewer'" (click)="onClickReport('generate', type, index)"
+                           >
                             Genera
                           </button>
-
-
-
                     </mat-list-item>
                    </mat-list>
 
