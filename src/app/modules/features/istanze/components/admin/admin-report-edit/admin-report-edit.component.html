@@ -238,6 +238,180 @@
 
               </form>
             </div>
+
+                        <div class="col-custom col-custom-12" *ngIf="this.typeReport.type==='nodeduzioni'">
+              <form [formGroup]="form">
+                <div class="row-custom">
+                   <div class="col-custom col-custom-6" >
+                      <mat-form-field  style="width: 100%;">
+                            <input matInput
+                            [matDatepicker]="dataVerbale"
+                            formControlName="dataVerbale"
+                            placeholder="Data Verbale riunione"
+                            >
+                            <mat-datepicker-toggle matSuffix [for]="dataVerbale"></mat-datepicker-toggle>
+                            <mat-datepicker #dataVerbale>
+                            </mat-datepicker>
+                            <mat-error *ngIf="form.get('dataVerbale').invalid" [innerHTML]="form.get('dataVerbale') | errors"></mat-error>
+
+                          </mat-form-field>
+                    </div>
+
+                </div>
+                <div class="row-custom">
+                        <div class="col-custom col-custom-6">
+                          <mat-form-field  style="width: 100%;">
+                                <input matInput type="text" [placeholder]="'n° protocollo preavviso di rigetto' | translate" formControlName="protPreavvisoRigetto">
+                                <mat-error *ngIf="form.get('protPreavvisoRigetto').invalid" [innerHTML]="form.get('protPreavvisoRigetto') | errors"></mat-error>
+                            </mat-form-field >
+                        </div>
+                        <div class="col-custom col-custom-6">
+
+                            <mat-form-field  style="width: 100%;">
+                                <input matInput
+                                    [matDatepicker]="dataPreavvisoRigetto"
+                                    formControlName="dataPreavvisoRigetto"
+                                    placeholder="Data Preavviso di rigetto"
+                                >
+                                <mat-datepicker-toggle matSuffix [for]="dataPreavvisoRigetto"></mat-datepicker-toggle>
+                                <mat-datepicker #dataPreavvisoRigetto></mat-datepicker>
+                               <mat-error *ngIf="form.get('dataPreavvisoRigetto').invalid" [innerHTML]="form.get('dataPreavvisoRigetto') | errors"></mat-error>
+
+                            </mat-form-field>
+                        </div>
+
+                </div>
+                <div class="row-custom">
+                  <div class="col-custom col-custom-6" >
+
+                            <mat-form-field  style="width: 100%;">
+                                <input matInput
+                                    [matDatepicker]="dataNotaInammissibilita"
+                                    formControlName="dataNotaInammissibilita"
+                                    placeholder="Data Risposta Preavviso di rigetto"
+                                >
+                                <mat-datepicker-toggle matSuffix [for]="dataNotaInammissibilita"></mat-datepicker-toggle>
+                                <mat-datepicker #dataNotaInammissibilita></mat-datepicker>
+                                <mat-error *ngIf="form.get('dataNotaInammissibilita').invalid" [innerHTML]="form.get('dataNotaInammissibilita') | errors"></mat-error>
+
+                            </mat-form-field>
+                  </div>
+                   <div class="col-custom col-custom-6" >
+
+                            <mat-form-field  style="width: 100%;">
+                                <input matInput
+                                    [matDatepicker]="dataVerbaleDeduzioni"
+                                    formControlName="dataVerbaleDeduzioni"
+                                    placeholder="Data Verbale Chiusura Procedimento"
+                                >
+                                <mat-datepicker-toggle matSuffix [for]="dataVerbaleDeduzioni"></mat-datepicker-toggle>
+                                <mat-datepicker #dataVerbaleDeduzioni></mat-datepicker>
+                                <mat-error *ngIf="form.get('dataVerbaleDeduzioni').invalid" [innerHTML]="form.get('dataVerbaleDeduzioni') | errors"></mat-error>
+
+                            </mat-form-field>
+                  </div>
+                </div>
+                 <div class="row-custom">
+                  <div class="col-custom col-custom-12" >
+                    <mat-form-field style="width:100%">
+                      <textarea matInput [placeholder]="'Motivazione inammissibilità' | translate" formControlName="motivazioneInammissibilita"></textarea>
+                      <mat-error *ngIf="form.get('motivazioneInammissibilita').invalid" [innerHTML]="form.get('motivazioneInammissibilita') | errors"></mat-error>
+                      </mat-form-field>
+
+                  </div>
+                 </div>
+
+
+
+              </form>
+            </div>
+            <div class="col-custom col-custom-12" *ngIf="this.typeReport.type==='deduzioni'">
+              <form [formGroup]="form">
+                <div class="row-custom">
+                   <div class="col-custom col-custom-6" >
+                      <mat-form-field style="width: 100%;">
+                            <input matInput
+                            [matDatepicker]="dataVerbale"
+                            formControlName="dataVerbale"
+                            placeholder="Data Verbale riunione"
+                            >
+                            <mat-datepicker-toggle matSuffix [for]="dataVerbale"></mat-datepicker-toggle>
+                            <mat-datepicker #dataVerbale>
+                            </mat-datepicker>
+                          </mat-form-field>
+                          <mat-error *ngIf="form.get('dataVerbale').invalid" [innerHTML]="form.get('dataVerbale') | errors"></mat-error>
+
+                    </div>
+
+                </div>
+                <div class="row-custom">
+                        <div class="col-custom col-custom-6">
+                          <mat-form-field style="width: 100%;">
+                                <input matInput type="text" [placeholder]="'n° protocollo preavviso di rigetto' | translate" formControlName="protPreavvisoRigetto">
+                                <mat-error *ngIf="form.get('protPreavvisoRigetto').invalid" [innerHTML]="form.get('protPreavvisoRigetto') | errors"></mat-error>
+                            </mat-form-field >
+                        </div>
+                        <div class="col-custom col-custom-6">
+
+                          <mat-form-field style="width: 100%;">
+                                <input matInput
+                                    [matDatepicker]="dataPreavvisoRigetto"
+                                    formControlName="dataPreavvisoRigetto"
+                                    placeholder="Data Preavviso di rigetto"
+                                >
+                                <mat-datepicker-toggle matSuffix [for]="dataPreavvisoRigetto"></mat-datepicker-toggle>
+                                <mat-datepicker #dataPreavvisoRigetto></mat-datepicker>
+                                 <mat-error *ngIf="form.get('dataPreavvisoRigetto').invalid" [innerHTML]="form.get('dataPreavvisoRigetto') | errors"></mat-error>
+                            </mat-form-field>
+                        </div>
+
+                </div>
+                <div class="row-custom">
+                  <div class="col-custom col-custom-6" >
+
+                            <mat-form-field style="width: 100%;">
+                                <input matInput
+                                    [matDatepicker]="dataNotaInammissibilita"
+                                    formControlName="dataNotaInammissibilita"
+                                    placeholder="Data Documentazione inviata"
+                                >
+                                <mat-datepicker-toggle matSuffix [for]="dataNotaInammissibilita"></mat-datepicker-toggle>
+                                <mat-datepicker #dataNotaInammissibilita></mat-datepicker>
+                                 <mat-error *ngIf="form.get('dataNotaInammissibilita').invalid" [innerHTML]="form.get('dataNotaInammissibilita') | errors"></mat-error>
+                            </mat-form-field>
+                  </div>
+                   <div class="col-custom col-custom-6" >
+
+                             <mat-form-field style="width: 100%;">
+                                <input matInput
+                                    [matDatepicker]="dataVerbaleDeduzioni"
+                                    formControlName="dataVerbaleDeduzioni"
+                                    placeholder="Data Verbale Chiusura Procedimento"
+                                >
+                                <mat-datepicker-toggle matSuffix [for]="dataVerbaleDeduzioni"></mat-datepicker-toggle>
+                                <mat-datepicker #dataVerbaleDeduzioni></mat-datepicker>
+                                 <mat-error *ngIf="form.get('dataVerbaleDeduzioni').invalid" [innerHTML]="form.get('dataVerbaleDeduzioni') | errors"></mat-error>
+                            </mat-form-field>
+                  </div>
+                </div>
+                 <div class="row-custom">
+                  <div class="col-custom col-custom-12" >
+                    <mat-form-field style="width:100%">
+                      <textarea matInput
+
+                      [placeholder]="'Motivazione inammissibilità' | translate"
+                      formControlName="motivazioneInammissibilita">
+
+                      </textarea>
+                      <mat-error *ngIf="form.get('motivazioneInammissibilita').invalid" [innerHTML]="form.get('motivazioneInammissibilita') | errors"></mat-error>
+                      </mat-form-field>
+                  </div>
+                 </div>
+
+
+
+              </form>
+            </div>
           </div>
 
         </div>
