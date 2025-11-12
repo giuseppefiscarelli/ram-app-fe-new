@@ -191,6 +191,7 @@ export class AdminReportEditComponent implements OnInit {
         numProt : new FormControl(null),
         dataProt: new FormControl(null),
         dataVerbale:new FormControl(null),
+        dataVerbaleDeduzioni:new FormControl(null),
         ragSociale:new FormControl(null),
         indirizzo:new FormControl(null),
         numCivico:new FormControl(null),
@@ -338,6 +339,7 @@ deleteFile(): void{
         numProt : new FormControl(data.numProt),
         dataProt: new FormControl(data.dataProt),
         dataVerbale:new FormControl(data.dataVerbale?moment(Number(data.dataVerbale)).toISOString():null),
+        dataVerbaleDeduzioni:new FormControl(data.dataVerbaleDeduzioni?moment(Number(data.dataVerbaleDeduzioni)).toISOString():null),
         ragSociale:new FormControl(data.ragSociale),
         indirizzo:new FormControl(data.indirizzo),
         numCivico:new FormControl(data.numCivico),
@@ -462,7 +464,8 @@ deleteFile(): void{
 
     let payload = this.form.getRawValue();
     //console.log(payload);
-    if(this.mode ==='generate'){
+    if(this.form.valid){
+  if(this.mode ==='generate'){
 
       const data =  await this.reportService.generateReport( this.typeReport.type,payload, this.veicoli, this.listaAllegatiVeicolo,this.typeInstance , this.istanza);
       //console.log(data)
@@ -605,6 +608,9 @@ deleteFile(): void{
 
 
     }
+    }
+    return
+
   }
   async previewDoc(){
 
