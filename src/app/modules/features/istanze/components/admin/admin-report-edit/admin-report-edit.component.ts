@@ -72,6 +72,7 @@ export class AdminReportEditComponent implements OnInit {
     this.rejectedVeicoli = this.veicoli.filter(x=> x.adminState === statusAdminVei.rejected)
   //  console.log(this.alleDich, this.alleVei);
     this.mode = data.mode;
+   // console.log(this.mode)
     this.typeReport = data.typeReport;
     this.user = this.store.pipe(select('authentication'), select('user'));
 
@@ -81,7 +82,8 @@ export class AdminReportEditComponent implements OnInit {
       this.istanza = data.istanza;
       this.dialogTitle = 'Inserimento nuovo report - '+ this.typeReport.description;
       this.btnSubmit= 'Crea Report';
-      this.form =this.initializeForCreate()
+      this.form =this.initializeForCreate();
+     // console.log(this.form)
       this.form.patchValue({
         ragSociale:this.istanza.ragione_sociale,
         indirizzo:this.istanza.indirizzo_impr,
@@ -171,6 +173,7 @@ export class AdminReportEditComponent implements OnInit {
    }
 
   ngOnInit(): void {
+   // console.log('this.ngOnInit')
      if(this.typeReport.type==='nodeduzioni' || this.typeReport.type==='deduzioni'){
       this.form.controls.dataVerbale.addValidators([Validators.required]);
       this.form.controls.dataPreavvisoRigetto.addValidators([Validators.required]);
@@ -191,6 +194,7 @@ export class AdminReportEditComponent implements OnInit {
         numProt : new FormControl(null),
         dataProt: new FormControl(null),
         dataVerbale:new FormControl(null),
+        dataVerbaleDeduzioni:new FormControl(null),
         ragSociale:new FormControl(null),
         indirizzo:new FormControl(null),
         numCivico:new FormControl(null),
@@ -277,7 +281,7 @@ export class AdminReportEditComponent implements OnInit {
   initializeForGenerate(data:Report): FormGroup{
 
     let subject = 'D.M. 18 novembre 2021 n. 461 - Comunicazioni Pratica ES '+this.istanza.id_ram+'/'+this.typeInstance.year;
-    console.log(subject)
+    //console.log(subject)
     let body = `
     Spett.Le ${data.ragSociale}, \n
     Si prega di leggere il documento allegato alla email. \n
@@ -338,6 +342,8 @@ export class AdminReportEditComponent implements OnInit {
         numProt : new FormControl(data.numProt),
         dataProt: new FormControl(data.dataProt),
         dataVerbale:new FormControl(data.dataVerbale?moment(Number(data.dataVerbale)).toISOString():null),
+        dataVerbaleDeduzioni:new FormControl(data.dataVerbaleDeduzioni?moment(Number(data.dataVerbaleDeduzioni)).toISOString():null),
+
         ragSociale:new FormControl(data.ragSociale),
         indirizzo:new FormControl(data.indirizzo),
         numCivico:new FormControl(data.numCivico),
@@ -434,15 +440,15 @@ export class AdminReportEditComponent implements OnInit {
     (this.form.get('detail') as FormArray).removeAt(index);
   }
 
-  getAlleDichDescription(type){
-    let certType = this.typeInstance.certAttach.find(x=> x['description'] === type)
+  getAlleDichDescription(type:any){
+    let certType = this.typeInstance.certAttach.find((x:any)=> x['description'] === type)
 
     //console.log(certType)
 
     return certType['longDescription']
   }
 
-  getTypeDucument(idType){
+  getTypeDucument(idType:any){
    // console.log(idType)
     return this.typesDocument.find(x=>x.id == idType)
   }
@@ -459,7 +465,7 @@ export class AdminReportEditComponent implements OnInit {
         control.markAsTouched();
     });
 
-
+    if(this.form.valid){
     let payload = this.form.getRawValue();
     //console.log(payload);
     if(this.mode ==='generate'){
@@ -605,6 +611,9 @@ export class AdminReportEditComponent implements OnInit {
 
 
     }
+    }
+    return
+
   }
   async previewDoc(){
 

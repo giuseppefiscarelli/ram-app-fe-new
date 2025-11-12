@@ -20,6 +20,7 @@ export class ReportsFactory{
             'numProt',
             'dataProt',
             'dataVerbale',
+            'dataVerbaleDeduzioni',
             'ragSociale',
             'indirizzo',
             'numCivico',

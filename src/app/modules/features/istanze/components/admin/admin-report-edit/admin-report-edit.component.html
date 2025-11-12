@@ -227,12 +227,12 @@
               <form [formGroup]="form">
                 <mat-form-field>
                   <input matInput
-                  [matDatepicker]="dataVerbale"
+                  [matDatepicker]="dataVerbaleA"
                   formControlName="dataVerbale"
                   placeholder="Data Verbale riunione"
                   >
-                  <mat-datepicker-toggle matSuffix [for]="dataVerbale"></mat-datepicker-toggle>
-                  <mat-datepicker #dataVerbale>
+                  <mat-datepicker-toggle matSuffix [for]="dataVerbaleA"></mat-datepicker-toggle>
+                  <mat-datepicker #dataVerbaleA>
                   </mat-datepicker>
                 </mat-form-field>
 
@@ -240,19 +240,18 @@
 
               </form>
             </div>
-                        <div class="col-custom col-custom-12" *ngIf="this.typeReport.type==='nodeduzioni'">
+            <div class="col-custom col-custom-12" *ngIf="this.typeReport.type==='nodeduzioni'">
               <form [formGroup]="form">
                 <div class="row-custom">
                    <div class="col-custom col-custom-6" >
                       <mat-form-field  style="width: 100%;">
                             <input matInput
-                            [matDatepicker]="dataVerbale"
+                            [matDatepicker]="dataVerbaleB"
                             formControlName="dataVerbale"
                             placeholder="Data Verbale riunione"
                             >
-                            <mat-datepicker-toggle matSuffix [for]="dataVerbale"></mat-datepicker-toggle>
-                            <mat-datepicker #dataVerbale>
-                            </mat-datepicker>
+                            <mat-datepicker-toggle matSuffix [for]="dataVerbaleB"></mat-datepicker-toggle>
+                            <mat-datepicker #dataVerbaleB></mat-datepicker>
                             <mat-error *ngIf="form.get('dataVerbale').invalid" [innerHTML]="form.get('dataVerbale') | errors"></mat-error>
 
                           </mat-form-field>
@@ -332,15 +331,15 @@
                    <div class="col-custom col-custom-6" >
                       <mat-form-field style="width: 100%;">
                             <input matInput
-                            [matDatepicker]="dataVerbale"
+                            [matDatepicker]="dataVerbaleC"
                             formControlName="dataVerbale"
                             placeholder="Data Verbale riunione"
                             >
-                            <mat-datepicker-toggle matSuffix [for]="dataVerbale"></mat-datepicker-toggle>
-                            <mat-datepicker #dataVerbale>
-                            </mat-datepicker>
+                            <mat-datepicker-toggle matSuffix [for]="dataVerbaleC"></mat-datepicker-toggle>
+                            <mat-datepicker #dataVerbaleC></mat-datepicker>
+                            <mat-error *ngIf="form.get('dataVerbale').invalid" [innerHTML]="form.get('dataVerbale') | errors"></mat-error>
+
                           </mat-form-field>
-                          <mat-error *ngIf="form.get('dataVerbale').invalid" [innerHTML]="form.get('dataVerbale') | errors"></mat-error>
 
                     </div>
 
