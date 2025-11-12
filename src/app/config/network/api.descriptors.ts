@@ -216,6 +216,7 @@ export interface ReportDerscriptorInterface{
   numProt: number ;
   dataProt: string;
   dataVerbale: string;
+  dataVerbaleDeduzioni:string;
   ragSociale: string;
   indirizzo: string;
   numCivico: string;

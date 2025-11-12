@@ -337,8 +337,9 @@
                             <mat-datepicker-toggle matSuffix [for]="dataVerbale"></mat-datepicker-toggle>
                             <mat-datepicker #dataVerbale>
                             </mat-datepicker>
+                                                      <mat-error *ngIf="form.get('dataVerbale').invalid" [innerHTML]="form.get('dataVerbale') | errors"></mat-error>
+
                           </mat-form-field>
-                          <mat-error *ngIf="form.get('dataVerbale').invalid" [innerHTML]="form.get('dataVerbale') | errors"></mat-error>
 
                     </div>
 

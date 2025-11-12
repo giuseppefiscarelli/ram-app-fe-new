@@ -16,6 +16,7 @@ export class Report {
   numProt: number | null;
   dataProt: string | null;
   dataVerbale: string | null;
+  dataVerbaleDeduzioni: string | null;
   ragSociale: string;
   indirizzo: string;
   numCivico: string;
