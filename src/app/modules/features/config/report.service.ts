@@ -47,44 +47,16 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
 
 
 
-   async generateReport(type,dataReport, veicoli?:Veicolo[], allegatiVeicoli?:Allegato[],typeIstance?: TypeIstance, istanza?:Istanza){
-   // console.log(dataReport);
-   // console.log(type)
-   // console.log(istanza)
-//    return true
-     // console.log(pdfFonts.fonts)
-    var header = [];
+   async generateReport(type:any,dataReport:any, veicoli?:Veicolo[], allegatiVeicoli?:Allegato[],typeIstance?: TypeIstance, istanza?:Istanza){
+
+    var header:any = [];
     let content = [];
     let footer ={};
-    // if(dataReport){
-    //   if(dataReport.headerData){
-    //     let hd =dataReport.headerData
-    //     console.log(hd)
-    //     header.push({
-    //       image:  await this.getBase64ImageFromURL(hd.logo ),
-    //       width: hd.dimensions, margin: [
-    //         hd.marginLeft,
-    //         hd.marginTop,
-    //         hd.marginRight,
-    //         hd.marginBottom,
+    const DD = 'D.D. 31 gennaio 2024 n.28';
+    const DM = 'D.M. 01 dicembre 2023 n. 317';
+    const DMS = '317/2023';
+    const EDIZIONE = 'X Edizione'
 
-    //       ]
-    //     })
-    //   }
-
-    //   if(dataReport.subHeaderData.length > 0){
-
-    //     dataReport.subHeaderData.map(
-    //       d=>  content.push(d)
-    //     )
-
-    //   }
-    //   if(dataReport.test){
-    //     dataReport.test.map(
-    //       d=>  content.push(d)
-    //     )
-    //   }
-    // }
 
     pdfMake.fonts = {
       'Arial' : {
@@ -196,8 +168,6 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
 
       }
     }
-    //console.log(dataReport
-   //   )
 
 
     if(type === 'integrazione'){
@@ -206,17 +176,13 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
       let firmaRivelli  = await this.getBase64ImageFromURL('../../../../assets/report/firma_rivelli.png');
 
       let listaRichieste =[];
-   //   console.log( dataReport['detail'])
       let details = dataReport['detail'].map(
-        (item) => {
+        (item:any) => {
           return { text: item, margin: [0, 0, 0, 5] };
         }
       )
-     // console.log(details)
 
        header= [
-
-
         {
           columns: [
             {
@@ -240,83 +206,71 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
           ]
         }
 
-
-
-
        ]
       content.push(
-        // {text: 'Prot n° '+dataReport['numProt'],margin: [ 0, 10, 0, 0 ]} ,
-        // {text: 'Roma li '+dataReport['dataProt']},
-        {text: 'Spett.Le',alignment:'left',margin: [ 250, 20, 0, 0 ]},
-        {text: dataReport['ragSociale'],alignment:'left',margin: [ 250, 0, 0, 0 ]},
-        {text: `${dataReport['indirizzo']}, ${dataReport['numCivico']}`,alignment:'left',margin: [ 250, 0, 0, 0 ]},
-        {text: `${dataReport['cap']} - ${dataReport['citta']} ${dataReport['prov']}`,alignment:'left',margin: [ 250, 0, 0, 10 ]},
-        { text:[ 'Raccomandata via pec all\'indirizzo: ', {text:dataReport['pecImpresa'], bold:true}], alignment:'left',margin: [ 0, 10 ]},
-        {columns:[
-          {text:'Oggetto: ',width: 'auto',bold:true},
-          {text:'Contributi ai sensi del D.D. 31 gennaio 2024 n.28 per le finalità di cui al D.M. 01 dicembre 2023 n. 317 - "Incentivi agli investimenti nel settore dell\'autotrasporto". X Edizione ',margin: [ 5, 0, 0, 0 ], bold:true, alignment:'justify'},
+      {text: 'Spett.Le',alignment:'left',margin: [ 250, 20, 0, 0 ]},
+      {text: dataReport['ragSociale'],alignment:'left',margin: [ 250, 0, 0, 0 ]},
+      {text: `${dataReport['indirizzo']}, ${dataReport['numCivico']}`,alignment:'left',margin: [ 250, 0, 0, 0 ]},
+      {text: `${dataReport['cap']} - ${dataReport['citta']} ${dataReport['prov']}`,alignment:'left',margin: [ 250, 0, 0, 10 ]},
+      { text:[ 'Raccomandata via pec all\'indirizzo: ', {text:dataReport['pecImpresa'], bold:true}], alignment:'left',margin: [ 0, 10 ]},
+      {columns:[
+        {text:'Oggetto: ',width: 'auto',bold:true},
+        {text:'Contributi ai sensi del '+DD+' per le finalità di cui al '+DM+' - "Incentivi agli investimenti nel settore dell\'autotrasporto". '+EDIZIONE,margin: [ 5, 0, 0, 0 ], bold:true, alignment:'justify'},
 
-        ],margin: [ 0, 5, 0, 5 ]},
+      ],margin: [ 0, 5, 0, 5 ]},
+      {
+        text:[
+          {text:'In qualità di soggetto attuatore, per conto del Ministero delle Infrastrutture e dei Trasporti della gestione operativa del decreto in oggetto, Vi comunichiamo che a seguito di verifiche effettuate, per poter istruire la Vostra istanza prot. R.A.M. S.p.a.'}
+          ,
+          {text: ` IN ${dataReport['idRam']}/${dataReport['year']}`, bold: true},
+          { text: ' abbiamo necessità di ricevere i seguenti chiarimenti e/o documenti:'}
+        ], alignment:'justify'
+      },
+      {ul:details, margin:[0,10], alignment:'justify', bold:true},
         {
           text:[
-           {text:'In qualità di soggetto attuatore, per conto del Ministero delle Infrastrutture e dei Trasporti della gestione operativa del decreto in oggetto, Vi comunichiamo che a seguito di verifiche effettuate, per poter istruire la Vostra istanza prot. R.A.M. S.p.a.'}
-            ,
-            {text: ` IN ${dataReport['idRam']}/${dataReport['year']}`, bold: true},
-            { text: ' abbiamo necessità di ricevere i seguenti chiarimenti e/o documenti:'}
-          ], alignment:'justify'
+            {text: 'Pertanto, ai sensi e per gli effetti dell\'art. 10, comma 4 del '+DD+', Vi invitiamo a fornirci la suddetta documentazione '},
+            {text:'entro e non oltre il termine perentorio di quindici giorni ', bold:true},
+            {text:'decorrenti dalla data di ricezione della presente, accedendo al gestionale dedicato sul Portale, già utilizzato per la rendicontazione della domanda. Il Portale sarà abilitato alla modifica dei dati e, all\'interno della Sezione "Richieste integrazioni", al caricamento dei documenti contenenti le integrazioni richieste.'}
+          ], alignment:'justify',  margin:[0,0]
         },
-        {ul:details, margin:[0,10], alignment:'justify', bold:true},
+
+          {text:'Al fine di porre in condizione codesta spett.le impresa di rispettare pienamente quanto previsto dal decreto in oggetto specificato, si invita quest\'ultima a tenere presenti le seguenti inderogabili disposizioni:'},
           {
-            text:[
-              {text: 'Pertanto, ai sensi e per gli effetti dell\'art. 10, comma 4 del D.D 31 gennaio 2024 n. 28, Vi invitiamo a fornirci la suddetta documentazione '},
-              {text:'entro e non oltre il termine perentorio di quindici giorni ', bold:true},
-              {text:'decorrenti dalla data di ricezione della presente, accedendo al gestionale dedicato sul Portale, già utilizzato per la rendicontazione della domanda. Il Portale sarà abilitato alla modifica dei dati e, all\'interno della Sezione "Richieste integrazioni", al caricamento dei documenti contenenti le integrazioni richieste.'}
-            ], alignment:'justify',  margin:[0,0]
-          },
-
-            {text:'Al fine di porre in condizione codesta spett.le impresa di rispettare pienamente quanto previsto dal decreto in oggetto specificato, si invita quest\'ultima a tenere presenti le seguenti inderogabili disposizioni:'},
-            {
-              ol:[
-                'la documentazione inviata dovrà rispettare scrupolosamente i criteri di sostanza e di forma richiesti;',
-                'decorso il termine perentorio suindicato, l\'istruttoria verrà conclusa sulla sola base della documentazione valida disponibile, senza che possa in alcun modo avviarsi qualsiasi, ulteriore fase di interlocuzione.'
-              ], margin:[20,5], alignment:'justify'
-             },
-             {text:'Per qualsiasi informazione, potrete rivolgerVi al nostro Help Desk Incentivi'},
-             {text:[{text:'(e-mail: '},{text:'incentivoinvestimenti@ramspa.it', bold:true},{text:').'}]},
-             {text:' Cordiali saluti'}
-
-            ,
-            {
-              stack:[
-                {
-                  text:'Il Dirigente \n Lucilla Mattei',
-                  alignment:'center',
-                  width: 130, margin: [290,20, 0, 0]
-                },
-                {
-                  image: firma,
-                  alignment:'right',
-                  width: 150, margin: [40,-20, 0, 0]
-                },
-                {
-                  text:'Marina Rivelli',
-                  alignment:'left',
-                  width: 130, margin: [0,0, 0, 0]
-                },
-                {
-                  image: firmaRivelli,
-                  alignment:'left',
-                  width: 100, margin: [0,-10, 0, 0]
-                },
-
-              ],
-
-            }
-
-
-
-
-           )
+            ol:[
+              'la documentazione inviata dovrà rispettare scrupolosamente i criteri di sostanza e di forma richiesti;',
+              'decorso il termine perentorio suindicato, l\'istruttoria verrà conclusa sulla sola base della documentazione valida disponibile, senza che possa in alcun modo avviarsi qualsiasi, ulteriore fase di interlocuzione.'
+            ], margin:[20,5], alignment:'justify'
+            },
+            {text:'Per qualsiasi informazione, potrete rivolgerVi al nostro Help Desk Incentivi'},
+            {text:[{text:'(e-mail: '},{text:'incentivoinvestimenti@ramspa.it', bold:true},{text:').'}]},
+            {text:' Cordiali saluti'}
+          ,
+          {
+            stack:[
+              {
+                text:'Il Dirigente \n Lucilla Mattei',
+                alignment:'center',
+                width: 130, margin: [290,20, 0, 0]
+              },
+              {
+                image: firma,
+                alignment:'right',
+                width: 150, margin: [40,-20, 0, 0]
+              },
+              {
+                text:'Marina Rivelli',
+                alignment:'left',
+                width: 130, margin: [0,0, 0, 0]
+              },
+              {
+                image: firmaRivelli,
+                alignment:'left',
+                width: 100, margin: [0,-10, 0, 0]
+              },
+            ],
+          }
+      )
 
       footer ={
         columns: [
@@ -333,13 +287,13 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
             font: 'Times'
           },
           pageMargins: [ 40,120, 40, 80 ],
-          header: function(currentPage, pageCount) {
+          header: function(currentPage: any) {
             if (currentPage === 1) {
               return header
             }},
 
           content: content,
-          footer: (currentPage, pageCount) => {
+          footer: () => {
             return footer
         },
 
@@ -375,16 +329,11 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
 
 
       let veicoliAccettati = veicoli?.filter(x=> x.adminState === 'accepted')
-    //  console.log(veicoli)
-    //  console.log(typeIstance)
-    //  console.log(istanza)
-    // console.log(veicoliAccettati)
+      let veicolicatA = veicoliAccettati?.filter(x=>x.category === 'A')
 
-      let veicolicatA = veicoliAccettati.filter(x=>x.category === 'A')
-
-      let allegatiRottamazione = allegatiVeicoli.filter(x=> (x.typeDocument === '11' || x.typeDocument === '14') && x.adminState ==='accepted' && veicolicatA.map(veicolo => veicolo.id).includes(x.id_Veicolo));
+      let allegatiRottamazione = allegatiVeicoli?.filter(x=> (x.typeDocument === '11' || x.typeDocument === '14') && x.adminState ==='accepted' && veicolicatA.map(veicolo => veicolo.id).includes(x.id_Veicolo));
       const idVeicoloUnici = new Set();
-      allegatiRottamazione.forEach(obj => idVeicoloUnici.add(obj.id_Veicolo));
+      allegatiRottamazione?.forEach(obj => idVeicoloUnici.add(obj.id_Veicolo));
       const numeroRichesteRottamazioneAccettate = idVeicoloUnici.size;
       //const numerorichiesteRottamazioneIstanza = ist
 
@@ -488,21 +437,21 @@ const result = Object.keys(sumsByArtDm).map(artDm => sumsByArtDm[artDm]);
       {text: `${dataReport['indirizzo']}, ${dataReport['numCivico']}`,alignment:'left',margin: [ 250, 0, 0, 0 ]},
       {text: `${dataReport['cap']} - ${dataReport['citta']} ${dataReport['prov']}`,alignment:'left',margin: [ 250, 0, 0, 10 ]},
       {text:[ 'Raccomandata via pec all\'indirizzo: ', {text:dataReport['pecImpresa'], bold:true}], alignment:'left',margin: [ 0, 10 ]},
-      {text:'Oggetto: Contributi ai sensi del D.D. 31 gennaio 2024 n.28 per le finalità di cui al D.M. 01 dicembre 2023 n. 317 - "Incentivi agli investimenti nel settore dell\'autotrasporto". X Edizione', bold:true, margin: [ 0, 5, 0, 0 ], alignment:'justify'},
+      {text:'Oggetto: Contributi ai sensi del '+DD+' per le finalità di cui al '+DM+' - "Incentivi agli investimenti nel settore dell\'autotrasporto". '+EDIZIONE, bold:true, margin: [ 0, 5, 0, 0 ], alignment:'justify'},
       {text:`Protocollo Istanza IN ${dataReport['idRam']}/${dataReport['year']} Informativa ai sensi dell'art.10-bis legge 241/90`, bold:true, margin: [ 0, 0, 0, 5 ], alignment:'justify'},
 
       {text:'IL DIRETTORE GENERALE',alignment:'center',margin: [ 0,10 ], bold:true},
       {
         ul:[
           {text: `VISTA la domanda di ammissione al contributo di cui all'oggetto presentata da Codesta impresa e acquisista con protocollo n°${dataReport['idRam']}/${dataReport['year']} del ${moment(dataReport['dataIdRam']).format('DD/MM/YYYY')}`},
-          {text:`VISTO il verbale di riunione della Commissione, istituita ai sensi dell'art. 10, comma 3, D.D. 31 gennaio 2024 n.28 , tenutasi il giorno ${moment(Number(dataReport['dataVerbale'])).format('DD/MM/YYYY')}`}
+          {text:`VISTO il verbale di riunione della Commissione, istituita ai sensi dell'art. 10, comma 3, ${DD} , tenutasi il giorno ${moment(Number(dataReport['dataVerbale'])).format('DD/MM/YYYY')}`}
         ],
         alignment:'justify'
       },
       {text:'fermo restando la permanenza dei requisiti di ammissibilità richiesti dalla normativa vigente, dispone per l\'istanza di finanziamento presentata da Codesta impresa la relativa',
       alignment:'justify'},
       {text:'AMMISSIONE',alignment:'center',margin: [ 0,10 ], bold:true},
-      {text:'per gli importi di seguito ripartiti secondo le categorie e sottocategorie di investimento di cui agli artt. 2 e 5 del D.M. 01 dicembre 2023 n. 317 come dichiarati in fase di prenotazione dell’incentivo, e ad esito delle verifiche effettuate presso la banca dati CED del Ministero delle Infrastrutture e dei Trasporti sulla targa del veicolo oggetto di investimento:', alignment:'justify'},
+      {text:'per gli importi di seguito ripartiti secondo le categorie e sottocategorie di investimento di cui agli artt. 2 e 5 del '+DM+' come dichiarati in fase di prenotazione dell’incentivo, e ad esito delle verifiche effettuate presso la banca dati CED del Ministero delle Infrastrutture e dei Trasporti sulla targa del veicolo oggetto di investimento:', alignment:'justify'},
       {
         style: 'tableExample',
         table: {
@@ -639,7 +588,7 @@ const result = Object.keys(sumsByArtDm).map(artDm => sumsByArtDm[artDm]);
         {text:'AVVERTENZE:',bold:true},
         {text:[
           {text:'Si ricorda che a norma dell’'},
-          {text:'art. 2 comma 6 del D.M. 459/2021 i mezzi oggetto di contributo non possono essere alienati, concessi in locazione o in noleggio e devono rimanere nella piena disponibilità del beneficiario del contributo entro il triennio decorrente dalla data di erogazione del contributo, pena la revoca del contributo erogato. ',bold:true},
+          {text:'art. 2 comma 6 del D.M. '+DMS+' i mezzi oggetto di contributo non possono essere alienati, concessi in locazione o in noleggio e devono rimanere nella piena disponibilità del beneficiario del contributo fino a tutto il 30 giugno 2027, pena la revoca del contributo. ',bold:true},
           {text:'Non si procede all\'erogazione del contributo anche nel caso di trasferimento della disponibilità dei beni oggetto degli incentivi nel periodo intercorrente fra la data di presentazione della domanda e la data di pagamento del beneficio.'}
 
         ], alignment:'justify'},
@@ -751,9 +700,9 @@ const result = Object.keys(sumsByArtDm).map(artDm => sumsByArtDm[artDm]);
         {text: `${dataReport['indirizzo']}, ${dataReport['numCivico']}`,alignment:'left',margin: [ 250, 0, 0, 0 ]},
         {text: `${dataReport['cap']} - ${dataReport['citta']} ${dataReport['prov']}`,alignment:'left',margin: [ 250, 0, 0, 10 ]},
         { text:[ 'Raccomandata via pec all\'indirizzo: ', {text:dataReport['pecImpresa'], bold:true}], alignment:'left',margin: [ 0, 10 ]},
-        {text:'Oggetto: Contributi ai sensi del D.D. 31 gennaio 2024 n.28 per le finalità di cui al D.M. 01 dicembre 2023 n. 317 - "Incentivi agli investimenti nel settore dell\'autotrasporto". X Edizione ', bold:true, margin: [ 0, 5, 0, 5 ], alignment:'justify'},
+        {text:'Oggetto: Contributi ai sensi del '+DD+' per le finalità di cui al '+DM+' - "Incentivi agli investimenti nel settore dell\'autotrasporto". '+EDIZIONE, bold:true, margin: [ 0, 5, 0, 5 ], alignment:'justify'},
         {text:`Protocollo Istanza IN ${dataReport['idRam']}/${dataReport['year']} Informativa ai sensi dell'art.10-bis legge 241/90`, bold:true, margin: [ 0, 5, 0, 5 ], alignment:'justify'},
-        {alignment:'justify',text:`In riferimento alla domanda di ammissione agli incentivi di cui al D.M. 01 dicembre 2023 n. 317 acquisita in data ${moment(dataReport['dataIdRam']).format('DD/MM/YYYY')} con prot. n. ${dataReport['idRam']}/${dataReport['year']} si comunica che, sulla base delle risultanze dell'istruttoria effettuata dalla società RAM S.p.A e della valutazione di questa Commissione, l'istanza di ammissione al finanziamento degli investimenti di cui all'art. 1 del 18 novembre 2021 n.459, destinato alle imprese di autotrasporti merci, è risultata`},
+        {alignment:'justify',text:`In riferimento alla domanda di ammissione agli incentivi di cui al ${DM} acquisita in data ${moment(dataReport['dataIdRam']).format('DD/MM/YYYY')} con prot. n. ${dataReport['idRam']}/${dataReport['year']} si comunica che, sulla base delle risultanze dell'istruttoria effettuata dalla società RAM S.p.A e della valutazione di questa Commissione, l'istanza di ammissione al finanziamento degli investimenti di cui all'art. 1 del 18 novembre 2021 n.459, destinato alle imprese di autotrasporti merci, è risultata`},
         {text:'INAMMISSIBILE',alignment:'center',margin: [ 0,10 ], bold:true},
         {text:'Per la/le seguente/i motivazione/i:'},
         {
@@ -762,7 +711,7 @@ const result = Object.keys(sumsByArtDm).map(artDm => sumsByArtDm[artDm]);
         {
           text:[
             {text:'Si comunica che, ai sensi dell\'art. 10-bis, comma 1, della legge n. 241/1990, l\'impresa in indirizzo ha tempo 10 giorni dalla ricezione della presente per produrre per iscritto le proprie eventuali osservazioni, corredate se del caso, da idonea documentazione che ',margin:[0,10]},
-            {bold:true, decoration: 'underline' ,text:'dovrà essere inviata alla RAM S.p.A., esclusivamente presso il seguente indirizzo di posta elettronica certificata: ram.investimenti2022@legalmail.it'},
+            {bold:true, decoration: 'underline' ,text:'dovrà essere inviata alla RAM S.p.A., esclusivamente presso il seguente indirizzo di posta elettronica certificata: ram.investimenti2024@legalmail.it'},
 
           ],alignment:'justify'
         },
@@ -858,12 +807,12 @@ const result = Object.keys(sumsByArtDm).map(artDm => sumsByArtDm[artDm]);
         {text: `${dataReport['indirizzo']}, ${dataReport['numCivico']}`,alignment:'right',margin: [ 0, 0, 0, 0 ]},
         {text: `${dataReport['cap']} - ${dataReport['citta']} ${dataReport['prov']}`,alignment:'right',margin: [ 0, 0, 0, 0 ]},
         { text:[ 'Raccomandata via pec all\'indirizzo: ', {text:dataReport['pecImpresa'], bold:true}],margin: [ 0, 10 ]},
-        {text:'Oggetto: Contributi ai sensi del D.D. 31 gennaio 2024 n.28 per le finalità di cui al D.M. 01 dicembre 2023 n. 317 - "Incentivi agli investimenti nel settore dell\'autotrasporto" ', bold:true, margin: [ 0, 5, 0, 5 ], alignment:'justify'},
+        {text:'Oggetto: Contributi ai sensi del '+DD+' per le finalità di cui al '+DM+' - "Incentivi agli investimenti nel settore dell\'autotrasporto" ', bold:true, margin: [ 0, 5, 0, 5 ], alignment:'justify'},
         {text:'IL DIRETTORE GENERALE',alignment:'center',margin: [ 0,10 ], bold:true},
         {
           ul:[
             {text: `VISTA la domanda di ammissione al contributo di cui all'oggeto presentata da Codesta impresa e acquisista con protocollo n°${dataReport['idRam']}/${dataReport['year']} del ${moment(Number(dataReport['dataIdRam'])).format('DD/MM/YYYY')}`},
-            {text:`VISTO il verbale di riunione della Commissione, istituita ai sensi dell'art. 12, comma 3, D.D. 31 gennaio 2024 n.28 , tenutasi il giorno ${moment(Number(dataReport['dataVerbale'])).format('DD/MM/YYYY')}`},
+            {text:`VISTO il verbale di riunione della Commissione, istituita ai sensi dell'art. 12, comma 3, ${DM} , tenutasi il giorno ${moment(Number(dataReport['dataVerbale'])).format('DD/MM/YYYY')}`},
             {text:`VISTA la nota prot. n. In/${dataReport['protPreavvisoRigetto']} del${moment(Number(dataReport['dataPreavvisoRigetto'])).format('DD/MM/YYYY')} con la quale è stato dat preavviso di regetto della suddetta istanza di finanziamento;`},
             {text:`CONSIDERATO che non è pervenuta alcuna risposta alla predetta nota del ${moment(Number(dataReport['notaInammissibilita'])).format('DD/MM/YYYY')}`},
             {text:'CONSIDERATO che premane la seguente motivazione di inammissibilità:'}
@@ -953,11 +902,11 @@ const result = Object.keys(sumsByArtDm).map(artDm => sumsByArtDm[artDm]);
           {text: `${dataReport['indirizzo']}, ${dataReport['numCivico']}`,alignment:'left',margin: [ 250, 0, 0, 0 ]},
           {text: `${dataReport['cap']} - ${dataReport['citta']} ${dataReport['prov']}`,alignment:'left',margin: [ 250, 0, 0, 5 ]},
           { text:[ 'Raccomandata via pec all\'indirizzo: ', {text:dataReport['pecImpresa'], bold:true}], alignment:'left',margin: [ 0, 5 ]},
-          {text:'Oggetto: Contributi ai sensi del D.D. 31 gennaio 2024 n.28 per le finalità di cui al D.M. 01 dicembre 2023 n. 317 - "Incentivi agli investimenti nel settore dell\'autotrasporto". X Edizione ', bold:true, margin: [ 0, 5, 0, 5 ], alignment:'justify'},
+          {text:'Oggetto: Contributi ai sensi del '+DD+' per le finalità di cui al '+DM+' - "Incentivi agli investimenti nel settore dell\'autotrasporto". '+EDIZIONE, bold:true, margin: [ 0, 5, 0, 5 ], alignment:'justify'},
           {text:`Protocollo Istanza IN ${dataReport['idRam']}/${dataReport['year']} `, bold:true, margin: [ 0, 5, 0, 5 ], alignment:'justify'},
           {text:'IL DIRETTORE GENERALE',alignment:'center',margin: [ 0,10 ], bold:true},
           {alignment:'justify',  margin: [ 0, 5, 0, 5 ],text:`VISTA la domanda di ammissione al contributo  di cui all'oggetto presentata da Codesta impresa e acquisita in data ${moment(dataReport['dataIdRam']).format('DD/MM/YYYY')} con prot. n. ${dataReport['idRam']}/${dataReport['year']};`},
-          {alignment:'justify',  margin: [ 0, 5, 0, 5 ],text:`VISTO il verbale della riunione della Commissione, istituita ai sensi dell'art. 10, comma 3, del D.D. 31 gennaio 2024 n.28, tenutasi in data ${moment(dataReport['dataVerbale']).format('DD/MM/YYYY')};`},
+          {alignment:'justify',  margin: [ 0, 5, 0, 5 ],text:`VISTO il verbale della riunione della Commissione, istituita ai sensi dell'art. 10, comma 3, del ${DM}, tenutasi in data ${moment(dataReport['dataVerbale']).format('DD/MM/YYYY')};`},
           {alignment:'justify', margin: [ 0, 5, 0, 5 ],text:`VISTA la nota prot. n. ${dataReport['protPreavvisoRigetto']} del ${moment(dataReport['dataPreavvisoRigetto']).format('DD/MM/YYYY')} con la quale è stato dato preavviso di rigetto della suddetta istanza di finanziamento;`},
           {alignment:'justify', margin: [ 0, 5, 0, 5 ],text:`VISTA la Vostra documentazione inviata a mezzo pec del ${moment(dataReport['dataNotaInammissibilita']).format('DD/MM/YYYY')};`},
           {alignment:'justify', margin: [ 0, 5, 0, 5 ],text:`VISTO il verbale della riunione della Commissione, tenutasi in data ${moment(dataReport['dataVerbaleDeduzioni']).format('DD/MM/YYYY')} nel quale la documentazione inviata a mezzo pec è stata valutata non accoglibile;`},
@@ -1050,7 +999,7 @@ const result = Object.keys(sumsByArtDm).map(artDm => sumsByArtDm[artDm]);
           {text: `${dataReport['indirizzo']}, ${dataReport['numCivico']}`,alignment:'left',margin: [ 250, 0, 0, 0 ]},
           {text: `${dataReport['cap']} - ${dataReport['citta']} ${dataReport['prov']}`,alignment:'left',margin: [ 250, 0, 0, 5 ]},
           { text:[ 'Raccomandata via pec all\'indirizzo: ', {text:dataReport['pecImpresa'], bold:true}], alignment:'left',margin: [ 0, 5 ]},
-          {text:'Oggetto: Contributi ai sensi del D.D. 31 gennaio 2024 n.28 per le finalità di cui al D.M. 01 dicembre 2023 n. 317 - "Incentivi agli investimenti nel settore dell\'autotrasporto". X Edizione ', bold:true, margin: [ 0, 5, 0, 5 ], alignment:'justify'},
+          {text:'Oggetto: Contributi ai sensi del '+DD+' per le finalità di cui al '+DM+' - "Incentivi agli investimenti nel settore dell\'autotrasporto". '+EDIZIONE, bold:true, margin: [ 0, 5, 0, 5 ], alignment:'justify'},
           {text:`Protocollo Istanza IN ${dataReport['idRam']}/${dataReport['year']} `, bold:true, margin: [ 0, 5, 0, 5 ], alignment:'justify'},
           {text:'IL DIRETTORE GENERALE',alignment:'center',margin: [ 0,10 ], bold:true},
           {alignment:'justify',  margin: [ 0, 5, 0, 5 ],text:`VISTA la domanda di ammissione al contributo  di cui all'oggetto presentata da Codesta impresa e acquisita in data ${moment(dataReport['dataIdRam']).format('DD/MM/YYYY')} con prot. n. ${dataReport['idRam']}/${dataReport['year']};`},
