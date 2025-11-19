@@ -486,7 +486,7 @@ const result = Object.keys(sumsByArtDm).map(artDm => sumsByArtDm[artDm]);
                 {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(result.find(x=> x.artDm === '1B')?.totalFinanziamento||0)},
                   ],
               [   '',
-                {text:'Art.5, comma 2, lett c)', alignment:'left' },
+                {text:'Art.5, comma 1, lett c)', alignment:'left' },
                 {text:myGroupedData.find(x=> x.artDm === '2C')?.numAccepted},
                 {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(result.find(x=> x.artDm === '2C')?.totalAmount||0)},
                 {text: myGroupedData.find(x=> x.artDm === '2C')?.totalFinanziamento>0?(istanza.rete && istanza.rete === 'Yes') && (istanza.pmi && istanza.pmi === 'Yes') ? '20%' : istanza.rete === 'Yes' ||istanza.pmi === 'Yes'?'10%':null:null},
