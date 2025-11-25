@@ -256,7 +256,14 @@ export class IstanzeService {
 
               let numeroRimorchiRichiestaRottamazione = istanza['rim_rott_'+numberType];
                 //  console.log('veicoli richiesta', numeroRimorchiRichiestaRottamazione);
-              const idVeicoloArray = [...new Set(allegatiVeicoli.filter((x)=> x.typeVei === veicolo.type && x.enable && x.adminState === 'accepted' && (x.typeDocument === '11' || x.typeDocument === '14')).map(obj => obj.id_Veicolo))];
+              const idVeicoloArray = [
+                ...new Set(allegatiVeicoli.filter(
+                  (x)=> x.typeVei === veicolo.type 
+                        && x.enable
+                        && x.adminState === 'accepted' 
+                        && (x.typeDocument === '11' || x.typeDocument === '14'
+
+                   )).map(obj => obj.id_Veicolo))];
               var veicoliRottamati =0;
 
                 //  console.log(idVeicoloArray)
@@ -309,9 +316,9 @@ export class IstanzeService {
                 }
             }
         }
-        console.log(istanza,tipoVeicolo,campoRottamazione)
-        console.log(istanza[tipoVeicolo] , istanza[campoRottamazione])
-        console.log(valoreContributo, magg_pmi, magg_rete)
+        // console.log(istanza,tipoVeicolo,campoRottamazione)
+        // console.log(istanza[tipoVeicolo] , istanza[campoRottamazione])
+        // console.log(valoreContributo, magg_pmi, magg_rete)
         if(
           (istanza[tipoVeicolo]>0) &&
           istanza[campoRottamazione] > numeroRichesteRottamazioneAccettate  && allegatiRottamazione.length>0){
