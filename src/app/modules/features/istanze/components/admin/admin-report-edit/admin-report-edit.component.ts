@@ -314,13 +314,13 @@ export class AdminReportEditComponent implements OnInit {
     this.form.controls.filenameUpload.setValue(this.fileAttach.name)
     //console.log(this.fileAttach)
 }
-deleteFile(): void{
-    this.fileAttach = null;
-    this.fileName = '';
-    this.form.controls.filenameUpload.setValue(null)
-    this.form.controls.attachControl.setValue(false)
-    this.fileDimControl = this.typeFileControl= false;
-}
+  deleteFile(): void{
+      this.fileAttach = null;
+      this.fileName = '';
+      this.form.controls.filenameUpload.setValue(null)
+      this.form.controls.attachControl.setValue(false)
+      this.fileDimControl = this.typeFileControl= false;
+  }
   initializeForEdit(data:Report,detail?): FormGroup{
    // console.log(detail)
    // console.log(data)
@@ -415,10 +415,10 @@ deleteFile(): void{
         }),
         totaleMaggiorazioni:new FormControl(null),
         totaleContributo:new FormControl(null),
-        protPreavvisoRigetto:new FormControl(null),
-        dataPreavvisoRigetto:new FormControl(null),
-        dataNotaInammissibilita:new FormControl(null),
-        motivazioneInammissibilita:new FormControl(null),
+        protPreavvisoRigetto:new FormControl(data.protPreavvisoRigetto || null),
+        dataPreavvisoRigetto:new FormControl(data.dataPreavvisoRigetto?moment(Number(data.dataPreavvisoRigetto)).toISOString():null),
+        dataNotaInammissibilita:new FormControl(data.dataNotaInammissibilita?moment(Number(data.dataNotaInammissibilita)).toISOString():null),
+        motivazioneInammissibilita:new FormControl(data.motivazioneInammissibilita|| null),
 
       }
     )
