@@ -415,10 +415,10 @@ deleteFile(): void{
         }),
         totaleMaggiorazioni:new FormControl(null),
         totaleContributo:new FormControl(null),
-        protPreavvisoRigetto:new FormControl(null),
-        dataPreavvisoRigetto:new FormControl(null),
-        dataNotaInammissibilita:new FormControl(null),
-        motivazioneInammissibilita:new FormControl(null),
+        protPreavvisoRigetto:new FormControl(data.protPreavvisoRigetto || null),
+        dataPreavvisoRigetto:new FormControl(data.dataPreavvisoRigetto?moment(Number(data.dataPreavvisoRigetto)).toISOString():null),
+        dataNotaInammissibilita:new FormControl(data.dataNotaInammissibilita?moment(Number(data.dataNotaInammissibilita)).toISOString():null),
+        motivazioneInammissibilita:new FormControl(data.motivazioneInammissibilita || null),
 
       }
     )
