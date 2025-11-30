@@ -324,9 +324,9 @@ export class AdminReportEditComponent implements OnInit {
       this.form.controls.attachControl.setValue(false)
       this.fileDimControl = this.typeFileControl= false;
   }
-  initializeForEdit(data:Report,detail?): FormGroup{
+  initializeForEdit(data:Report,detail?:any): FormGroup{
    // console.log(detail)
-   // console.log(data)
+    console.log(data)
    let detailArray: any[];
 
     if (detail && detail.length > 0) {
@@ -419,10 +419,10 @@ export class AdminReportEditComponent implements OnInit {
         }),
         totaleMaggiorazioni:new FormControl(null),
         totaleContributo:new FormControl(null),
-        protPreavvisoRigetto:new FormControl(null),
-        dataPreavvisoRigetto:new FormControl(null),
-        dataNotaInammissibilita:new FormControl(null),
-        motivazioneInammissibilita:new FormControl(null),
+        protPreavvisoRigetto:new FormControl(data.protPreavvisoRigetto || null),
+        dataPreavvisoRigetto:new FormControl(data.dataPreavvisoRigetto?moment(Number(data.dataPreavvisoRigetto)).toISOString():null),
+        dataNotaInammissibilita:new FormControl(data.dataNotaInammissibilita?moment(Number(data.dataNotaInammissibilita)).toISOString():null),
+        motivazioneInammissibilita:new FormControl(data.motivazioneInammissibilita || null),
 
       }
     )
