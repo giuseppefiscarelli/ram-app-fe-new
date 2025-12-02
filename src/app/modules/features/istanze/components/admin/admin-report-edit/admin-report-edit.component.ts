@@ -418,7 +418,7 @@ export class AdminReportEditComponent implements OnInit {
         protPreavvisoRigetto:new FormControl(data.protPreavvisoRigetto || null),
         dataPreavvisoRigetto:new FormControl(data.dataPreavvisoRigetto?moment(Number(data.dataPreavvisoRigetto)).toISOString():null),
         dataNotaInammissibilita:new FormControl(data.dataNotaInammissibilita?moment(Number(data.dataNotaInammissibilita)).toISOString():null),
-        motivazioneInammissibilita:new FormControl(data.motivazioneInammissibilita|| null),
+        motivazioneInammissibilita:new FormControl(data.motivazioneInammissibilita || null),
 
       }
     )

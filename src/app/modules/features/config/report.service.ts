@@ -380,9 +380,9 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
     //  console.log(istanza)
     // console.log(veicoliAccettati)
 
-      let veicolicatA = veicoliAccettati.filter(x=>x.category === 'A')
+      let veicolicatA = veicoliAccettati?.filter(x=>x.category === 'A')
 
-      let allegatiRottamazione = allegatiVeicoli.filter(x=> (x.typeDocument === '11' || x.typeDocument === '14') && x.adminState ==='accepted' && veicolicatA.map(veicolo => veicolo.id).includes(x.id_Veicolo));
+      let allegatiRottamazione = allegatiVeicoli?.filter(x=> (x.typeDocument === '11' || x.typeDocument === '14') && x.adminState ==='accepted' && veicolicatA.map(veicolo => veicolo.id).includes(x.id_Veicolo));
       const idVeicoloUnici = new Set();
       allegatiRottamazione.forEach(obj => idVeicoloUnici.add(obj.id_Veicolo));
       const numeroRichesteRottamazioneAccettate = idVeicoloUnici.size;
@@ -401,10 +401,10 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
       // } )
 
       // Converto l'array in un Observable
-      const data$ = from(veicoli.filter(x=> x.adminState === 'accepted'));
+      const data$ = from(veicoli!.filter(x=> x.adminState === 'accepted'));
 
       // Converto l'array di nuovi dati in un oggetto con 'campoDb' come chiave
-      const typeDataMap: { [key: string]: any } = typeIstance.typeVei.reduce((acc, item) => {
+      const typeDataMap: { [key: string]: any } = typeIstance.typeVei.reduce((acc:any, item:any) => {
           acc[item['campoDb']] = item;
           return acc;
       }, {});
@@ -428,7 +428,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
                   numAccepted
               })) // Costruisco un oggetto con 'type', 'typeVei', 'artDm', la somma degli importi e il numero di veicoli con adminState === 'accepted'
           )),
-          reduce((acc, val) => [...acc, val], []) // Raccolgo tutti gli oggetti risultanti in un array
+          reduce((acc:any, val) => [...acc, val], []) // Raccolgo tutti gli oggetti risultanti in un array
       );
 
       // Osservo i risultati
@@ -448,7 +448,7 @@ constructor(private http:HttpClient,  private API: ApiService,) { }
 
 
 
-//console.log(myGroupedData)
+console.log(myGroupedData)
 //console.log(veicoli)
 // Utilizziamo un oggetto per tenere traccia delle somme per ogni artDm
 
@@ -468,7 +468,7 @@ const sumsByArtDm = myGroupedData.reduce((acc, obj) => {
 // Convertiamo l'oggetto risultante in un array di oggetti
 const result = Object.keys(sumsByArtDm).map(artDm => sumsByArtDm[artDm]);
 
-//console.log(result);
+console.log(result);
 
 
 
@@ -522,19 +522,19 @@ const result = Object.keys(sumsByArtDm).map(artDm => sumsByArtDm[artDm]);
             [
               {rowSpan:4, text:'Art.2, comma 1, lett a)', alignment:'center',margin:[0,20,0,0]},
                 {text:'Art.5, comma 1, lett a)', alignment:'left' },
-                {text:result.find(x=> x.artDm === '1A')?.numAccepted},
-                {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(result.find(x=> x.artDm === '1A')?.totalAmount ||0)},
-                {text: result.find(x=> x.artDm === '1A')?.totalFinanziamento>0?(istanza.rete && istanza.rete === 'Yes') && (istanza.pmi && istanza.pmi === 'Yes') ? '20%' : istanza.rete === 'Yes' ||istanza.pmi === 'Yes'?'10%':null:null},
-                {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(result.find(x=> x.artDm === '1A')?.totalFinanziamento ||0)},
+                {text:result.find(x=> x.artDm === '2A')?.numAccepted},
+                {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(result.find(x=> x.artDm === '2A')?.totalAmount ||0)},
+                {text: result.find(x=> x.artDm === '2A')?.totalFinanziamento>0?(istanza.rete && istanza.rete === 'Yes') && (istanza.pmi && istanza.pmi === 'Yes') ? '20%' : istanza.rete === 'Yes' ||istanza.pmi === 'Yes'?'10%':null:null},
+                {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(result.find(x=> x.artDm === '2A')?.totalFinanziamento ||0)},
 
 
             ],
               [ '',
                 {text:'Art.5, comma 1, lett b)', alignment:'left' },
-                {text:result.find(x=> x.artDm === '1B')?.numAccepted},
-                {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(result.find(x=> x.artDm === '1B')?.totalAmount||0)},
-                {text: result.find(x=> x.artDm === '1B')?.totalFinanziamento>0? (istanza.rete && istanza.rete === 'Yes') && (istanza.pmi && istanza.pmi === 'Yes') ? '20%' : istanza.rete === 'Yes' ||istanza.pmi === 'Yes'?'10%':null:null},
-                {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(result.find(x=> x.artDm === '1B')?.totalFinanziamento||0)},
+                {text:result.find(x=> x.artDm === '2B')?.numAccepted},
+                {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(result.find(x=> x.artDm === '2B')?.totalAmount||0)},
+                {text: result.find(x=> x.artDm === '2B')?.totalFinanziamento>0? (istanza.rete && istanza.rete === 'Yes') && (istanza.pmi && istanza.pmi === 'Yes') ? '20%' : istanza.rete === 'Yes' ||istanza.pmi === 'Yes'?'10%':null:null},
+                {text:new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(result.find(x=> x.artDm === '2B')?.totalFinanziamento||0)},
                   ],
               [   '',
                 {text:'Art.5, comma 1, lett c)', alignment:'left' },
