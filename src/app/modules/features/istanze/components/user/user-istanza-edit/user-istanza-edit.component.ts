@@ -1,8 +1,7 @@
 
-import { PdfViewerSharedComponent } from './../../../../../shared/components/pdf-viewer/pdf-viewer.component';
 import { FormAllegatoComponent } from './../form-allegato/form-allegato.component';
 import { NotificationsComponent } from '@app/modules/notifications/notifications.component';
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { ApplicationState } from '@app/app.state';
@@ -16,7 +15,6 @@ import { forkJoin, Observable, Subscription, take } from 'rxjs';
 import { IstanzeService } from '../../../istanze.service';
 import Swal from 'sweetalert2';
 import { TYPE } from '@app/modules/notifications/values.constants';
-import { PdfViewerComponent } from 'ng2-pdf-viewer';
 import { ConfigService } from '@app/modules/features/config/config.service';
 import { ReportService } from '@app/modules/features/config/report.service';
 import { TypeDocument } from '@app/modules/models/typeDocument.model';
@@ -31,7 +29,7 @@ import moment from 'moment';
   providers:[ConfigService,ReportService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UserIstanzaEditComponent implements OnInit {
+export class UserIstanzaEditComponent implements OnInit, OnDestroy {
   user: Observable<User>;
   userMe: User;
   mode: string;
@@ -42,19 +40,19 @@ export class UserIstanzaEditComponent implements OnInit {
   catB: boolean;
   catC: boolean;
   catD: boolean;
-  typeVeiGroupView: [];
-  catEnable:[];
+  typeVeiGroupView: Record<string, any[]>;
+  catEnable: string[];
   veiForCat:{cat:string, number: number}[];
   catVei:{
       id?:number;
       category: string;
       description: string;
   }[];
-  certEnable:any[];
+  certEnable: string[];
   listaVeicoli: Veicolo[];
   listaAllegati: Allegato[];
   listaAllegatiDich: Allegato[];
-  vei$: Subscription;
+  vei$?: Subscription;
   totVeicoli:number;
   totCertEnable:number;
   totAllegati:number;
@@ -92,181 +90,175 @@ export class UserIstanzaEditComponent implements OnInit {
 
                     this.user = this.store.pipe(select('authentication'), select('user'));
                     this.user.pipe(take(1)).subscribe((me: User) => this.userMe = me);
-     // this.userMe.role = 'user';
-   //  console.log(this.userMe)
                     this.istanza = this.route.snapshot.data.istanza;
                     this.rendicontazione = this.route.snapshot.data.rendicontazione;
-                    //console.log(this.rendicontazione)
-                    this.typeIstance = null;
-                    this.typeVeiGroupView =[];
-                    this.catEnable = [];
-                    this.veiForCat = [];
-                    this.certEnable = [];
-                    this.listaVeicoli = [];
-                    this.listaAllegatiDich =[];
-                    this.listaAllegati=[];
-                    this.totAllegati=0;
-                    this.rottamazione=false;
-                    this.enableRendicontazione =true;
-
-                    this.totVeicoli = Number(this.istanza.nv1) +
-                    Number(this.istanza.nv2) +
-                    Number(this.istanza.nv3) +
-                    Number(this.istanza.nv4) +
-                    Number(this.istanza.nv5) +
-                    Number(this.istanza.nv6) +
-                    Number(this.istanza.nv7) +
-                    Number(this.istanza.nv8) +
-                    Number(this.istanza.nv9) +
-                    Number(this.istanza.nv10) +
-                    Number(this.istanza.nv11) +
-                    Number(this.istanza.r_nv_1) +
-                    Number(this.istanza.r_nv_2) +
-                    Number(this.istanza.r_nv_3) +
-                    Number(this.istanza.rim_nv_1) +
-                    Number(this.istanza.rim_nv_2) +
-                    Number(this.istanza.rim_nv_3);
-                    this.totCertEnable = 0;
-                    this.rottamazione = (
-                      this.istanza.rim_rott_1 ||
-                      this.istanza.rim_rott_2 ||
-                      this.istanza.r_rott_1 ||
-                      this.istanza.r_rott_2 ||
-                      this.istanza.r_rott_3
-                      )?true:false;
-
-                    this.today= new Date();
-                    this.vei$ = forkJoin([
-                      this.service.fetchVeicoli({drop:true, id_ram: this.istanza.id_ram}),
-                      this.service.fetchAllegati({drop:true,id_ram: this.istanza.id_ram, enable:true}),
-                      this.service.getTypeInstance(this.istanza.tipo_istanza),
-                      this.configService.fetchTypeDocuments({drop:true}),
-                      this.configService.fetchTypeReport({drop:true, typeistance:this.istanza.tipo_istanza}),
-                      this.configService.fetchReport({drop:true, enable:true, id_ram:this.istanza.id_ram})
-                    ]).subscribe(
-                      ([vei, alle,ista, typeDocument, typeReport, reports]) => {
-                          this.listaVeicoli=vei;
-                          this.listaAllegati=alle;
-                          this.typeIstance = ista;
-                          this.typeDocuments = typeDocument;
-                          this.typeReport = typeReport;
-                          this.reports = reports;
-                          this.typeVeiGroupView = this.groupByKey(this.typeIstance.typeVei,'catVei');
-                          this.typeIstance.certAttach.map(
-                              (cert) => {
-
-                                  let campoDb = cert['description'];
-                                  if(campoDb === 'ampl' && this.rottamazione){
-                                  }
-                                  const cList = this.listaAllegati.filter(x=> x.typeDocument === campoDb )
-                                  const upList = [...this.listaAllegatiDich.concat(cList)];
-                                  this.listaAllegati = this.listaAllegati.filter(x=> x.typeDocument !== campoDb)
-                                  this.listaAllegatiDich = [...upList];
-                                  let check = this.istanza[campoDb]??null;
-                                  if(check === 'Yes' || (campoDb === 'pmi' && (this.istanza.tipo_impresa === '1' || this.istanza.tipo_impresa === '2'))|| ((this.istanza.rim_nv_1 > 0 || this.istanza.rim_nv_2 > 0) && campoDb === 'ampl')){
-                                      this.totCertEnable++;
-                                      this.certEnable.push(campoDb);
-                                  }
-                              }
-                          )
-                          this.typeIstance.categoryVei.map(
-                              (cat) => {
-                                  let category = cat['category']
-                                  this.veiForCat.push({cat:category,number:0})
-                              }
-                          )
-                          this.typeIstance.typeVei.map(
-                              (typeVei) => {
-                                  let campoDb = typeVei['campoDb'];
-                                  let cat = typeVei['catVei']
-                                  if(this.istanza[campoDb] > 0){
-                                      const nAlle: any[] = typeVei['typeDocument']
-                                      this.totAllegati = nAlle.length  * this.istanza[campoDb]
-
-                                      if(!this.catEnable.includes(cat)) {
-                                           this.catEnable.push(cat)
-                                      }
-
-                                      this.veiForCat.map(
-                                          (x)=>{
-                                              if(x.cat === cat)  x.number = x.number + this.istanza[campoDb]
-                                          })
-                                  }
-
-                              }
-                          )
-
-                          const reportingStartDate = new Date(Number(this.typeIstance.reportingStartDate));
-                          const reportingEndDate = new Date(Number(this.typeIstance.reportingEndDate));
-
-                          if(this.today > reportingEndDate || this.today < reportingStartDate){
-
-                              this.enableRendicontazione =false;
-                              this.rendicontazione.enable = false;
-                          }
-                          let istruttoria = this.getStatusIstruttoria(this.reports);
-                          console.log(istruttoria)
-                        //  console.log(this.enableRendicontazione)
-                          if(istruttoria){
-                            this.istruttoriaData = istruttoria;
-                            let typeReport = istruttoria.typeReport['type'];
-                            console.log(typeReport)
- let veicoliFiltrati;
-                            if(typeReport === 'integrazione'){
-                              this.dataFineIstruttoria= moment(Number(this.istruttoriaData.dataInvio)).endOf('day').add(15,'days');
-
-                              this.integrazione = false;
-                              let scadenza = moment();
-
-                         //    console.log(this.dataFineIstruttoria)
-                              if(this.dataFineIstruttoria.isAfter(moment())){
-                          //      console.log('rendicondazione apertra')
-                                this.enableRendicontazione =true;
-                                this.rendicontazione.enable = true;
-                                this.istruttoriaRend = true;
-                                this.integrazione = true;
-                                const idVeicoliFiltrati = this.listaAllegati
-                                  .filter(obj => obj.adminState !== 'accepted')
-                                  .map(obj => obj.id_Veicolo);
-                                //console.log(idVeicoliFiltrati);
-                                 veicoliFiltrati = this.listaVeicoli.filter(veicolo => idVeicoliFiltrati.includes(veicolo.id));
-                              }
-
-                              else{
-                            //    console.log('rendicondazione chiusaa')
-//
-                              }
-                            }
-                            else if(typeReport === 'rigetto'){
-                              this.dataFineIstruttoria= moment(Number(this.istruttoriaData.dataInvio)).endOf('day').add(10,'days');
-                             // console.log('eccolo fiu fiu')
-
-
-                                  //console.log(idVeicoliFiltrati);
-                              if(this.dataFineIstruttoria.isAfter(moment())){
-                                this.enableRendicontazione =true;
-                                this.rendicontazione.enable = true;
-                                this.istruttoriaRend = true;
-                                this.integrazione = true;
-                                const idVeicoliFiltrati = this.listaAllegati
-                                  .filter(obj => obj.adminState !== 'accepted')
-                                  .map(obj => obj.id_Veicolo);
-                                veicoliFiltrati = this.listaVeicoli.filter(veicolo => idVeicoliFiltrati.includes(veicolo.id));
-                               }else{
-                                console.log('termine scaduto il ',this.dataFineIstruttoria)
-                               }
-                            }
-                          }
-                          this.changeDetectorRef.markForCheck()
-                          this.isLoading = false;
-                  })
-
+                    this.initState();
                   }
 
     ngOnInit() {
+      this.loadData();
     }
     ngOnDestroy(): void {
-      this.vei$.unsubscribe()
+      this.vei$?.unsubscribe()
+    }
+
+    private initState(): void {
+      this.typeIstance = null;
+      this.typeVeiGroupView = {};
+      this.catEnable = [];
+      this.veiForCat = [];
+      this.certEnable = [];
+      this.listaVeicoli = [];
+      this.listaAllegatiDich =[];
+      this.listaAllegati=[];
+      this.totAllegati=0;
+      this.rottamazione=false;
+      this.enableRendicontazione =true;
+
+      this.totVeicoli = Number(this.istanza.nv1) +
+      Number(this.istanza.nv2) +
+      Number(this.istanza.nv3) +
+      Number(this.istanza.nv4) +
+      Number(this.istanza.nv5) +
+      Number(this.istanza.nv6) +
+      Number(this.istanza.nv7) +
+      Number(this.istanza.nv8) +
+      Number(this.istanza.nv9) +
+      Number(this.istanza.nv10) +
+      Number(this.istanza.nv11) +
+      Number(this.istanza.r_nv_1) +
+      Number(this.istanza.r_nv_2) +
+      Number(this.istanza.r_nv_3) +
+      Number(this.istanza.rim_nv_1) +
+      Number(this.istanza.rim_nv_2) +
+      Number(this.istanza.rim_nv_3);
+      this.totCertEnable = 0;
+      this.rottamazione = (
+        this.istanza.rim_rott_1 ||
+        this.istanza.rim_rott_2 ||
+        this.istanza.r_rott_1 ||
+        this.istanza.r_rott_2 ||
+        this.istanza.r_rott_3
+        )?true:false;
+
+      this.today= new Date();
+    }
+
+    private loadData(): void {
+      this.vei$ = forkJoin([
+        this.service.fetchVeicoli({drop:true, id_ram: this.istanza.id_ram}),
+        this.service.fetchAllegati({drop:true,id_ram: this.istanza.id_ram, enable:true}),
+        this.service.getTypeInstance(this.istanza.tipo_istanza),
+        this.configService.fetchTypeDocuments({drop:true}),
+        this.configService.fetchTypeReport({drop:true, typeistance:this.istanza.tipo_istanza}),
+        this.configService.fetchReport({drop:true, enable:true, id_ram:this.istanza.id_ram})
+      ]).subscribe(
+        ([vei, alle,ista, typeDocument, typeReport, reports]) => {
+            this.listaVeicoli=vei;
+            this.listaAllegati=alle;
+            this.typeIstance = ista;
+            this.typeDocuments = typeDocument;
+            this.typeReport = typeReport;
+            this.reports = reports;
+            this.typeVeiGroupView = this.groupByKey(this.typeIstance.typeVei,'catVei');
+            this.typeIstance.certAttach.map(
+                (cert) => {
+
+                    let campoDb = cert['description'];
+                    if(campoDb === 'ampl' && this.rottamazione){
+                    }
+                    const cList = this.listaAllegati.filter(x=> x.typeDocument === campoDb )
+                    const upList = [...this.listaAllegatiDich.concat(cList)];
+                    this.listaAllegati = this.listaAllegati.filter(x=> x.typeDocument !== campoDb)
+                    this.listaAllegatiDich = [...upList];
+                    let check = this.istanza[campoDb]??null;
+                    if(check === 'Yes' || (campoDb === 'pmi' && (this.istanza.tipo_impresa === '1' || this.istanza.tipo_impresa === '2'))|| ((this.istanza.rim_nv_1 > 0 || this.istanza.rim_nv_2 > 0) && campoDb === 'ampl')){
+                        this.totCertEnable++;
+                        this.certEnable.push(campoDb);
+                    }
+                }
+            )
+            this.typeIstance.categoryVei.map(
+                (cat) => {
+                    let category = cat['category']
+                    this.veiForCat.push({cat:category,number:0})
+                }
+            )
+            this.typeIstance.typeVei.map(
+                (typeVei) => {
+                    let campoDb = typeVei['campoDb'];
+                    let cat = typeVei['catVei']
+                    if(this.istanza[campoDb] > 0){
+                        const nAlle: any[] = typeVei['typeDocument']
+                        this.totAllegati = nAlle.length  * this.istanza[campoDb]
+
+                        if(!this.catEnable.includes(cat)) {
+                             this.catEnable.push(cat)
+                        }
+
+                        this.veiForCat.map(
+                            (x)=>{
+                                if(x.cat === cat)  x.number = x.number + this.istanza[campoDb]
+                            })
+                    }
+
+                }
+            )
+
+            const reportingStartDate = new Date(Number(this.typeIstance.reportingStartDate));
+            const reportingEndDate = new Date(Number(this.typeIstance.reportingEndDate));
+
+            if(this.today > reportingEndDate || this.today < reportingStartDate){
+
+                this.enableRendicontazione =false;
+                this.rendicontazione.enable = false;
+            }
+            let istruttoria = this.getStatusIstruttoria(this.reports);
+            if(istruttoria){
+              this.istruttoriaData = istruttoria;
+              let typeReport = istruttoria.typeReport['type'];
+   let veicoliFiltrati;
+              if(typeReport === 'integrazione'){
+                this.dataFineIstruttoria= moment(Number(this.istruttoriaData.dataInvio)).endOf('day').add(15,'days');
+
+                this.integrazione = false;
+                let scadenza = moment();
+
+                if(this.dataFineIstruttoria.isAfter(moment())){
+                  this.enableRendicontazione =true;
+                  this.rendicontazione.enable = true;
+                  this.istruttoriaRend = true;
+                  this.integrazione = true;
+                  const idVeicoliFiltrati = this.listaAllegati
+                    .filter(obj => obj.adminState !== 'accepted')
+                    .map(obj => obj.id_Veicolo);
+                   veicoliFiltrati = this.listaVeicoli.filter(veicolo => idVeicoliFiltrati.includes(veicolo.id));
+                }
+
+                else{
+                }
+              }
+              // else if(typeReport === 'rigetto'){
+              //   this.dataFineIstruttoria= moment(Number(this.istruttoriaData.dataInvio)).endOf('day').add(10,'days');
+
+
+              //   if(this.dataFineIstruttoria.isAfter(moment())){
+              //     this.enableRendicontazione =false;
+              //     this.rendicontazione.enable = false;
+              //     this.istruttoriaRend = true;
+              //     this.integrazione = true;
+              //     const idVeicoliFiltrati = this.listaAllegati
+              //       .filter(obj => obj.adminState !== 'accepted')
+              //       .map(obj => obj.id_Veicolo);
+              //     veicoliFiltrati = this.listaVeicoli.filter(veicolo => idVeicoliFiltrati.includes(veicolo.id));
+              //    }else{
+              //     console.log('termine scaduto il ',this.dataFineIstruttoria)
+              //    }
+              // }
+            }
+            this.changeDetectorRef.markForCheck()
+            this.isLoading = false;
+    })
     }
     private groupByKey(array, key) {
       return array

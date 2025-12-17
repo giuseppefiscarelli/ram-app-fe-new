@@ -168,10 +168,11 @@ export class AdminReportEditComponent implements OnInit {
 
 
 
+
    }
 
   ngOnInit(): void {
-    if(this.typeReport.type==='nodeduzioni' || this.typeReport.type==='deduzioni'){
+     if(this.typeReport.type==='nodeduzioni' || this.typeReport.type==='deduzioni'){
       this.form.controls.dataVerbale.addValidators([Validators.required]);
       this.form.controls.dataPreavvisoRigetto.addValidators([Validators.required]);
         this.form.controls.protPreavvisoRigetto.addValidators([Validators.required]);
