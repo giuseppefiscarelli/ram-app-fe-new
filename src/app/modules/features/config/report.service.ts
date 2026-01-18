@@ -644,8 +644,8 @@ const result = Object.keys(sumsByArtDm).map(artDm => sumsByArtDm[artDm]);
 
         ], alignment:'justify'},
         {text:[
-          {text:'Ai fini della liquidazione del contributo spettante, compatibilmente con la disponibilità di cassa e ad esito favorevole degli accertamenti di legge, dovrà pervenire '},
-          {text:' - nel termine perentorio di 5 (cinque) giorni dal ricevimento della presente - l’eventuale nuovo IBAN (soltanto in caso di variazione rispetto a quello dichiarato in sede di istanza).',bold:true},
+          {text:'Ai fini della liquidazione del contributo spettante - compatibilmente con la disponibilità di cassa e previa  conclusione  con esito favorevole degli accertamenti di legge - e in conformità alle nuove disposizioni in materia di pagamenti introdotte dal Regolamento (UE) 2024/886, dovrà pervenire all’indirizzo PEC '},
+          {text:'dg.ssa-div7@pec.mit.gov.it entro il termine perentorio di 3 (tre) giorni dal ricevimento della presente, una certificazione di titolarità del conto corrente rilasciata dall’Istituto bancario',bold:true},
 
         ], alignment:'justify',margin: [0,10,0,0]},
         {text:[
