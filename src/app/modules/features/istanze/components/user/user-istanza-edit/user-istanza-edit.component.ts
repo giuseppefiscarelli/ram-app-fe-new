@@ -237,24 +237,11 @@ export class UserIstanzaEditComponent implements OnInit {
 //
                               }
                             }
-                            else if(typeReport === 'rigetto'){
-                              this.dataFineIstruttoria= moment(Number(this.istruttoriaData.dataInvio)).endOf('day').add(10,'days');
-                             // console.log('eccolo fiu fiu')
-
-
-                                  //console.log(idVeicoliFiltrati);
-                              if(this.dataFineIstruttoria.isAfter(moment())){
-                                this.enableRendicontazione =true;
-                                this.rendicontazione.enable = true;
-                                this.istruttoriaRend = true;
-                                this.integrazione = true;
-                                const idVeicoliFiltrati = this.listaAllegati
-                                  .filter(obj => obj.adminState !== 'accepted')
-                                  .map(obj => obj.id_Veicolo);
-                                veicoliFiltrati = this.listaVeicoli.filter(veicolo => idVeicoliFiltrati.includes(veicolo.id));
-                               }else{
-                                console.log('termine scaduto il ',this.dataFineIstruttoria)
-                               }
+                            else {
+                              this.enableRendicontazione = false;
+                              this.rendicontazione.enable = false;
+                              this.istruttoriaRend = false;
+                              this.integrazione = false;
                             }
                           }
                           this.changeDetectorRef.markForCheck()
