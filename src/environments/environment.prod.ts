@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  endpoint: null,
-  baseApi: '/api/',
+  endpoint: 'https://inv8-api.giuseppefiscarelli.it',
+  baseApi: null,
   mfa:false
 };
