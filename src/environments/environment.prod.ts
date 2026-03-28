@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  endpoint: 'https://elsost-api.giuseppefiscarelli.it',
+  endpoint: 'https://elsost-api.ramspa.it',
   baseApi: null,
   mfa:false
 };
