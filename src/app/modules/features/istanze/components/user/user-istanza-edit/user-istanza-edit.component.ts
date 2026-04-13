@@ -232,6 +232,7 @@ export class UserIstanzaEditComponent implements OnInit {
                             //    console.log('rendicondazione chiusaa')
 //
                               }
+                            } else {
                               this.enableRendicontazione = false;
                               this.rendicontazione.enable = false;
                               this.istruttoriaRend = false;
