@@ -300,21 +300,20 @@ export class ReportService {
           ], margin: [20, 5], alignment: 'justify'
         },
 
-        {
-          text: [
-            { text: 'Per qualsiasi informazione, potrete rivolgerVi al nostro Help Desk Incentivi \n' },
-            { text: `(e-mail:` },
-            { text: `incentivoinvestimenti@ramspa.it`, bold: true },
-            { text: `)`, bold: true },
 
-          ]
-        },
-
-        { text: ' Cordiali saluti' }
-
-        ,
         {
           stack: [
+             {
+              text: [
+                { text: 'Per qualsiasi informazione, potrete rivolgerVi al nostro Help Desk Incentivi \n' },
+                { text: `(e-mail:` },
+                { text: `incentivoinvestimenti@ramspa.it`, bold: true },
+                { text: `)`, bold: true },
+
+              ]
+            },
+
+            { text: ' Cordiali saluti' },
             {
               text: 'Il Direttore Operativo \nDott.ssa Lucilla Mattei',
               alignment: 'center',
@@ -366,6 +365,7 @@ export class ReportService {
               margin: [15, 8, 0, 0],
             },
           ],
+          unbreakable: true
         },
       )
 
@@ -397,7 +397,7 @@ export class ReportService {
         defaultStyle: {
           font: 'Times'
         },
-        pageMargins: [40, 120, 40, 80],
+        pageMargins: [40, 120, 40, 60],
         header: function (currentPage, pageCount) {
           if (currentPage === 1) {
             return header
