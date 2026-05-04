@@ -293,12 +293,7 @@ export class ReportService {
             'decorso il termine perentorio suindicato, l\'istruttoria verrà conclusa sulla sola base della documentazione valida disponibile, senza che possa in alcun modo avviarsi qualsiasi, ulteriore fase di interlocuzione.'
           ], margin: [20, 5], alignment: 'justify'
         },
-         {
-          ol: [
-            'la documentazione inviata dovrà rispettare scrupolosamente i criteri di sostanza e di forma richiesti;',
-            'decorso il termine perentorio suindicato, l\'istruttoria verrà conclusa sulla sola base della documentazione valida disponibile, senza che possa in alcun modo avviarsi qualsiasi, ulteriore fase di interlocuzione.'
-          ], margin: [20, 5], alignment: 'justify'
-        },
+
 
 
         {
