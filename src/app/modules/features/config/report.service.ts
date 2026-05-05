@@ -928,6 +928,115 @@ export class ReportService {
       header = [{ image: logo, width: 240, margin: [20, 20, 0, 0] }];
 
       content.push(
+        // { text: 'Prot n° ' + dataReport['numProt'], margin: [0, 25, 0, 0] },
+        // { text: 'Roma li ' + moment(Number(dataReport['dataProt'])).format('DD/MM/YYYY') },
+        { text: 'Spett.Le', alignment: 'right', margin: [0, 20, 0, 0] },
+        { text: dataReport['ragSociale'], alignment: 'right', margin: [0, 0, 0, 0] },
+        { text: `${dataReport['indirizzo']}, ${dataReport['numCivico']}`, alignment: 'right', margin: [0, 0, 0, 0] },
+        { text: `${dataReport['cap']} - ${dataReport['citta']} ${dataReport['prov']}`, alignment: 'right', margin: [0, 0, 0, 0] },
+        { text: ['Raccomandata via pec all\'indirizzo: ', { text: dataReport['pecImpresa'], bold: true }], margin: [0, 10] },
+        { text: 'Oggetto: Contributi ai sensi del D.D. 08 giugno 2023 n.242 per le finalità di cui al D.M. 12 aprile 2023 n. 97 - "Incentivi agli investimenti nel settore dell\'autotrasporto" ', bold: true, margin: [0, 5, 0, 5], alignment: 'justify' },
+        { text: 'IL DIRETTORE GENERALE', alignment: 'center', margin: [0, 10], bold: true },
+            // {
+          // ul: [
+        { margin: [0, 7],text: `VISTA la domanda di ammissione al contributo di cui all'oggeto presentata da Codesta impresa e acquisista con protocollo n°${dataReport['idRam']}/${dataReport['year']} del ${moment(Number(dataReport['dataIdRam'])).format('DD/MM/YYYY')}` },
+        { margin: [0, 7],text: `VISTA la nota prot. n. In/${dataReport['protPreavvisoRigetto']} del${moment(Number(dataReport['dataPreavvisoRigetto'])).format('DD/MM/YYYY')} con la quale è stato dat preavviso di regetto della suddetta istanza di finanziamento;` },
+        { margin: [0, 7],text: `CONSIDERATO che la documentazione trasmessa in riscontro al punto 1 della richiesta di integrazione – ai sensi dell’art. 3, comma 5, lettere a), b), c) del D.D. n. 242/2023 – non risulta conforme ai requisiti prescritti a pena di inammissibilità, nei termini e secondo le modalità stabilite dal MEDESIMO decreto in quanto: ${dataReport['motivazioneInammissibilita']};`,alignment: 'justify'},
+        { margin: [0, 7],text: `DATO ATTO che la carenza sopra evidenziata integra causa di inammissibilità dell’istanza ai sensi del citato art. 3 del D.D. n. 242/2023;` },
+        { margin: [0, 7],text: `DATO ATTO altresì che, stante la mancanza dei requisiti essenziali a pena di inammissibilità, l’eventuale ulteriore documentazione prodotta in risposta alla medesima richiesta non è stata oggetto di valutazione ai fini della rendicontazione;` },
+        { margin: [0, 7],text:`VISTO il verbale della riunione della Commissione, istituita ai sensi dell’art. 10, comma 3, del D.D. 8 giugno 2023, n. 242, svoltasi in data ${moment(Number(dataReport['dataVerbale'])).format('DD/MM/YYYY')}, dal quale risulta che la documentazione trasmessa è stata ritenuta non accoglibile; `},
+        { margin: [0, 7],text:`RITENUTO che le carenze sopra evidenziate assumono carattere assorbente ai fini della declaratoria di inammissibilità dell’istanza;`},
+            // { text: `CONSIDERATO che non è pervenuta alcuna risposta alla predetta nota del ${moment(Number(dataReport['notaInammissibilita'])).format('DD/MM/YYYY')}` },
+            // { text: 'CONSIDERATO che premane la seguente motivazione di inammissibilità:' }
+            // ],
+            // margin: [10, 0],
+
+            // alignment: 'justify'
+            //},
+            // { text: dataReport['motivazioneInammissibilita'], margin: [10, 0, 0, 0] },
+            // { text: 'COMUNICA', alignment: 'center', margin: [0, 10], bold: true },
+        { text: 'COMUNICA', alignment: 'center', margin: [0, 10], bold: true ,pageBreak: 'before' },
+        { text: 'che il procedimento amministrativo avviato con l’istanza di ammissione al contributo si è concluso con il', alignment: 'justify' },
+        { text: 'RIGETTO DELLA DOMANDA', alignment: 'center', margin: [0, 10], bold: true },
+        { text:`${dataReport['motivazioneInammissibilita']}`,
+          margin: [10, 0],
+
+          alignment: 'justify'},
+        { text: `Il presente provvedimento costituisce determinazione conclusiva del procedimento amministrativo. Si comunica altresì che, ai sensi dell'art. 3, comma 4, della legge 7 agosto 1990 n. 241, avverso il presente atto è ammesso ricorso giurisdizionale avanti al competente Tribunale Amministrativo Regionale oppure, in alterativa, ricorso straordinario al Presidente della Repubblica, rispettivamente entro sessanta e centoventi giorni dal ricevimento dello stesso.`, alignment: 'justify' },
+        {
+          text: [
+            { text: 'Il Direttore Generale \n' },
+            { text: 'dr. ing. Fausto Fedele' },
+
+          ], alignment: 'right', margin: [40, 20, 60, 10], width: 140
+        },
+
+        {
+          image: firma,
+          alignment: 'right',
+          width: 140, margin: [40, 0, 0, 10]
+        }
+
+
+
+
+      )
+
+      var docDefinitiond = {
+        pageSize: 'A4',
+        defaultStyle: {
+          font: 'Times'
+        },
+        pageMargins: [25, 100, 30, 80],
+        header: function (currentPage, pageCount) {
+          if (currentPage === 1) {
+            return header
+          }
+        },
+
+        content: content,
+        footer: (currentPage, pageCount) => {
+          return footer
+        },
+        styles: {
+          header: {
+            fontSize: 18,
+            bold: true,
+            margin: [0, 0, 0, 10]
+          },
+          subheader: {
+            fontSize: 16,
+            bold: true,
+            margin: [0, 10, 0, 5]
+          },
+          tableExample: {
+            margin: [0, 5, 0, 15],
+            fontSize: 10,
+            alignment: 'right'
+          },
+          tableHeader: {
+            bold: true,
+            fontSize: 13,
+            color: 'black'
+          }
+        }
+      }
+
+      const report = pdfMake.createPdf(docDefinitiond);
+
+      return report
+
+    }
+
+    if (type === 'inammissibilita-parziale') {
+      let logo = await this.getBase64ImageFromURL('../../../../assets/report/mit3.png');
+      //let firma  = await this.getBase64ImageFromURL('../../../../assets/report/firma_resp.png');
+      let firma = await this.getBase64ImageFromURL('../../../../assets/report/firma_fedele.jpg');
+
+
+      header = [{ image: logo, width: 240, margin: [20, 20, 0, 0] }];
+
+      content.push(
         { text: 'Prot n° ' + dataReport['numProt'], margin: [0, 25, 0, 0] },
         { text: 'Roma li ' + moment(Number(dataReport['dataProt'])).format('DD/MM/YYYY') },
         { text: 'Spett.Le', alignment: 'right', margin: [0, 0, 0, 0] },
@@ -937,24 +1046,23 @@ export class ReportService {
         { text: ['Raccomandata via pec all\'indirizzo: ', { text: dataReport['pecImpresa'], bold: true }], margin: [0, 10] },
         { text: 'Oggetto: Contributi ai sensi del D.D. 08 giugno 2023 n.242 per le finalità di cui al D.M. 12 aprile 2023 n. 97 - "Incentivi agli investimenti nel settore dell\'autotrasporto" ', bold: true, margin: [0, 5, 0, 5], alignment: 'justify' },
         { text: 'IL DIRETTORE GENERALE', alignment: 'center', margin: [0, 10], bold: true },
-        {
-          ul: [
-            { text: `VISTA la domanda di ammissione al contributo di cui all'oggeto presentata da Codesta impresa e acquisista con protocollo n°${dataReport['idRam']}/${dataReport['year']} del ${moment(Number(dataReport['dataIdRam'])).format('DD/MM/YYYY')}` },
-            { text: `VISTO il verbale di riunione della Commissione, istituita ai sensi dell'art. 12, comma 3, D.D. 08 giugno 2023 n.242 , tenutasi il giorno ${moment(Number(dataReport['dataVerbale'])).format('DD/MM/YYYY')}` },
-            { text: `VISTA la nota prot. n. In/${dataReport['protPreavvisoRigetto']} del${moment(Number(dataReport['dataPreavvisoRigetto'])).format('DD/MM/YYYY')} con la quale è stato dat preavviso di regetto della suddetta istanza di finanziamento;` },
-            { text: `CONSIDERATO che non è pervenuta alcuna risposta alla predetta nota del ${moment(Number(dataReport['notaInammissibilita'])).format('DD/MM/YYYY')}` },
-            { text: 'CONSIDERATO che premane la seguente motivazione di inammissibilità:' }
+        { margin: [0, 7],text: `VISTA la domanda di ammissione al contributo di cui all'oggeto presentata da Codesta impresa e acquisista con protocollo n°${dataReport['idRam']}/${dataReport['year']} del ${moment(Number(dataReport['dataIdRam'])).format('DD/MM/YYYY')}` },
+        { margin: [0, 7],text: `VISTA la nota prot. n. In/${dataReport['protPreavvisoRigetto']} del${moment(Number(dataReport['dataPreavvisoRigetto'])).format('DD/MM/YYYY')} con la quale è stato dat preavviso di regetto della suddetta istanza di finanziamento;` },
+        { margin: [0, 7],text: `CONSIDERATO che la documentazione trasmessa in riscontro al punto 1 della richiesta di integrazione – ai sensi dell’art. 3, comma 5, lettere a), b), c) del D.D. n. 242/2023 – non risulta conforme ai requisiti prescritti a pena di inammissibilità, nei termini e secondo le modalità stabilite dal MEDESIMO decreto in quanto: ${dataReport['motivazioneInammissibilita']};`,alignment: 'justify'},
+        { margin: [0, 7],text: `DATO ATTO che la carenza sopra evidenziata integra causa di inammissibilità dell’istanza ai sensi del citato art. 3 del D.D. n. 242/2023;` },
+        { margin: [0, 7],text: `DATO ATTO altresì che, stante la mancanza dei requisiti essenziali a pena di inammissibilità, l’eventuale ulteriore documentazione prodotta in risposta alla medesima richiesta non è stata oggetto di valutazione ai fini della rendicontazione;` },
+        { margin: [0, 7],text:`VISTO il verbale della riunione della Commissione, istituita ai sensi dell’art. 10, comma 3, del D.D. 8 giugno 2023, n. 242, svoltasi in data ${moment(Number(dataReport['dataVerbale'])).format('DD/MM/YYYY')}, dal quale risulta che la documentazione trasmessa è stata ritenuta non accoglibile; `},
+        { margin: [0, 7],text:`RITENUTO che le carenze sopra evidenziate assumono carattere assorbente ai fini della declaratoria di inammissibilità dell’istanza;`},
 
-          ],
+        //{ text: dataReport['motivazioneInammissibilita'], margin: [10, 0, 0, 0] },
+        { text: 'COMUNICA', alignment: 'center', margin: [0, 10], bold: true },
+        { text: 'che il procedimento amministrativo avviato con l’istanza di ammissione al contributo si è concluso con il', alignment: 'justify' },
+        { text: 'RIGETTO PARZIALE DELLA DOMANDA', alignment: 'center', margin: [0, 10], bold: true },
+        { text:`${dataReport['motivazioneInammissibilita']}`,
           margin: [10, 0],
 
-          alignment: 'justify'
-        },
-        { text: dataReport['motivazioneInammissibilita'], margin: [10, 0, 0, 0] },
-        { text: 'COMUNICA', alignment: 'center', margin: [0, 10], bold: true },
-        { text: 'a Codesta impresa che il procedimanto amministartivo avviato con l\'istanza di ammissione al contributo si è concluso con il', alignment: 'justify' },
-        { text: 'RIGETTO DELLA DOMANDA', alignment: 'center', margin: [0, 10], bold: true },
-        { text: 'Si comunica altresì che, ai sensi dell\'art. 3, comma 4, della legge 7 agosto 1990 n. 241, avverso il presente atto è ammesso ricorso giurisdizionale avantio al competente Tribunale Amministrativo Regionale oppure, in alternativa, ricorso straordinario al Presidente della Republica, rispettivamente entro sessanta e centoventi giorni dal ricevimento dello stesso.', alignment: 'justify' },
+          alignment: 'justify'},
+        { text: `Il presente provvedimento costituisce determinazione conclusiva del procedimento amministrativo. Si comunica altresì che, ai sensi dell'art. 3, comma 4, della legge 7 agosto 1990 n. 241, avverso il presente atto è ammesso ricorso giurisdizionale avanti al competente Tribunale Amministrativo Regionale oppure, in alterativa, ricorso straordinario al Presidente della Repubblica, rispettivamente entro sessanta e centoventi giorni dal ricevimento dello stesso.`, alignment: 'justify' },
         {
           text: [
             { text: 'Il Direttore Generale \n' },
