@@ -286,19 +286,28 @@ export class ReportService {
         },
 
         { text: 'Al fine di porre in condizione codesta spett.le impresa di rispettare pienamente quanto previsto dal decreto in oggetto specificato, si invita quest\'ultima a tenere presenti le seguenti inderogabili disposizioni:' },
-        {
+       {
           ol: [
             'la documentazione inviata dovrà rispettare scrupolosamente i criteri di sostanza e di forma richiesti;',
             'decorso il termine perentorio suindicato, l\'istruttoria verrà conclusa sulla sola base della documentazione valida disponibile, senza che possa in alcun modo avviarsi qualsiasi, ulteriore fase di interlocuzione.'
           ], margin: [20, 5], alignment: 'justify'
         },
-        { text: 'Per qualsiasi informazione, potrete rivolgerVi al nostro Help Desk Incentivi' },
-        { text: [{ text: '(e-mail: ' }, { text: 'incentivoinvestimenti@ramspa.it', bold: true }, { text: ').' }] },
-        { text: ' Cordiali saluti' }
 
-        ,
+
+
         {
           stack: [
+             {
+              text: [
+                { text: 'Per qualsiasi informazione, potrete rivolgerVi al nostro Help Desk Incentivi \n' },
+                { text: `(e-mail:` },
+                { text: `incentivoinvestimenti@ramspa.it`, bold: true },
+                { text: `)`, bold: true },
+
+              ]
+            },
+
+            { text: ' Cordiali saluti' },
             {
               text: 'Il Direttore Operativo \nDott.ssa Lucilla Mattei',
               alignment: 'center',
@@ -350,6 +359,7 @@ export class ReportService {
               margin: [15, 8, 0, 0],
             },
           ],
+          unbreakable: true
         },
 
 
@@ -386,7 +396,7 @@ export class ReportService {
         defaultStyle: {
           font: 'Times'
         },
-        pageMargins: [40, 120, 40, 80],
+        pageMargins: [40, 120, 40, 60],
         header: function (currentPage, pageCount) {
           if (currentPage === 1) {
             return header
