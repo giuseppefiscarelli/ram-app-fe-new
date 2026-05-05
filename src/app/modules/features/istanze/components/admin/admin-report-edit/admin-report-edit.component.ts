@@ -179,7 +179,14 @@ export class AdminReportEditComponent implements OnInit {
       this.form.controls.dataVerbaleDeduzioni.addValidators([Validators.required]);
       this.form.controls.motivazioneInammissibilita.addValidators([Validators.required]);
 
-    }else  if(this.typeReport.type==='ammissione'){
+    }else  if(this.typeReport.type==='inammissibilita' || this.typeReport.type==='inammissibilita-parziale'){
+      this.form.controls.dataVerbale.addValidators([Validators.required]);
+      this.form.controls.dataPreavvisoRigetto.addValidators([Validators.required]);
+        this.form.controls.protPreavvisoRigetto.addValidators([Validators.required]);
+      this.form.controls.motivazioneInammissibilita.addValidators([Validators.required]);
+
+    }
+    else  if(this.typeReport.type==='ammissione'){
       this.form.controls.dataVerbale.addValidators([Validators.required]);
 
 

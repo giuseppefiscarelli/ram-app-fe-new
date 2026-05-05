@@ -164,61 +164,39 @@
 
                   </mat-form-field> -->
                   <mat-divider style="margin:10px 10px"></mat-divider>
-
                   <mat-label style="color:#06c;">Richiesta documentazione</mat-label>
-                      <div formArrayName="detail" style=" margin-top: 20px;">
-
-
-                      <ng-container  *ngFor="let control of myArrayControls; let i = index" style="width:100%">
-                          <mat-form-field style="width:70%">
-
-                              <textarea  matInput [formControlName]="i"></textarea>
-                          </mat-form-field>
-                          <button mat-raised-button color="warn" style="margin-left:10px;" (click)="removeControl(i)">
-                              <mat-icon>remove</mat-icon> Rimuovi
-                            </button>
-
-
-                      </ng-container>
-
-
-
-
-                    </div>
-                    <button mat-raised-button color="primary"(click)="addControl()" style=" margin-top: 20px;">
-                      <mat-icon>add</mat-icon> Inserisci richiesta
-                    </button>
-
+                  <div formArrayName="detail" style=" margin-top: 20px;">
+                    <ng-container  *ngFor="let control of myArrayControls; let i = index" style="width:100%">
+                        <mat-form-field style="width:70%">
+                            <textarea  matInput [formControlName]="i"></textarea>
+                        </mat-form-field>
+                        <button mat-raised-button color="warn" style="margin-left:10px;" (click)="removeControl(i)">
+                            <mat-icon>remove</mat-icon> Rimuovi
+                          </button>
+                    </ng-container>
+                  </div>
+                  <button mat-raised-button color="primary"(click)="addControl()" style=" margin-top: 20px;">
+                    <mat-icon>add</mat-icon> Inserisci richiesta
+                  </button>
               </form>
-
             </div>
-
             <div fxFlex="100" *ngIf="this.typeReport.type==='rigetto'">
               <form [formGroup]="form">
                 <mat-label style="color:#06c;">motivazioni Rigetto</mat-label>
                 <div formArrayName="detail" style=" margin-top: 20px;">
+                  <ng-container  *ngFor="let control of myArrayControls; let i = index" style="width:100%">
+                      <mat-form-field style="width:70%">
 
-
-                <ng-container  *ngFor="let control of myArrayControls; let i = index" style="width:100%">
-                    <mat-form-field style="width:70%">
-
-                        <textarea  matInput [formControlName]="i"></textarea>
-                    </mat-form-field>
-                    <button mat-raised-button color="warn" style="margin-left:10px;" (click)="removeControl(i)">
-                        <mat-icon>remove</mat-icon> Rimuovi
+                          <textarea  matInput [formControlName]="i"></textarea>
+                      </mat-form-field>
+                      <button mat-raised-button color="warn" style="margin-left:10px;" (click)="removeControl(i)">
+                          <mat-icon>remove</mat-icon> Rimuovi
                       </button>
-
-
-                </ng-container>
-
-
-
-
-              </div>
-              <button mat-raised-button color="primary"(click)="addControl()" style=" margin-top: 20px;">
-                <mat-icon>add</mat-icon> Inserisci motivazione
-              </button>
-
+                  </ng-container>
+                </div>
+                <button mat-raised-button color="primary"(click)="addControl()" style=" margin-top: 20px;">
+                  <mat-icon>add</mat-icon> Inserisci motivazione
+                </button>
               </form>
             </div>
             <div fxFlex="100" *ngIf="this.typeReport.type==='ammissione'">
@@ -233,42 +211,34 @@
                   <mat-datepicker #dataVerbale>
                   </mat-datepicker>
                 </mat-form-field>
-
-
-
               </form>
             </div>
-
-                        <div class="col-custom col-custom-12" *ngIf="this.typeReport.type==='nodeduzioni'">
+            <div class="col-custom col-custom-12" *ngIf="this.typeReport.type==='nodeduzioni' || this.typeReport.type==='inammissibilita-parziale'|| this.typeReport.type==='inammissibilita'">
               <form [formGroup]="form">
                 <div class="row-custom">
-                   <div class="col-custom col-custom-6" >
+                   <div class="col-custom col-custom-4" >
                       <mat-form-field  style="width: 100%;">
-                            <input matInput
-                            [matDatepicker]="dataVerbale"
-                            formControlName="dataVerbale"
-                            placeholder="Data Verbale riunione"
-                            >
-                            <mat-datepicker-toggle matSuffix [for]="dataVerbale"></mat-datepicker-toggle>
-                            <mat-datepicker #dataVerbale>
-                            </mat-datepicker>
-                            <mat-error *ngIf="form.get('dataVerbale').invalid" [innerHTML]="form.get('dataVerbale') | errors"></mat-error>
-
-
-                          </mat-form-field>
+                          <input matInput
+                          [matDatepicker]="dataVerbale"
+                          formControlName="dataVerbale"
+                          placeholder="Data Verbale riunione"
+                          >
+                          <mat-datepicker-toggle matSuffix [for]="dataVerbale"></mat-datepicker-toggle>
+                          <mat-datepicker #dataVerbale>
+                          </mat-datepicker>
+                          <mat-error *ngIf="form.get('dataVerbale').invalid" [innerHTML]="form.get('dataVerbale') | errors"></mat-error>
+                      </mat-form-field>
                     </div>
-
                 </div>
                 <div class="row-custom">
-                        <div class="col-custom col-custom-6">
-                          <mat-form-field  style="width: 100%;">
-                                <input matInput type="text" [placeholder]="'n° protocollo preavviso di rigetto' | translate" formControlName="protPreavvisoRigetto">
-                                <mat-error *ngIf="form.get('protPreavvisoRigetto').invalid" [innerHTML]="form.get('protPreavvisoRigetto') | errors"></mat-error>
-                            </mat-form-field >
-                        </div>
-                        <div class="col-custom col-custom-6">
-
-                            <mat-form-field  style="width: 100%;">
+                  <div class="col-custom col-custom-4" >
+                    <mat-form-field  style="width: 100%;">
+                      <input matInput type="text" [placeholder]="'n° protocollo preavviso di rigetto' | translate" formControlName="protPreavvisoRigetto">
+                      <mat-error *ngIf="form.get('protPreavvisoRigetto').invalid" [innerHTML]="form.get('protPreavvisoRigetto') | errors"></mat-error>
+                    </mat-form-field >
+                  </div>
+                  <div class="col-custom col-custom-4" >
+                    <mat-form-field  style="width: 100%;">
                                 <input matInput
                                     [matDatepicker]="dataPreavvisoRigetto"
                                     formControlName="dataPreavvisoRigetto"
@@ -278,38 +248,33 @@
                                 <mat-datepicker #dataPreavvisoRigetto></mat-datepicker>
                                <mat-error *ngIf="form.get('dataPreavvisoRigetto').invalid" [innerHTML]="form.get('dataPreavvisoRigetto') | errors"></mat-error>
 
-                            </mat-form-field>
-                        </div>
-
-                </div>
-                <div class="row-custom">
-                  <div class="col-custom col-custom-6" >
-
-                            <mat-form-field  style="width: 100%;">
-                                <input matInput
-                                    [matDatepicker]="dataNotaInammissibilita"
-                                    formControlName="dataNotaInammissibilita"
-                                    placeholder="Data Risposta Preavviso di rigetto"
-                                >
-                                <mat-datepicker-toggle matSuffix [for]="dataNotaInammissibilita"></mat-datepicker-toggle>
-                                <mat-datepicker #dataNotaInammissibilita></mat-datepicker>
-                                <mat-error *ngIf="form.get('dataNotaInammissibilita').invalid" [innerHTML]="form.get('dataNotaInammissibilita') | errors"></mat-error>
-
-                            </mat-form-field>
+                    </mat-form-field>
                   </div>
-                   <div class="col-custom col-custom-6" >
-
-                            <mat-form-field  style="width: 100%;">
-                                <input matInput
-                                    [matDatepicker]="dataVerbaleDeduzioni"
-                                    formControlName="dataVerbaleDeduzioni"
-                                    placeholder="Data Verbale Chiusura Procedimento"
-                                >
-                                <mat-datepicker-toggle matSuffix [for]="dataVerbaleDeduzioni"></mat-datepicker-toggle>
-                                <mat-datepicker #dataVerbaleDeduzioni></mat-datepicker>
-                                <mat-error *ngIf="form.get('dataVerbaleDeduzioni').invalid" [innerHTML]="form.get('dataVerbaleDeduzioni') | errors"></mat-error>
-
-                            </mat-form-field>
+                </div>
+                <div class="row-custom" *ngIf="this.typeReport.type==='nodeduzioni'">
+                  <div class="col-custom col-custom-4" >
+                      <mat-form-field  style="width: 100%;">
+                          <input matInput
+                              [matDatepicker]="dataNotaInammissibilita"
+                              formControlName="dataNotaInammissibilita"
+                              placeholder="Data Risposta Preavviso di rigetto"
+                          >
+                          <mat-datepicker-toggle matSuffix [for]="dataNotaInammissibilita"></mat-datepicker-toggle>
+                          <mat-datepicker #dataNotaInammissibilita></mat-datepicker>
+                          <mat-error *ngIf="form.get('dataNotaInammissibilita').invalid" [innerHTML]="form.get('dataNotaInammissibilita') | errors"></mat-error>
+                      </mat-form-field>
+                  </div>
+                  <div class="col-custom col-custom-4" >
+                    <mat-form-field  style="width: 100%;">
+                        <input matInput
+                            [matDatepicker]="dataVerbaleDeduzioni"
+                            formControlName="dataVerbaleDeduzioni"
+                            placeholder="Data Verbale Chiusura Procedimento"
+                        >
+                        <mat-datepicker-toggle matSuffix [for]="dataVerbaleDeduzioni"></mat-datepicker-toggle>
+                        <mat-datepicker #dataVerbaleDeduzioni></mat-datepicker>
+                        <mat-error *ngIf="form.get('dataVerbaleDeduzioni').invalid" [innerHTML]="form.get('dataVerbaleDeduzioni') | errors"></mat-error>
+                    </mat-form-field>
                   </div>
                 </div>
                  <div class="row-custom">
@@ -321,15 +286,12 @@
 
                   </div>
                  </div>
-
-
-
               </form>
             </div>
             <div class="col-custom col-custom-12" *ngIf="this.typeReport.type==='deduzioni'">
               <form [formGroup]="form">
                 <div class="row-custom">
-                   <div class="col-custom col-custom-6" >
+                  <div class="col-custom col-custom-6" >
                       <mat-form-field style="width: 100%;">
                             <input matInput
                             [matDatepicker]="dataVerbale"
@@ -343,57 +305,53 @@
 
                           </mat-form-field>
 
-                    </div>
-
+                  </div>
                 </div>
                 <div class="row-custom">
-                        <div class="col-custom col-custom-6">
-                          <mat-form-field style="width: 100%;">
-                                <input matInput type="text" [placeholder]="'n° protocollo preavviso di rigetto' | translate" formControlName="protPreavvisoRigetto">
-                                <mat-error *ngIf="form.get('protPreavvisoRigetto').invalid" [innerHTML]="form.get('protPreavvisoRigetto') | errors"></mat-error>
-                            </mat-form-field >
-                        </div>
-                        <div class="col-custom col-custom-6">
-
-                          <mat-form-field style="width: 100%;">
-                                <input matInput
-                                    [matDatepicker]="dataPreavvisoRigetto"
-                                    formControlName="dataPreavvisoRigetto"
-                                    placeholder="Data Preavviso di rigetto"
-                                >
-                                <mat-datepicker-toggle matSuffix [for]="dataPreavvisoRigetto"></mat-datepicker-toggle>
-                                <mat-datepicker #dataPreavvisoRigetto></mat-datepicker>
-                                 <mat-error *ngIf="form.get('dataPreavvisoRigetto').invalid" [innerHTML]="form.get('dataPreavvisoRigetto') | errors"></mat-error>
-                            </mat-form-field>
-                        </div>
+                  <div class="col-custom col-custom-6">
+                    <mat-form-field style="width: 100%;">
+                          <input matInput type="text" [placeholder]="'n° protocollo preavviso di rigetto' | translate" formControlName="protPreavvisoRigetto">
+                          <mat-error *ngIf="form.get('protPreavvisoRigetto').invalid" [innerHTML]="form.get('protPreavvisoRigetto') | errors"></mat-error>
+                      </mat-form-field >
+                  </div>
+                  <div class="col-custom col-custom-6">
+                    <mat-form-field style="width: 100%;">
+                          <input matInput
+                              [matDatepicker]="dataPreavvisoRigetto"
+                              formControlName="dataPreavvisoRigetto"
+                              placeholder="Data Preavviso di rigetto"
+                          >
+                          <mat-datepicker-toggle matSuffix [for]="dataPreavvisoRigetto"></mat-datepicker-toggle>
+                          <mat-datepicker #dataPreavvisoRigetto></mat-datepicker>
+                            <mat-error *ngIf="form.get('dataPreavvisoRigetto').invalid" [innerHTML]="form.get('dataPreavvisoRigetto') | errors"></mat-error>
+                      </mat-form-field>
+                  </div>
 
                 </div>
                 <div class="row-custom">
                   <div class="col-custom col-custom-6" >
-
-                            <mat-form-field style="width: 100%;">
-                                <input matInput
-                                    [matDatepicker]="dataNotaInammissibilita"
-                                    formControlName="dataNotaInammissibilita"
-                                    placeholder="Data Documentazione inviata"
-                                >
-                                <mat-datepicker-toggle matSuffix [for]="dataNotaInammissibilita"></mat-datepicker-toggle>
-                                <mat-datepicker #dataNotaInammissibilita></mat-datepicker>
-                                 <mat-error *ngIf="form.get('dataNotaInammissibilita').invalid" [innerHTML]="form.get('dataNotaInammissibilita') | errors"></mat-error>
-                            </mat-form-field>
+                    <mat-form-field style="width: 100%;">
+                        <input matInput
+                            [matDatepicker]="dataNotaInammissibilita"
+                            formControlName="dataNotaInammissibilita"
+                            placeholder="Data Documentazione inviata"
+                        >
+                        <mat-datepicker-toggle matSuffix [for]="dataNotaInammissibilita"></mat-datepicker-toggle>
+                        <mat-datepicker #dataNotaInammissibilita></mat-datepicker>
+                          <mat-error *ngIf="form.get('dataNotaInammissibilita').invalid" [innerHTML]="form.get('dataNotaInammissibilita') | errors"></mat-error>
+                    </mat-form-field>
                   </div>
-                   <div class="col-custom col-custom-6" >
-
-                             <mat-form-field style="width: 100%;">
-                                <input matInput
-                                    [matDatepicker]="dataVerbaleDeduzioni"
-                                    formControlName="dataVerbaleDeduzioni"
-                                    placeholder="Data Verbale Chiusura Procedimento"
-                                >
-                                <mat-datepicker-toggle matSuffix [for]="dataVerbaleDeduzioni"></mat-datepicker-toggle>
-                                <mat-datepicker #dataVerbaleDeduzioni></mat-datepicker>
-                                 <mat-error *ngIf="form.get('dataVerbaleDeduzioni').invalid" [innerHTML]="form.get('dataVerbaleDeduzioni') | errors"></mat-error>
-                            </mat-form-field>
+                  <div class="col-custom col-custom-6" >
+                    <mat-form-field style="width: 100%;">
+                        <input matInput
+                            [matDatepicker]="dataVerbaleDeduzioni"
+                            formControlName="dataVerbaleDeduzioni"
+                            placeholder="Data Verbale Chiusura Procedimento"
+                        >
+                        <mat-datepicker-toggle matSuffix [for]="dataVerbaleDeduzioni"></mat-datepicker-toggle>
+                        <mat-datepicker #dataVerbaleDeduzioni></mat-datepicker>
+                          <mat-error *ngIf="form.get('dataVerbaleDeduzioni').invalid" [innerHTML]="form.get('dataVerbaleDeduzioni') | errors"></mat-error>
+                    </mat-form-field>
                   </div>
                 </div>
                  <div class="row-custom">
