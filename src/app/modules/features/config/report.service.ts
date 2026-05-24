@@ -935,17 +935,20 @@ export class ReportService {
         { text: `${dataReport['indirizzo']}, ${dataReport['numCivico']}`, alignment: 'right', margin: [0, 0, 0, 0] },
         { text: `${dataReport['cap']} - ${dataReport['citta']} ${dataReport['prov']}`, alignment: 'right', margin: [0, 0, 0, 0] },
         { text: ['Raccomandata via pec all\'indirizzo: ', { text: dataReport['pecImpresa'], bold: true }], margin: [0, 10] },
-        { text: 'Oggetto: Contributi ai sensi del D.D. 08 giugno 2023 n.242 per le finalità di cui al D.M. 12 aprile 2023 n. 97 - "Incentivi agli investimenti nel settore dell\'autotrasporto" ', bold: true, margin: [0, 5, 0, 5], alignment: 'justify' },
+        { text: `Oggetto: Contributi ai sensi del D.D. 08 giugno 2023 n.242 per le finalità di cui al D.M. 12 aprile 2023 n. 97 - "Incentivi agli investimenti nel settore dell\'autotrasporto". XI Edizione Protocollo Istanza IN ${dataReport['idRam']}/${dataReport['year']} `, bold: true, margin: [0, 5, 0, 5], alignment: 'justify' },
         { text: 'IL DIRETTORE GENERALE', alignment: 'center', margin: [0, 10], bold: true },
             // {
           // ul: [
-        { margin: [0, 7],text: `VISTA la domanda di ammissione al contributo di cui all'oggeto presentata da Codesta impresa e acquisista con protocollo n°${dataReport['idRam']}/${dataReport['year']} del ${moment(Number(dataReport['dataIdRam'])).format('DD/MM/YYYY')}` },
-        { margin: [0, 7],text: `VISTA la nota prot. n. In/${dataReport['protPreavvisoRigetto']} del${moment(Number(dataReport['dataPreavvisoRigetto'])).format('DD/MM/YYYY')} con la quale è stato dat preavviso di regetto della suddetta istanza di finanziamento;` },
-        { margin: [0, 7],text: `CONSIDERATO che la documentazione trasmessa in riscontro al punto 1 della richiesta di integrazione – ai sensi dell’art. 3, comma 5, lettere a), b), c) del D.D. n. 242/2023 – non risulta conforme ai requisiti prescritti a pena di inammissibilità, nei termini e secondo le modalità stabilite dal MEDESIMO decreto in quanto: ${dataReport['motivazioneInammissibilita']};`,alignment: 'justify'},
-        { margin: [0, 7],text: `DATO ATTO che la carenza sopra evidenziata integra causa di inammissibilità dell’istanza ai sensi del citato art. 3 del D.D. n. 242/2023;` },
-        { margin: [0, 7],text: `DATO ATTO altresì che, stante la mancanza dei requisiti essenziali a pena di inammissibilità, l’eventuale ulteriore documentazione prodotta in risposta alla medesima richiesta non è stata oggetto di valutazione ai fini della rendicontazione;` },
-        { margin: [0, 7],text:`VISTO il verbale della riunione della Commissione, istituita ai sensi dell’art. 10, comma 3, del D.D. 8 giugno 2023, n. 242, svoltasi in data ${moment(Number(dataReport['dataVerbale'])).format('DD/MM/YYYY')}, dal quale risulta che la documentazione trasmessa è stata ritenuta non accoglibile; `},
-        { margin: [0, 7],text:`RITENUTO che le carenze sopra evidenziate assumono carattere assorbente ai fini della declaratoria di inammissibilità dell’istanza;`},
+        { margin: [0, 7],alignment: 'justify',text: `VISTA la domanda di ammissione al contributo di cui all'oggeto presentata da Codesta impresa e acquisista con protocollo n°${dataReport['idRam']}/${dataReport['year']} del ${moment(Number(dataReport['dataIdRam'])).format('DD/MM/YYYY')}` },
+        { margin: [0, 7],alignment: 'justify',text: `VISTA la nota prot. n. In/${dataReport['protPreavvisoRigetto']} del ${moment(Number(dataReport['dataPreavvisoRigetto'])).format('DD/MM/YYYY')} con la quale è stata inviata la richiesta di integrazione per la suddetta istanza di finanziamento;` },
+        { margin: [0, 7], alignment: 'justify', text: `CONSIDERATO che la documentazione trasmessa in riscontro al punto 1 della richiesta di integrazione – ai sensi dell’art. 3, comma 5, lettere a), b), c) del D.D. n. 242/2023 – non risulta conforme ai requisiti prescritti a pena di inammissibilità, nei termini e secondo le modalità stabilite dal MEDESIMO decreto in quanto:` },
+         {
+          ul: dataReport['detail'], bold: true, margin: [0, 10], alignment: 'justify',
+        },
+        { margin: [0, 7],alignment: 'justify',text: `DATO ATTO che la carenza sopra evidenziata integra causa di inammissibilità dell’istanza ai sensi del citato art. 3 del D.D. n. 242/2023;` },
+        { margin: [0, 7],alignment: 'justify',text: `DATO ATTO altresì che, stante la mancanza dei requisiti essenziali a pena di inammissibilità, l’eventuale ulteriore documentazione prodotta in risposta alla medesima richiesta non è stata oggetto di valutazione ai fini della rendicontazione;` },
+        { margin: [0, 7],alignment: 'justify',text:`VISTO il verbale della riunione della Commissione, istituita ai sensi dell’art. 10, comma 3, del D.D. 8 giugno 2023, n. 242, svoltasi in data ${moment(Number(dataReport['dataVerbale'])).format('DD/MM/YYYY')}, dal quale risulta che la documentazione trasmessa è stata ritenuta non accoglibile; `},
+        { margin: [0, 7],alignment: 'justify',text:`RITENUTO che le carenze sopra evidenziate assumono carattere assorbente ai fini della declaratoria di inammissibilità dell’istanza;`},
             // { text: `CONSIDERATO che non è pervenuta alcuna risposta alla predetta nota del ${moment(Number(dataReport['notaInammissibilita'])).format('DD/MM/YYYY')}` },
             // { text: 'CONSIDERATO che premane la seguente motivazione di inammissibilità:' }
             // ],
@@ -959,7 +962,7 @@ export class ReportService {
         { text: 'che il procedimento amministrativo avviato con l’istanza di ammissione al contributo si è concluso con il', alignment: 'justify' },
         { text: 'RIGETTO DELLA DOMANDA', alignment: 'center', margin: [0, 10], bold: true },
         { text:`${dataReport['motivazioneInammissibilita']}`,
-          margin: [10, 0],
+          margin: [10, 0,10,30],
 
           alignment: 'justify'},
         { text: `Il presente provvedimento costituisce determinazione conclusiva del procedimento amministrativo. Si comunica altresì che, ai sensi dell'art. 3, comma 4, della legge 7 agosto 1990 n. 241, avverso il presente atto è ammesso ricorso giurisdizionale avanti al competente Tribunale Amministrativo Regionale oppure, in alterativa, ricorso straordinario al Presidente della Repubblica, rispettivamente entro sessanta e centoventi giorni dal ricevimento dello stesso.`, alignment: 'justify' },
@@ -987,7 +990,7 @@ export class ReportService {
         defaultStyle: {
           font: 'Times'
         },
-        pageMargins: [25, 100, 30, 80],
+        pageMargins: [60, 100, 60, 80],
         header: function (currentPage, pageCount) {
           if (currentPage === 1) {
             return header
@@ -1044,22 +1047,25 @@ export class ReportService {
         { text: `${dataReport['indirizzo']}, ${dataReport['numCivico']}`, alignment: 'right', margin: [0, 0, 0, 0] },
         { text: `${dataReport['cap']} - ${dataReport['citta']} ${dataReport['prov']}`, alignment: 'right', margin: [0, 0, 0, 0] },
         { text: ['Raccomandata via pec all\'indirizzo: ', { text: dataReport['pecImpresa'], bold: true }], margin: [0, 10] },
-        { text: 'Oggetto: Contributi ai sensi del D.D. 08 giugno 2023 n.242 per le finalità di cui al D.M. 12 aprile 2023 n. 97 - "Incentivi agli investimenti nel settore dell\'autotrasporto" ', bold: true, margin: [0, 5, 0, 5], alignment: 'justify' },
+        { text: `Oggetto: Contributi ai sensi del D.D. 08 giugno 2023 n.242 per le finalità di cui al D.M. 12 aprile 2023 n. 97 - "Incentivi agli investimenti nel settore dell\'autotrasporto". XI Edizione Protocollo Istanza IN ${dataReport['idRam']}/${dataReport['year']} `, bold: true, margin: [0, 5, 0, 5], alignment: 'justify' },
         { text: 'IL DIRETTORE GENERALE', alignment: 'center', margin: [0, 10], bold: true },
-        { margin: [0, 7],text: `VISTA la domanda di ammissione al contributo di cui all'oggeto presentata da Codesta impresa e acquisista con protocollo n°${dataReport['idRam']}/${dataReport['year']} del ${moment(Number(dataReport['dataIdRam'])).format('DD/MM/YYYY')}` },
-        { margin: [0, 7],text: `VISTA la nota prot. n. In/${dataReport['protPreavvisoRigetto']} del${moment(Number(dataReport['dataPreavvisoRigetto'])).format('DD/MM/YYYY')} con la quale è stato dat preavviso di regetto della suddetta istanza di finanziamento;` },
-        { margin: [0, 7],text: `CONSIDERATO che la documentazione trasmessa in riscontro al punto 1 della richiesta di integrazione – ai sensi dell’art. 3, comma 5, lettere a), b), c) del D.D. n. 242/2023 – non risulta conforme ai requisiti prescritti a pena di inammissibilità, nei termini e secondo le modalità stabilite dal MEDESIMO decreto in quanto: ${dataReport['motivazioneInammissibilita']};`,alignment: 'justify'},
-        { margin: [0, 7],text: `DATO ATTO che la carenza sopra evidenziata integra causa di inammissibilità dell’istanza ai sensi del citato art. 3 del D.D. n. 242/2023;` },
-        { margin: [0, 7],text: `DATO ATTO altresì che, stante la mancanza dei requisiti essenziali a pena di inammissibilità, l’eventuale ulteriore documentazione prodotta in risposta alla medesima richiesta non è stata oggetto di valutazione ai fini della rendicontazione;` },
-        { margin: [0, 7],text:`VISTO il verbale della riunione della Commissione, istituita ai sensi dell’art. 10, comma 3, del D.D. 8 giugno 2023, n. 242, svoltasi in data ${moment(Number(dataReport['dataVerbale'])).format('DD/MM/YYYY')}, dal quale risulta che la documentazione trasmessa è stata ritenuta non accoglibile; `},
-        { margin: [0, 7],text:`RITENUTO che le carenze sopra evidenziate assumono carattere assorbente ai fini della declaratoria di inammissibilità dell’istanza;`},
+        { margin: [0, 7],alignment: 'justify',text: `VISTA la domanda di ammissione al contributo di cui all'oggeto presentata da Codesta impresa e acquisista con protocollo n°${dataReport['idRam']}/${dataReport['year']} del ${moment(Number(dataReport['dataIdRam'])).format('DD/MM/YYYY')}` },
+        { margin: [0, 7],alignment: 'justify',text: `VISTA la nota prot. n. In/${dataReport['protPreavvisoRigetto']} del ${moment(Number(dataReport['dataPreavvisoRigetto'])).format('DD/MM/YYYY')} con la quale è stata inviata la richiesta di integrazione per la suddetta istanza di finanziamento;` },
+        { margin: [0, 7],text: `CONSIDERATO che la documentazione trasmessa in riscontro al punto 1 della richiesta di integrazione – ai sensi dell’art. 3, comma 5, lettere a), b), c) del D.D. n. 242/2023 – non risulta conforme ai requisiti prescritti a pena di inammissibilità, nei termini e secondo le modalità stabilite dal MEDESIMO decreto in quanto:`,alignment: 'justify'},
+         {
+          ul: dataReport['detail'], bold: true, margin: [0, 10], alignment: 'justify',
+        },
+        { margin: [0, 7],alignment: 'justify',text: `DATO ATTO che la carenza sopra evidenziata integra causa di inammissibilità dell’istanza ai sensi del citato art. 3 del D.D. n. 242/2023;` },
+        { margin: [0, 7],alignment: 'justify',text: `DATO ATTO altresì che, stante la mancanza dei requisiti essenziali a pena di inammissibilità, l’eventuale ulteriore documentazione prodotta in risposta alla medesima richiesta non è stata oggetto di valutazione ai fini della rendicontazione;` },
+        { margin: [0, 7],alignment: 'justify',text:`VISTO il verbale della riunione della Commissione, istituita ai sensi dell’art. 10, comma 3, del D.D. 8 giugno 2023, n. 242, svoltasi in data ${moment(Number(dataReport['dataVerbale'])).format('DD/MM/YYYY')}, dal quale risulta che la documentazione trasmessa è stata ritenuta non accoglibile; `},
+        { margin: [0, 7],alignment: 'justify',text:`RITENUTO che le carenze sopra evidenziate assumono carattere assorbente ai fini della declaratoria di inammissibilità dell’istanza;`},
 
         //{ text: dataReport['motivazioneInammissibilita'], margin: [10, 0, 0, 0] },
-        { text: 'COMUNICA', alignment: 'center', margin: [0, 10], bold: true },
+        { text: 'COMUNICA', alignment: 'center', margin: [0, 10], bold: true,pageBreak: 'before' },
         { text: 'che il procedimento amministrativo avviato con l’istanza di ammissione al contributo si è concluso con il', alignment: 'justify' },
         { text: 'RIGETTO PARZIALE DELLA DOMANDA', alignment: 'center', margin: [0, 10], bold: true },
         { text:`${dataReport['motivazioneInammissibilita']}`,
-          margin: [10, 0],
+          margin: [10, 0,10,30],
 
           alignment: 'justify'},
         { text: `Il presente provvedimento costituisce determinazione conclusiva del procedimento amministrativo. Si comunica altresì che, ai sensi dell'art. 3, comma 4, della legge 7 agosto 1990 n. 241, avverso il presente atto è ammesso ricorso giurisdizionale avanti al competente Tribunale Amministrativo Regionale oppure, in alterativa, ricorso straordinario al Presidente della Repubblica, rispettivamente entro sessanta e centoventi giorni dal ricevimento dello stesso.`, alignment: 'justify' },
@@ -1087,7 +1093,7 @@ export class ReportService {
         defaultStyle: {
           font: 'Times'
         },
-        pageMargins: [25, 100, 30, 80],
+        pageMargins: [60, 100, 60, 80],
         header: function (currentPage, pageCount) {
           if (currentPage === 1) {
             return header
@@ -1148,7 +1154,7 @@ export class ReportService {
         { alignment: 'justify', margin: [0, 5, 0, 5], text: `VISTA la nota prot. n. ${dataReport['protPreavvisoRigetto']} del ${moment(dataReport['dataPreavvisoRigetto']).format('DD/MM/YYYY')} con la quale è stato dato preavviso di rigetto della suddetta istanza di finanziamento;` },
         { alignment: 'justify', margin: [0, 5, 0, 5], text: `VISTA la Vostra documentazione inviata a mezzo pec del ${moment(dataReport['dataNotaInammissibilita']).format('DD/MM/YYYY')};` },
         { alignment: 'justify', margin: [0, 5, 0, 5], text: `VISTO il verbale della riunione della Commissione, tenutasi in data ${moment(dataReport['dataVerbaleDeduzioni']).format('DD/MM/YYYY')} nel quale la documentazione inviata a mezzo pec è stata valutata non accoglibile;` },
-        { text: 'COMUNICA', alignment: 'center', margin: [0, 10], bold: true },
+        { text: 'COMUNICA', alignment: 'center', margin: [0, 10], bold: true ,pageBreak: 'before',},
         { alignment: 'justify', margin: [0, 5, 0, 5], text: `che il procedimento amministrativo avviato con l’istanza di ammissione al contributo si è concluso con il` },
         { text: 'RIGETTO DELLA DOMANDA', alignment: 'center', margin: [0, 10], bold: true },
         { alignment: 'justify', margin: [0, 5, 0, 5], text: `\n${dataReport['motivazioneInammissibilita']}` },
