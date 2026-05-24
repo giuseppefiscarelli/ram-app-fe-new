@@ -1040,8 +1040,7 @@ export class ReportService {
       header = [{ image: logo, width: 240, margin: [20, 20, 0, 0] }];
 
       content.push(
-        { text: 'Prot n° ' + dataReport['numProt'], margin: [0, 25, 0, 0] },
-        { text: 'Roma li ' + moment(Number(dataReport['dataProt'])).format('DD/MM/YYYY') },
+
         { text: 'Spett.Le', alignment: 'right', margin: [0, 0, 0, 0] },
         { text: dataReport['ragSociale'], alignment: 'right', margin: [0, 0, 0, 0] },
         { text: `${dataReport['indirizzo']}, ${dataReport['numCivico']}`, alignment: 'right', margin: [0, 0, 0, 0] },
