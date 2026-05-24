@@ -157,7 +157,7 @@ export class AdminReportEditComponent implements OnInit {
       let detail = JSON.parse(data.report.detail)
      // console.log(detail);
       let test = detail.map(x=> x || "")
-     // console.log(test)
+      console.log(test, 'detail')
       this.istanza = data.istanza;
       this.typeReport = data.report.typeReport;
       this.form = this.initializeForEdit(this.record,test )
@@ -328,16 +328,19 @@ export class AdminReportEditComponent implements OnInit {
       this.fileDimControl = this.typeFileControl= false;
   }
   initializeForEdit(data:Report,detail?): FormGroup{
-   // console.log(detail)
+    console.log(detail)
    // console.log(data)
    let detailArray: any[];
 
     if (detail && detail.length > 0) {
-      // Costruisci un FormArray con i valori di detail
-      detailArray = detail.map(text => new FormControl(text));
+      // Costruisci un FormArray estraendo il campo `text` dagli oggetti se presente
+      detailArray = detail.map(item => {
+        const value = (item && typeof item === 'object' && ('text' in item)) ? item.text : item;
+        return new FormControl(value != null ? value : '');
+      });
     } else {
       // Se detail non è definito o vuoto, inizializza un FormArray vuoto
-      detailArray =  [];
+      detailArray = [];
     }
     return new FormGroup(
       {
