@@ -423,14 +423,17 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
 
   checkAllegatoIntegrazione(allegato: Allegato){
      console.log(allegato)
+     if (!allegato || !allegato.dataUpload || !this.rendicontazione || !this.rendicontazione.dateEnd) {
+       return false;
+     }
      let dataUpload = moment(Number(allegato.dataUpload))
      console.log(this.rendicontazione.dateEnd)
      console.log(this.istruttoriaData)
       if(this.istruttoriaData){
         if(dataUpload.isAfter(moment(Number(this.rendicontazione.dateEnd)))){
-          if(this.istruttoriaData.typeReport['type'] === 'integrazione'){
+          if(this.istruttoriaData.typeReport?.['type'] === 'integrazione'){
             return 'Documento Integrazione'
-          }else if(this.istruttoriaData.typeReport['type'] === 'rigetto'){
+          }else if(this.istruttoriaData.typeReport?.['type'] === 'rigetto'){
             return 'Documento Integrazione Preavviso Rigetto'
           }
         }
@@ -441,12 +444,15 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
 
    checkAllegatoEditable(allegato: Allegato, veicolo: Veicolo){
    // console.log(veicolo)
+    if (!allegato || !allegato.dataUpload || !this.rendicontazione || !this.rendicontazione.dateEnd) {
+      return false;
+    }
     let dataUpload = moment(Number(allegato.dataUpload))
   //  console.log(this.rendicontazione)
     if(this.istruttoriaData){
       if(dataUpload.isAfter(moment(Number(this.rendicontazione.dateEnd)))){
        // console.log(this.istruttoriaData)
-        if(this.istruttoriaData.typeReport['type'] === 'integrazione'){
+        if(this.istruttoriaData.typeReport?.['type'] === 'integrazione'){
           //console.log(allegato.id, ' modificabile')
           return true
         }
@@ -463,8 +469,8 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
     //console.log(veicolo)
     //console.log(this.istruttoriaData)
     if(this.istruttoriaData && this.enableRendicontazione){
-      if((this.istruttoriaData.typeReport['type'] === 'integrazione' ||
-        this.istruttoriaData.typeReport['type'] === 'rigetto'
+      if((this.istruttoriaData.typeReport?.['type'] === 'integrazione' ||
+        this.istruttoriaData.typeReport?.['type'] === 'rigetto'
       )
          && veicolo.adminState !== 'accepted'){
       // console.log(' modificabile')
@@ -481,7 +487,7 @@ export class ContentVeiComponent implements OnInit, OnDestroy {
     let blink = false;
   //  console.log(type,data);
   //  console.log(this.istruttoriaData , this.istruttoriaData.typeReport['type'] === 'integrazione')
-    if(this.istruttoriaData && this.istruttoriaData.typeReport['type'] === 'integrazione'){
+    if(this.istruttoriaData && this.istruttoriaData.typeReport?.['type'] === 'integrazione'){
 
         const idVeicoliFiltrati = this.listaAllegati
         .filter(obj => obj.adminState !== 'accepted' && obj.id_Veicolo && obj.enable)
