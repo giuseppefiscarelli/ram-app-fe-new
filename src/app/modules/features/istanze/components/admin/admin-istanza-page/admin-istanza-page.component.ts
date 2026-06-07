@@ -118,23 +118,23 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
                   this.istanzaCheck = this.route.snapshot.data.istanzaCheck;
                   //console.log(this.istanzaCheck)
                   this.rottamazione = (this.istanza.rim_rott_1 || this.istanza.rim_rott_2 || this.istanza.r_rott_1 || this.istanza.r_rott_2 || this.istanza.r_rott_3)?true:false;
-                  this.totVeicoli = this.istanza.nv1 +
-                  this.istanza.nv2 +
-                  this.istanza.nv3 +
-                  this.istanza.nv4 +
-                  this.istanza.nv5 +
-                  this.istanza.nv6 +
-                  this.istanza.nv7 +
-                  this.istanza.nv8 +
-                  this.istanza.nv9 +
-                  this.istanza.nv10 +
-                  this.istanza.nv11 +
-                  this.istanza.r_nv_1 +
-                  this.istanza.r_nv_2 +
-                  this.istanza.r_nv_3 +
-                  this.istanza.rim_nv_1 +
-                  this.istanza.rim_nv_2 +
-                  this.istanza.rim_nv_3;
+                   this.totVeicoli = Number(this.istanza.nv1) +
+                   Number(this.istanza.nv2) +
+                   Number(this.istanza.nv3) +
+                   Number(this.istanza.nv4) +
+                   Number(this.istanza.nv5) +
+                   Number(this.istanza.nv6) +
+                   Number(this.istanza.nv7) +
+                   Number(this.istanza.nv8) +
+                   Number(this.istanza.nv9) +
+                   Number(this.istanza.nv10) +
+                   Number(this.istanza.nv11) +
+                   Number(this.istanza.r_nv_1) +
+                   Number(this.istanza.r_nv_2) +
+                   Number(this.istanza.r_nv_3) +
+                   Number(this.istanza.rim_nv_1) +
+                   Number(this.istanza.rim_nv_2) +
+                   Number(this.istanza.rim_nv_3);
 
                   this.totCertEnable = 0;
                   this.certEnable = [];
