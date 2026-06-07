@@ -744,11 +744,11 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
             const validReports = reports.filter(obj => obj.dataInvio !== null);
             validReports.sort((a, b) => Number(b.dataInvio) - Number(a.dataInvio));
             if(validReports.length > 0){
-              this.statoIstruttoria = validReports[0].typeReport['type'];
+              this.statoIstruttoria = validReports[0].typeReport?.['type'];
               //console.log(validReports[0])
               this.istruttoriaRend = true;
               this.istruttoriaData = validReports[0];
-              if(this.istruttoriaData.typeReport['type'] === 'integrazione'){
+              if(this.istruttoriaData.typeReport?.['type'] === 'integrazione'){
                 this.dataFineIstruttoria = moment(Number(this.istruttoriaData.dataInvio)).add(15,'days')
 
                 }

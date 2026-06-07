@@ -225,7 +225,7 @@ export class AdminVeicoloDialogComponent implements OnInit {
     //  let dataUpload = moment(Number(data.dataUpload))
 
       //console.log(this.dataIstruttoria)
-      let typeIstruttoria = this.dataIstruttoria ? this.dataIstruttoria.typeReport['type'] : undefined ;
+      let typeIstruttoria = this.dataIstruttoria?.typeReport?.['type'];
       //console.log(typeIstruttoria)
       //console.log(this.veicolo)
 
@@ -536,11 +536,14 @@ export class AdminVeicoloDialogComponent implements OnInit {
     }
     checkAllegatoIntegrazione(allegato: Allegato){
    //   console.log(allegato)
+      if (!allegato || !allegato.dataUpload || !this.rendicontazione || !this.rendicontazione.dateEnd) {
+        return false;
+      }
       let dataUpload = moment(Number(allegato.dataUpload))
   //    console.log(this.rendicontazione.dateEnd)
 
       if(dataUpload.isAfter(moment(Number(this.rendicontazione.dateEnd)))){
-        if(this.dataIstruttoria.typeReport['type'] === 'integrazione'){
+        if(this.dataIstruttoria?.typeReport?.['type'] === 'integrazione'){
           return 'Documento Integrazione'
         }
       }

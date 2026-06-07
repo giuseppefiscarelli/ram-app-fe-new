@@ -209,7 +209,7 @@ export class UserIstanzaEditComponent implements OnInit {
                         //  console.log(this.enableRendicontazione)
                           if(istruttoria){
                             this.istruttoriaData = istruttoria;
-                            let typeReport = istruttoria.typeReport['type'];
+                            let typeReport = istruttoria.typeReport?.['type'];
                             console.log(typeReport)
  let veicoliFiltrati;
                             if(typeReport === 'integrazione'){
@@ -619,7 +619,7 @@ export class UserIstanzaEditComponent implements OnInit {
 blinkBadgeIntegrazione(type, data?){
 
   let blink = false;
-  if(this.istruttoriaData   && this.istruttoriaData.typeReport['type'] === 'integrazione'){
+  if(this.istruttoriaData   && this.istruttoriaData.typeReport?.['type'] === 'integrazione'){
     if(type === 'alle-dichiarazione'){
       blink = this.listaAllegatiDich.some(x=>x.adminState !=='accepted')
 
