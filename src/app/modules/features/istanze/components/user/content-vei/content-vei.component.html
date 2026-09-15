@@ -34,7 +34,7 @@
     </ng-container>
     <ng-template #selOption>
       <ng-container *ngIf="this.listVeiFiltered.length > 0; else newVei">
-        <div class="row-custom" *ngIf="(this.listVeiFiltered.length < this.istanza[catlist.selectedOptions.selected[0].value.campoDb]) && (this.rendicontazione.enable || this.enableRendicontazione)">
+        <div class="row-custom" *ngIf="(this.listVeiFiltered.length < this.istanza[catlist.selectedOptions.selected[0].value.campoDb]) && (this.rendicontazione.enable && this.enableRendicontazione)">
           <div  class="col-custom">
             <button mat-raised-button  style="margin:15px;" (click)="onClickInsertVei('create')" color="primary">Inserisci nuovo veicolo</button>
           </div>
@@ -94,7 +94,7 @@
                           <button mat-flat-button color="primary"
                           style="float:right;background-color: green;"
                           (click)="onClickInsertVei('edit',v,index)"
-                          *ngIf="(this.rendicontazione.enable || this.userMe.role === 'superadmin' || this.enableRendicontazione) &&(checkVeicoloEditable(v))"
+                          *ngIf="((this.rendicontazione.enable && this.enableRendicontazione) || this.userMe.role === 'superadmin') &&(checkVeicoloEditable(v))"
                           ><mat-icon>refresh</mat-icon>Aggiorna dati Veicolo</button></span>
                           <div >
                             <table style="width:100%">
@@ -131,7 +131,7 @@
                     <div class="col-custom col-custom-12">
                       <h3>Documenti Veicolo</h3>
 
-                        <button mat-raised-button *ngIf="(this.rendicontazione.enable  || this.userMe.role === 'superadmin' || this.enableRendicontazione)  &&(checkVeicoloEditable(v))" (click)="newAllegato(v)" color="primary">Inserisci Documento</button>
+                        <button mat-raised-button *ngIf="((this.rendicontazione.enable && this.enableRendicontazione) || this.userMe.role === 'superadmin') &&(checkVeicoloEditable(v))" (click)="newAllegato(v)" color="primary">Inserisci Documento</button>
                        <!-- <div class="table" *ngIf="listAlleFiltered.length > 0">
                           <table style="width:95%;">
                               <thead>
@@ -243,7 +243,7 @@
                                         aria-label="Example icon button with a vertical three dot icon"
                                         matTooltip="Aggiorna Documento"
                                         matTooltipPosition="above"
-                                        *ngIf="(this.rendicontazione.enable || this.userMe.role !== 'user' || this.enableRendicontazione) &&(checkAllegatoEditable(alle,v))"
+                                        *ngIf="((this.rendicontazione.enable && this.enableRendicontazione) || this.userMe.role !== 'user') &&(checkAllegatoEditable(alle,v))"
                                         (click)="onClickEditAllegato('edit',v,alle,index)"
                                         style="color:green;"
                                         ><mat-icon>sync</mat-icon>
@@ -253,7 +253,7 @@
                                   aria-label="Example icon button with a vertical three dot icon"
                                   matTooltip="Elimina Documento"
                                   matTooltipPosition="above"
-                                  *ngIf="(this.rendicontazione.enable ||  this.enableRendicontazione) &&(checkAllegatoEditable(alle, v))"
+                                  *ngIf="(this.rendicontazione.enable && this.enableRendicontazione) &&(checkAllegatoEditable(alle, v))"
                                   [disabled]="this.userMe.role === 'viewer'"
                                   (click)="onClickDeleteAllegato(alle)"
                                   color="accent"
@@ -276,7 +276,7 @@
 
       </ng-container>
       <ng-template #newVei>
-        <div class="row-custom" *ngIf="this.rendicontazione.enable || this.enableRendicontazione">
+        <div class="row-custom" *ngIf="this.rendicontazione.enable && this.enableRendicontazione">
             <button  style="margin:15px;" mat-raised-button (click)="onClickInsertVei('create')" color="primary">Inserisci nuovo veicolo</button>
 
         </div>
