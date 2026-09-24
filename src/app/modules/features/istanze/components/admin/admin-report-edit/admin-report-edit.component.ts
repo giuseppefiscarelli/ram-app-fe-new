@@ -11,7 +11,7 @@ import { TypeIstance } from '@app/modules/models/type-istance.model';
 import { TypeReport } from '@app/modules/models/typeReport.model';
 import { User } from '@app/modules/models/user.model';
 import { Store, select } from '@ngrx/store';
-import { Observable, switchMap, take, map } from 'rxjs';
+import { Observable, switchMap, take, map, forkJoin } from 'rxjs';
 import { IstanzeService } from '../../../istanze.service';
 import moment from 'moment';
 import { NotificationsComponent } from '@app/modules/notifications/notifications.component';
@@ -51,6 +51,8 @@ export class AdminReportEditComponent implements OnInit {
    fileAttach: File;
    typeFileControl:boolean = false;
    fileDimControl: boolean = false;
+   otherFilesAttach: File[] = [];
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private store: Store<ApplicationState>,
@@ -312,7 +314,7 @@ export class AdminReportEditComponent implements OnInit {
     }
 
     this.form.controls.filenameUpload.setValue(this.fileAttach.name)
-    //console.log(this.fileAttach)
+    event.target.value = '';
 }
 deleteFile(): void{
     this.fileAttach = null;
@@ -320,6 +322,18 @@ deleteFile(): void{
     this.form.controls.filenameUpload.setValue(null)
     this.form.controls.attachControl.setValue(false)
     this.fileDimControl = this.typeFileControl= false;
+}
+selectOtherFiles(event: any): void {
+  const files = event.target.files;
+  if (files && files.length > 0) {
+    for (let i = 0; i < files.length; i++) {
+      this.otherFilesAttach.push(files[i]);
+    }
+  }
+  event.target.value = '';
+}
+deleteOtherFile(index: number): void {
+  this.otherFilesAttach.splice(index, 1);
 }
   initializeForEdit(data:Report,detail?): FormGroup{
    // console.log(detail)
@@ -570,16 +584,41 @@ deleteFile(): void{
 
       // let filePayload : any= {...this.fileAttach, filename:this.fileAttach.name};
       // console.log(filePayload)
-      this.reportService.uploadAllegato(this.fileAttach).pipe(
-        switchMap((res: any) => {
-          const filenameS: string = res.file[0].fd.substring(res.file[0].fd.lastIndexOf('/') + 1);
+      let uploads$ = [this.reportService.uploadAllegato(this.fileAttach)];
+      
+      this.otherFilesAttach.forEach(f => {
+        uploads$.push(this.reportService.uploadAllegato(f));
+      });
+
+      forkJoin(uploads$).pipe(
+        switchMap((responses: any[]) => {
+          const mainRes = responses[0];
+          const filenameS: string = mainRes.file[0].fd.substring(mainRes.file[0].fd.lastIndexOf('/') + 1);
           payload.filenameStorage = filenameS;
           payload.fd = {
-              fd:  res.file[0].fd,
-              filename: res.file[0].filename,
-              type: res.file[0].type,
+              fd:  mainRes.file[0].fd,
+              filename: mainRes.file[0].filename,
+              type: mainRes.file[0].type,
               filenameStorage: filenameS
           }
+
+          if (responses.length > 1) {
+             const allegatiList = [];
+             for(let i=1; i < responses.length; i++) {
+                const res = responses[i];
+                const fs: string = res.file[0].fd.substring(res.file[0].fd.lastIndexOf('/') + 1);
+                allegatiList.push({
+                  fd: res.file[0].fd,
+                  filename: res.file[0].filename,
+                  type: res.file[0].type,
+                  filenameStorage: fs,
+                  filenameUpload: res.file[0].filename,
+                  enable: true
+                });
+             }
+             payload.allegati = allegatiList;
+          }
+
           payload.userUpload =  this.userMe.id;
           payload.status = 'prepared';
           payload.statusInvio = 'pending';

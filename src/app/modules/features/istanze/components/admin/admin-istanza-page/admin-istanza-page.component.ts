@@ -701,6 +701,23 @@ export class AdminIstanzaPageComponent implements OnInit, OnDestroy {
       })
     }
 
+    downloadAllegatoReport(file: any){
+      this.service.getFile(file).subscribe({
+        next:(res) => {
+          const blob = new Blob([res],{type: file['type']});
+          let f = window.URL.createObjectURL(blob).toString();
+          const a: HTMLAnchorElement = document.createElement('a') as HTMLAnchorElement;
+          a.href = f;
+          a.download = file['filenameUpload'] || file['filename'] || 'allegato';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(f);
+        }
+      })
+    }
+
+
     deleteReport(id){
       Swal.fire({
         title: 'Vuoi eliminare il report?',

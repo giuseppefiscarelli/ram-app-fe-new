@@ -656,10 +656,16 @@ export class ReportService {
         },
         {
           text: [
-            { text: 'Ai fini della liquidazione del contributo spettante - compatibilmente con la disponibilità di cassa e previa  conclusione  con esito favorevole degli accertamenti di legge - e in conformità alle nuove disposizioni in materia di pagamenti introdotte dal Regolamento (UE) 2024/886, dovrà pervenire all’indirizzo PEC ' },
-            { text: 'dg.ssa-div7@pec.mit.gov.it entro il termine perentorio di 3 (tre) giorni dal ricevimento della presente, una certificazione di titolarità del conto corrente rilasciata dall’Istituto bancario', bold: true },
-
-          ], alignment: 'justify', margin: [0, 10, 0, 0]
+            {
+              text: "Ai fini della liquidazione del contributo spettante - compatibilmente con la disponibilità di cassa e previa conclusione con esito favorevole degli accertamenti di legge, dovrà pervenire all’indirizzo PEC ",
+            },
+            {
+              text: 'dg.ssa-div7@pec.mit.gov.it entro il termine perentorio di 3 (tre) giorni dal ricevimento della presente, la dichiarazione di tracciabilità dei flussi finanziari, ai sensi dell’art. 3 della Legge n.136/2010, come modificata dal DL n.187/2010 convertito dalla Legge n.217/2010, come da modello All. tracciabilità flussi finanziari. ',
+              bold: true,
+            },
+          ],
+          alignment: 'justify',
+          margin: [0, 10, 0, 0],
         },
         {
           text: [

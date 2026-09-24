@@ -867,6 +867,22 @@
                   aria-label="Example icon button with a home icon"
                  > <mat-icon>file_download</mat-icon>
                 </button>
+                <button
+                  mat-icon-button
+                  color="primary"
+                  *ngIf="element.allegati && element.allegati.length > 0"
+                  [matMenuTriggerFor]="allegatiMenu"
+                  matTooltip="Download Altri Allegati"
+                  matTooltipPosition="above"
+                  aria-label="Download Altri Allegati"
+                 > <mat-icon>attachment</mat-icon>
+                </button>
+                <mat-menu #allegatiMenu="matMenu">
+                  <button mat-menu-item *ngFor="let file of element.allegati" (click)="downloadAllegatoReport(file)">
+                    <mat-icon>file_download</mat-icon>
+                    <span>{{file.filenameUpload || file.filename || 'Allegato'}}</span>
+                  </button>
+                </mat-menu>
                  <button
                     mat-icon-button
                     color="primary"
