@@ -49,6 +49,7 @@ export class AdminReportEditComponent implements OnInit {
    record:Report;
    fileName = '';
    fileAttach: File;
+   otherFilesAttach: any[] = [];
    typeFileControl:boolean = false;
    fileDimControl: boolean = false;
   constructor(
@@ -313,7 +314,7 @@ export class AdminReportEditComponent implements OnInit {
     }
 
     this.form.controls.filenameUpload.setValue(this.fileAttach.name)
-    //console.log(this.fileAttach)
+    event.target.value = '';
   }
   deleteFile(): void{
       this.fileAttach = null;
@@ -321,6 +322,19 @@ export class AdminReportEditComponent implements OnInit {
       this.form.controls.filenameUpload.setValue(null)
       this.form.controls.attachControl.setValue(false)
       this.fileDimControl = this.typeFileControl= false;
+  }
+
+  selectOtherFiles(event: any): void {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      for (let i = 0; i < files.length; i++) {
+        this.otherFilesAttach.push(files[i]);
+      }
+    }
+    event.target.value = '';
+  }
+  deleteOtherFile(index: number): void {
+    this.otherFilesAttach.splice(index, 1);
   }
   initializeForEdit(data:Report,detail?): FormGroup{
    // console.log(detail)
@@ -564,46 +578,66 @@ export class AdminReportEditComponent implements OnInit {
 
         });
       }else if(this.mode ==='prepare'){
-        // console.log(this.form.valid, this.fileAttach)
-        // let filePayload : any= {...this.fileAttach, filename:this.fileAttach.name};
-        // console.log(filePayload)
-        this.reportService.uploadAllegato(this.fileAttach).pipe(
-          switchMap((res: any) => {
-            const filenameS: string = res.file[0].fd.substring(res.file[0].fd.lastIndexOf('/') + 1);
-            payload.filenameStorage = filenameS;
-            payload.fd = {
-                fd:  res.file[0].fd,
-                filename: res.file[0].filename,
-                type: res.file[0].type,
-                filenameStorage: filenameS
-            }
-            payload.userUpload =  this.userMe.id;
-            payload.status = 'prepared';
-            payload.statusInvio = 'pending';
-            payload.enable = true;
-            payload.dataUpload = new Date().getTime();
-            payload.dataVerbale =payload.dataVerbale ? moment(payload.dataVerbale).format('x'):null;
+        let uploads$: any[] = [];
+        uploads$.push(this.reportService.uploadAllegato(this.fileAttach));
+        if (this.otherFilesAttach && this.otherFilesAttach.length > 0) {
+          this.otherFilesAttach.forEach(f => {
+            uploads$.push(this.reportService.uploadAllegato(f));
+          });
+        }
+        
+        import('rxjs').then(({ forkJoin }) => {
+          forkJoin(uploads$).pipe(
+            switchMap((responses: any[]) => {
+              const resMain = responses[0];
+              const filenameS: string = resMain.file[0].fd.substring(resMain.file[0].fd.lastIndexOf('/') + 1);
+              payload.filenameStorage = filenameS;
+              payload.fd = {
+                  fd:  resMain.file[0].fd,
+                  filename: resMain.file[0].filename,
+                  type: resMain.file[0].type,
+                  filenameStorage: filenameS
+              }
+
+              if (responses.length > 1) {
+                const allegatiList = [];
+                for(let i=1; i < responses.length; i++) {
+                    const res = responses[i];
+                    const fs: string = res.file[0].fd.substring(res.file[0].fd.lastIndexOf('/') + 1);
+                    allegatiList.push({
+                      fd: res.file[0].fd,
+                      filename: res.file[0].filename,
+                      type: res.file[0].type,
+                      filenameStorage: fs,
+                      filenameUpload: res.file[0].filename,
+                      enable: true
+                    });
+                }
+                payload.allegati = allegatiList;
+              }
+
+              payload.userUpload =  this.userMe.id;
+              payload.status = 'prepared';
+              payload.statusInvio = 'pending';
+              payload.enable = true;
+              payload.dataUpload = new Date().getTime();
+              payload.dataVerbale =payload.dataVerbale ? moment(payload.dataVerbale).format('x'):null;
               payload.dataVerbaleDeduzioni =payload.dataVerbaleDeduzioni ? moment(payload.dataVerbaleDeduzioni).format('x'):null;
               payload.dataNotaInammissibilita=payload.dataNotaInammissibilita ? moment(payload.dataNotaInammissibilita).format('x'):null;
               payload.dataPreavvisoRigetto=payload.dataPreavvisoRigetto ? moment(payload.dataPreavvisoRigetto).format('x'):null;
 
-            //console.log(payload)
-            return this.service.updateReport(payload);
-          })
-        ).subscribe({
-          next: (res) => {
-            this.notifications.toast(
-              TYPE.SUCCESS,
-                'Operazione Completata','Documento Inserito con Successo'
-            )
-            this.dialogRef.close(res)
-
-          }
+              return this.service.updateReport(payload);
+            })
+          ).subscribe({
+            next: (res) => {
+              this.notifications.toast(
+                TYPE.SUCCESS,
+                  'Operazione Completata','Documento Inserito con Successo'
+              )
+              this.dialogRef.close(res)
+            }
+          });
         });
-
-
-
-
       }
     }
 

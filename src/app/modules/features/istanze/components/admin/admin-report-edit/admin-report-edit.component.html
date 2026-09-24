@@ -449,6 +449,7 @@
                         <div mat-line>
                                                 <button
                                                 mat-mini-fab
+                                                type="button"
                                                 color="primary"
                                                 class="upload-btn"
                                                 (click)="fileUpload.click()">
@@ -463,6 +464,7 @@
                         <div mat-line>
                             <button
                             mat-mini-fab
+                            type="button"
                             (click)="deleteFile()"
                             color="warn"
                             matTooltip="Elimina Documento"
@@ -481,6 +483,31 @@
 
               </mat-list>
             </div>
+            
+            <div style="margin-top: 20px;">
+              <h4 style="color:#06c;">Altri Allegati (Opzionale)</h4>
+              <mat-list role="list">
+                <input type="file" class="file-input" (change)="selectOtherFiles($event)" multiple #otherFilesUpload style="display:none;">
+                <mat-list-item role="listitem">
+                    <div mat-line>
+                        <button mat-mini-fab color="primary" class="upload-btn" (click)="otherFilesUpload.click()" type="button">
+                            <mat-icon>attach_file</mat-icon>
+                        </button>
+                        Clicca sull'icona per selezionare altri file
+                    </div>
+                </mat-list-item>
+                
+                <mat-list-item role="listitem" *ngFor="let file of otherFilesAttach; let i = index">
+                    <div mat-line>
+                        <button mat-mini-fab type="button" (click)="deleteOtherFile(i)" color="warn" matTooltip="Elimina Documento" matTooltipPosition="above">
+                            <mat-icon class="mat-24">delete</mat-icon>
+                        </button>
+                        {{file.name}}
+                    </div>
+                </mat-list-item>
+              </mat-list>
+            </div>
+
         </form>
 
         </div>

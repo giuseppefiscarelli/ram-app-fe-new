@@ -247,6 +247,7 @@ export interface ReportDerscriptorInterface{
   motivazioneInammissibilita: string;
   body: string;
   subject: string;
+  allegati?: any[];
 }
 
 export interface MailConfigDescriptorInterface{
